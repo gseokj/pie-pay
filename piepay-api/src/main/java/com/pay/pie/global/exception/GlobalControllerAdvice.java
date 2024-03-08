@@ -6,7 +6,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.pay.pie.global.exception.dto.ErrorResponse;
+import com.pay.pie.global.common.code.ErrorCode;
+import com.pay.pie.global.common.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalControllerAdvice {

@@ -1,5 +1,7 @@
 package com.pay.pie.global.exception;
 
+import com.pay.pie.global.common.code.ErrorCode;
+
 import lombok.Getter;
 
 @Getter

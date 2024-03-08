@@ -1,7 +1,7 @@
-package com.pay.pie.global.exception.dto;
+package com.pay.pie.global.common;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.pay.pie.global.exception.ErrorCode;
+import com.pay.pie.global.common.code.ErrorCode;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
