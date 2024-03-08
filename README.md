@@ -175,7 +175,7 @@ export default Button;
 [Top](#목차)
 <br/><br/>
 
-## 기능 정의서
-<img src="README.assets/기능정의서(미완).PNG" width="80%" height="20%"/>
+## 요구사항 정의서
+<img src="README.assets/요구사항정의서.PNG" width="80%" height="20%"/>
 <br/>
 [Top](#목차)
