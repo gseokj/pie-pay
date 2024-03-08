@@ -14,9 +14,9 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
     return (
         <html lang="en">
 
-        <body className={inter.className} style={{width: "100dvw", height: "100dvh"}}>
-            <div className="flex justify-center   h-screen">
-                <div className={styles.container}>
+        <body className={`${inter.className} ${styles.body}`} >
+            <div className={styles.container}>
+                <div className={styles.content}>
                     {children}
                 </div>
             </div>
