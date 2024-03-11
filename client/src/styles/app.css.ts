@@ -1,16 +1,16 @@
 import { style } from '@vanilla-extract/css';
-import theme from "./theme/theme"
+import theme from './theme/theme'
 
 
 export const body = style({
-    width: "100dvw",
-    height: "100dvh"
+    width: '100dvw',
+    height: '100dvh'
 })
 
 export const container= style({
-    display: "flex",
-    justifyContent: "center",
-    height: "100%"
+    display: 'flex',
+    justifyContent: 'center',
+    height: '100%'
 })
 export const content = style({
     // Mobile width
@@ -23,7 +23,7 @@ export const content = style({
             width: '40%'
         },
     },
-    backgroundColor: `${theme.layout}`
+    backgroundColor: theme.layout
 });
 
 

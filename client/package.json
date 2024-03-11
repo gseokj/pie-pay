@@ -13,13 +13,13 @@
   },
   "dependencies": {
     "@auth/core": "^0.28.0",
+    "@vanilla-extract/css": "^1.14.0",
+    "@vanilla-extract/dynamic": "^2.1.0",
     "next": "14.1.1",
     "next-auth": "^5.0.0-beta.15",
     "react": "^18",
     "react-dom": "^18",
-    "styled-reset": "^4.5.2",
-    "@vanilla-extract/css": "^1.14.0",
-    "@vanilla-extract/dynamic": "^2.1.0"
+    "styled-reset": "^4.5.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
