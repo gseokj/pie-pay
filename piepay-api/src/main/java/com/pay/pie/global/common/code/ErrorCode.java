@@ -1,4 +1,4 @@
-package com.pay.pie.global.exception;
+package com.pay.pie.global.common.code;
 
 import lombok.Getter;
 
