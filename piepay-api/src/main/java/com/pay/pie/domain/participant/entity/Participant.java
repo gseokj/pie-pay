@@ -41,7 +41,7 @@ public class Participant extends BaseEntity {
 
 	@NotNull
 	@Column(name = "is_drink_alcohol", nullable = false)
-	private Boolean isDrinkAlcohol = false;
+	private Boolean isDrinkAlcohol = true;
 
 	@NotNull
 	@Column(name = "pay_agree", nullable = false)
