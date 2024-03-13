@@ -4,6 +4,9 @@ import theme from '@/styles/theme/theme';
 export const container = style({
     width: "100%",
 })
+export const contentContainer = style({
+    top: "5"
+})
 export const progress = style({
     // Mobile width
     width: '100%',
@@ -19,14 +22,13 @@ export const progress = style({
     zIndex: 1,
     backgroundColor: theme.layout,
     top: 0,
-    opacity: '80%'
+    opacity: '80%',
 })
 
 export const headerContainer = style({
     width: '100%',
     position: 'sticky',
     backgroundColor: theme.layout,
-
     top: 5,
     paddingLeft: '15px',
     paddingRight: '15px',
@@ -37,7 +39,8 @@ export const headerContainer = style({
 export const header = style({
     display: 'flex',
     justifyContent: 'space-between',
-    marginBottom: '20px'
+    marginBottom: '20px',
+    paddingRight: '60px',
 })
 
 export const title = style({
@@ -89,7 +92,7 @@ export const submitButton = style({
         },
     },
     background: theme.blue,
-
+    alignItems: 'center',
     borderRadius: '10px',
     position: 'fixed',
     display: 'flex',
