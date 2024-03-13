@@ -1,6 +1,6 @@
 'use client'
 
-import * as styles from "@/styles/payment/selectMember.css"
+import * as styles from "@/styles/payment/select/selectMember.css"
 import one from "@/assets/icons/payment1.svg";
 import SearchNickname from "@/app/(post_verification)/[meetid]/payment/select/component/SearchNickname";
 import SelectedMember from "@/app/(post_verification)/[meetid]/payment/select/component/SelectedMember";
@@ -25,8 +25,6 @@ const Members = [
     {memberId: 10, nickname: "류지수", profileImage: faker.image.avatar()},
     {memberId: 11, nickname: "성목", profileImage: faker.image.avatar()},
     {memberId: 12, nickname: "재언", profileImage: faker.image.avatar()},
-    {memberId: 13, nickname: "함승찬", profileImage: faker.image.avatar()},
-    {memberId: 14, nickname: "류지수", profileImage: faker.image.avatar()},
 ];
 const Me =
     {memberId: 2, nickname: "김준수", profileImage: faker.image.avatar()}

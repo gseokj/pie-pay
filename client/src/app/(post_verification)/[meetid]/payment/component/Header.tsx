@@ -1,4 +1,4 @@
-import * as styles from "@/styles/payment/selectMember.css";
+import * as styles from "@/styles/payment/select/selectMember.css";
 import BackButton from "@/app/(pre-verification)/component/XBackButton";
 import Image from "next/image";
 

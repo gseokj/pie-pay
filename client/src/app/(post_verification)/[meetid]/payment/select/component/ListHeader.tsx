@@ -3,7 +3,7 @@
 import Image from "next/image";
 import check from "@/assets/icons/check.svg";
 import uncheck from "@/assets/icons/uncheck.svg";
-import * as styles from "@/styles/payment/listHeader.css";
+import * as styles from "@/styles/payment/select/listHeader.css";
 
 
 interface Props{

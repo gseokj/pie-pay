@@ -1,4 +1,4 @@
-import * as styles from "@/styles/payment/selectedMember.css";
+import * as styles from "@/styles/payment/select/selectedMember.css";
 import {faker} from "@faker-js/faker";
 import beer from "@/assets/icons/checkbeer.svg"
 import Image from "next/image";
