@@ -14,10 +14,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "participant")
 public class Participant extends BaseEntity {
 	@Id
@@ -45,4 +49,5 @@ public class Participant extends BaseEntity {
 
 	@Column(name = "pay_amount")
 	private Long payAmount;
+
 }
