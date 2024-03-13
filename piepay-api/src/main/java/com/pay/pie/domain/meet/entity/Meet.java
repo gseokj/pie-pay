@@ -36,14 +36,15 @@ public class Meet extends BaseEntity {
 	private String meetImage;
 
 	@Size(max = 10)
-	@Column(name = "meet_invitation", length = 10)
+	@NotNull
+	@Column(name = "meet_invitation", nullable = false, length = 10)
 	private String meetInvitation;
 
 	@Builder // 빌더 패턴으로 객체 생성
-	public Meet(String meetName, String meetImage, String meetInvitation) {
+	public Meet(String meetName, String meetImage) {
 		this.meetName = meetName;
 		this.meetImage = (meetImage != null) ? meetImage : "https://cdn-icons-png.flaticon.com/512/681/681494.png";
-		this.meetInvitation = meetInvitation;
+		this.meetInvitation = UUID.randomUUID().toString().substring(0, 6);
 	}
 
 	public void updateInvitation() {

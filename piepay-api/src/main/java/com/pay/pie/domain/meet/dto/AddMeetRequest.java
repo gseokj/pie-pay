@@ -18,7 +18,6 @@ public class AddMeetRequest {
 		return Meet.builder()
 			.meetName(meetName)
 			.meetImage(meetImage)
-			.meetInvitation(meetInvitation)
 			.build();
 	}
 }
