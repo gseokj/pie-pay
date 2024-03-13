@@ -28,4 +28,5 @@ export const container = style({
     right: 0,
     bottom: 0,
     left: 0,
+    overflowY: 'auto'
 })

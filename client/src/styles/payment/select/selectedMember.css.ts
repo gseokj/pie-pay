@@ -6,7 +6,6 @@ export const animationPing = style({
     left: '50%',
     bottom: '80%'
 })
-
 export const member = style({
     display: 'flex',
     flexDirection: 'column',

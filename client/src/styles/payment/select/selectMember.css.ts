@@ -48,7 +48,6 @@ export const title = style({
     fontSize: '25px'
 })
 
-
 export const selectedContainer = style({
     display: 'flex',
     marginTop: '15px',
@@ -66,8 +65,6 @@ export const hr = style({
     background: theme.line,
     marginBottom: '20px',
 })
-
-
 export const listHeaderContainer = style({
     zIndex: 1,
     top: 32,

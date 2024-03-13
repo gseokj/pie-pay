@@ -1,7 +1,7 @@
 import type {Metadata} from "next";
 
 import {ReactNode} from "react";
-import * as styles from "@/styles/payment/payment.css"
+import * as styles from "@/styles/payment/select/payment.css"
 
 export const metadata: Metadata = {
     title: "Create Next App",

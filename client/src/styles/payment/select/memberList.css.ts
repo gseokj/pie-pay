@@ -1,7 +1,6 @@
 import {style} from "@vanilla-extract/css";
 import theme from "@/styles/theme/theme";
 
-
 export const container = style({
     display: 'flex',
     marginBottom: '8px',
@@ -21,7 +20,6 @@ export const memberList = style({
     width: '100%',
     alignItems: 'center',
 
-
 })
 
 export const backgroundSkyBlue = style({
@@ -39,7 +37,6 @@ export const memberName = style({
 })
 
 export const checkbox = style({
-
     marginRight: '10px',
     zIndex: '7'
 })

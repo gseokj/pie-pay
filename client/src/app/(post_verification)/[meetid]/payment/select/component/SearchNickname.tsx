@@ -1,4 +1,4 @@
-import * as styles from "@/styles/payment/searchNickname.css";
+import * as styles from "@/styles/payment/select/searchNickname.css";
 import Image from "next/image";
 import search from "@/assets/icons/search.svg";
 

@@ -1,6 +1,6 @@
 'use client'
 
-import * as styles from "@/styles/payment/memberList.css";
+import * as styles from "@/styles/payment/select/memberList.css";
 import check from "@/assets/icons/check.svg";
 import uncheck from "@/assets/icons/uncheck.svg";
 import checkBeer from "@/assets/icons/checkbeer.svg"
