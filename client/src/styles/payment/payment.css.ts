@@ -12,7 +12,12 @@ export const container = style({
             left: '30%',
         },
     },
-
+    '::-webkit-scrollbar': {
+      width: '3px'
+    },
+    '::-webkit-scrollbar-thumb': {
+      backgroundColor: '#D3D3D3'
+    },
     height: '100%',
     display: 'flex',
     position: 'absolute',
@@ -24,4 +29,3 @@ export const container = style({
     bottom: 0,
     left: 0,
 })
-

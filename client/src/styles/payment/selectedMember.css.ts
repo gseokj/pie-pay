@@ -1,6 +1,11 @@
 import {style} from '@vanilla-extract/css'
 import theme from '@/styles/theme/theme';
 
+export const animationPing = style({
+    position: 'relative',
+    left: '50%',
+    bottom: '80%'
+})
 
 export const member = style({
     display: 'flex',
@@ -12,7 +17,7 @@ export const member = style({
 
 export const image = style({
     borderRadius: '15px',
-    margin: '7px'
+    margin: '2px'
 })
 
 
