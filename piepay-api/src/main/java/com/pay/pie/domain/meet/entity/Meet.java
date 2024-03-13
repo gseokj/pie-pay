@@ -1,5 +1,7 @@
 package com.pay.pie.domain.meet.entity;
 
+import java.util.UUID;
+
 import com.pay.pie.domain.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -42,5 +44,9 @@ public class Meet extends BaseEntity {
 		this.meetName = meetName;
 		this.meetImage = (meetImage != null) ? meetImage : "https://cdn-icons-png.flaticon.com/512/681/681494.png";
 		this.meetInvitation = meetInvitation;
+	}
+
+	public void updateInvitation() {
+		this.meetInvitation = UUID.randomUUID().toString().substring(0, 6);
 	}
 }

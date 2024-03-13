@@ -2,11 +2,14 @@ package com.pay.pie.domain.meet.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.meet.dto.AddMeetRequest;
+import com.pay.pie.domain.meet.dto.UpdateInvitationRequest;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.service.MeetService;
 
@@ -27,5 +30,13 @@ public class MeetApiController {
 		// 요청한 자원이 성공적으로 생성되었으며 저장된 블로그 글 정보를 응답에 담아 전송
 		return ResponseEntity.status(HttpStatus.CREATED)
 			.body(savedMeet);
+	}
+
+	@PatchMapping("meet/{id}/invitation")
+	public ResponseEntity<Meet> updateInvitation(@PathVariable long id, UpdateInvitationRequest request) {
+		Meet updatedMeet = meetService.update(id, request);
+
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(updatedMeet);
 	}
 }
