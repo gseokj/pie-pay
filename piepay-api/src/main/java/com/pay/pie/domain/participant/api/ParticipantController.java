@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/pay")
+@RequestMapping("/api/pay/parties")
 @RequiredArgsConstructor
 public class ParticipantController {
 
@@ -31,7 +31,7 @@ public class ParticipantController {
 	 * @param participants 참여자들 정보
 	 * @return 성공 메시지
 	 */
-	@PostMapping("/parties/{payId}")
+	@PostMapping("/{payId}")
 	public ResponseEntity<BaseResponse<String>> selectParticipant(
 		@PathVariable Long payId,
 		@RequestBody List<ParticipantReq> participants) {

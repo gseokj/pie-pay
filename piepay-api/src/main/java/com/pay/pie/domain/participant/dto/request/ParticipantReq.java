@@ -17,7 +17,7 @@ public class ParticipantReq {
 
 	private Long id;
 	private Member member;
-	private Boolean isDrinkAlcohol;
+	private Boolean isDrinkAlcohol = true;
 
 	// public Participant toEntity() {
 	// 	Participant participant = Participant.builder()
