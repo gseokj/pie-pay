@@ -8,6 +8,7 @@ const withVanillaExtract = createVanillaExtractPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    reactStrictMode:false,
     // SVG 사용 관련 모듈
     webpack: (config) => {
         const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'));
