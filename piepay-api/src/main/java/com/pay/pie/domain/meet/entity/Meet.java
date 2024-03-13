@@ -33,9 +33,14 @@ public class Meet extends BaseEntity {
 	@Column(name = "meet_image", length = 200)
 	private String meetImage;
 
+	@Size(max = 10)
+	@Column(name = "meet_invitation", length = 10)
+	private String meetInvitation;
+
 	@Builder // 빌더 패턴으로 객체 생성
-	public Meet(String meetName, String meetImage) {
+	public Meet(String meetName, String meetImage, String meetInvitation) {
 		this.meetName = meetName;
 		this.meetImage = (meetImage != null) ? meetImage : "https://cdn-icons-png.flaticon.com/512/681/681494.png";
+		this.meetInvitation = meetInvitation;
 	}
 }
