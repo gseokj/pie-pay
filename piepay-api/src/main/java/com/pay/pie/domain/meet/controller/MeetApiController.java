@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.meet.dto.AddMeetRequest;
 import com.pay.pie.domain.meet.dto.UpdateInvitationRequest;
+import com.pay.pie.domain.meet.dto.UpdateMeetImageRequest;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.service.MeetService;
 
@@ -34,6 +35,16 @@ public class MeetApiController {
 
 	@PatchMapping("meet/{id}/invitation")
 	public ResponseEntity<Meet> updateInvitation(@PathVariable long id, UpdateInvitationRequest request) {
+		Meet updatedMeet = meetService.update(id, request);
+
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(updatedMeet);
+	}
+
+	@PatchMapping("meet/{id}/image")
+	public ResponseEntity<Meet> updateMeetImage(@PathVariable long id, @RequestBody UpdateMeetImageRequest request) {
+		System.out.println("1111 " + request.getMeetImage());
+		System.out.println(id);
 		Meet updatedMeet = meetService.update(id, request);
 
 		return ResponseEntity.status(HttpStatus.OK)

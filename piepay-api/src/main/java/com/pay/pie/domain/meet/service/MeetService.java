@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.pay.pie.domain.meet.dto.AddMeetRequest;
 import com.pay.pie.domain.meet.dto.UpdateInvitationRequest;
+import com.pay.pie.domain.meet.dto.UpdateMeetImageRequest;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.repository.MeetRepository;
 
@@ -30,4 +31,13 @@ public class MeetService {
 		return meet;
 	}
 
+	@Transactional
+	public Meet update(long id, UpdateMeetImageRequest request) {
+		Meet meet = meetRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+		System.out.println("겟이미지 " + request.getMeetImage());
+		meet.updateMeetImage(request.getMeetImage());
+
+		return meet;
+	}
 }

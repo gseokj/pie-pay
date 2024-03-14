@@ -50,4 +50,8 @@ public class Meet extends BaseEntity {
 	public void updateInvitation() {
 		this.meetInvitation = UUID.randomUUID().toString().substring(0, 6);
 	}
+
+	public void updateMeetImage(String meetImage) {
+		this.meetImage = meetImage;
+	}
 }
