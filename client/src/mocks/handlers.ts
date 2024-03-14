@@ -2,7 +2,7 @@ import {http, HttpResponse, StrictResponse} from 'msw'
 import {faker} from "@faker-js/faker";
 
 
-const Members = [
+const MeetMembers = [
     {memberId: 1, nickname: "고석주", profileImage: faker.image.avatar()},
     {memberId: 2, nickname: "김준수", profileImage: faker.image.avatar()},
     {memberId: 3, nickname: "함승찬", profileImage: faker.image.avatar()},
@@ -18,7 +18,9 @@ const Members = [
 ]
 
 const menuItems = [{menuName: "족발(대)",menuPrice: 62000, quantity: 1},{menuName: "계란찜",menuPrice: 8000, quantity: 1},{menuName: "참이슬",menuPrice: 5000,quantity: 3},{menuName: "카스", menuPrice: 5000, quantity: 2}]
-const paymentResult = {orderMenuId:1, storeName: "뽕나무족발",address: "서울 강남구 테헤란로4길 15(역삼동)",phone:"010-2839-1132",createdAt: "2024.03.08",menuItems,totalAmount:95000}
+const menuItems2 = [{menuName: "담배",menuPrice: 4000, quantity: 1},{menuName: "라면",menuPrice: 4000, quantity: 1},{menuName: "참이슬",menuPrice: 5000,quantity: 3},{menuName: "카스", menuPrice: 5000, quantity: 2}]
+const paymentResult = [{orderMenuId:1, storeName: "뽕나무족발",address: "서울 강남구 테헤란로4길 15(역삼동)",phone:"010-2839-1132",createdAt: "2024.03.08",menuItems,totalAmount:95000},
+    {orderMenuId:2, storeName: "주전부리",address: "서울 강남구 테헤란로4길 15(역삼동)",phone:"010-2839-1132",createdAt: "2024.03.08",menuItems2,totalAmount:20000}]
 
 const delay = (ms: number) => new Promise((res) => {
     setTimeout(res, ms);
@@ -27,7 +29,7 @@ const delay = (ms: number) => new Promise((res) => {
 export const handlers = [
     http.post('/members/login', () => {
         console.log('로그인');
-        return HttpResponse.json(Members[1], {
+        return HttpResponse.json(MeetMembers[1], {
             headers: {
                 'Set-Cookie': 'connect.smemberId=msw-cookie;HttpOnly;Path=/'
             }
@@ -53,7 +55,7 @@ export const handlers = [
     http.get('/meet/:memberMeetId', ({ request, params }) => {
         const { memberMeetId} = params;
         return HttpResponse.json(
-            Members
+            MeetMembers
         )
     }),
 
@@ -74,14 +76,14 @@ export const handlers = [
     http.post('/pay/payment/:payId', ({ request, params }) => {
         console.log('결제가 발생');
         const { payId} = params;
-
     }),
 
     http.get('/pay/payment/:payId', ({ request, params }) => {
         console.log('결제내역 조회');
         const { payId} = params;
+        const result = payId === "1" ? paymentResult[0] : paymentResult[1];
         return HttpResponse.json(
-            paymentResult
+            result
         )
     }),
 

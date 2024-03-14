@@ -1,7 +1,7 @@
 import type {Metadata} from "next";
 import Header from "./component/Header"
 import {ReactNode} from "react";
-
+import RQProvider from "@/app/(post_verification)/component/RQProvider";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -10,12 +10,13 @@ export const metadata: Metadata = {
 
 type Props = { children: ReactNode, modal: ReactNode }
 
-export default async function PostVerificationLayout({children, modal}: Props) {
+export default async function PostVerificationLayout({children}: Props) {
     return (
         <div className="h-screen">
-            <Header/>
-            {children}
-            {modal}
+            <RQProvider>
+                <Header/>
+                {children}
+            </RQProvider>
         </div>
     );
 }
