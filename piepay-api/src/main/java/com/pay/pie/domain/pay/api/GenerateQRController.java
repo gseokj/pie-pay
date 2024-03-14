@@ -21,6 +21,11 @@ public class GenerateQRController {
 
 	private final GenerateQRService generateQRService;
 
+	/**
+	 * QR코드 생성
+	 * @param payId 결제ID
+	 * @return QR코드 png
+	 */
 	@GetMapping
 	public ResponseEntity<byte[]> generateQRCode(@RequestParam Long payId) {
 
