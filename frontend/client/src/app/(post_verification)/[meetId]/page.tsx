@@ -1,9 +1,6 @@
-'use client'
-
-import {ReactNode, useEffect} from "react";
+import {ReactNode} from "react";
 import * as styles from "@/styles/payment/select/payment.css"
-import {dehydrate, HydrationBoundary, QueryClient, useQuery, useQueryClient} from "@tanstack/react-query";
-import {getMeet} from "@/lib/meet/getMeet";
+import SelectButton from "@/app/(post_verification)/[meetId]/payment/component/SelectButton";
 
 
 type Props = {
@@ -12,16 +9,12 @@ type Props = {
 }
 
 export default function PaymentModalLayout({params}: Props) {
-
         const {meetId} = params;
-        const queryClient = useQueryClient();
-        const Members = queryClient.getQueryData(["meetId",meetId]);
-        console.log(Members);
-
 
 
     return (
         <div className={styles.container}>
+            <SelectButton meetId={meetId}/>
         </div>
     );
 }

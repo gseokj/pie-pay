@@ -1,6 +1,14 @@
 import {style} from "@vanilla-extract/css";
 import theme from "@/styles/theme/theme";
 
+
+export const memberContainer = style({
+    position: 'sticky',
+    overflowY: 'auto',
+    paddingBottom: '100px',
+    backgroundColor: theme.layout,
+
+})
 export const container = style({
     display: 'flex',
     marginBottom: '8px',

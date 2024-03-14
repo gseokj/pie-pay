@@ -14,6 +14,12 @@ export const member = style({
 
 })
 
+export const selectedContainer = style({
+    display: 'flex',
+    marginTop: '15px',
+    marginBottom: '10px',
+})
+
 export const image = style({
     borderRadius: '15px',
     margin: '2px'

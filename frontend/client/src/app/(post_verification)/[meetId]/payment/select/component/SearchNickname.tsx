@@ -1,15 +1,12 @@
 import * as styles from "@/styles/payment/select/searchNickname.css";
 import Image from "next/image";
 import search from "@/assets/icons/search.svg";
+import {useMemberFilter} from "@/store/stores/useMemberFilter";
 
-interface Props {
-    onSearch: (searchTerm: string) => void;
-}
-
-export default function SearchNickname({ onSearch }: Props) {
-
+export default function SearchNickname() {
+    const {handleSearchNickname} = useMemberFilter();
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        onSearch(event.target.value);
+        handleSearchNickname(event.target.value);
     };
 
     return (

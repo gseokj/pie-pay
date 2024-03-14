@@ -1,7 +1,7 @@
 import {QueryFunction} from "@tanstack/query-core";
 import {Member} from "@/model/member";
 
-export const getMeet: QueryFunction<Member[]> = async ({queryKey}) => {
+export const getMembers: QueryFunction<Member[]> = async ({queryKey}) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_MOCK_BASE_URL}/meet/${queryKey}`, {
         credentials: 'include',
         cache: 'no-store',

@@ -1,11 +1,6 @@
-interface Member{
-    memberId: number;
-    nickname: string;
-    profileImage: string;
-}
+import {Member} from './member'
 
-export interface Participant {
-    member:Member,
+export interface Participant extends Member{
     payAgree:boolean,
     isDrinkAlcohol:boolean,
     payAmount:number

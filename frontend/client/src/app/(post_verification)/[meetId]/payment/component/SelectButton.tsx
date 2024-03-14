@@ -7,14 +7,14 @@ type Props={
     meetId: string
 }
 
-export default function ParticipateButton({ meetId }: Props) {
+export default function SelectButton({ meetId }: Props) {
     const route = useRouter();
     const onClickReplace = () => {
-        route.replace(`/${meetId}/payment/approve`);
+        route.replace(`/${meetId}/payment/select`);
     }
     return(
-    <button onClick={onClickReplace} className={styles.submitButton}>
-        <div>알림 보내기</div>
-    </button>
+        <button onClick={onClickReplace} >
+            <button>참가자 선택하러가기</button>
+        </button>
     )
 }

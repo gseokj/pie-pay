@@ -1,8 +1,8 @@
 import type {Metadata} from "next";
 import {ReactNode} from "react";
 import * as styles from "@/styles/payment/select/payment.css"
-import {dehydrate, HydrationBoundary, QueryClient, useQuery} from "@tanstack/react-query";
-import {getMeet} from "@/lib/meet/getMeet";
+import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
+import {getMembers} from "@/store/queries/memberQuery";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -17,7 +17,7 @@ type Props = {
 export default async function PaymentModalLayout({children, params}: Props) {
     const {meetId} = params;
     const queryClient = new QueryClient();
-    await queryClient.prefetchQuery({queryKey: ['meetId', meetId], queryFn: getMeet})
+    await queryClient.prefetchQuery({queryKey: ['members',meetId], queryFn: getMembers})
     const dehydratedState = dehydrate(queryClient);
 
 

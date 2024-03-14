@@ -6,56 +6,53 @@ import uncheck from "@/assets/icons/uncheck.svg";
 import checkBeer from "@/assets/icons/checkbeer.svg"
 import uncheckBeer from "@/assets/icons/uncheckbeer.svg"
 import Image from "next/image";
+import {useMemberFilter} from "@/store/stores/useMemberFilter";
+import {FilterMember} from "@/model/member";
 
-interface Props {
-    memberId: number;
-    nickname: string;
-    profileImage: string;
-    payAgree: boolean;
-    isDrinkAlcohol: boolean;
-    isTypeAlcohol: boolean;
-    onCheck: (memberId: number) => void;
-    onCheckAlcohol: (memberId:number) => void;
-    isHost: boolean;
-}
 
-export default function MemberList({memberId,nickname,profileImage, payAgree, isDrinkAlcohol, isTypeAlcohol, onCheck, onCheckAlcohol,isHost}: Props) {
-    const localHandleCheck = () =>{
-        if(isHost) {
-            alert("나는 방장이다");
-            return;
+export default function MemberList() {
+    const {filterMembers, handleCheck} = useMemberFilter();
+     const onClickAgree = (member:FilterMember) => {
+         if (member.isHost) {
+             alert("나는 방장이다");
+             return;
         }
-        onCheck(memberId);
+         handleCheck(member.memberId, "payAgree")
     }
+
     return (
-        <div
-            className={`${styles.container}  ${payAgree && styles.backgroundSkyBlue}`}>
+
+        <div className={styles.memberContainer}>
+            {filterMembers.filter(member => member.isFiltered)
+                .sort((a, b) => (a.isHost === b.isHost) ? 0 : a.isHost ? -1 : 1)
+                .map(member => (
+
+          <div key={member.memberId} className={`${styles.container}  ${member.payAgree && styles.backgroundSkyBlue}`}>
             <div className={styles.memberList}>
-                <img className={styles.image} src={profileImage} alt="" width={50}/>
+                <img className={styles.image} src={member.profileImage} alt="" width={50}/>
                 <p className={styles.memberName}>
-                    {isHost && `나 (${nickname})`}
-                    {!isHost && nickname}
+                    {member.isHost && `나 (${member.nickname})`}
+                    {!member.isHost && member.nickname}
                 </p>
             </div>
-            <button onClick={localHandleCheck}>
-                {payAgree && !isTypeAlcohol &&
-                    <Image className={styles.checkbox} src={check} alt="check"/>
-                }
-                {!payAgree &&
-                    <Image className={styles.checkbox} src={uncheck} alt="uncheck"/>
-                }
+            <button onClick={()=>onClickAgree(member)}>
+                {member.payAgree && !member.isTypeAlcohol && <Image className={styles.checkbox} src={check} alt="check"/>}
+                {!member.payAgree && <Image className={styles.checkbox} src={uncheck} alt="uncheck"/>}
             </button>
-            <button onClick={()=>onCheckAlcohol(memberId)} className={styles.checkboxContainer}>
-                {payAgree && isTypeAlcohol && isDrinkAlcohol &&
+                <button onClick={()=>handleCheck(member.memberId, "isDrinkAlcohol")} className={styles.checkboxContainer}>
+                {member.payAgree && member.isTypeAlcohol && member.isDrinkAlcohol &&
                     <Image className={styles.checkbox} src={checkBeer} alt="uncheck"/>
                 }
-                {payAgree && isTypeAlcohol && !isDrinkAlcohol &&
+                {member.payAgree && member.isTypeAlcohol && !member.isDrinkAlcohol &&
                     <Image className={styles.checkbox} src={uncheckBeer} alt="uncheck"/>
                 }
 
             </button>
 
-
         </div>
+
     )
+)}
+</div>
+)
 }

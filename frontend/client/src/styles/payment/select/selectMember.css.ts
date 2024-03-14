@@ -48,11 +48,7 @@ export const title = style({
     fontSize: '25px'
 })
 
-export const selectedContainer = style({
-    display: 'flex',
-    marginTop: '15px',
-    marginBottom: '10px',
-})
+
 
 export const image = style({
     borderRadius: '20px',
@@ -72,13 +68,7 @@ export const listHeaderContainer = style({
     backgroundColor: theme.layout,
     opacity: '80%'
 })
-export const memberContainer = style({
-    position: 'sticky',
-    overflowY: 'auto',
-    paddingBottom: '100px',
-    backgroundColor: theme.layout,
 
-})
 
 export const submitButton = style({
     width: '90%',
