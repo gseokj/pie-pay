@@ -2,15 +2,16 @@
 
 import * as styles from "@/styles/payment/select/selectMember.css"
 import one from "@/assets/icons/payment1.svg";
-import SearchNickname from "@/app/(post_verification)/[meetid]/payment/select/component/SearchNickname";
-import SelectedMember from "@/app/(post_verification)/[meetid]/payment/select/component/SelectedMember";
-import MemberList from "@/app/(post_verification)/[meetid]/payment/select/component/MemberList";
-import ListHeader from "@/app/(post_verification)/[meetid]/payment/select/component/ListHeader";
-import Header from "@/app/(post_verification)/[meetid]/payment/component/Header";
+import SearchNickname from "@/app/(post_verification)/[meetId]/payment/select/component/SearchNickname";
+import SelectedMember from "@/app/(post_verification)/[meetId]/payment/select/component/SelectedMember";
+import MemberList from "@/app/(post_verification)/[meetId]/payment/select/component/MemberList";
+import ListHeader from "@/app/(post_verification)/[meetId]/payment/select/component/ListHeader";
+import Header from "@/app/(post_verification)/[meetId]/payment/component/Header"
 import {faker} from "@faker-js/faker";
 import {useMemberFilter} from "@/hooks/useMemberFilter";
-import {useParams, useRouter} from "next/navigation";
 import {useEffect} from "react";
+import {useQueryClient} from "@tanstack/react-query";
+import ParticipateButton from "@/app/(post_verification)/[meetId]/payment/select/component/ParticipateButton";
 
 const Members = [
     {memberId: 1, nickname: "고석주", profileImage: faker.image.avatar()},
@@ -38,13 +39,18 @@ const copyMembers = Members.map(member => ({
     isFiltered: true,
     isHost: false,
 }));
-export default function Page() {
+type Props = {
+    params: { meetId: string },
+}
+export default function Page({params}:Props) {
+
+    const {meetId} = params;
+    const queryClient = useQueryClient();
+    const Members = queryClient.getQueryData(["meetId",meetId]);
     const {filterMembers, handleSearchNickname, handleType, handleCheck, setHost} = useMemberFilter(copyMembers);
-    const route = useRouter();
-    const param = useParams()["meetid"];
-    const onClickReplace = () =>{
-        route.replace(`/${param}/payment/approve`);
-    }
+
+
+
     useEffect(() => {
         setHost(Me.memberId);
 
@@ -82,9 +88,8 @@ export default function Page() {
                                 onCheckAlcohol={() => handleCheck(member.memberId, "isDrinkAlcohol")}
                             />
                         ))}
-                    <button onClick={onClickReplace} className={styles.submitButton}>
-                        <div >알림 보내기</div>
-                    </button>
+
+                <ParticipateButton meetId={meetId}/>
                 </div>
             </div>
         </div>
