@@ -12,10 +12,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @Entity
 @Getter
+@Setter
 @Table(name = "member_meet")
 public class MemberMeet extends BaseEntity {
 	@Id
