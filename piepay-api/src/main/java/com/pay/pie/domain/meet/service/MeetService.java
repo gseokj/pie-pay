@@ -21,7 +21,7 @@ public class MeetService {
 		return meetRepository.save(request.toEntity());
 	}
 
-	@Transactional // import 할 수 있는게 2가지가 있음. 혹시 오류나면 체크
+	@Transactional
 	public Meet update(long id, UpdateInvitationRequest request) {
 		Meet meet = meetRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("not found: " + id));
@@ -35,7 +35,6 @@ public class MeetService {
 	public Meet update(long id, UpdateMeetImageRequest request) {
 		Meet meet = meetRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("not found: " + id));
-		System.out.println("겟이미지 " + request.getMeetImage());
 		meet.updateMeetImage(request.getMeetImage());
 
 		return meet;

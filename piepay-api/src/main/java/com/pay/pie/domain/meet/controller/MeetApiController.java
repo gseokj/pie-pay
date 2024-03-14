@@ -43,8 +43,6 @@ public class MeetApiController {
 
 	@PatchMapping("meet/{id}/image")
 	public ResponseEntity<Meet> updateMeetImage(@PathVariable long id, @RequestBody UpdateMeetImageRequest request) {
-		System.out.println("1111 " + request.getMeetImage());
-		System.out.println(id);
 		Meet updatedMeet = meetService.update(id, request);
 
 		return ResponseEntity.status(HttpStatus.OK)
