@@ -1,20 +1,19 @@
 {
-  "extends": ["next/core-web-vitals", "airbnb", "airbnb-typescript"],
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "es6": true
+  },
+
+  "extends": ["tui", "prettier"],
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "sourceType": "module"
   },
   "rules": {
-    "react/jsx-props-no-spreading": "off",
-    "linebreak-style": 0,
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "devDependencies": true,
-        "optionalDependencies": true,
-        "peerDependencies": false
-      }
-    ],
-    "import/prefer-default-export": ["off", { "target": "single" }],
-    "operator-linebreak": [0]
+    "no-var": "error",
+    "max-depth": ["error", 2],
+    "max-lines-per-function": ["error", 15],
+    "no-console": "warn",
+    "no-param-reassign": "error"
   }
 }

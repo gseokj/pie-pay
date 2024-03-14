@@ -1,3 +1,3 @@
-export default function Alarm(){
-    return(<>알림</>);
+export default function Alarm() {
+  return <>알림</>;
 }

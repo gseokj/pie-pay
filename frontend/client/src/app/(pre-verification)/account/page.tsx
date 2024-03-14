@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import BackButton from "@/app/(pre-verification)/component/BackButton";
 

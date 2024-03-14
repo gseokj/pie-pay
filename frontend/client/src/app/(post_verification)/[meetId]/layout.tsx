@@ -1,5 +1,4 @@
 import type {Metadata} from "next";
-
 import {ReactNode} from "react";
 import * as styles from "@/styles/payment/select/payment.css"
 import {dehydrate, HydrationBoundary, QueryClient, useQuery} from "@tanstack/react-query";
