@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.participant.application.ParticipantService;
-import com.pay.pie.domain.participant.dto.reponse.ParticipantRes;
+import com.pay.pie.domain.participant.dto.reponse.SelectedPartiesRes;
 import com.pay.pie.domain.participant.dto.request.ParticipantReq;
 import com.pay.pie.global.common.BaseResponse;
 import com.pay.pie.global.common.code.SuccessCode;
@@ -33,11 +33,12 @@ public class ParticipantController {
 	 * @return 성공 메시지
 	 */
 	@PostMapping()
-	public ResponseEntity<BaseResponse<List<ParticipantRes>>> selectParticipant(
+	public ResponseEntity<BaseResponse<SelectedPartiesRes>> selectParticipant(
 		@RequestParam Long openerId,
 		@RequestBody List<ParticipantReq> participants) {
 		System.out.println("participants = " + participants);
-		List<ParticipantRes> participantRes = participantService.selectParticipant(openerId, participants);
-		return BaseResponse.success(SuccessCode.CHECK_SUCCESS, participantRes);
+		SelectedPartiesRes selectedPartiesRes = participantService.selectParticipant(openerId, participants);
+
+		return BaseResponse.success(SuccessCode.CHECK_SUCCESS, selectedPartiesRes);
 	}
 }

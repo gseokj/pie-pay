@@ -8,7 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
-import com.pay.pie.domain.participant.dto.reponse.ParticipantRes;
+import com.pay.pie.domain.participant.dto.ParticipantDto;
+import com.pay.pie.domain.participant.dto.reponse.SelectedPartiesRes;
 import com.pay.pie.domain.participant.dto.request.ParticipantReq;
 import com.pay.pie.domain.participant.entity.Participant;
 import com.pay.pie.domain.pay.dao.PayRepository;
@@ -28,9 +29,9 @@ public class ParticipantServiceImpl implements ParticipantService {
 	private final PayRepository payRepository;
 
 	@Override
-	public List<ParticipantRes> selectParticipant(Long openerId, List<ParticipantReq> participants) {
+	public SelectedPartiesRes selectParticipant(Long openerId, List<ParticipantReq> participants) {
 
-		List<ParticipantRes> participantResList = new ArrayList<>();
+		List<ParticipantDto> participantDtoList = new ArrayList<>();
 
 		// Pay 테이블 생성
 		Pay pay = payRepository.save(Pay.builder()
@@ -51,10 +52,12 @@ public class ParticipantServiceImpl implements ParticipantService {
 				.build();
 			log.info("참석자: {}", participant);
 			participantRepository.save(participant);
-			ParticipantRes participantRes = ParticipantRes.of(participant);
-			participantResList.add(participantRes);
+			ParticipantDto participantRes = ParticipantDto.of(participant);
+			participantDtoList.add(participantRes);
 		}
 
-		return participantResList;
+		SelectedPartiesRes selectedPartiesRes = SelectedPartiesRes.of(pay, participantDtoList);
+
+		return selectedPartiesRes;
 	}
 }

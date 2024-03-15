@@ -1,4 +1,4 @@
-package com.pay.pie.domain.participant.dto.reponse;
+package com.pay.pie.domain.participant.dto;
 
 import com.pay.pie.domain.member.dto.SelectedMemberInfoDto;
 import com.pay.pie.domain.participant.entity.Participant;
@@ -10,22 +10,20 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @Builder
-public class ParticipantRes {
+public class ParticipantDto {
 
 	private final Long id;
-	private final Long payId;
 	private final SelectedMemberInfoDto memberInfo;
 	private final Boolean isDrinkAlcohol;
 	private final Boolean payAgree;
 
-	public static ParticipantRes of(Participant participant) {
-		return ParticipantRes.builder()
+	public static ParticipantDto of(Participant participant) {
+		return ParticipantDto.builder()
 			.id(participant.getId())
-			.payId(participant.getPay().getId())
 			.memberInfo(SelectedMemberInfoDto.of(participant.getMember()))
 			.isDrinkAlcohol(participant.getIsDrinkAlcohol())
 			.payAgree(participant.getPayAgree())
 			.build();
 	}
-	
+
 }
