@@ -2,14 +2,22 @@
 
 import * as styles from "@/styles/header.css"
 import Image from "next/image";
-import profile from "@/assets/icons/profile.svg"
-import bell from "@/assets/icons/bell.svg"
-import inRoom from "@/assets/icons/inRoom.svg"
 import {useRouter} from "next/navigation";
+import logo from "@/assets/icons/piepaylogo.svg"
+import MeetingIcon from "./MeetingIcon";
+import NotificationIcon from "./NotificationIcon";
+import ProfileIcon from "./ProfileIcon";
+import theme from "@/styles/theme/theme";
+import {useEffect, useState} from "react";
 
 
 export default function Header() {
     const router = useRouter();
+    const [currentPath, setCurrentPath] = useState('');
+
+    useEffect(() => {
+        setCurrentPath(location.pathname)
+    }, [location.pathname]);
 
     const onClickButton = (path:string) => {
         if(path==="main") router.replace("/");
@@ -19,13 +27,12 @@ export default function Header() {
     }
     return (
         <div className={styles.container}>
-            <button type="button" onClick={()=>onClickButton("main")}>Logo</button>
+            <button type="button" onClick={()=>onClickButton("main")}><Image className={styles.headerLogo} src={logo} alt='logo'/></button>
             <div className={styles.navigation}>
-                <button type="button" onClick={()=>onClickButton("meeting")}><Image src={inRoom} width={24} height={24} alt='button'/></button>
-                <button type="button" onClick={()=>onClickButton("alarm")}><Image src={bell} width={24} height={24} alt='button'/></button>
-                <button type="button" onClick={()=>onClickButton("mypage")}><Image src={profile} width={24} height={24} alt='button'/></button>
+                <button className={styles.buttonContainer} type="button" onClick={()=>onClickButton("main")}><MeetingIcon color={ currentPath === "/" ? theme.blue : theme.blueGray} />모임</button>
+                <button className={styles.buttonContainer} type="button" onClick={()=>onClickButton("alarm")}><NotificationIcon color={ currentPath.includes("alarm") ? theme.blue : theme.blueGray} />알림</button>
+                <button className={styles.buttonContainer} type="button" onClick={()=>onClickButton("mypage")}><ProfileIcon color={ currentPath.includes("mypage") ? theme.blue : theme.blueGray} />내 정보</button>
             </div>
         </div>
-
     );
 }

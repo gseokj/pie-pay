@@ -4,7 +4,7 @@ import theme from "@/styles/theme/theme";
 export const kakaoButton = style({
     backgroundColor: theme.kakao,
     display: "flex",
-    width: "80vw",
+    width: "80%",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "12px",
@@ -14,6 +14,6 @@ export const kakaoButton = style({
 
 export const kakaoTitle = style({
     fontSize: "1.2rem",
-    marginLeft: "2vw",
+    marginLeft: "2%",
     fontWeight: 600
 })

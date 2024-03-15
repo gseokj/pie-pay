@@ -13,6 +13,7 @@ const theme = {
 
     // 버튼
     blue: '#1892EB',
+    blueGray: '#9CB0BE',
 
     // 박스
     skyblue: '#DDF1FF',
