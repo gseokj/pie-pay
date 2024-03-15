@@ -61,7 +61,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		// 회원의 권한과, 회원속성, 속성이름을 이용해 DefaultOAuth2User 객체를 생성해 반환한다.
 		return new DefaultOAuth2User(
 			//TODO: getUserRole() logic 수정`
-			Collections.singleton(new SimpleGrantedAuthority("ROLE_".concat(findMember.get().getUserRole()))),
+			Collections.singleton(new SimpleGrantedAuthority("ROLE_".concat("수정"))),
 			memberAttribute, "email");
 	}
 
