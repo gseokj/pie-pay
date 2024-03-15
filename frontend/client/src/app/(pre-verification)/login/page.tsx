@@ -1,20 +1,21 @@
-'use client'
-
 import {useRouter} from "next/navigation";
+import KakaoSocialButton from "@/app/(pre-verification)/component/KakaoSocialButton";
+import piepaylogo from "@/assets/icons/piepaylogo.svg";
+import * as styles from "@/styles/login/login.css";
+import Image from "next/image";
 
 export default function Login() {
-    const router = useRouter();
-
-    const onClickButton = (path:string)=>{
-        if(path==="main") router.push("/")
-        if(path==="auth") router.push("/auth")
-    }
+    // const router = useRouter();
+    //
+    // const onClickButton = (path:string)=>{
+    //     if(path==="main") router.push("/")
+    //     if(path==="auth") router.push("/auth")
+    // }
   return (
-      <>
-          Login Page
+      <div className={styles.container}>
+          <Image className={styles.logo} src={piepaylogo} alt='piepay logo'/>
             <br/>
-          <button type="button" onClick={()=>onClickButton("auth")} className="border-2 p-5">인증테스트</button>
-          <button type="button" onClick={()=>onClickButton("main")} className="border-2 p-5">메인테스트</button>
-      </>
+          <KakaoSocialButton />
+      </div>
   );
 }
