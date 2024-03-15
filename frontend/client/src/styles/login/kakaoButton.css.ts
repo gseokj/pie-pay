@@ -1,4 +1,4 @@
-import {style} from "@vanilla-extract/css";
+import {fontFace, style} from "@vanilla-extract/css";
 import theme from "@/styles/theme/theme";
 
 export const kakaoButton = style({
@@ -8,10 +8,12 @@ export const kakaoButton = style({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "12px",
-    padding: "8px"
+    padding: "8px",
+    marginBottom: "40%"
 })
 
 export const kakaoTitle = style({
-    fontSize: "1rem",
-    marginLeft: "2%"
+    fontSize: "1.2rem",
+    marginLeft: "2%",
+    fontWeight: 600
 })
