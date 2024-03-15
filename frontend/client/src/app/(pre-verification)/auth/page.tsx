@@ -2,8 +2,16 @@
 
 import BackButton from "@/app/(pre-verification)/component/BackButton";
 import {useRouter} from "next/navigation";
+import {useEffect} from "react";
 
 export default function Auth() {
+    useEffect(()=>{
+        const params = new URLSearchParams(location.search);
+        const user = {
+            email: params.get("email")
+        };
+        console.log(user);
+    },[]);
 
     const router = useRouter();
 
