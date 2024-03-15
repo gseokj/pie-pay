@@ -31,6 +31,9 @@ const theme = {
 
         // 대신내기
     red:  '#F43A51',
+    
+    // 카카오
+    kakao: '#FEE500',
 };
 
 export default theme;

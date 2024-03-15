@@ -1,5 +1,7 @@
 import {useRouter} from "next/navigation";
 import KakaoSocialButton from "@/app/(pre-verification)/component/KakaoSocialButton";
+import piepaylogo from "@/assets/icons/piepaylogo.svg"
+import Image from "next/image";
 
 export default function Login() {
     // const router = useRouter();
@@ -9,10 +11,10 @@ export default function Login() {
     //     if(path==="auth") router.push("/auth")
     // }
   return (
-      <>
-          Login Page
+      <div >
+          <Image src={piepaylogo} height={48} alt='piepay logo'/>
             <br/>
           <KakaoSocialButton />
-      </>
+      </div>
   );
 }
