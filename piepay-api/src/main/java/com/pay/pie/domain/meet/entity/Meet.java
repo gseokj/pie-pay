@@ -55,4 +55,8 @@ public class Meet extends BaseEntity {
 	public void updateMeetImage(String meetImage) {
 		this.meetImage = meetImage;
 	}
+
+	public void updateMeetName(String meetName) {
+		this.meetName = meetName;
+	}
 }

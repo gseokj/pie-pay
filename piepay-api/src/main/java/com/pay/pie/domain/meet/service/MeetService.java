@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.pay.pie.domain.meet.dto.AddMeetRequest;
 import com.pay.pie.domain.meet.dto.UpdateInvitationRequest;
 import com.pay.pie.domain.meet.dto.UpdateMeetImageRequest;
+import com.pay.pie.domain.meet.dto.UpdateMeetNameRequest;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.repository.MeetRepository;
 
@@ -22,7 +23,7 @@ public class MeetService {
 	}
 
 	@Transactional
-	public Meet update(long id, UpdateInvitationRequest request) {
+	public Meet updateMeetInvitation(long id, UpdateInvitationRequest request) {
 		Meet meet = meetRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("not found: " + id));
 
@@ -32,10 +33,19 @@ public class MeetService {
 	}
 
 	@Transactional
-	public Meet update(long id, UpdateMeetImageRequest request) {
+	public Meet updateMeetImage(long id, UpdateMeetImageRequest request) {
 		Meet meet = meetRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("not found: " + id));
 		meet.updateMeetImage(request.getMeetImage());
+
+		return meet;
+	}
+
+	@Transactional
+	public Meet updateMeetName(long id, UpdateMeetNameRequest request) {
+		Meet meet = meetRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+		meet.updateMeetName(request.getMeetName());
 
 		return meet;
 	}

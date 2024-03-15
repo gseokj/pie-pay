@@ -5,12 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.meet.dto.AddMeetRequest;
 import com.pay.pie.domain.meet.dto.UpdateInvitationRequest;
 import com.pay.pie.domain.meet.dto.UpdateMeetImageRequest;
+import com.pay.pie.domain.meet.dto.UpdateMeetNameRequest;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.service.MeetService;
 
@@ -35,15 +37,23 @@ public class MeetApiController {
 
 	@PatchMapping("meet/{id}/invitation")
 	public ResponseEntity<Meet> updateInvitation(@PathVariable long id, UpdateInvitationRequest request) {
-		Meet updatedMeet = meetService.update(id, request);
+		Meet updatedMeet = meetService.updateMeetInvitation(id, request);
 
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(updatedMeet);
 	}
 
-	@PatchMapping("meet/{id}/image")
+	@PutMapping("meet/{id}/image")
 	public ResponseEntity<Meet> updateMeetImage(@PathVariable long id, @RequestBody UpdateMeetImageRequest request) {
-		Meet updatedMeet = meetService.update(id, request);
+		Meet updatedMeet = meetService.updateMeetImage(id, request);
+
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(updatedMeet);
+	}
+	
+	@PutMapping("meet/{id}/name")
+	public ResponseEntity<Meet> updateMeetName(@PathVariable long id, @RequestBody UpdateMeetNameRequest request) {
+		Meet updatedMeet = meetService.updateMeetName(id, request);
 
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(updatedMeet);
