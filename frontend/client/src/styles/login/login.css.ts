@@ -5,11 +5,11 @@ export const container = style({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    height: "100%",
+    height: "100vh",
     justifyContent: "space-between"
 });
 
 export const logo = style({
-    marginTop: "40%",
-    width: "44%"
+    marginTop: "32vh",
+    width: "44vw"
 });

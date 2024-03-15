@@ -4,16 +4,16 @@ import theme from "@/styles/theme/theme";
 export const kakaoButton = style({
     backgroundColor: theme.kakao,
     display: "flex",
-    width: "80%",
+    width: "80vw",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "12px",
-    padding: "8px",
-    marginBottom: "40%"
+    padding: "12px",
+    marginBottom: "32vh"
 })
 
 export const kakaoTitle = style({
     fontSize: "1.2rem",
-    marginLeft: "2%",
+    marginLeft: "2vw",
     fontWeight: 600
 })
