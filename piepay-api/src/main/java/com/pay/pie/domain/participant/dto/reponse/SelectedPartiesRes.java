@@ -16,6 +16,7 @@ import lombok.Getter;
 public class SelectedPartiesRes {
 
 	private Long payId;
+	private Long meetId;
 	private Pay.PayStatus payStatus;
 	private LocalDateTime createAt;
 	private List<ParticipantDto> participants;
@@ -23,6 +24,7 @@ public class SelectedPartiesRes {
 	public static SelectedPartiesRes of(Pay pay, List<ParticipantDto> participants) {
 		return SelectedPartiesRes.builder()
 			.payId(pay.getId())
+			// .meetId(pay.getMeet().getId())
 			.payStatus(pay.getPayStatus())
 			.createAt(pay.getCreatedAt())
 			.participants(participants)
