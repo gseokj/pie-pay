@@ -15,11 +15,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Getter
 @Table(name = "pay")
+@Builder
 public class Pay extends BaseEntity {
 
 	public enum PayStatus {
@@ -39,7 +45,8 @@ public class Pay extends BaseEntity {
 	@NotNull
 	@Column(name = "pay_status", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private PayStatus payStatus;
+	@Builder.Default
+	private PayStatus payStatus = PayStatus.OPEN;
 
 	@NotNull
 	@Column(name = "opener_id", nullable = false)
@@ -47,4 +54,5 @@ public class Pay extends BaseEntity {
 
 	@Column(name = "total_pay_amount")
 	private Long totalPayAmount;
+
 }

@@ -1,7 +1,5 @@
 package com.pay.pie.domain.participant.dto.request;
 
-import com.pay.pie.domain.member.entity.Member;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ParticipantReq {
 
-	private Long id;
-	private Member member;
+	private Long memberId;
 	private Boolean isDrinkAlcohol = true;
 
 	// public Participant toEntity() {
