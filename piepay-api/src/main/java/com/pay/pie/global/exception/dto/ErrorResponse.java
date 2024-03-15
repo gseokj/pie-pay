@@ -1,16 +1,20 @@
 package com.pay.pie.global.exception.dto;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.pay.pie.global.exception.ErrorCode;
-
-import lombok.Builder;
-
 import java.util.List;
 import java.util.Objects;
 
 import org.springframework.validation.FieldError;
 
-@Builder
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.pay.pie.global.exception.ErrorCode;
+
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonPropertyOrder({"status", "code", "message", "reason", "errors"})
 public class ErrorResponse {
 
