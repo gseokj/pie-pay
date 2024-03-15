@@ -1,5 +1,7 @@
 package com.pay.pie.domain.memberMeet.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ public class MemberMeetService {
 
 	private final MemberMeetRepository memberMeetRepository;
 
+	// Autowired 필요함
 	@Autowired
 	private MeetRepository meetRepository;
 
@@ -26,5 +29,9 @@ public class MemberMeetService {
 
 		request.setMeetId(meet.getId());
 		return memberMeetRepository.save(request.toEntity());
+	}
+
+	public List<MemberMeet> findMemberByMeetId(long meetId) {
+		return memberMeetRepository.findByMeetId(meetId);
 	}
 }
