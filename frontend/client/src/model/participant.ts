@@ -1,7 +1,7 @@
 import {Member} from './member'
 
 export interface Participant extends Member{
-    payAgree:boolean,
-    isDrinkAlcohol:boolean,
-    payAmount:number
+    participantId: number,
+    payAgree: boolean,
+    paystate: "await" | "agree" | "deny";
 }

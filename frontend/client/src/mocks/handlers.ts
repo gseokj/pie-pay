@@ -17,6 +17,11 @@ const MeetMembers = [
     {memberId: 12, nickname: "재언", profileImage: faker.image.avatar()},
 ]
 
+const account = {
+    "bankName": "국민은행",
+    "accountNo": "480-21030-13412",
+    "accountBalance": 885420
+}
 const menuItems = [{menuName: "족발(대)",menuPrice: 62000, quantity: 1},{menuName: "계란찜",menuPrice: 8000, quantity: 1},{menuName: "참이슬",menuPrice: 5000,quantity: 3},{menuName: "카스", menuPrice: 5000, quantity: 2}]
 const menuItems2 = [{menuName: "담배",menuPrice: 4000, quantity: 1},{menuName: "라면",menuPrice: 4000, quantity: 1},{menuName: "참이슬",menuPrice: 5000,quantity: 3},{menuName: "카스", menuPrice: 5000, quantity: 2}]
 const paymentResult = [{orderMenuId:1, storeName: "뽕나무족발",address: "서울 강남구 테헤란로4길 15(역삼동)",phone:"010-2839-1132",createdAt: "2024.03.08",menuItems,totalAmount:95000},
@@ -93,4 +98,11 @@ export const handlers = [
 
     }),
 
+
+    http.get('/members/accounts', () => {
+        console.log('계좌 가져오기!');
+        return HttpResponse.json(
+            account
+        )
+    }),
 ];

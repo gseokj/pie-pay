@@ -5,7 +5,6 @@ export interface Member{
 }
 
 export interface FilterMember extends Member {
-    payAgree: boolean;
     isDrinkAlcohol: boolean;
     isTypeAlcohol: boolean;
     isSelected: boolean;

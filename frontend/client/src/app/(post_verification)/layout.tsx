@@ -2,6 +2,9 @@ import type {Metadata} from "next";
 import Header from "./component/Header"
 import {ReactNode} from "react";
 import RQProvider from "@/app/(post_verification)/component/RQProvider";
+import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
+import {getMembers} from "@/store/queries/memberQuery";
+import {getAccount} from "@/store/queries/accountQuery";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -11,11 +14,16 @@ export const metadata: Metadata = {
 type Props = { children: ReactNode, modal: ReactNode }
 
 export default async function PostVerificationLayout({children}: Props) {
+    const queryClient = new QueryClient();
+    await queryClient.prefetchQuery({queryKey: ['account'], queryFn: getAccount})
+    const dehydratedState = dehydrate(queryClient);
     return (
         <div className="h-screen">
             <RQProvider>
                 <Header/>
-                {children}
+                <HydrationBoundary state={dehydratedState}>
+                    {children}
+                </HydrationBoundary>
             </RQProvider>
         </div>
     );

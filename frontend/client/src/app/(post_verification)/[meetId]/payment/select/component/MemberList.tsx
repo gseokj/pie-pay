@@ -17,7 +17,7 @@ export default function MemberList() {
              alert("나는 방장이다");
              return;
         }
-         handleCheck(member.memberId, "payAgree")
+         handleCheck(member.memberId, "isSelected")
     }
 
     return (
@@ -27,7 +27,7 @@ export default function MemberList() {
                 .sort((a, b) => (a.isHost === b.isHost) ? 0 : a.isHost ? -1 : 1)
                 .map(member => (
 
-          <div key={member.memberId} className={`${styles.container}  ${member.payAgree && styles.backgroundSkyBlue}`}>
+          <div key={member.memberId} className={`${styles.container}  ${member.isSelected && styles.backgroundSkyBlue}`}>
             <div className={styles.memberList}>
                 <img className={styles.image} src={member.profileImage} alt="" width={50}/>
                 <p className={styles.memberName}>
@@ -36,14 +36,14 @@ export default function MemberList() {
                 </p>
             </div>
             <button onClick={()=>onClickAgree(member)}>
-                {member.payAgree && !member.isTypeAlcohol && <Image className={styles.checkbox} src={check} alt="check"/>}
-                {!member.payAgree && <Image className={styles.checkbox} src={uncheck} alt="uncheck"/>}
+                {member.isSelected && !member.isTypeAlcohol && <Image className={styles.checkbox} src={check} alt="check"/>}
+                {!member.isSelected && <Image className={styles.checkbox} src={uncheck} alt="uncheck"/>}
             </button>
                 <button onClick={()=>handleCheck(member.memberId, "isDrinkAlcohol")} className={styles.checkboxContainer}>
-                {member.payAgree && member.isTypeAlcohol && member.isDrinkAlcohol &&
+                {member.isSelected && member.isTypeAlcohol && member.isDrinkAlcohol &&
                     <Image className={styles.checkbox} src={checkBeer} alt="uncheck"/>
                 }
-                {member.payAgree && member.isTypeAlcohol && !member.isDrinkAlcohol &&
+                {member.isSelected && member.isTypeAlcohol && !member.isDrinkAlcohol &&
                     <Image className={styles.checkbox} src={uncheckBeer} alt="uncheck"/>
                 }
 

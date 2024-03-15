@@ -3,6 +3,7 @@ import {ReactNode} from "react";
 import * as styles from "@/styles/payment/select/payment.css"
 import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
 import {getMembers} from "@/store/queries/memberQuery";
+import {getAccount} from "@/store/queries/accountQuery";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -18,6 +19,7 @@ export default async function PaymentModalLayout({children, params}: Props) {
     const {meetId} = params;
     const queryClient = new QueryClient();
     await queryClient.prefetchQuery({queryKey: ['members',meetId], queryFn: getMembers})
+    await queryClient.prefetchQuery({queryKey: ['participant',meetId], queryFn: Promise.resolve})
     const dehydratedState = dehydrate(queryClient);
 
 

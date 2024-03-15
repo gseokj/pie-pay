@@ -8,7 +8,7 @@ type State = {
     setFilterMembers: (members: Member[]) => void;
     handleSearchNickname: (searchTerm: string) => void;
     handleType: () => void;
-    handleCheck: (memberId: number, property: "payAgree"|"isDrinkAlcohol") => void;
+    handleCheck: (memberId: number, property: "isSelected"|"isDrinkAlcohol") => void;
     setHost: (memberId: number) => void;
 };
 
@@ -17,7 +17,6 @@ export const useMemberFilter = create<State>((set) => ({
     setFilterMembers: (members) => {
         set({ filterMembers: members.map(member => ({
                 ...member,
-                payAgree: true,
                 isDrinkAlcohol: true,
                 isTypeAlcohol: false,
                 isSelected: true,
@@ -40,12 +39,7 @@ export const useMemberFilter = create<State>((set) => ({
     handleCheck: (memberId, property) => set((state) => ({
         filterMembers: state.filterMembers.map(member =>
             member.memberId === memberId ? { ...member, [property]: !member[property] } : member
-        ).map(member => {
-            if (property === 'payAgree' && member.memberId === memberId) {
-                return { ...member, isSelected: !member.isSelected };
-            }
-            return member;
-        })
+        )
     })),
     setHost: (memberId) => set((state) => ({
         filterMembers: state.filterMembers.map(member => ({
