@@ -37,7 +37,7 @@ public class Pay extends BaseEntity {
 	@Column(name = "pay_id")
 	private Long id;
 
-	@NotNull
+	// @NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "meet_id")
 	private Meet meet;

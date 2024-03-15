@@ -7,6 +7,7 @@ import com.pay.pie.domain.order.dao.OrderRepository;
 import com.pay.pie.domain.order.dto.response.ReceiptRes;
 import com.pay.pie.domain.order.entity.Order;
 import com.pay.pie.domain.pay.dao.PayRepository;
+import com.pay.pie.domain.pay.entity.Pay;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +26,11 @@ public class PayServiceImpl implements PayService {
 	@Transactional(readOnly = true)
 	public ReceiptRes getReceipt(Long payId) {
 		Order order = orderRepository.findByPayId(payId);
-		// Pay pay = payRepository.findById(payId);
+		Pay pay = payRepository.findById(payId).orElseThrow(
+			() -> new IllegalArgumentException("해당 Pay 없음")
+		);
 
-		// return ReceiptRes.of(order, pay);
-		return null;
+		return ReceiptRes.of(order, pay);
+		// return null;
 	}
 }
