@@ -19,6 +19,9 @@ const theme = {
     skyblue: '#DDF1FF',
     orange: '#FFEFE0',
 
+    // 그림자
+    shadow: 'rgb(0,0,0)',
+
 
     // 계좌 관련 (이름은 은행명으로 바꾸어도 됨)
     brown: '#8E8070',
