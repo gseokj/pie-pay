@@ -4,7 +4,7 @@ import theme from "@/styles/theme/theme";
 export const meetContainer = style({
     backgroundColor: "white",
     borderRadius: "16px",
-    marginBottom: "2.5%",
+    marginBottom: "2.2%",
     padding: "4% 4%",
     boxShadow: "0 8px 12px" + theme.shadow
 })
@@ -12,7 +12,7 @@ export const meetContainer = style({
 export const lineOne = style({
     display: "flex",
     justifyContent: "space-between",
-    marginBottom: "2rem"
+    marginBottom: "1.8rem"
 })
 
 export const lineTwo = style({

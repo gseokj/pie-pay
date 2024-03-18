@@ -20,7 +20,7 @@ const theme = {
     orange: '#FFEFE0',
 
     // 그림자
-    shadow: '#f1f1f1',
+    shadow: '#e8e8e8',
 
 
     // 계좌 관련 (이름은 은행명으로 바꾸어도 됨)

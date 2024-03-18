@@ -3,6 +3,7 @@ import MeetGroup from "@/app/(post-verification)/component/MeetGroup";
 import {faker} from "@faker-js/faker";
 import * as styles from "@/styles/main/main.css";
 import * as fontCss from "@/styles/fonts.css";
+import MeetCreateButton from "@/app/(post-verification)/component/MeetCreateButton";
 
 
 const dummys = [
@@ -98,6 +99,55 @@ const dummys = [
     ],
     favorite: false
   },
+  {
+    meetId: 4,
+    meetName: '갈까마귀모임',
+    meetDate: '어제',
+    meetImage: faker.image.avatar(),
+    meetMembers: [
+      {
+        "memberId": 10,
+        "nickname": "m4",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 11,
+        "nickname": "m5",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 12,
+        "nickname": "m6",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 13,
+        "nickname": "m7",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 10,
+        "nickname": "m4",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 11,
+        "nickname": "m5",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 12,
+        "nickname": "m6",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 13,
+        "nickname": "m7",
+        "profileImage": faker.image.avatar()
+      },
+    ],
+    favorite: false
+  },
 ]
 
 export interface Dummy {
@@ -117,14 +167,17 @@ export interface Dummy {
 export default async function Main() {
 
     return (
-        <section className={styles.mainContainer}>
-            <BankAccount />
-            <h1 className={`${styles.heading} ${fontCss.bold}`}>모임 {dummys.length}</h1>
-            {dummys.map((dummy: Dummy)=>{
-              return (
-                  <MeetGroup dummy={dummy} />
-              )
-            })}
-        </section>
+        <>
+            <section className={styles.mainContainer}>
+                <BankAccount />
+                <h1 className={`${styles.heading} ${fontCss.bold}`}>모임 {dummys.length}</h1>
+                {dummys.map((dummy: Dummy)=>{
+                    return (
+                        <MeetGroup dummy={dummy} />
+                    )
+                })}
+            </section>
+            <MeetCreateButton />
+        </>
     );
 }

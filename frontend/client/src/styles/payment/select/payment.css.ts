@@ -6,12 +6,7 @@ export const container = style({
     width: '100%',
 
     // Default width
-    '@media': {
-        'screen and (min-width: 768px)': {
-            width: '40%',
-            left: '30%',
-        },
-    },
+
     '::-webkit-scrollbar': {
       width: '3px'
     },
