@@ -14,10 +14,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
 @Table(name = "participant")
 public class Participant extends BaseEntity {
 	@Id
@@ -37,12 +43,14 @@ public class Participant extends BaseEntity {
 
 	@NotNull
 	@Column(name = "is_drink_alcohol", nullable = false)
-	private Boolean isDrinkAlcohol = false;
+	private Boolean isDrinkAlcohol = true;
 
 	@NotNull
 	@Column(name = "pay_agree", nullable = false)
+	@Builder.Default
 	private Boolean payAgree = false;
 
 	@Column(name = "pay_amount")
 	private Long payAmount;
+
 }
