@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.pay.pie.domain.pay.entity.Pay;
 
 @Repository
-public interface PayRepository extends JpaRepository<Pay, Long> {
+public interface PayRepository extends JpaRepository<Pay, Long>, PayRepositoryCustom {
 }
