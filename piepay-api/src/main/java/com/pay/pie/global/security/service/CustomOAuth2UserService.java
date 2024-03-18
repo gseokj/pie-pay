@@ -12,8 +12,8 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.entity.Member;
-import com.pay.pie.domain.member.repository.MemberRepository;
 import com.pay.pie.global.security.user.OAuth2Attribute;
 
 import lombok.RequiredArgsConstructor;

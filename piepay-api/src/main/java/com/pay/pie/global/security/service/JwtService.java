@@ -2,19 +2,16 @@ package com.pay.pie.global.security.service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.entity.Member;
-import com.pay.pie.domain.member.repository.MemberRepository;
 import com.pay.pie.global.security.dto.SecurityUserDto;
 import com.pay.pie.global.util.JWTUtil;
-import com.pay.pie.global.util.JwtClaimParser;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
