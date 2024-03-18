@@ -14,13 +14,18 @@ export const container = style({
 export const navigation = style({
     display: 'flex',
     justifyContent: 'space-around',
-})
+});
+
+export const logoContainer = style({
+    display: "flex",
+    alignItems: "center"
+});
 
 export const headerLogo = style({
     height: "40%",
     width: "100%",
     textAlign: "start"
-})
+});
 
 export const buttonContainer = style({
     height: "100%",
@@ -30,4 +35,4 @@ export const buttonContainer = style({
     alignItems: "center",
     fontSize: "0.8rem",
     marginLeft: "1.5rem"
-})
+});
