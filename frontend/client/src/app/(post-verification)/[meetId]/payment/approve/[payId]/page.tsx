@@ -1,22 +1,24 @@
 'use client'
 
-import {useMemberFilter} from "@/store/stores/useMemberFilter";
-import {useEffect} from "react";
 import {QueryClient, useMutation, useMutationState, useQuery, useQueryClient} from "@tanstack/react-query";
-import { postParticipant} from "@/store/queries/participantQuery";
 import axios from "axios";
-import {Participant} from "@/model/participant";
+import {Participant, Participants} from "@/model/participant";
+import {Member} from "@/model/member";
+import Image from "next/image";
+import {getAccount} from "@/api/account";
+import {getPayment} from "@/api/payment";
+import BankAccount from "@/app/(post-verification)/component/BankAccount";
 
+type Props = {
+    params: { payId: string },
+}
+export default function Page({params}:Props) {
+    const {payId} = params;
+    const queryClient = useQueryClient();
+    const { data: participant, isLoading, error } = useQuery({queryKey: ['payId'], queryFn: getPayment}) ;
+    console.log(participant);
+    return (<div className="w-[100%]">
+    <BankAccount/>
 
-export default function Page(){
-
-    const queryClient = new QueryClient();
-    const a = useMutation({mutationKey: ["participant"], mutationFn:postParticipant});
-    console.log(a);
-
-
-    return (<>
-        Hello
-
-    </>);
+    </div>);
 }

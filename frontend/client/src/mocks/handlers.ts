@@ -43,7 +43,17 @@ const participants =
                     "participantId": 4,
                     "memberInfo": {
                         "memberId": 2,
-                        "nickname": "m2",
+                        "nickname": "김준수",
+                        "profileImage": faker.image.avatar()
+                    },
+                    "isDrinkAlcohol": false,
+                    "payAgree": false
+                },
+                {
+                    "participantId": 5,
+                    "memberInfo": {
+                        "memberId": 3,
+                        "nickname": "고석주",
                         "profileImage": faker.image.avatar()
                     },
                     "isDrinkAlcohol": false,

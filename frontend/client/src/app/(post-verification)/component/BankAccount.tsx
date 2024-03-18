@@ -3,16 +3,17 @@
 
 import {useState} from "react";
 import {useQuery} from "@tanstack/react-query";
-import {getAccount} from "@/store/queries/accountQuery";
+import {getAccount} from "@/api/account";
 import Image from "next/image";
 import logoHana from "@/assets/icons/logoHana.svg";
 import visibilityOff from "@/assets/icons/visibilityOff.svg";
 import visibilityOn from "@/assets/icons/visibilityOn.svg";
 import * as styles from "@/styles/main/bankAccount.css";
+import {Account} from "@/model/account";
 
 
 export default function BankAccount() {
-    const { data: account, isLoading, error } = useQuery({queryKey: ['account'], queryFn: getAccount});
+    const { data: account, isLoading, error } = useQuery({queryKey: ['account'], queryFn: getAccount}) ;
     if (error) console.log(error.message);
     const [visibility, setVisibility] = useState(true);
     const visibilityCheck = () => {

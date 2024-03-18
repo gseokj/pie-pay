@@ -9,7 +9,7 @@ import logo from "@/assets/icons/piepaylogo.svg"
 import MeetingIcon from "./MeetingIcon";
 import NotificationIcon from "./NotificationIcon";
 import ProfileIcon from "./ProfileIcon";
-
+import bell from "@/assets/icons/bell.svg"
 
 export default function Header() {
     const path = usePathname();
@@ -20,6 +20,8 @@ export default function Header() {
                 <Link href="/" className={styles.buttonContainer}><MeetingIcon color={ path === "/" ? theme.blue : theme.blueGray} />모임</Link>
                 <Link href="/alarm" className={styles.buttonContainer}><NotificationIcon color={ path.includes("alarm") ? theme.blue : theme.blueGray} />알림</Link>
                 <Link href="/mypage/1" className={styles.buttonContainer}><ProfileIcon color={ path.includes("mypage") ? theme.blue : theme.blueGray} />내 정보</Link>
+
+
             </div>
         </div>
     );

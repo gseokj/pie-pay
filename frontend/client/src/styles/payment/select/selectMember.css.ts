@@ -5,7 +5,7 @@ export const container = style({
     width: "100%",
 })
 export const contentContainer = style({
-    top: "5"
+
 })
 export const progress = style({
     // Mobile width
@@ -22,7 +22,7 @@ export const progress = style({
     zIndex: 1,
     backgroundColor: theme.layout,
     top: 0,
-    opacity: '80%',
+
 })
 
 export const headerContainer = style({
@@ -32,7 +32,7 @@ export const headerContainer = style({
     top: 5,
     paddingLeft: '15px',
     paddingRight: '15px',
-    paddingTop: '20px',
+
 
 })
 
