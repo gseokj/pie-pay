@@ -14,7 +14,7 @@ export default function SelectButton({ meetId }: Props) {
     }
     return(
         <button onClick={onClickReplace} >
-            <button>참가자 선택하러가기</button>
+            참가자 선택하러가기
         </button>
     )
 }

@@ -4,7 +4,7 @@ import Image from "next/image";
 import check from "@/assets/icons/check.svg";
 import uncheck from "@/assets/icons/uncheck.svg";
 import * as styles from "@/styles/payment/select/listHeader.css";
-import {useMemberFilter} from "@/store/stores/useMemberFilter";
+import {useMemberFilter} from "@/store/useMemberFilter";
 
 
 export default function ListHeader() {

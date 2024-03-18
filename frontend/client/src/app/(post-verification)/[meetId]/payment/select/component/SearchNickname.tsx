@@ -1,7 +1,7 @@
 import * as styles from "@/styles/payment/select/searchNickname.css";
 import Image from "next/image";
 import search from "@/assets/icons/search.svg";
-import {useMemberFilter} from "@/store/stores/useMemberFilter";
+import {useMemberFilter} from "@/store/useMemberFilter";
 
 export default function SearchNickname() {
     const {handleSearchNickname} = useMemberFilter();

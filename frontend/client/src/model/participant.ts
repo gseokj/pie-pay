@@ -1,7 +1,17 @@
 import {Member} from './member'
 
-export interface Participant extends Member{
+export interface Participant {
     participantId: number,
+    memberInfo: Member,
+    isDrinkAlcohol: boolean,
     payAgree: boolean,
-    paystate: "await" | "agree" | "deny";
+    // client 속성
+    memberPayState: "await" | "agree" | "deny";
+
+}
+
+export interface Participants {
+    participantId: number,
+    participant: Participant[]
+    payStatus: boolean
 }

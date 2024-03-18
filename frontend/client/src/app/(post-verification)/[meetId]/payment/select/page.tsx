@@ -9,7 +9,7 @@ import ListHeader from "@/app/(post_verification)/[meetId]/payment/select/compon
 import Header from "@/app/(post_verification)/[meetId]/payment/component/Header"
 import ParticipateButton from "@/app/(post_verification)/[meetId]/payment/select/component/ParticipateButton";
 import { useQueryClient} from "@tanstack/react-query";
-import {useMemberFilter} from "@/store/stores/useMemberFilter";
+import {useMemberFilter} from "@/store/useMemberFilter";
 import {Member} from "@/model/member";
 import {useEffect} from "react";
 

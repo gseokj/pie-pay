@@ -1,5 +1,5 @@
 export interface Payment{
     payId:number;
-    payStatus:boolean;
+    payStatus:"open"|"ing"|"complete"|"close";
     createdAt:string;
 }

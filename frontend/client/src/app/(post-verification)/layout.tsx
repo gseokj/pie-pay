@@ -1,10 +1,10 @@
 import type {Metadata} from "next";
 import Header from "./component/Header"
 import {ReactNode} from "react";
-import RQProvider from "@/app/(post_verification)/component/RQProvider";
+import RQProvider from "@/app/(post-verification)/component/RQProvider";
 import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
-import {getMembers} from "@/store/queries/memberQuery";
-import {getAccount} from "@/store/queries/accountQuery";
+import {getMembers} from "@/api/member";
+import {getAccount} from "@/api/account";
 
 export const metadata: Metadata = {
     title: "Create Next App",

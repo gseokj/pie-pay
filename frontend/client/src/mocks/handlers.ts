@@ -16,12 +16,44 @@ const MeetMembers = [
     {memberId: 11, nickname: "성목", profileImage: faker.image.avatar()},
     {memberId: 12, nickname: "재언", profileImage: faker.image.avatar()},
 ]
-
+// 계좌
 const account = {
     "bankName": "국민은행",
     "accountNo": "480-21030-13412",
     "accountBalance": 885420
 }
+// 참가원
+const participants =
+        {
+            "payId": 3,
+            "createdAt": new Date(),
+            "payStatus": "ing",
+            "participants": [
+                {
+                    "participantId": 3,
+                    "memberInfo": {
+                        "memberId": 1,
+                        "nickname": "m1",
+                        "profileImage": faker.image.avatar()
+                    },
+                    "isDrinkAlcohol": true,
+                    "payAgree": false
+                },
+                {
+                    "participantId": 4,
+                    "memberInfo": {
+                        "memberId": 2,
+                        "nickname": "m2",
+                        "profileImage": faker.image.avatar()
+                    },
+                    "isDrinkAlcohol": false,
+                    "payAgree": false
+                }
+            ]
+        }
+
+
+// 영수증
 const menuItems = [{menuName: "족발(대)",menuPrice: 62000, quantity: 1},{menuName: "계란찜",menuPrice: 8000, quantity: 1},{menuName: "참이슬",menuPrice: 5000,quantity: 3},{menuName: "카스", menuPrice: 5000, quantity: 2}]
 const menuItems2 = [{menuName: "담배",menuPrice: 4000, quantity: 1},{menuName: "라면",menuPrice: 4000, quantity: 1},{menuName: "참이슬",menuPrice: 5000,quantity: 3},{menuName: "카스", menuPrice: 5000, quantity: 2}]
 const paymentResult = [{orderMenuId:1, storeName: "뽕나무족발",address: "서울 강남구 테헤란로4길 15(역삼동)",phone:"010-2839-1132",createdAt: "2024.03.08",menuItems,totalAmount:95000},
@@ -93,9 +125,8 @@ export const handlers = [
     }),
 
     http.post('/pay/payback/:insteadId', ({ request, params }) => {
-        console.log('이체 요청');
         const { insteadId} = params;
-
+        console.log('이체 요청');
     }),
 
 
@@ -103,6 +134,20 @@ export const handlers = [
         console.log('계좌 가져오기!');
         return HttpResponse.json(
             account
+        )
+    }),
+    http.post('/pay/parties', ({ request}) => {
+        console.log('인원을 선택하면 payId를 반환한다.');
+        return HttpResponse.json(
+            {payId: "4"}
+        )
+    }),
+
+    http.get('/pay/parties/:payId', ({ request, params }) => {
+        const { openerId} = params;
+        console.log('참가인원 리턴');
+        return HttpResponse.json(
+            participants
         )
     }),
 ];

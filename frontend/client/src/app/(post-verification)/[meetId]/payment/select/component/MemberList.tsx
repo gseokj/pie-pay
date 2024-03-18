@@ -6,7 +6,7 @@ import uncheck from "@/assets/icons/uncheck.svg";
 import checkBeer from "@/assets/icons/checkbeer.svg"
 import uncheckBeer from "@/assets/icons/uncheckbeer.svg"
 import Image from "next/image";
-import {useMemberFilter} from "@/store/stores/useMemberFilter";
+import {useMemberFilter} from "@/store/useMemberFilter";
 import {FilterMember} from "@/model/member";
 
 

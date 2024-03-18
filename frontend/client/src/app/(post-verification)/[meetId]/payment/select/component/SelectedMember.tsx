@@ -3,7 +3,7 @@
 import * as styles from "@/styles/payment/select/selectedMember.css";
 import beer from "@/assets/icons/checkbeer.svg"
 import Image from "next/image";
-import {useMemberFilter} from "@/store/stores/useMemberFilter";
+import {useMemberFilter} from "@/store/useMemberFilter";
 
 
 export default function SelectedMember() {
