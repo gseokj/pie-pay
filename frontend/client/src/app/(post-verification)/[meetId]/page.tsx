@@ -1,6 +1,6 @@
 import {ReactNode} from "react";
 import * as styles from "@/styles/payment/select/payment.css"
-import SelectButton from "@/app/(post_verification)/[meetId]/payment/component/SelectButton";
+import SelectButton from "@/app/(post-verification)/[meetId]/payment/component/SelectButton";
 
 
 type Props = {
