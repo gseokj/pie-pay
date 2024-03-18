@@ -1,8 +1,17 @@
 package com.pay.pie.domain.participant.entity;
 
+import com.pay.pie.domain.BaseEntity;
+import com.pay.pie.domain.member.entity.Member;
+import com.pay.pie.domain.pay.entity.Pay;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
@@ -10,18 +19,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "participant")
-public class Participant {
+public class Participant extends BaseEntity {
 	@Id
-	@Column(name = "participant_id", nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "participant_id")
 	private Long id;
 
 	@NotNull
-	@Column(name = "pay_id", nullable = false)
-	private Long payId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "pay_id", nullable = false)
+	private Pay pay;
 
 	@NotNull
-	@Column(name = "member_id", nullable = false)
-	private Long memberId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id", nullable = false)
+	private Member member;
 
 	@NotNull
 	@Column(name = "is_drink_alcohol", nullable = false)
@@ -32,5 +44,5 @@ public class Participant {
 	private Boolean payAgree = false;
 
 	@Column(name = "pay_amount")
-	private Integer payAmount;
+	private Long payAmount;
 }
