@@ -3,7 +3,7 @@
 
 import {useState} from "react";
 import {useQuery} from "@tanstack/react-query";
-import {getAccount} from "@/store/queries/accountQuery";
+import {getAccount} from "@/api/account";
 import Image from "next/image";
 import logoHana from "@/assets/icons/logoHana.svg";
 import visibilityOff from "@/assets/icons/visibilityOff.svg";
