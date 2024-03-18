@@ -28,4 +28,10 @@ public class PayServiceImpl implements PayService {
 
 		return null;
 	}
+
+	private void calculatePortionCost(Long payId) {
+		Long totalPayAmount = payRepository.findById(payId).get().getTotalPayAmount();
+		log.info("총금액: {}", totalPayAmount);
+
+	}
 }
