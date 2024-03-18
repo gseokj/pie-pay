@@ -17,8 +17,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class PayController {
 
+	/**
+	 * 결제 프로세스
+	 * @param payId 결제 ID
+	 * @return
+	 */
 	@PostMapping("/{payId}")
 	public ResponseEntity<BaseResponse<String>> processPayment(@PathVariable Long payId) {
+		
 		return null;
 	}
 }
