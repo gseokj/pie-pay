@@ -50,7 +50,7 @@ public class MeetApiController {
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(updatedMeet);
 	}
-	
+
 	@PutMapping("meet/{id}/name")
 	public ResponseEntity<Meet> updateMeetName(@PathVariable long id, @RequestBody UpdateMeetNameRequest request) {
 		Meet updatedMeet = meetService.updateMeetName(id, request);

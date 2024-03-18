@@ -7,11 +7,11 @@ import lombok.Getter;
 @Getter
 public class MemberMeetResponse {
 
-	private final Long memberId;
+	// private final Member member;
 	private final Long meetId;
 
 	public MemberMeetResponse(MemberMeet memberMeet) {
-		this.memberId = memberMeet.getMemberId();
+		// this.member = memberMeet.getMemberId();
 		this.meetId = memberMeet.getMeetId();
 	}
 }

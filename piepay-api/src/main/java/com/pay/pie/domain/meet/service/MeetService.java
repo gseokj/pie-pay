@@ -1,5 +1,6 @@
 package com.pay.pie.domain.meet.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pay.pie.domain.meet.dto.AddMeetRequest;
@@ -8,6 +9,7 @@ import com.pay.pie.domain.meet.dto.UpdateMeetImageRequest;
 import com.pay.pie.domain.meet.dto.UpdateMeetNameRequest;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.repository.MeetRepository;
+import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,10 @@ import lombok.RequiredArgsConstructor;
 @Service // 빈으로 등록
 public class MeetService {
 	private final MeetRepository meetRepository;
+
+	// Autowired 필요함
+	@Autowired
+	private MemberMeetRepository memberMeetRepository;
 
 	// 모임 추가 매서드
 	public Meet save(AddMeetRequest request) {

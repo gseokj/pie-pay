@@ -34,4 +34,8 @@ public class MemberMeetService {
 	public List<MemberMeet> findMemberByMeetId(long meetId) {
 		return memberMeetRepository.findByMeetId(meetId);
 	}
+
+	public List<MemberMeet> findMeetByMemberId(long memberId) {
+		return memberMeetRepository.findByMemberId(memberId);
+	}
 }
