@@ -7,7 +7,7 @@ export const bankAccountContainer = style({
     borderRadius: "16px",
     backgroundColor: theme.cyan,
     color: "white",
-    boxShadow: "0 3px 6px" + theme.shadow
+    boxShadow: "0 8px 12px" + theme.shadow
 })
 
 export const bankLogoContainer = style({

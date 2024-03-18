@@ -118,7 +118,7 @@ export default async function Main() {
     return (
         <section className={styles.mainContainer}>
             <BankAccount />
-            <h1>모임 {dummys.length}</h1>
+            <h1 className={styles.heading}>모임 {dummys.length}</h1>
             {dummys.map((dummy: Dummy)=>{
               return (
                   <MeetGroup dummy={dummy} />

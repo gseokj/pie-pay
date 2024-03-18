@@ -33,6 +33,6 @@ export const buttonContainer = style({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    marginLeft: "1.5rem",
     fontSize: "0.8rem",
-    marginLeft: "1.5rem"
 });
