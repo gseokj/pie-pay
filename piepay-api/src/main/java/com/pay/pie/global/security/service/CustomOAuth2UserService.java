@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-	MemberRepository memberRepository;
+	private final MemberRepository memberRepository;
 
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -47,7 +47,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		String email = (String)memberAttribute.get("email");
 		Optional<Member> findMember = memberRepository.findByEmail(email);
 
-		if (findMember.isPresent()) {
+		if (findMember.isEmpty()) {
 			// 회원이 존재하지 않을경우, memberAttribute의 exist 값을 false로 넣어준다.
 			memberAttribute.put("exist", false);
 			// 회원의 권한(회원이 존재하지 않으므로 기본권한인 ROLE_USER를 넣어준다), 회원속성, 속성이름을 이용해 DefaultOAuth2User 객체를 생성해 반환한다.
