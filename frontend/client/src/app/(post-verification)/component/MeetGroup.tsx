@@ -1,10 +1,10 @@
 import {Dummy} from "../page";
-import * as styles from "@/styles/main/MeetGroup.css"
+import * as styles from "@/styles/main/MeetGroup.css";
+import * as fontCss from "@/styles/fonts.css";
 import StarIcon from "@/app/(post-verification)/component/StarIcon";
-import dots from "@/assets/icons/dots.svg";
+import moreDots from "@/assets/icons/moreDots.svg";
 import theme from "@/styles/theme/theme";
 import Image from "next/image";
-import {meetName} from "@/styles/main/MeetGroup.css";
 
 
 interface MeetMember {
@@ -25,8 +25,8 @@ export default function MeetGroup(props : {dummy: Dummy}){
                             <img className={styles.meetImage} src={dummy.meetImage} alt="meet image" width={40} height={40}/>
                         </div>
                         <div className={styles.meetInfoString}>
-                            <h3 className={meetName}>{dummy.meetName}</h3>
-                            <p>{dummy.meetDate}</p>
+                            <h3 className={`${styles.meetName} ${fontCss.semibold}`}>{dummy.meetName}</h3>
+                            <p className={styles.meetDate}>{dummy.meetDate}</p>
                         </div>
                     </div>
                     <div>
@@ -42,13 +42,13 @@ export default function MeetGroup(props : {dummy: Dummy}){
                         })}
                         {dummy.meetMembers.length > 5 ?
                             <>
-                                <Image src={dots} alt="dots" width={28} height={28} />
-                                <p>{'+' + (dummy.meetMembers.length - 5)}</p>
+                                <Image src={moreDots} alt="dots" width={32} height={32} />
+                                <p className={`${styles.meetMemberNumber} ${fontCss.semibold}`}>{'+' + (dummy.meetMembers.length - 5)}</p>
                             </>
-                            : ''
+                            : <></>
                         }
                     </div>
-                    <button className={styles.paymentButton}>바로 결제</button>
+                    <button className={`${styles.paymentButton} ${fontCss.semibold}`}>바로 결제</button>
                 </div>
             </div>
         </>

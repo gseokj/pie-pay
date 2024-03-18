@@ -2,6 +2,7 @@ import BankAccount from "./component/BankAccount";
 import MeetGroup from "@/app/(post-verification)/component/MeetGroup";
 import {faker} from "@faker-js/faker";
 import * as styles from "@/styles/main/main.css";
+import * as fontCss from "@/styles/fonts.css";
 
 
 const dummys = [
@@ -118,7 +119,7 @@ export default async function Main() {
     return (
         <section className={styles.mainContainer}>
             <BankAccount />
-            <h1 className={styles.heading}>모임 {dummys.length}</h1>
+            <h1 className={`${styles.heading} ${fontCss.bold}`}>모임 {dummys.length}</h1>
             {dummys.map((dummy: Dummy)=>{
               return (
                   <MeetGroup dummy={dummy} />

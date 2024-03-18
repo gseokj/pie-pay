@@ -4,8 +4,8 @@ import theme from "@/styles/theme/theme";
 export const meetContainer = style({
     backgroundColor: "white",
     borderRadius: "16px",
-    marginBottom: "2%",
-    padding: "5% 4%",
+    marginBottom: "2.5%",
+    padding: "4% 4%",
     boxShadow: "0 8px 12px" + theme.shadow
 })
 
@@ -31,7 +31,14 @@ export const meetInfoString = style({
 })
 
 export const meetName = style({
-    textOverflow: "ellipsis"
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    wordBreak: "break-all",
+})
+
+export const meetDate = style({
+    fontSize: "0.9rem",
+    color: theme.gray
 })
 
 export const meetImageContainer = style({
@@ -53,11 +60,18 @@ export const profileImageContainer = style({
     alignItems: "center"
 })
 
+export const meetMemberNumber = style({
+    color: theme.blueGray,
+    fontSize: "1.2rem"
+})
+
 export const paymentButton = style({
     padding: "2.5% 6%",
     borderRadius: "24px",
     backgroundColor: theme.skyblue,
     color: theme.blue,
-    fontWeight: "600",
-    fontSize: "0.8rem"
+    fontSize: "0.9rem",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    wordBreak: "break-all",
 })

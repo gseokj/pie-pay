@@ -6,7 +6,6 @@ export const mainContainer = style({
 
 export const heading = style({
     fontSize: "1.25rem",
-    fontWeight: "700",
     marginTop: "10%",
     marginBottom: "3%"
 })

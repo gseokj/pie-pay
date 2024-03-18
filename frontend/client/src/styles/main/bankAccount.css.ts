@@ -38,12 +38,11 @@ export const bankName = style({
 })
 
 export const bankAccountNumber = style({
-    fontSize: "0.8rem"
+    fontSize: "0.9rem"
 })
 
 export const bankAccountBalance = style({
     fontSize: "1.3rem",
-    fontWeight: "600"
 })
 
 export const visibilityContainer = style({
