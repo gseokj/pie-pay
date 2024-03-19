@@ -19,12 +19,14 @@ import lombok.RequiredArgsConstructor;
 public class MemberMeetService {
 	private final MemberMeetRepository memberMeetRepository;
 	private final MemberRepository memberRepository;
-	private MeetRepository meetRepository;
+	private final MeetRepository meetRepository;
 
 	@Autowired
-	public MemberMeetService(MemberRepository memberRepository, MemberMeetRepository memberMeetRepository) {
+	public MemberMeetService(MemberRepository memberRepository, MemberMeetRepository memberMeetRepository,
+		MeetRepository meetRepository) {
 		this.memberRepository = memberRepository;
 		this.memberMeetRepository = memberMeetRepository;
+		this.meetRepository = meetRepository;
 	}
 
 	// Autowired 필요함
