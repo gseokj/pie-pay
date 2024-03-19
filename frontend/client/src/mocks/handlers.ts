@@ -66,7 +66,7 @@ const participants =
 // 영수증
 const menuItems = [{menuName: "족발(대)",menuPrice: 62000, quantity: 1},{menuName: "계란찜",menuPrice: 8000, quantity: 1},{menuName: "참이슬",menuPrice: 5000,quantity: 3},{menuName: "카스", menuPrice: 5000, quantity: 2}]
 const menuItems2 = [{menuName: "담배",menuPrice: 4000, quantity: 1},{menuName: "라면",menuPrice: 4000, quantity: 1},{menuName: "참이슬",menuPrice: 5000,quantity: 3},{menuName: "카스", menuPrice: 5000, quantity: 2}]
-const paymentResult = [{orderMenuId:1, storeName: "뽕나무족발",address: "서울 강남구 테헤란로4길 15(역삼동)",phone:"010-2839-1132",createdAt: "2024.03.08",menuItems,totalAmount:95000},
+const paymentResult = [{orderMenuId:1, storeName: "(주) 뽕족 강남역본점",address: "서울 강남구 테헤란로4길 15(역삼동)",phone:"010-2839-1132",createdAt: "2024.03.08",menuItems,totalAmount:95000},
     {orderMenuId:2, storeName: "주전부리",address: "서울 강남구 테헤란로4길 15(역삼동)",phone:"010-2839-1132",createdAt: "2024.03.08",menuItems2,totalAmount:20000}]
 
 const delay = (ms: number) => new Promise((res) => {

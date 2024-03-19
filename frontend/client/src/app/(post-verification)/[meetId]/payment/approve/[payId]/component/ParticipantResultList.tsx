@@ -1,17 +1,16 @@
 'use client'
 
-import * as styles from "@/styles/payment/agree/participantList.css";
+import * as styles from "@/styles/payment/result/participantResultList.css";
 import {useMemberFilter} from "@/store/useMemberFilter";
 import {useQuery} from "@tanstack/react-query";
 import {getPayment} from "@/api/payment";
 import {useEffect, useState} from "react";
 import {Participant} from "@/model/participant";
 import ProgressSpiner from "@/app/(post-verification)/component/ProgressSpiner";
-
 type Props= {
     payId:string;
 }
-export default function ParticipantList({payId}:Props) {
+export default function ParticipantResultList({payId}:Props) {
     const { data: payment, isLoading, error } = useQuery({queryKey: ['payId',payId], queryFn: getPayment}) ;
     const [participants, setParticipants] = useState<Participant[]>([]);
     useEffect(() => {

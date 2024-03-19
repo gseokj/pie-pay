@@ -14,11 +14,11 @@ export const metadata: Metadata = {
 
 type Props = { children: ReactNode, receipt:ReactNode, params: { payId: string }}
 
-export default async function PaymentModalLayout({children, params}: Props) {
+export default async function PaymentModalLayout({children,receipt, params}: Props) {
     const {payId} = params;
     const queryClient = new QueryClient();
-    await queryClient.prefetchQuery({queryKey: ['payment',payId], queryFn: getPayment});
-    queryClient.getQueryData(['payment',payId]);
+    await queryClient.prefetchQuery({queryKey: ['receipt',payId], queryFn: getReceipt});
+    queryClient.getQueryData(['receipt',payId]);
 
     const dehydratedState = dehydrate(queryClient);
 
@@ -26,6 +26,7 @@ export default async function PaymentModalLayout({children, params}: Props) {
     return (
         <div className="w-[100%]">
             <HydrationBoundary state={dehydratedState}>
+                {receipt}
                 {children}
             </HydrationBoundary>
         </div>

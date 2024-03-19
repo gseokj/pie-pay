@@ -4,7 +4,7 @@ import {useRouter} from "next/navigation";
 import back from "@/assets/icons/x.svg"
 import Image from 'next/image';
 
-export default function BackButton() {
+export default function XBackButton() {
     const router = useRouter();
     const onClickBack = () => {
         router.back();

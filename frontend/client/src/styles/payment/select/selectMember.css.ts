@@ -29,18 +29,10 @@ export const headerContainer = style({
     width: '100%',
     position: 'sticky',
     backgroundColor: theme.layout,
-    top: 5,
     paddingLeft: '15px',
     paddingRight: '15px',
 
 
-})
-
-export const header = style({
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginBottom: '10px',
-    paddingRight: '60px',
 })
 
 export const title = style({
