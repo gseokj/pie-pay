@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.meet.dto.AddMeetRequest;
 import com.pay.pie.domain.meet.dto.MeetResponse;
+import com.pay.pie.domain.meet.dto.PayResponse;
 import com.pay.pie.domain.meet.dto.UpdateInvitationRequest;
 import com.pay.pie.domain.meet.dto.UpdateMeetImageRequest;
 import com.pay.pie.domain.meet.dto.UpdateMeetNameRequest;
@@ -24,6 +25,7 @@ import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.meet.service.MeetService;
 import com.pay.pie.domain.member.service.MemberService;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
+import com.pay.pie.domain.pay.application.PayServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +37,7 @@ public class MeetApiController {
 	private final MemberService memberService;
 	private final MemberMeetService memberMeetService;
 	private final MeetRepository meetRepository;
+	private final PayServiceImpl payService;
 
 	// HTTP 메서드가 POST일 때 전달받은 URL과 동일하면 매서드로 매핑
 	@PostMapping("/meet")
@@ -89,5 +92,16 @@ public class MeetApiController {
 
 		return ResponseEntity.ok()
 			.body(meetResponses);
+	}
+
+	@GetMapping("meet/{meetId}/payment")
+	public ResponseEntity<List<PayResponse>> getPayByMeetId(@PathVariable long meetId) {
+		List<PayResponse> payResponses = payService.findPayByMeetId(meetId)
+			.stream()
+			.map(PayResponse::new)
+			.toList();
+
+		return ResponseEntity.ok()
+			.body(payResponses);
 	}
 }
