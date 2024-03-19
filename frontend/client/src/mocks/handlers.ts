@@ -37,7 +37,7 @@ const participants =
                         "profileImage": faker.image.avatar()
                     },
                     "isDrinkAlcohol": true,
-                    "payAgree": false
+                    "payAgree": "await"
                 },
                 {
                     "participantId": 4,
@@ -47,7 +47,7 @@ const participants =
                         "profileImage": faker.image.avatar()
                     },
                     "isDrinkAlcohol": false,
-                    "payAgree": false
+                    "payAgree": "await"
                 },
                 {
                     "participantId": 5,
@@ -57,7 +57,7 @@ const participants =
                         "profileImage": faker.image.avatar()
                     },
                     "isDrinkAlcohol": false,
-                    "payAgree": false
+                    "payAgree": "await"
                 }
             ]
         }

@@ -22,9 +22,11 @@
     "styled-reset": "^4.5.2"
   },
   "devDependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
     "@faker-js/faker": "^8.4.1",
     "@mswjs/http-middleware": "^0.9.2",
-    "@mui/material": "^5.15.11",
+    "@mui/material": "^5.15.13",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query-devtools": "^5.24.7",
     "@types/axios": "^0.14.0",

@@ -10,7 +10,7 @@ export const contentContainer = style({
 export const progress = style({
     // Mobile width
     width: '100%',
-
+    height:'9%',
     // Default width
     '@media': {
         'screen and (min-width: 768px)': {
@@ -39,7 +39,7 @@ export const headerContainer = style({
 export const header = style({
     display: 'flex',
     justifyContent: 'space-between',
-    marginBottom: '20px',
+    marginBottom: '10px',
     paddingRight: '60px',
 })
 

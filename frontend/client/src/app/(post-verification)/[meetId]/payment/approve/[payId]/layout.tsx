@@ -13,20 +13,24 @@ export const metadata: Metadata = {
 
 type Props = {
     children: ReactNode,
+    modal: ReactNode,
     params: { payId: string },
 }
 
-export default async function PaymentModalLayout({children, params}: Props) {
+export default async function PaymentModalLayout({children,modal, params}: Props) {
     const {payId} = params;
     const queryClient = new QueryClient();
     await queryClient.prefetchQuery({queryKey: ['payId',payId], queryFn: getPayment})
+    queryClient.getQueryData(['payId',payId]);
+
     const dehydratedState = dehydrate(queryClient);
 
 
     return (
-        <div className={styles.container}>
+        <div className="w-[100%]">
             <HydrationBoundary state={dehydratedState}>
                 {children}
+                {modal}
             </HydrationBoundary>
         </div>
     );
