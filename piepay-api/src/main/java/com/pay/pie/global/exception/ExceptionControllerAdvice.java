@@ -14,7 +14,7 @@ import com.pay.pie.global.common.code.GlobalErrorCode;
 public class ExceptionControllerAdvice {
 
 	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleCustomBaseExceptionHandler(GlobalException ex) {
+	public ResponseEntity<ErrorResponse> handleCustomBaseExceptionHandler(BaseException ex) {
 		ErrorCode errorCode = ex.getErrorCode();
 		ErrorResponse errorResponse = ErrorResponse.of()
 			.code(errorCode).build();

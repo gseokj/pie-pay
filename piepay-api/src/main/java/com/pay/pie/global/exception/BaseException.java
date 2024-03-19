@@ -5,14 +5,14 @@ import com.pay.pie.global.common.code.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class GlobalException extends RuntimeException {
+public class BaseException extends RuntimeException {
 	private final ErrorCode errorCode;
 
-	public GlobalException(ErrorCode errorCode) {
+	public BaseException(ErrorCode errorCode) {
 		this.errorCode = errorCode;
 	}
 
-	public GlobalException(ErrorCode errorCode, String message) {
+	public BaseException(ErrorCode errorCode, String message) {
 		super(message);
 		this.errorCode = errorCode;
 	}
