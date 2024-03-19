@@ -26,6 +26,9 @@ import com.pay.pie.domain.meet.service.MeetService;
 import com.pay.pie.domain.member.service.MemberService;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
 import com.pay.pie.domain.pay.application.PayServiceImpl;
+import com.pay.pie.domain.pay.entity.Pay;
+import com.pay.pie.global.common.BaseResponse;
+import com.pay.pie.global.common.code.SuccessCode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -103,5 +106,20 @@ public class MeetApiController {
 
 		return ResponseEntity.ok()
 			.body(payResponses);
+	}
+
+	@GetMapping("meet/{meetId}/paystatus")
+	public ResponseEntity<BaseResponse<Meet>> getPayStatus(@PathVariable long meetId) {
+		Pay pay = payService.findRecentPaybyMeetId(meetId);
+		Meet meet;
+		if (pay.getPayStatus() == Pay.PayStatus.ING) {
+			meet = pay.getMeet();
+		} else {
+			meet = null;
+		}
+		
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			meet);
 	}
 }

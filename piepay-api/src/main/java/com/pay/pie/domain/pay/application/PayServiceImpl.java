@@ -27,4 +27,11 @@ public class PayServiceImpl implements PayService {
 			.orElseThrow(() -> new IllegalArgumentException("해당 meetId을 가진 Meet을 찾을 수 없음"));
 		return payRepository.findByMeet(meet);
 	}
+
+	public Pay findRecentPaybyMeetId(long meetId) {
+		Meet meet = meetRepository.findById(meetId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 meetId을 가진 Meet을 찾을 수 없음"));
+
+		return payRepository.findFirstByMeetOrderByCreatedAtDesc(meet);
+	}
 }
