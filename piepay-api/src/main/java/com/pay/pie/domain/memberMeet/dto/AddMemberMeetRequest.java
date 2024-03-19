@@ -18,6 +18,7 @@ public class AddMemberMeetRequest {
 	private Member member;
 	private String meetInvitation;
 	private Meet meet;
+	private Long memberId;
 
 	public MemberMeet toEntity() {
 		return MemberMeet.builder()

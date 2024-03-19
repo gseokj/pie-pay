@@ -14,6 +14,8 @@ import com.pay.pie.domain.member.dto.MemberResponse;
 import com.pay.pie.domain.member.entity.Member;
 import com.pay.pie.domain.member.service.MemberService;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
+import com.pay.pie.global.common.BaseResponse;
+import com.pay.pie.global.common.code.SuccessCode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +28,7 @@ public class MemberApiController {
 	private final MemberRepository memberRepository;
 
 	@GetMapping("/meet/{meetId}/member")
-	public ResponseEntity<List<MemberResponse>> findMemberMeet(@PathVariable long meetId) {
+	public ResponseEntity<BaseResponse<List<MemberResponse>>> findMemberMeet(@PathVariable long meetId) {
 		List<MemberResponse> memberResponses = memberMeetService.findMemberByMeetId(meetId)
 			.stream()
 			.map(memberMeet -> {
@@ -41,7 +43,11 @@ public class MemberApiController {
 			.filter(Objects::nonNull) // null이 아닌 것들만 필터링
 			.collect(Collectors.toList());
 
-		return ResponseEntity.ok()
-			.body(memberResponses);
+		// return ResponseEntity.ok()
+		// 	.body(memberResponses);
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			memberResponses);
 	}
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.member.dao.MemberRepository;
+import com.pay.pie.domain.member.entity.Member;
 import com.pay.pie.domain.memberMeet.dto.AddMemberMeetRequest;
 import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
@@ -36,8 +37,11 @@ public class MemberMeetService {
 	public MemberMeet save(AddMemberMeetRequest request) {
 		Meet meet = meetRepository.findByMeetInvitation(request.getMeetInvitation())
 			.orElseThrow(() -> new IllegalArgumentException("해당 meetInvitation을 가진 Meet을 찾을 수 없음"));
+		Member member = memberRepository.findById(request.getMemberId())
+			.orElseThrow(() -> new IllegalArgumentException("해당 memberId를 가진 Member를 찾을 수 없음"));
 
 		request.setMeet(meet);
+		request.setMember(member);
 		return memberMeetRepository.save(request.toEntity());
 	}
 
