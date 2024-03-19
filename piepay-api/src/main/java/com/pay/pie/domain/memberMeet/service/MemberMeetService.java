@@ -37,7 +37,7 @@ public class MemberMeetService {
 		Meet meet = meetRepository.findByMeetInvitation(request.getMeetInvitation())
 			.orElseThrow(() -> new IllegalArgumentException("해당 meetInvitation을 가진 Meet을 찾을 수 없음"));
 
-		request.setMeetId(meet.getId());
+		request.setMeet(meet);
 		return memberMeetRepository.save(request.toEntity());
 	}
 

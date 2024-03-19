@@ -30,7 +30,7 @@ public class MemberApiController {
 		List<MemberResponse> memberResponses = memberMeetService.findMemberByMeetId(meetId)
 			.stream()
 			.map(memberMeet -> {
-				Member member = memberRepository.findById(memberMeet.getMemberId()).orElse(null);
+				Member member = memberRepository.findById(memberMeet.getMember().getId()).orElse(null);
 				if (member != null) {
 					return new MemberResponse(member);
 				} else {

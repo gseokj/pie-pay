@@ -1,5 +1,7 @@
 package com.pay.pie.domain.memberMeet.dto;
 
+import com.pay.pie.domain.meet.entity.Meet;
+import com.pay.pie.domain.member.entity.Member;
 import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 
 import lombok.AllArgsConstructor;
@@ -13,14 +15,14 @@ import lombok.Setter;
 @Setter
 public class AddMemberMeetRequest {
 
-	private Long memberId;
+	private Member member;
 	private String meetInvitation;
-	private Long meetId;
+	private Meet meet;
 
 	public MemberMeet toEntity() {
 		return MemberMeet.builder()
-			.memberId(memberId)
-			.meetId(meetId)
+			.member(member)
+			.meet(meet)
 			.build();
 	}
 }

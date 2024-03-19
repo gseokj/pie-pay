@@ -79,7 +79,7 @@ public class MeetApiController {
 		List<MeetResponse> meetResponses = memberMeetService.findMeetByMemberId(memberId)
 			.stream()
 			.map(memberMeet -> {
-				Meet meet = meetRepository.findById(memberMeet.getMeetId()).orElse(null);
+				Meet meet = meetRepository.findById(memberMeet.getMeet().getId()).orElse(null);
 				if (meet != null) {
 					return new MeetResponse(meet);
 				} else {
