@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.pay.pie.domain.member.dto.request.PhoneVerificationRequest;
 import com.pay.pie.domain.member.dto.request.PhoneVerificationCheckRequest;
+import com.pay.pie.domain.member.exception.MemberException;
+import com.pay.pie.domain.member.exception.MemberExceptionCode;
 import com.pay.pie.global.util.RedisUtil;
 import com.pay.pie.global.util.SmsUtil;
 
@@ -30,9 +32,12 @@ public class MemberCertificationServiceImpl implements MemberCertificationServic
 
 	@Override
 	public void checkCertificationNumber(PhoneVerificationCheckRequest phoneVerificationCheckRequest) {
-		if(!redisUtil.getData(phoneVerificationCheckRequest.phoneNumber())
-			.equals(phoneVerificationCheckRequest.verificationNumber())){
-			// 에러 처리 예정
+
+		// 회원 휴대폰 정보 저장 로직
+
+		if (!redisUtil.getData(phoneVerificationCheckRequest.phoneNumber())
+			.equals(phoneVerificationCheckRequest.verificationNumber())) {
+			throw new MemberException(MemberExceptionCode.MISMATCH_PHONE_CERTIFICATION_NUMBER);
 		}
 	}
 
@@ -40,6 +45,5 @@ public class MemberCertificationServiceImpl implements MemberCertificationServic
 	private int createRandomNumber() {
 		return (int)(Math.random() * 900000) + 100000;
 	}
-
 
 }
