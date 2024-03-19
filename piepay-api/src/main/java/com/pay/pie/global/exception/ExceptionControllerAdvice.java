@@ -6,11 +6,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.pay.pie.global.common.code.ErrorCode;
 import com.pay.pie.global.common.ErrorResponse;
+import com.pay.pie.global.common.code.ErrorCode;
+import com.pay.pie.global.common.code.GlobalErrorCode;
 
 @RestControllerAdvice
-public class GlobalControllerAdvice {
+public class ExceptionControllerAdvice {
 
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleCustomBaseExceptionHandler(GlobalException ex) {
@@ -23,7 +24,7 @@ public class GlobalControllerAdvice {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorResponse> handleMethodValidation(MethodArgumentNotValidException ex) {
 		ErrorResponse errorResponse = ErrorResponse.of()
-			.code(ErrorCode.NOT_VALID_ERROR)
+			.code(GlobalErrorCode.NOT_VALID_ERROR)
 			.message(ex.getMessage())
 			.build();
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
