@@ -1,5 +1,10 @@
 package com.pay.pie.global.common;
 
+import java.util.List;
+import java.util.Objects;
+
+import org.springframework.validation.FieldError;
+
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.pay.pie.global.common.code.ErrorCode;
 
@@ -8,11 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-import java.util.Objects;
-
-import org.springframework.validation.FieldError;
 
 @Getter
 @AllArgsConstructor
