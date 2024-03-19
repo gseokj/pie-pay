@@ -39,7 +39,7 @@ public class SecurityConfig {
 		"/**", "/error", "/login/**", "/favicon.ico", "/index/**",
 		"/actuator/**", "/actuator", "/api-docs/**", "/swagger-ui/**",
 		"/swagger-resources/**", "/swagger-ui.html", "/api/token/**",
-		"/pub/**", "/sub/**", "/stomp-pay"
+		"/pub/**", "/sub/**", "/ws/pay"
 
 	};
 
