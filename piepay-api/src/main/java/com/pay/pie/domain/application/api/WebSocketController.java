@@ -5,6 +5,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -12,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+
+import com.pay.pie.domain.participant.application.AgreeParticipantService;
+import com.pay.pie.domain.participant.application.ParticipantService;
+import com.pay.pie.domain.payInstead.application.PayInsteadService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +30,9 @@ public class WebSocketController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketController.class);
 
 	private final SimpMessageSendingOperations simpleMessageSendingOperations;
+	private ParticipantService participantService;
+	private AgreeParticipantService agreeParticipantService;
+	private PayInsteadService payInsteadService;
 
 	// 새로운 사용자가 웹 소켓을 연결할 때 실행됨
 	// @EventListener은 한개의 매개변수만 가질 수 있다.
@@ -50,6 +58,27 @@ public class WebSocketController {
 		// /sub/cache 에 구독중인 client에 메세지를 보낸다.
 		simpleMessageSendingOperations.convertAndSend("/topic/agree/" + params.get("payId"), params);
 	}
+
+	@MessageMapping("/agreement/{participantId}")
+	public void requestAgreement(@DestinationVariable Long participantId) {
+		agreeParticipantService.requestAgreement(participantId);
+	}
+
+	@MessageMapping("/agreement/response/{participantId}")
+	public void respondToAgreement(@DestinationVariable Long participantId, boolean agreed) {
+		agreeParticipantService.respondToAgreement(participantId, agreed);
+	}
+
+	@MessageMapping("/payinstead/{participantId}")
+	public void requestPayInstead(@DestinationVariable Long participantId, Long payInsteadId) {
+		payInsteadService.requestPayInstead(participantId, payInsteadId);
+	}
+
+	@MessageMapping("/payinstead/response/{participantId}")
+	public void respondToPayInstead(@DestinationVariable Long participantId, boolean agreed) {
+		payInsteadService.respondToPayInstead(participantId, agreed);
+	}
+
 	// private PayParticipantService payParticipantService;
 	// private final SimpMessageSendingOperations simpMessageSendingOperations;
 	//
