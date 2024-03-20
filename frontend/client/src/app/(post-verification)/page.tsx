@@ -6,6 +6,7 @@ import * as fontCss from "@/styles/fonts.css";
 import MeetCreateButton from "@/app/(post-verification)/component/MeetCreateButton";
 import MeetJoinButton from "@/app/(post-verification)/component/MeetJoinButton";
 import MeetJoin from "@/app/(post-verification)/component/MeetJoin";
+import MeetJoinModal from "@/app/(post-verification)/component/MeetJoinModal";
 
 
 const dummys = [
@@ -250,6 +251,8 @@ const dummys = [
   },
 ]
 
+// const dummys:Dummy[] = []
+
 export interface Dummy {
   meetId: number;
   meetName: string;
@@ -274,16 +277,18 @@ export default async function Main() {
                     <h1 className={fontCss.bold}>모임</h1>
                     <p>{dummys.length}</p>
                 </div>
-                <button className={`${styles.joinButton} ${fontCss.bold}`}>모임 입장</button>
+                {dummys.length !== 0 &&
+                    <button className={`${styles.joinButton} ${fontCss.bold}`}>모임 입장</button>
+                }
             </div>
             {dummys.map((dummy: Dummy) => {
             return (
                 <MeetGroup dummy={dummy} />
             )
             })}
-            <MeetJoin />
-            <MeetJoinButton />
+            {dummys.length == 0 ? <MeetJoin /> : <MeetJoinButton />}
             <MeetCreateButton />
+            <MeetJoinModal />
         </>
     );
 }

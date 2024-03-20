@@ -130,7 +130,7 @@ export const cardButton = styleVariants({
         padding: "4% 18%",
         fontSize: "1.2rem",
         backgroundColor: theme.lightGray,
-        color: theme.gray
+        color: "white"
     }]
 });
 

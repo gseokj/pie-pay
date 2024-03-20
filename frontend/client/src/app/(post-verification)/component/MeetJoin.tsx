@@ -51,12 +51,22 @@ export default function MeetJoin() {
             console.log(code.join('').toLowerCase());
         }
     }
+    const onSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log(code)
+        if (code.every(val => /^[a-zA-Z0-9]+$/.test(val))) {
+            console.log(code.join('').toLowerCase());
+        }
+    }
 
     return(
         <div className={styles.cardLayout.joinMeetGroup}>
             <h3 className={fontCss.bold}>초대 코드로<br/>모임에 참여해보세요</h3>
             <p>초대 코드는 알파벳과 숫자 6자리에요</p>
-            <form className={styles.lineLayoutJoin.lineTwo}>
+            <form
+                className={styles.lineLayoutJoin.lineTwo}
+                onSubmit={(e) => onSubmit(e)}
+            >
                 <section className={styles.codeContainer}>
                     {code.map((val, index) => (
                         <div className={styles.codeBox} key={index}>
