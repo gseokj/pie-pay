@@ -30,19 +30,32 @@ public class MemberMeetService {
 		this.meetRepository = meetRepository;
 	}
 
-	// Autowired 필요함
-	// @Autowired
-	// private MeetRepository meetRepository;
-
 	public MemberMeet save(AddMemberMeetRequest request) {
 		Meet meet = meetRepository.findByMeetInvitation(request.getMeetInvitation())
 			.orElseThrow(() -> new IllegalArgumentException("해당 meetInvitation을 가진 Meet을 찾을 수 없음"));
 		Member member = memberRepository.findById(request.getMemberId())
 			.orElseThrow(() -> new IllegalArgumentException("해당 memberId를 가진 Member를 찾을 수 없음"));
+		// 수정 시작
+		MemberMeet newMemberMeet = new MemberMeet();
+		newMemberMeet.setMeet(meet);
+		newMemberMeet.setMember(member);
 
-		request.setMeet(meet);
-		request.setMember(member);
-		return memberMeetRepository.save(request.toEntity());
+		List<MemberMeet> allMemberMeets = memberMeetRepository.findAll();
+
+		MemberMeet existingMemberMeet = allMemberMeets.stream()
+			.filter(memberMeet ->
+				memberMeet.getMember().equals(newMemberMeet.getMember()) &&
+					memberMeet.getMeet().equals(newMemberMeet.getMeet()))
+			.findFirst()
+			.orElse(null);
+
+		if (existingMemberMeet != null) {
+			return existingMemberMeet;
+		} else {
+			request.setMeet(meet);
+			request.setMember(member);
+			return memberMeetRepository.save(request.toEntity());
+		}
 	}
 
 	public List<MemberMeet> findMemberByMeetId(long meetId) {

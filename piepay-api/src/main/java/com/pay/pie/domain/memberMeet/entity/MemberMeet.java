@@ -41,7 +41,7 @@ public class MemberMeet extends BaseEntity {
 	@JoinColumn(name = "meet_id")
 	private Meet meet;
 
-	@Builder // 빌더 패턴으로 객체 새성
+	@Builder // 빌더 패턴으로 객체 생성
 	public MemberMeet(Member member, Meet meet) {
 		this.member = member;
 		this.meet = meet;
