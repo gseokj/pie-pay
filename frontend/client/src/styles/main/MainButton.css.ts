@@ -4,8 +4,7 @@ import theme from "@/styles/theme/theme";
 export const MainButton = style({
     position: "fixed",
     bottom: "3rem",
-    left: "50%",
-    transform: "translateX(-50%)",
+    left: "2%",
     width: "96%",
     padding: "1.1rem 0",
     borderRadius: "16px",
@@ -16,8 +15,8 @@ export const MainButton = style({
     boxShadow: "0 8px 12px" + theme.shadow,
     '@media': {
         'screen and (min-width: 768px)': {
-            width: '30%',
-            left: '35%'
+            width: '38%',
+            left: '31%'
         },
     },
 })

@@ -68,7 +68,7 @@ const dummys = [
         "profileImage": faker.image.avatar()
       },
     ],
-    favorite: false
+    favorite: true
   },
   {
     meetId: 3,
@@ -76,6 +76,104 @@ const dummys = [
     meetDate: '어제',
     meetImage: faker.image.avatar(),
     meetMembers: [
+      {
+        "memberId": 10,
+        "nickname": "m4",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 11,
+        "nickname": "m5",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 12,
+        "nickname": "m6",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 13,
+        "nickname": "m7",
+        "profileImage": faker.image.avatar()
+      },
+    ],
+    favorite: false
+  },
+  {
+    meetId: 4,
+    meetName: '갈까마귀모임',
+    meetDate: '어제',
+    meetImage: faker.image.avatar(),
+    meetMembers: [
+      {
+        "memberId": 10,
+        "nickname": "m4",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 11,
+        "nickname": "m5",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 12,
+        "nickname": "m6",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 13,
+        "nickname": "m7",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 10,
+        "nickname": "m4",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 11,
+        "nickname": "m5",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 12,
+        "nickname": "m6",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 13,
+        "nickname": "m7",
+        "profileImage": faker.image.avatar()
+      },
+    ],
+    favorite: false
+  },
+  {
+    meetId: 4,
+    meetName: '갈까마귀모임',
+    meetDate: '어제',
+    meetImage: faker.image.avatar(),
+    meetMembers: [
+      {
+        "memberId": 10,
+        "nickname": "m4",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 11,
+        "nickname": "m5",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 12,
+        "nickname": "m6",
+        "profileImage": faker.image.avatar()
+      },
+      {
+        "memberId": 13,
+        "nickname": "m7",
+        "profileImage": faker.image.avatar()
+      },
       {
         "memberId": 10,
         "nickname": "m4",
@@ -176,8 +274,8 @@ export default async function Main() {
                         <MeetGroup dummy={dummy} />
                     )
                 })}
+                <MeetCreateButton />
             </section>
-            <MeetCreateButton />
         </>
     );
 }

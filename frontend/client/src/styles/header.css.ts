@@ -3,12 +3,24 @@ import theme from "@/styles/theme/theme";
 
 
 export const container = style({
+    zIndex: "99",
+    backdropFilter: "blur(8px)",
     display: 'flex',
     justifyContent: 'space-between',
-    marginLeft: '7%',
-    marginRight: '7%',
+    paddingLeft: '7%',
+    paddingRight: '7%',
     height: '9%',
-    backgroundColor: theme.layout,
+    backgroundColor: theme.header,
+    position: "fixed",
+    width: "100%",
+    '@media': {
+        'screen and (min-width: 768px)': {
+            width: '40%',
+            left: '30%',
+            paddingLeft: '2.8%',
+            paddingRight: '2.8%',
+        },
+    },
 });
 
 export const navigation = style({
@@ -35,4 +47,10 @@ export const buttonContainer = style({
     alignItems: "center",
     marginLeft: "1.5rem",
     fontSize: "0.8rem",
+    cursor: "pointer",
+    '@media': {
+        'screen and (min-width: 768px)': {
+            marginLeft: "0.9rem",
+        },
+    },
 });
