@@ -5,7 +5,7 @@ export interface Participant {
     memberInfo: Member;
     isDrinkAlcohol: boolean;
     payAgree: "await"|"agree"|"deny";
-
+    payAmount: number;
 }
 
 export interface Participants {
@@ -14,3 +14,4 @@ export interface Participants {
     participants: Participant[];
     payStatus: "open" | "ing" | "complete" | "close";
 }
+

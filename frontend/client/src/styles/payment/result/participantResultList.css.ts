@@ -34,6 +34,10 @@ export const participantList = style({
 export const backgroundSkyBlue = style({
     backgroundColor: theme.skyblue,
 })
+export const backgroundLightRed = style({
+    backgroundColor: theme.lightred,
+})
+
 export const image = style({
     borderRadius: '15px',
     margin: '7px'

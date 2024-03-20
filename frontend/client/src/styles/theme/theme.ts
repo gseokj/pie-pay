@@ -37,6 +37,7 @@ const theme = {
 
         // 대신내기
     red:  '#F43A51',
+    lightred: '#FFF3E8',
     
     // 카카오
     kakao: '#FEE500',
