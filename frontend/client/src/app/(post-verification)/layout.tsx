@@ -22,7 +22,9 @@ export default async function PostVerificationLayout({children}: Props) {
             <RQProvider>
                 <Header/>
                 <HydrationBoundary state={dehydratedState}>
-                    {children}
+                    <div className="pt-[15%]">
+                        {children}
+                    </div>
                 </HydrationBoundary>
             </RQProvider>
         </div>

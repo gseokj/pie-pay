@@ -58,7 +58,8 @@ const participants =
                     },
                     "isDrinkAlcohol": false,
                     "payAgree": "await"
-                }
+                },
+
             ]
         }
 const participantsResult =
@@ -96,8 +97,8 @@ const participantsResult =
                     "nickname": "고석주",
                     "profileImage": faker.image.avatar()
                 },
-                "isDrinkAlcohol": true,
-                "payAgree": "agree",
+                "isDrinkAlcohol": false,
+                "payAgree": "await",
                 "payAmount" : "15000"
             },
             {

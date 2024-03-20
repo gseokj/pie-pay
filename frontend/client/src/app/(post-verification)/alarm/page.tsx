@@ -1,3 +1,13 @@
 export default function Alarm() {
-  return <>알림</>;
+  return <div className="flex flex-col bg-blue-200">
+
+    <div>s</div>
+    <div>s</div>
+    <div>s</div>
+    <div>s</div>
+    <div>s</div>
+    <div>s</div>
+    <div>s</div>
+
+  </div>;
 }

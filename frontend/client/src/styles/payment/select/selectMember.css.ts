@@ -18,7 +18,7 @@ export const progress = style({
             left: '30%',
         },
     },
-    position: 'fixed',
+    position: 'sticky',
     zIndex: 1,
     backgroundColor: theme.layout,
     top: 0,

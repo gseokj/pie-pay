@@ -19,10 +19,12 @@ export const baseContainer = style({
 
 })
 export const container = styleVariants({
-    visible: [baseContainer, {
-        backgroundColor: "rgba(0, 0, 0, 0.5)"
-    }],
+
     invisible: [baseContainer, {
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        zIndex: 2,
+    }],
+    visible: [baseContainer, {
         pointerEvents: 'none',
         overflow: 'hidden',
 

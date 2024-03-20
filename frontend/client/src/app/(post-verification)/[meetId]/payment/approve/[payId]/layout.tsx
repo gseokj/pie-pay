@@ -24,7 +24,7 @@ export default async function PaymentModalLayout({children, params}: Props) {
 
 
     return (
-        <div className="w-[100%]">
+        <div className="w-[100%] mt-[12%]">
             <HydrationBoundary state={dehydratedState}>
                 {children}
             </HydrationBoundary>

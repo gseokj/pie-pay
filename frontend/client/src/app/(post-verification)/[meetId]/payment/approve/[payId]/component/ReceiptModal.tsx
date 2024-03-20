@@ -24,15 +24,15 @@ export default function ReceiptModal({ payId }: Props) {
     {receipt && receipt.menuItems && receipt?.menuItems.map((menuItem) => (
       <ul className={styles.ul.menu} key={menuItem.menuName}>
         <li>{menuItem.menuName}</li>
-        <li>{menuItem.menuPrice}</li>
+        <li>{menuItem.menuPrice.toLocaleString()}</li>
         <li>{menuItem.quantity}</li>
-        <li>{menuItem.menuPrice * menuItem.quantity}</li>
+        <li>{(menuItem.menuPrice * menuItem.quantity).toLocaleString()}</li>
       </ul>
     ))}
     <hr/>
     <ul className={styles.ul.menu}>
-      <li className={styles.list.result}></li>
-      <li>{receipt?.totalAmount}</li>
+      <li/><li/><li/>
+      <li >{receipt?.totalAmount.toLocaleString()}</li>
     </ul>
   </div>);
 }

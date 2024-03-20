@@ -25,6 +25,7 @@ export default function ParticipantResultList({payId}:Props) {
     return (
 
         <div className={styles.participantContainer}>
+
             {participants.map(participant => (
                     <div key={participant.participantId}
                          className={`${styles.container}  ${participant.payAgree == "agree" && styles.backgroundSkyBlue} ${participant.payAgree == "deny" && styles.backgroundLightRed}`}>
@@ -36,7 +37,7 @@ export default function ParticipantResultList({payId}:Props) {
                             {participant.isDrinkAlcohol && <Image src={resultbeer} alt=""/>}
 
                         </div>
-                        {participant.payAmount  }
+                        {participant.payAmount.toLocaleString()}
 
                     </div>
 

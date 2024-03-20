@@ -1,9 +1,8 @@
 import type {Metadata} from "next";
 import {ReactNode} from "react";
-import * as styles from "@/styles/payment/select/payment.css"
 import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
 import {getMembers} from "@/api/member";
-import {getAccount} from "@/api/account";
+import * as styles from "@/styles/meet/meetMain.css"
 
 export const metadata: Metadata = {
     title: "Create Next App",
