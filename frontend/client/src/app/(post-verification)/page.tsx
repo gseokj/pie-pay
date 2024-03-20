@@ -129,22 +129,22 @@ const dummys = [
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 10,
+        "memberId": 14,
         "nickname": "m4",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 11,
+        "memberId": 15,
         "nickname": "m5",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 12,
+        "memberId": 16,
         "nickname": "m6",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 13,
+        "memberId": 17,
         "nickname": "m7",
         "profileImage": faker.image.avatar()
       },
@@ -152,7 +152,7 @@ const dummys = [
     favorite: false
   },
   {
-    meetId: 4,
+    meetId: 5,
     meetName: '갈까마귀모임',
     meetDate: '어제',
     meetImage: faker.image.avatar(),
@@ -178,22 +178,22 @@ const dummys = [
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 10,
+        "memberId": 14,
         "nickname": "m4",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 11,
+        "memberId": 15,
         "nickname": "m5",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 12,
+        "memberId": 16,
         "nickname": "m6",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 13,
+        "memberId": 17,
         "nickname": "m7",
         "profileImage": faker.image.avatar()
       },
@@ -201,7 +201,7 @@ const dummys = [
     favorite: false
   },
   {
-    meetId: 4,
+    meetId: 6,
     meetName: '갈까마귀모임',
     meetDate: '어제',
     meetImage: faker.image.avatar(),
@@ -227,22 +227,22 @@ const dummys = [
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 10,
+        "memberId": 14,
         "nickname": "m4",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 11,
+        "memberId": 15,
         "nickname": "m5",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 12,
+        "memberId": 16,
         "nickname": "m6",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 13,
+        "memberId": 17,
         "nickname": "m7",
         "profileImage": faker.image.avatar()
       },
@@ -283,7 +283,7 @@ export default async function Main() {
             </div>
             {dummys.map((dummy: Dummy) => {
             return (
-                <MeetGroup dummy={dummy} />
+                <MeetGroup dummy={dummy} key={dummy.meetId} />
             )
             })}
             {dummys.length == 0 ? <MeetJoin /> : <MeetJoinButton />}

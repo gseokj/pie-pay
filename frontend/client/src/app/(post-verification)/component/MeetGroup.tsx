@@ -37,7 +37,13 @@ export default function MeetGroup(props : {dummy: Dummy}){
                     <div className={styles.profileImageContainer}>
                         {dummy.meetMembers.slice(0, 5).map((member: MeetMember) => {
                             return (
-                                <img className={styles.meetMemberImage} src={member.profileImage} alt="member image" width={24} height={24}/>
+                                <img
+                                    className={styles.meetMemberImage}
+                                    src={member.profileImage}
+                                    alt="member image"
+                                    width={24} height={24}
+                                    key={member.memberId}
+                                />
                             )
                         })}
                         {dummy.meetMembers.length > 5 ?
