@@ -10,7 +10,7 @@ export const contentContainer = style({
 export const progress = style({
     // Mobile width
     width: '100%',
-    height:'9%',
+
     // Default width
     '@media': {
         'screen and (min-width: 768px)': {
@@ -23,10 +23,12 @@ export const progress = style({
     backgroundColor: theme.layout,
     top: 0,
 
+
 })
 
 export const headerContainer = style({
     width: '100%',
+    marginTop: '30px',
     position: 'sticky',
     backgroundColor: theme.layout,
     paddingLeft: '15px',
