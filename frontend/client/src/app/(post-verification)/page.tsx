@@ -4,6 +4,7 @@ import {faker} from "@faker-js/faker";
 import * as styles from "@/styles/main/main.css";
 import * as fontCss from "@/styles/fonts.css";
 import MeetCreateButton from "@/app/(post-verification)/component/MeetCreateButton";
+import MeetJoinButton from "@/app/(post-verification)/component/MeetJoinButton";
 
 
 const dummys = [
@@ -266,16 +267,21 @@ export default async function Main() {
 
     return (
         <>
-            <section className={styles.mainContainer}>
-                <BankAccount />
-                <h1 className={`${styles.heading} ${fontCss.bold}`}>모임 {dummys.length}</h1>
-                {dummys.map((dummy: Dummy)=>{
-                    return (
-                        <MeetGroup dummy={dummy} />
-                    )
-                })}
-                <MeetCreateButton />
-            </section>
+            <BankAccount />
+            <div className={styles.categoryContainer}>
+                <div className={styles.category}>
+                    <h1 className={fontCss.bold}>모임</h1>
+                    <p>{dummys.length}</p>
+                </div>
+                <button className={`${styles.joinButton} ${fontCss.bold}`}>모임 입장</button>
+            </div>
+            {dummys.map((dummy: Dummy) => {
+            return (
+                <MeetGroup dummy={dummy} />
+            )
+            })}
+            <MeetJoinButton />
+            <MeetCreateButton />
         </>
     );
 }

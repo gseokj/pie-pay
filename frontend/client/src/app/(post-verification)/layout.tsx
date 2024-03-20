@@ -5,6 +5,7 @@ import RQProvider from "@/app/(post-verification)/component/RQProvider";
 import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
 import {getMembers} from "@/api/member";
 import {getAccount} from "@/api/account";
+import * as styles from "@/styles/main/main.css"
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -21,9 +22,11 @@ export default async function PostVerificationLayout({children}: Props) {
         <div className="h-screen">
             <RQProvider>
                 <Header/>
-                <HydrationBoundary state={dehydratedState}>
-                    {children}
-                </HydrationBoundary>
+                <main className={styles.mainContainer}>
+                    <HydrationBoundary state={dehydratedState}>
+                        {children}
+                    </HydrationBoundary>
+                </main>
             </RQProvider>
         </div>
     );

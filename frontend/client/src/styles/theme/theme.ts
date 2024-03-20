@@ -9,10 +9,10 @@
 
 const theme = {
     // 레이아웃
-    layout: '#f5f5fa',
+    layout: '#f9f9fc',
 
     // 헤더
-    header: 'rgba(245,245,250,0.8)',
+    header: 'rgba(249,249,252,0.8)',
 
     // 버튼
     blue: '#1892EB',
