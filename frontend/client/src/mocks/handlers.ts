@@ -18,7 +18,7 @@ const MeetMembers = [
 ]
 // 계좌
 const account = {
-    "bankName": "국민은행",
+    "bankName": "하나은행",
     "accountNo": "480-21030-13412",
     "accountBalance": 885420
 }

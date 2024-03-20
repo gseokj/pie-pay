@@ -14,6 +14,7 @@ export const container= style({
 })
 export const content = style({
     // Mobile width
+    position: "relative",
     width: '100%',
 
 
