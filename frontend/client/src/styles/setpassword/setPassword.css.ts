@@ -5,13 +5,15 @@ export const container = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  height: '100%',
 });
 
 export const textBox = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  paddingTop: '15vh',
+  justifyContent: 'end',
+  height: '25%',
 });
 
 export const title = style({
@@ -24,9 +26,14 @@ export const description = style({
   fontSize: '25px',
 });
 
+export const passwordWrapper = style({
+  height: '20%',
+  justifyContent: 'center',
+  alignContent: 'center',
+});
+
 export const passwordScreen = style({
   display: 'flex',
-  paddingTop: '7vh',
 });
 
 export const dotWrapper = style({
