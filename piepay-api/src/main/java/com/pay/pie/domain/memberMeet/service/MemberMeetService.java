@@ -76,4 +76,17 @@ public class MemberMeetService {
 
 		memberMeetRepository.deleteById(memberMeet.getId());
 	}
+
+	public MemberMeet favoriteMemberMeet(long memberId, long meetId) {
+		Meet meet = meetRepository.findById(meetId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 meetId을 가진 Meet을 찾을 수 없음"));
+		Member member = memberRepository.findById(memberId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 memberId을 가진 Member을 찾을 수 없음"));
+		MemberMeet memberMeet = memberMeetRepository.findByMeetAndMember(meet, member)
+			.orElseThrow(() -> new IllegalArgumentException("유효한 MemberMeet을 찾을 수 없음"));
+
+		memberMeet.setTopFixed(!memberMeet.isTopFixed());
+		
+		return memberMeetRepository.save(memberMeet);
+	}
 }

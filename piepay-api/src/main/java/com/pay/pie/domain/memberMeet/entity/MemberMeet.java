@@ -41,6 +41,9 @@ public class MemberMeet extends BaseEntity {
 	@JoinColumn(name = "meet_id")
 	private Meet meet;
 
+	@Column(name = "top_fixed", columnDefinition = "boolean default false")
+	private boolean topFixed;
+
 	@Builder // 빌더 패턴으로 객체 생성
 	public MemberMeet(Member member, Meet meet) {
 		this.member = member;

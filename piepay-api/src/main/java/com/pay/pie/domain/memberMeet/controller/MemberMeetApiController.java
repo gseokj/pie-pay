@@ -2,6 +2,7 @@ package com.pay.pie.domain.memberMeet.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +33,7 @@ public class MemberMeetApiController {
 			savedMemberMeet);
 	}
 
-	@DeleteMapping("/meet/{meetId}/member/{memberId}")
+	@DeleteMapping("/member/{memberId}/meet/{meetId}")
 	public ResponseEntity<BaseResponse<Void>> deleteMemberMeet(@PathVariable Long meetId,
 		@PathVariable Long memberId) {
 		memberMeetService.deleteMemberMeet(meetId, memberId);
@@ -40,5 +41,16 @@ public class MemberMeetApiController {
 		return BaseResponse.success(
 			SuccessCode.DELETE_SUCCESS,
 			null);
+	}
+
+	@PatchMapping("/member/{memberId}/meet/{meetId}/favorite")
+	public ResponseEntity<BaseResponse<MemberMeet>> favoriteMemberMeet(@PathVariable Long memberId,
+		@PathVariable Long meetId) {
+		MemberMeet memberMeet = memberMeetService.favoriteMemberMeet(memberId, meetId);
+
+		return BaseResponse.success(
+			SuccessCode.UPDATE_SUCCESS,
+			memberMeet
+		);
 	}
 }
