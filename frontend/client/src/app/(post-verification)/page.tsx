@@ -5,6 +5,7 @@ import * as styles from "@/styles/main/main.css";
 import * as fontCss from "@/styles/fonts.css";
 import MeetCreateButton from "@/app/(post-verification)/component/MeetCreateButton";
 import MeetJoinButton from "@/app/(post-verification)/component/MeetJoinButton";
+import MeetJoin from "@/app/(post-verification)/component/MeetJoin";
 
 
 const dummys = [
@@ -280,6 +281,7 @@ export default async function Main() {
                 <MeetGroup dummy={dummy} />
             )
             })}
+            <MeetJoin />
             <MeetJoinButton />
             <MeetCreateButton />
         </>

@@ -1,4 +1,4 @@
-import * as styles from "@/styles/main/MainButton.css";
+import * as styles from "@/styles/main/mainButton.css";
 import * as fontCss from "@/styles/fonts.css";
 
 export default function MeetJoinButton() {
