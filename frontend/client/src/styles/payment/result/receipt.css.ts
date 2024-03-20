@@ -1,7 +1,10 @@
 import {createVar, style, styleVariants} from '@vanilla-extract/css';
 import theme from '@/styles/theme/theme';
 
-
+export const header = style({
+    display: 'flex',
+    justifyContent: 'space-between'
+})
 export const baseContainer = style({
     width: '100%',
     height: '100%',
@@ -41,3 +44,4 @@ export const modal = styleVariants({
     visible:[baseModal,{display: 'inline', transform: 'translateY(0%)'}],
     invisible:[baseModal,{ transform: 'translateY(100%)', overflow: 'hidden',}]
 })
+

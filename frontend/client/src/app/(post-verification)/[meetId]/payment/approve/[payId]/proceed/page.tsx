@@ -9,7 +9,7 @@ import Timer from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/co
 import React, {useEffect, useState} from "react";
 import {useQuery} from "@tanstack/react-query";
 import StateButton from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/StateButton";
-
+import * as styles from "@/styles/payment/proceed/proceedmain.css"
 type Props = {
     params: { payId: string },
 }
@@ -20,11 +20,10 @@ export default function Page({params}:Props) {
 
     return (<div>
         <Header type={two}/>
-        <p className="text-2xl font-bold mb-3">결제 동의를 해 주세요</p>
+        <p className={styles.paragraph.title}>결제 동의를 해 주세요</p>
         <Timer payId={payId}/>
         <BankAccount/>
-        <p className="mt-4 text-gray-500">결제 멤버 {payment?.participants.length}</p>
-
+        <p className={styles.paragraph.total}>결제 멤버 {payment?.participants.length}</p>
         <ParticipantList payId={payId}/>
         <StateButton/>
     </div>);
