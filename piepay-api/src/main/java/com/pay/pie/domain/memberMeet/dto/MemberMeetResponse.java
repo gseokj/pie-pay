@@ -1,5 +1,6 @@
 package com.pay.pie.domain.memberMeet.dto;
 
+import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 
 import lombok.Getter;
@@ -8,10 +9,10 @@ import lombok.Getter;
 public class MemberMeetResponse {
 
 	// private final Member member;
-	private final Long meetId;
+	private final Meet meet;
 
 	public MemberMeetResponse(MemberMeet memberMeet) {
 		// this.member = memberMeet.getMemberId();
-		this.meetId = memberMeet.getMeetId();
+		this.meet = memberMeet.getMeet();
 	}
 }
