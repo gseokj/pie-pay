@@ -115,7 +115,7 @@ public class MeetApiController {
 
 	@GetMapping("meet/{meetId}/paystatus")
 	public ResponseEntity<BaseResponse<Meet>> getPayStatus(@PathVariable long meetId) {
-		Pay pay = payService.findRecentPaybyMeetId(meetId);
+		Pay pay = payService.findRecentPayByMeetId(meetId);
 		Meet meet;
 		if (pay.getPayStatus() == Pay.PayStatus.ING) {
 			meet = pay.getMeet();
@@ -135,5 +135,21 @@ public class MeetApiController {
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
 			meet);
+	}
+
+	@GetMapping("meet/{meetId}/payment/latest")
+	public ResponseEntity<BaseResponse<Pay>> getLatestPayment(@PathVariable long meetId) {
+		Meet meet = meetService.getMeet(meetId);
+		List<Pay> pays = payService.findPayByMeetId(meetId);
+		Pay latestPay = null;
+		for (Pay pay : pays) {
+			if (pay.getPayStatus() == Pay.PayStatus.COMPLETE) {
+				latestPay = pay;
+				break;
+			}
+		}
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			latestPay);
 	}
 }

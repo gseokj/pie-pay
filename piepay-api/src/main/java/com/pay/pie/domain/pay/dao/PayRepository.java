@@ -10,7 +10,7 @@ import com.pay.pie.domain.pay.entity.Pay;
 
 @Repository
 public interface PayRepository extends JpaRepository<Pay, Long> {
-	List<Pay> findByMeet(Meet meet);
+	List<Pay> findByMeetOrderByCreatedAtDesc(Meet meet);
 
 	Pay findFirstByMeetOrderByCreatedAtDesc(Meet meet);
 }
