@@ -44,7 +44,7 @@ public class Meet extends BaseEntity {
 	@Builder // 빌더 패턴으로 객체 생성
 	public Meet(String meetName, String meetImage) {
 		this.meetName = meetName;
-		this.meetImage = (meetImage != null) ? meetImage : "https://cdn-icons-png.flaticon.com/512/681/681494.png";
+		this.meetImage = meetImage;
 		this.meetInvitation = UUID.randomUUID().toString().substring(0, 6);
 	}
 

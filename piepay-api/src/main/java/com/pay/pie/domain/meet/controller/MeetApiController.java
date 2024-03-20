@@ -127,4 +127,13 @@ public class MeetApiController {
 			SuccessCode.SELECT_SUCCESS,
 			meet);
 	}
+
+	@GetMapping("meet/{meetId}")
+	public ResponseEntity<BaseResponse<Meet>> getMeet(@PathVariable long meetId) {
+		Meet meet = meetService.getMeet(meetId);
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			meet);
+	}
 }
