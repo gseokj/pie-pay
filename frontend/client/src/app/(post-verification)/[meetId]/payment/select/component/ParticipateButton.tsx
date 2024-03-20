@@ -19,8 +19,7 @@ export default function ParticipateButton({ meetId }: Props) {
     const { mutate } = useMutation({
         mutationFn: (id) => axios.post('http://localhost:9090/pay/parties', filterMembers.filter(member=>member.isSelected)),
         onSuccess: (data) => {
-            console.log(data.data);
-            route.replace(`/${meetId}/payment/approve/${data.data["payId"]}/proceed`);
+            route.replace(`approve/${data.data["payId"]}/proceed`);
         },
         onError: () => { console.error('에러 발생') },
         onSettled: () => { console.log('결과에 관계 없이 무언가 실행됨') }
