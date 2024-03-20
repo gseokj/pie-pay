@@ -14,15 +14,18 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class PayInsteadServiceImpl implements PayInsteadService {
 
-	private RedisTemplate<String, String> redisTemplate;
-	private SimpMessagingTemplate messagingTemplate;
-	private ParticipantRepository participantRepository;
+	private final RedisTemplate<String, String> redisTemplate;
+	private final SimpMessagingTemplate messagingTemplate;
+	private final ParticipantRepository participantRepository;
 
 	@Override
 	public void requestPayInstead(Long participantId, Long payInsteadId) {
 		// Pay instead request logic
 		// Save pay instead request in Redis or DB
+		redisTemplate.opsForValue().set("payInstead:" + participantId, "requested");
 		// Send message to relevant participants via WebSocket
+		messagingTemplate.convertAndSend("/topic/payinstead/request",
+			"Pay instead requested for participantId: " + participantId);
 
 	}
 
@@ -30,7 +33,10 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 	public void respondToPayInstead(Long participantId, boolean agreed) {
 		// Pay instead response logic
 		// Update pay instead status in Redis or DB
+		redisTemplate.opsForValue().set("payInstead:" + participantId, agreed ? "agreed" : "rejected");
 		// Send message to relevant participants via WebSocket
+		messagingTemplate.convertAndSend("/topic/payinstead/response",
+			"Pay instead response for participantId: " + participantId + ", Agreed: " + agreed);
 
 	}
 }

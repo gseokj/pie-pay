@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional
 public class GenerateQRServiceImpl implements GenerateQRService {
+
 	@Override
 	@Transactional(readOnly = true)
 	public byte[] generateQRCode(Long payId) throws WriterException, IOException {

@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pay.pie.domain.participant.application.AgreeParticipantService;
 import com.pay.pie.domain.payInstead.application.PayInsteadService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/pay-participants")
 public class PayParticipantController {
 
-	private AgreeParticipantService agreeParticipantService;
-	private PayInsteadService payInsteadService;
+	private final AgreeParticipantService agreeParticipantService;
+	private final PayInsteadService payInsteadService;
 
 	@PostMapping("/{participantId}/agreement")
 	public ResponseEntity<String> requestAgreement(@PathVariable Long participantId) {

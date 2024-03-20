@@ -30,9 +30,9 @@ public class WebSocketController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketController.class);
 
 	private final SimpMessageSendingOperations simpleMessageSendingOperations;
-	private ParticipantService participantService;
-	private AgreeParticipantService agreeParticipantService;
-	private PayInsteadService payInsteadService;
+	private final ParticipantService participantService;
+	private final AgreeParticipantService agreeParticipantService;
+	private final PayInsteadService payInsteadService;
 
 	// 새로운 사용자가 웹 소켓을 연결할 때 실행됨
 	// @EventListener은 한개의 매개변수만 가질 수 있다.
@@ -61,6 +61,8 @@ public class WebSocketController {
 
 	@MessageMapping("/agreement/{participantId}")
 	public void requestAgreement(@DestinationVariable Long participantId) {
+		log.info("여기옴?");
+
 		agreeParticipantService.requestAgreement(participantId);
 	}
 

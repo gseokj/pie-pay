@@ -8,4 +8,6 @@ import com.pay.pie.domain.participant.entity.Participant;
 @Repository
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
 
+	// Participant findById(Long participantId);
+
 }
