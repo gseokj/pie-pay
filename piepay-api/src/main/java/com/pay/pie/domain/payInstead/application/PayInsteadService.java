@@ -4,5 +4,5 @@ public interface PayInsteadService {
 
 	public void requestPayInstead(Long participantId, Long payInsteadId);
 
-	public void respondToPayInstead(Long participantId, boolean agreed);
+	public void respondToPayInstead(Long participantId, Long acceptedParticipantId, boolean agreed);
 }

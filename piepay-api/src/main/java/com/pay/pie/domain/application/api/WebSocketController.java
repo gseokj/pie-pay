@@ -77,8 +77,9 @@ public class WebSocketController {
 	}
 
 	@MessageMapping("/payinstead/response/{participantId}")
-	public void respondToPayInstead(@DestinationVariable Long participantId, boolean agreed) {
-		payInsteadService.respondToPayInstead(participantId, agreed);
+	public void respondToPayInstead(@DestinationVariable Long participantId, Long acceptedParticipantId,
+		boolean agreed) {
+		payInsteadService.respondToPayInstead(participantId, acceptedParticipantId, agreed);
 	}
 
 	// private PayParticipantService payParticipantService;

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
+import com.pay.pie.domain.participant.entity.Participant;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +22,10 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 	@Override
 	public void requestPayInstead(Long participantId, Long payInsteadId) {
 		// Pay instead request logic
+		Participant reqPayParticipant = participantRepository.findById(participantId).orElseThrow(
+			() -> new IllegalArgumentException("해당 참여자 없음")
+		);
+
 		// Save pay instead request in Redis or DB
 		redisTemplate.opsForValue().set("payInstead:" + participantId, "requested");
 		// Send message to relevant participants via WebSocket
@@ -30,7 +35,7 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 	}
 
 	@Override
-	public void respondToPayInstead(Long participantId, boolean agreed) {
+	public void respondToPayInstead(Long participantId, Long acceptedParticipantId, boolean agreed) {
 		// Pay instead response logic
 		// Update pay instead status in Redis or DB
 		redisTemplate.opsForValue().set("payInstead:" + participantId, agreed ? "agreed" : "rejected");

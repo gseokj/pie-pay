@@ -41,9 +41,10 @@ public class PayParticipantController {
 	}
 
 	@PostMapping("/{participantId}/payinstead/response")
-	public ResponseEntity<String> respondToPayInstead(@PathVariable Long participantId,
+	public ResponseEntity<String> respondToPayInstead(@PathVariable Long participantId, @PathVariable Long payInsteadId,
+		@RequestParam Long acceptedParticipantId,
 		@RequestParam boolean agreed) {
-		payInsteadService.respondToPayInstead(participantId, agreed);
+		payInsteadService.respondToPayInstead(participantId, acceptedParticipantId, agreed);
 		return ResponseEntity.ok("Pay instead response sent.");
 	}
 

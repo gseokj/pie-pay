@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
-import com.pay.pie.domain.participant.entity.Participant;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,14 +24,14 @@ public class AgreeParticipantServiceImpl implements AgreeParticipantService {
 	@Override
 	public void requestAgreement(Long participantId) {
 		// Agreement request logic
-		Participant participant = participantRepository.findById(participantId).orElseThrow(
-			() -> new IllegalArgumentException("해당 참여자 없음")
-		);
-		log.info("참여자 동의여부 {}", participant.getPayAgree());
-
-		participant.setPayAgree(true);
-		log.info("참여자 동의여부 {}", participant.getPayAgree());
-		participantRepository.save(participant);
+		// Participant participant = participantRepository.findById(participantId).orElseThrow(
+		// 	() -> new IllegalArgumentException("해당 참여자 없음")
+		// );
+		// log.info("참여자 동의여부 {}", participant.getPayAgree());
+		//
+		// participant.setPayAgree(true);
+		// log.info("참여자 동의여부 {}", participant.getPayAgree());
+		// participantRepository.save(participant);
 
 		// Save participant's agreement request in Redis or DB
 		redisTemplate.opsForValue().set("agreement:" + participantId, "pending");
@@ -40,7 +39,6 @@ public class AgreeParticipantServiceImpl implements AgreeParticipantService {
 		// Send message to relevant participants via WebSocket
 		messagingTemplate.convertAndSend("/topic/agreement/request",
 			"Agreement requested for participantId: " + participantId);
-
 	}
 
 	@Override
