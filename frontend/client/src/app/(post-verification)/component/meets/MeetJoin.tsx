@@ -1,10 +1,17 @@
 "use client";
 
-import * as styles from "@/styles/main/cardLayout.css"
+import * as styles from "@/styles/main/cardLayout.css";
 import * as fontCss from "@/styles/fonts.css";
-import {useState, useRef, useEffect} from "react";
+import * as buttonStyles from "@/styles/main/mainButton.css";
+import {useState, useRef} from "react";
 
-export default function MeetJoin() {
+interface MeetJoinProps{
+    isModal?: boolean;
+    clickJoin?: () => void;
+    clickExit?: () => void;
+}
+
+export default function MeetJoin({ isModal = false, clickJoin, clickExit }: MeetJoinProps ) {
     const [code, setCode] = useState<string[]>(Array(6).fill(''));
     const [isWrong, setIsWrong] = useState<boolean[]>(Array(6).fill(false));
     const [isComplete, setIsComplete] = useState<boolean[]>(Array(6).fill(false));
@@ -59,8 +66,23 @@ export default function MeetJoin() {
         }
     }
 
+    const onClickExit = () => {
+        if (clickExit) {
+            clickExit();
+        }
+    }
+
+    const onClickJoin = () => {
+        if (code.every(val => /^[a-zA-Z0-9]+$/.test(val))) {
+            console.log(code.join('').toLowerCase());
+            if (clickJoin) {
+                clickJoin();
+            }
+        }
+    }
+
     return(
-        <div className={styles.cardLayout.joinMeetGroup}>
+        <>
             <h3 className={fontCss.bold}>초대 코드로<br/>모임에 참여해보세요</h3>
             <p>초대 코드는 알파벳과 숫자 6자리에요</p>
             <form
@@ -86,16 +108,34 @@ export default function MeetJoin() {
                     알파벳, 숫자만 입력할 수 있어요
                 </p>
             </form>
-            <div className={styles.lineLayoutJoin.lineThree}>
-                <button
-                    className={`
-                    ${isComplete.every(value => value) ? styles.cardButton.joinButton : styles.cardButton.joinButtonDisabled}
-                    ${fontCss.semibold}
-                    `}
-                    onClick={onClick}
-                >참여하기
-                </button>
+            <div className={isModal ? styles.lineLayoutJoin.lineThreeModal : styles.lineLayoutJoin.lineThree}>
+                {isModal &&
+                    <button
+                        className={`${styles.modalExitButton} ${fontCss.semibold}`}
+                        onClick={onClickExit}
+                    >취소하기</button>
+                }
+                {isModal ?
+                    <button
+                        className={`
+                        ${isComplete.every(value => value) ? buttonStyles.mainButton.modalButton : buttonStyles.mainButton.modalButtonDisabled}
+                        ${fontCss.semibold}
+                        `}
+                        onClick={onClickJoin}
+                    >
+                        모임 참여하기
+                    </button>
+                    :
+                    <button
+                        className={`
+                        ${isComplete.every(value => value) ? styles.cardButton.joinButton : styles.cardButton.joinButtonDisabled}
+                        ${fontCss.semibold}
+                        `}
+                        onClick={onClick}
+                    >참여하기
+                    </button>
+                }
             </div>
-        </div>
+        </>
     );
 }

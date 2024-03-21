@@ -15,14 +15,32 @@ const buttonShadow = style({
     boxShadow: "0 8px 12px" + theme.shadow
 });
 
+const blueActive = style({
+    transition: "all 0.25%",
+    selectors: {
+        '&:active': {
+            backgroundColor: theme.blueActive
+        }
+    }
+});
+
+const skyBlueActive = style({
+    transition: "all 0.25%",
+    selectors: {
+        '&:active': {
+            backgroundColor: theme.skyblueActive
+        }
+    }
+});
+
 export const mainButton = styleVariants({
     defaultButton: [buttonLayout, buttonShadow],
-    bottomButton: [buttonLayout, {
+    bottomButton: [buttonLayout, skyBlueActive, {
         marginBottom: "50%",
         backgroundColor: theme.skyblue,
         color: theme.blue
     }],
-    fixedButton: [buttonLayout, buttonShadow, {
+    fixedButton: [buttonLayout, buttonShadow, blueActive, {
         position: "fixed",
         bottom: "3rem",
         left: "2%",
@@ -34,4 +52,10 @@ export const mainButton = styleVariants({
             },
         },
     }],
+    modalButton: [buttonLayout, blueActive],
+    modalButtonDisabled: [buttonLayout, {
+        cursor: "default",
+        backgroundColor: theme.lightGray,
+        color: "white"
+    }]
 });

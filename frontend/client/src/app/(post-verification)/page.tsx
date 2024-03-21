@@ -1,12 +1,16 @@
+"use client";
+
+
 import BankAccount from "./component/BankAccount";
-import MeetGroup from "@/app/(post-verification)/component/MeetGroup";
+import MeetGroup from "@/app/(post-verification)/component/meets/MeetGroup";
 import {faker} from "@faker-js/faker";
 import * as styles from "@/styles/main/main.css";
 import * as fontCss from "@/styles/fonts.css";
-import MeetCreateButton from "@/app/(post-verification)/component/MeetCreateButton";
-import MeetJoinButton from "@/app/(post-verification)/component/MeetJoinButton";
-import MeetJoin from "@/app/(post-verification)/component/MeetJoin";
-import MeetJoinModal from "@/app/(post-verification)/component/MeetJoinModal";
+import MeetCreateButton from "@/app/(post-verification)/component/meets/MeetCreateButton";
+import MeetJoinButton from "@/app/(post-verification)/component/meets/MeetJoinButton";
+import MeetJoinCard from "@/app/(post-verification)/component/meets/MeetJoinCard";
+import MeetJoinModal from "@/app/(post-verification)/component/meets/MeetJoinModal";
+import {useState} from "react";
 
 
 const dummys = [
@@ -267,8 +271,12 @@ export interface Dummy {
 }
 
 
-export default async function Main() {
-
+export default function Main() {
+    const [modalVisibility, setModalVisibility] = useState(false)
+    const modalOn = () => {
+        console.log('clicked')
+        setModalVisibility(true);
+    }
     return (
         <>
             <BankAccount />
@@ -278,7 +286,10 @@ export default async function Main() {
                     <p>{dummys.length}</p>
                 </div>
                 {dummys.length !== 0 &&
-                    <button className={`${styles.joinButton} ${fontCss.bold}`}>모임 입장</button>
+                    <button
+                        className={`${styles.joinButton} ${fontCss.bold}`}
+                        onClick={modalOn}
+                    >모임 입장</button>
                 }
             </div>
             {dummys.map((dummy: Dummy) => {
@@ -286,9 +297,9 @@ export default async function Main() {
                 <MeetGroup dummy={dummy} key={dummy.meetId} />
             )
             })}
-            {dummys.length == 0 ? <MeetJoin /> : <MeetJoinButton />}
+            {dummys.length == 0 ? <MeetJoinCard /> : <MeetJoinButton onClick={modalOn} />}
             <MeetCreateButton />
-            <MeetJoinModal />
+            <MeetJoinModal isJoinModalOn={modalVisibility} clickJoinModal={() => { setModalVisibility(false)}} clickExitModal={()=>{setModalVisibility(false)}}/>
         </>
     );
 }

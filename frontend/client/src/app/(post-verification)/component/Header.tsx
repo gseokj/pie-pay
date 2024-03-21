@@ -7,9 +7,9 @@ import {usePathname} from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "@/assets/icons/piepaylogo.svg"
-import MeetingIcon from "./MeetingIcon";
-import NotificationIcon from "./NotificationIcon";
-import ProfileIcon from "./ProfileIcon";
+import MeetingIcon from "./icons/MeetingIcon";
+import NotificationIcon from "./icons/NotificationIcon";
+import ProfileIcon from "./icons/ProfileIcon";
 import bell from "@/assets/icons/bell.svg"
 
 export default function Header() {

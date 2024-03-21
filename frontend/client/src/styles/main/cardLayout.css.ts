@@ -46,6 +46,11 @@ export const lineLayoutJoin = styleVariants({
     }],
     lineThree: [lineContainer, {
         justifyContent: "end",
+    }],
+    lineThreeModal: [lineContainer, {
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center"
     }]
 })
 
@@ -132,6 +137,14 @@ export const cardButton = styleVariants({
         backgroundColor: theme.lightGray,
         color: "white"
     }]
+});
+
+export const modalExitButton = style({
+    textDecoration: "underline",
+    textUnderlineOffset: "0.3rem",
+    color: theme.blueGray,
+    fontSize: "1.4rem",
+    marginBottom: "6%"
 });
 
 globalStyle(`${cardLayout.joinMeetGroup} > h3`, {

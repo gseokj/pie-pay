@@ -1,7 +1,7 @@
-import {Dummy} from "../page";
+import {Dummy} from "../../page";
 import * as styles from "@/styles/main/cardLayout.css";
 import * as fontCss from "@/styles/fonts.css";
-import StarIcon from "@/app/(post-verification)/component/StarIcon";
+import StarIcon from "@/app/(post-verification)/component/icons/StarIcon";
 import moreDots from "@/assets/icons/moreDots.svg";
 import theme from "@/styles/theme/theme";
 import Image from "next/image";
