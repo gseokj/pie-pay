@@ -1,10 +1,14 @@
 package com.pay.pie.domain.member.entity;
 
-public enum MemberRole {
-	USER("유저");
-	final String korean;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-	MemberRole(String korean) {
-		this.korean = korean;
-	}
+@Getter
+@AllArgsConstructor
+public enum MemberRole {
+	ROLE_NOT_CERTIFIED_MEMBER("ROLE_NOT_CERTIFIED"),
+	ROLE_CERTIFIED_MEMBER("ROLE_CERTIFIED");
+
+	String value;
+
 }

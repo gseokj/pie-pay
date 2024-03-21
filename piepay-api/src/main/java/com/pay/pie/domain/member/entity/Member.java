@@ -1,24 +1,23 @@
 package com.pay.pie.domain.member.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import com.pay.pie.domain.BaseEntity;
+import com.pay.pie.domain.account.entity.Account;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,8 +30,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "member")
 public class Member extends BaseEntity {
+
 	@Id
 	@Column(name = "member_id", nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Size(max = 255)
@@ -57,13 +58,18 @@ public class Member extends BaseEntity {
 	@Column(name = "email", nullable = false, length = 30)
 	private String email;
 
-	@ElementCollection(fetch = FetchType.LAZY)
+	@Column(name = "role")
 	@Enumerated(EnumType.STRING)
-	@CollectionTable(name = "member_role", joinColumns = @JoinColumn(name = "member_id"))
-	private Set<MemberRole> role = new HashSet<>();
+	private MemberRole memberRole;
 
-	public String getUserRole() {
-		return role.toString();
+	@OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+	private List<Account> accounts = new ArrayList<>();
+
+	@Builder(builderMethodName = "of")
+	public Member(String nickname, String profileImage, String email, MemberRole memberRole) {
+		this.nickname = nickname;
+		this.profileImage = profileImage;
+		this.email = email;
+		this.memberRole = memberRole;
 	}
-
 }
