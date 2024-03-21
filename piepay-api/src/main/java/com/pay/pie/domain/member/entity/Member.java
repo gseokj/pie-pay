@@ -1,20 +1,14 @@
 package com.pay.pie.domain.member.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.pay.pie.domain.BaseEntity;
-import com.pay.pie.domain.account.entity.Account;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -61,9 +55,6 @@ public class Member extends BaseEntity {
 	@Column(name = "role")
 	@Enumerated(EnumType.STRING)
 	private MemberRole memberRole;
-
-	@OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-	private List<Account> accounts = new ArrayList<>();
 
 	@Builder(builderMethodName = "of")
 	public Member(String nickname, String profileImage, String email, MemberRole memberRole) {

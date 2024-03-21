@@ -45,6 +45,7 @@ public class JwtService {
 		Member findMember = memberRepository.findByEmail(claims.getSubject()).orElseThrow(IllegalAccessError::new);
 
 		SecurityUserDto securityUserDto = SecurityUserDto.builder()
+			.memberId(findMember.getId())
 			.nickname(findMember.getNickname())
 			.email(findMember.getEmail())
 			.role(findMember.getMemberRole().getValue())

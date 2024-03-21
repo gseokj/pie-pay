@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class SecurityUserDto {
+	private Long memberId;
 	private String email;
 	private String nickname;
 	private String picture;
