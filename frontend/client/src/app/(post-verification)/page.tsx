@@ -11,6 +11,7 @@ import MeetJoinButton from "@/app/(post-verification)/component/meets/MeetJoinBu
 import MeetJoinCard from "@/app/(post-verification)/component/meets/MeetJoinCard";
 import MeetJoinModal from "@/app/(post-verification)/component/meets/MeetJoinModal";
 import {useState} from "react";
+import MeetCreateModal from "@/app/(post-verification)/component/meets/MeetCreateModal";
 
 
 const dummys = [
@@ -272,10 +273,17 @@ export interface Dummy {
 
 
 export default function Main() {
-    const [modalVisibility, setModalVisibility] = useState(false)
-    const modalOn = () => {
+    const [joinModalVisibility, setJoinModalVisibility] = useState(false)
+    const [createModalVisibility, setCreateModalVisibility] = useState(false)
+
+    const joinModalOn = () => {
         console.log('clicked')
-        setModalVisibility(true);
+        setJoinModalVisibility(true);
+    }
+
+    const createModalOn = () => {
+      console.log('create clicked')
+      setCreateModalVisibility(true);
     }
     return (
         <>
@@ -288,7 +296,7 @@ export default function Main() {
                 {dummys.length !== 0 &&
                     <button
                         className={`${styles.joinButton} ${fontCss.bold}`}
-                        onClick={modalOn}
+                        onClick={joinModalOn}
                     >모임 입장</button>
                 }
             </div>
@@ -297,9 +305,10 @@ export default function Main() {
                 <MeetGroup dummy={dummy} key={dummy.meetId} />
             )
             })}
-            {dummys.length == 0 ? <MeetJoinCard /> : <MeetJoinButton onClick={modalOn} />}
-            <MeetCreateButton />
-            <MeetJoinModal isJoinModalOn={modalVisibility} clickJoinModal={() => { setModalVisibility(false)}} clickExitModal={()=>{setModalVisibility(false)}}/>
+            {dummys.length == 0 ? <MeetJoinCard /> : <MeetJoinButton onClick={joinModalOn} />}
+            <MeetCreateButton onClick={createModalOn} />
+            <MeetJoinModal isJoinModalOn={joinModalVisibility} clickJoinModal={() => { setJoinModalVisibility(false)}} clickExitModal={()=>{setJoinModalVisibility(false)}}/>
+            <MeetCreateModal isCreateMeetModalOn={createModalVisibility} clickCreate={()=>{setCreateModalVisibility(false)}} clickExitCreate={()=>{setCreateModalVisibility(false)}} />
         </>
     );
 }

@@ -82,7 +82,7 @@ export default function MeetJoinModal({ isJoinModalOn, clickJoinModal, clickExit
     return (
         <>
             <div
-                className={`${styles.modalLayout} ${modalOn && styles.modalOn}`}
+                className={`${styles.modalLayout.joinMeetModal} ${modalOn && styles.modalOn}`}
                 onMouseMove={handleDragging}
                 onMouseUp={handleDragEnd}
                 onTouchEnd={handleDragEnd}

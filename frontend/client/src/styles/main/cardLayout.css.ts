@@ -50,7 +50,7 @@ export const lineLayoutJoin = styleVariants({
     lineThreeModal: [lineContainer, {
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "end"
     }]
 })
 
@@ -67,6 +67,25 @@ export const codeInput = style({
     textTransform: "uppercase",
     textAlign: "center",
     fontSize: "2.5rem",
+    transition: "all 0.15s ease-in-out",
+    selectors: {
+        '&::placeholder': {
+            color: theme.lightGray
+        },
+        '&:focus': {
+            backgroundColor: theme.skyblue,
+            outline: "none"
+        }
+    }
+});
+
+export const modalInput = style({
+    width: "100%",
+    padding: "0 4%",
+    marginTop: "2rem",
+    borderRadius: "0.15rem",
+    textTransform: "uppercase",
+    fontSize: "2rem",
     transition: "all 0.15s ease-in-out",
     selectors: {
         '&::placeholder': {

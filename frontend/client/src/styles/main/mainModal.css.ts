@@ -1,16 +1,14 @@
-import {globalStyle, style} from "@vanilla-extract/css";
+import {globalStyle, style, styleVariants} from "@vanilla-extract/css";
 import theme from "@/styles/theme/theme";
 import {cardLayout} from "@/styles/main/cardLayout.css";
 
-export const modalLayout = style({
+export const defaultModalLayout = style({
     zIndex: 101,
     position: "fixed",
-    bottom: "-60%",
     left: "0",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    height: "52.5%",
     backgroundColor: "white",
     borderRadius: "2rem 2rem 0 0",
     boxShadow: "0 -8px 12px" + theme.modalShadow,
@@ -24,12 +22,27 @@ export const modalLayout = style({
     transition: "all 0.4s ease-in-out"
 });
 
+export const modalLayout = styleVariants({
+    joinMeetModal: [defaultModalLayout, {
+        bottom: "-60%",
+        height: "52.5%",
+    }],
+    createMeetModal: [defaultModalLayout, {
+        bottom: "-56%",
+        height: "45%",
+    }]
+})
+
 export const modalOn = style({
     bottom: "0%"
 })
 
 export const modalContentLayout = style({
-    padding: "15% 6%"
+    padding: "15% 6%",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between"
 });
 
 globalStyle(`${modalContentLayout} > h3`, {
