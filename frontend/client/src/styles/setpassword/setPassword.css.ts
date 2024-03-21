@@ -6,6 +6,7 @@ export const container = style({
   flexDirection: 'column',
   alignItems: 'center',
   height: '100%',
+  padding: '20px',
 });
 
 export const textBox = style({
@@ -17,13 +18,13 @@ export const textBox = style({
 });
 
 export const title = style({
-  fontSize: '40px',
+  fontSize: '2.2rem',
   fontWeight: 'bold',
 });
 
 export const description = style({
   paddingTop: '1vh',
-  fontSize: '25px',
+  fontSize: '1.2rem',
 });
 
 export const passwordWrapper = style({
@@ -37,19 +38,19 @@ export const passwordScreen = style({
 });
 
 export const dotWrapper = style({
-  paddingRight: '15px',
+  paddingRight: '1.2rem',
 });
 
 export const dotBeforeInput = style({
-  width: '27px',
-  height: '27px',
+  width: '1.7rem',
+  height: '1.7rem',
   backgroundColor: theme.gray,
   borderRadius: '100px',
 });
 
 export const dotAfterInput = style({
-  width: '27px',
-  height: '27px',
+  width: '1.7rem',
+  height: '1.7rem',
   backgroundColor: theme.blue,
   borderRadius: '100px',
 });

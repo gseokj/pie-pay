@@ -19,7 +19,7 @@ export const number = style({
   width: '33.33%',
   height: '25%',
   fontWeight: 'bold',
-  fontSize: '40px',
+  fontSize: '3rem',
 });
 
 export const text = style({
@@ -34,6 +34,6 @@ export const text = style({
   textAlign: 'center',
   fontWeight: 'bold',
   verticalAlign: 'bottom',
-  fontSize: '40px',
+  fontSize: '1.7rem',
   color: theme.blueGray,
 });
