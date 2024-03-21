@@ -7,4 +7,5 @@ import com.pay.pie.domain.pay.entity.Pay;
 
 @Repository
 public interface PayRepository extends JpaRepository<Pay, Long>, PayRepositoryCustom {
+
 }

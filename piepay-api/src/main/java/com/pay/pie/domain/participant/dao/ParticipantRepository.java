@@ -6,8 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.pay.pie.domain.participant.entity.Participant;
 
 @Repository
-public interface ParticipantRepository extends JpaRepository<Participant, Long> {
-
-	// Participant findById(Long participantId);
+public interface ParticipantRepository extends JpaRepository<Participant, Long>, ParticipantRepositoryCustom {
 
 }
