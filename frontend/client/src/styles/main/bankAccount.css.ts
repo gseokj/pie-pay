@@ -3,8 +3,7 @@ import theme from "@/styles/theme/theme";
 
 export const bankAccountContainer = style({
     position: "relative",
-    marginTop: "24%",
-    padding: "5% 4%",
+    padding: "6% 4%",
     borderRadius: "16px",
     backgroundColor: theme.cyan,
     color: "white",
