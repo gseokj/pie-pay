@@ -4,6 +4,7 @@ import VirtualKeboard from '@/app/_component/VirtualKeboard';
 import * as styles from '@/styles/setpassword/setPassword.css';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useStore } from '@/store/useSetupPassword';
 
 interface Password {
   value0: string;
@@ -26,11 +27,13 @@ export default function SimplePasswordSet() {
     value4: '',
     value5: '',
   });
-
+  const { password: storePassword, setPassword: setStorePassword } = useStore();
+  // updateState();
   useEffect(() => {
     console.log(index);
     console.log(password);
-    if (index === 5) {
+    if (index === 6) {
+      setStorePassword(password);
       router.push('/setup-password/check');
     }
   }, [password, index]);

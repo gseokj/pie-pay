@@ -2,8 +2,48 @@
 
 import VirtualKeboard from '@/app/_component/VirtualKeboard';
 import * as styles from '@/styles/setpassword/setPassword.css';
+import { useEffect, useState } from 'react';
+import { useStore } from '@/store/useSetupPassword';
+// import { useRouter } from 'next/router';
+
+interface Password {
+  value0: string;
+  value1: string;
+  value2: string;
+  value3: string;
+  value4: string;
+  value5: string;
+}
 
 export default function SimplePasswordCheck() {
+  // const router = useRouter();
+  const [index, setIndex] = useState<number>(0);
+
+  const [password, setPassword] = useState<Password>({
+    value0: '',
+    value1: '',
+    value2: '',
+    value3: '',
+    value4: '',
+    value5: '',
+  });
+
+  const [oldPassword, setOldPassword] = useState<Password>({
+    value0: '',
+    value1: '',
+    value2: '',
+    value3: '',
+    value4: '',
+    value5: '',
+  });
+
+  const { password: storePassword }: { password: Password } = useStore();
+  useEffect(() => {
+    setOldPassword(storePassword);
+    console.log('확인 페이지');
+    console.log(oldPassword);
+  }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.textBox}>
@@ -15,26 +55,67 @@ export default function SimplePasswordCheck() {
       <div className={styles.passwordWrapper}>
         <ul className={styles.passwordScreen}>
           <li className={styles.dotWrapper}>
-            <div className={styles.dotAfterInput}></div>
+            <div
+              className={
+                password.value0 === ''
+                  ? styles.dotBeforeInput
+                  : styles.dotAfterInput
+              }
+            ></div>
           </li>
           <li className={styles.dotWrapper}>
-            <div className={styles.dotAfterInput}></div>
+            <div
+              className={
+                password.value1 === ''
+                  ? styles.dotBeforeInput
+                  : styles.dotAfterInput
+              }
+            ></div>
           </li>
           <li className={styles.dotWrapper}>
-            <div className={styles.dotAfterInput}></div>
+            <div
+              className={
+                password.value2 === ''
+                  ? styles.dotBeforeInput
+                  : styles.dotAfterInput
+              }
+            ></div>
           </li>
           <li className={styles.dotWrapper}>
-            <div className={styles.dotBeforeInput}></div>
+            <div
+              className={
+                password.value3 === ''
+                  ? styles.dotBeforeInput
+                  : styles.dotAfterInput
+              }
+            ></div>
           </li>
           <li className={styles.dotWrapper}>
-            <div className={styles.dotBeforeInput}></div>
+            <div
+              className={
+                password.value4 === ''
+                  ? styles.dotBeforeInput
+                  : styles.dotAfterInput
+              }
+            ></div>
           </li>
           <li className={styles.dotWrapper}>
-            <div className={styles.dotBeforeInput}></div>
+            <div
+              className={
+                password.value5 === ''
+                  ? styles.dotBeforeInput
+                  : styles.dotAfterInput
+              }
+            ></div>
           </li>
         </ul>
       </div>
-      <VirtualKeboard />
+      <VirtualKeboard
+        password={password}
+        setPassword={setPassword}
+        index={index}
+        setIndex={setIndex}
+      />
     </div>
   );
 }
