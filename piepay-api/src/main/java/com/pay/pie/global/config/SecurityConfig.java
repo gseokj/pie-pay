@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -31,10 +32,11 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity // 스프링 시큐리티 활성화, 웹 보안 설정
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 	private static final String[] URL_WHITE_LIST = {
-		"/error", "/login/**", "/favicon.ico",
+		"/error", "/login/**", "/favicon.ico", "/index/**",
 		"/actuator/**", "/actuator", "/api-docs/**", "/swagger-ui/**",
 		"/swagger-resources/**", "/swagger-ui.html", "/api/token/**"
 	};
