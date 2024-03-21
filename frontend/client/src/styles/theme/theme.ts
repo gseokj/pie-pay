@@ -9,7 +9,10 @@
 
 const theme = {
     // 레이아웃
-    layout: '#FAFAFA',
+    layout: '#f5f5fa',
+
+    // 헤더
+    header: 'rgba(245,245,250,0.8)',
 
     // 버튼
     blue: '#1892EB',
@@ -20,7 +23,7 @@ const theme = {
     orange: '#FFEFE0',
 
     // 그림자
-    shadow: 'rgb(0,0,0)',
+    shadow: '#e8e8e8',
 
 
     // 계좌 관련 (이름은 은행명으로 바꾸어도 됨)
@@ -34,9 +37,11 @@ const theme = {
     line: '#CCDEEB',
         // 즐겨찾기
     yellow: '#FFE483',
+    lightGray: '#D2D2D2',
 
         // 대신내기
     red:  '#F43A51',
+    lightred: '#FFF3E8',
     
     // 카카오
     kakao: '#FEE500',

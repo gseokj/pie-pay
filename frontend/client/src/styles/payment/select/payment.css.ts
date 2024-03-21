@@ -6,18 +6,14 @@ export const container = style({
     width: '100%',
 
     // Default width
-    '@media': {
-        'screen and (min-width: 768px)': {
-            width: '40%',
-            left: '30%',
-        },
-    },
+
     '::-webkit-scrollbar': {
-      width: '3px'
+        width: '3px'
     },
     '::-webkit-scrollbar-thumb': {
-      backgroundColor: '#D3D3D3'
+        backgroundColor: '#D3D3D3'
     },
+    overflowY: 'auto',
     height: '100%',
     display: 'flex',
     position: 'absolute',

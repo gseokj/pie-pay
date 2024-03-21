@@ -18,7 +18,7 @@ const MeetMembers = [
 ]
 // 계좌
 const account = {
-    "bankName": "국민은행",
+    "bankName": "하나은행",
     "accountNo": "480-21030-13412",
     "accountBalance": 885420
 }
@@ -61,6 +61,59 @@ const participants =
                 }
             ]
         }
+const participantsResult =
+    {
+        "payId": 3,
+        "createdAt": new Date(),
+        "payStatus": "ing",
+        "participants": [
+            {
+                "participantId": 3,
+                "memberInfo": {
+                    "memberId": 1,
+                    "nickname": "이성목",
+                    "profileImage": faker.image.avatar()
+                },
+                "isDrinkAlcohol": false,
+                "payAgree": "agree",
+                "payAmount" : "30000"
+            },
+            {
+                "participantId": 4,
+                "memberInfo": {
+                    "memberId": 2,
+                    "nickname": "김준수",
+                    "profileImage": faker.image.avatar()
+                },
+                "isDrinkAlcohol": true,
+                "payAgree": "deny",
+                "payAmount" : "0"
+            },
+            {
+                "participantId": 5,
+                "memberInfo": {
+                    "memberId": 3,
+                    "nickname": "고석주",
+                    "profileImage": faker.image.avatar()
+                },
+                "isDrinkAlcohol": true,
+                "payAgree": "agree",
+                "payAmount" : "15000"
+            },
+            {
+                "participantId": 6,
+                "memberInfo": {
+                    "memberId": 4,
+                    "nickname": "속석주",
+                    "profileImage": faker.image.avatar()
+                },
+                "isDrinkAlcohol": true,
+                "payAgree": "agree",
+                "payAmount" : "20000"
+            },
+        ]
+    }
+
 
 
 // 영수증
@@ -157,7 +210,7 @@ export const handlers = [
         const { openerId} = params;
         console.log('참가인원 리턴');
         return HttpResponse.json(
-            participants
+            participantsResult
         )
     }),
 ];

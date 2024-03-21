@@ -1,6 +1,6 @@
 'use client';
 
-import Receipt from '@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/Receipt';
+import ReceiptModal from '@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/ReceiptModal';
 import * as styles from '@/styles/payment/result/receipt.css';
 import ModalCloseButton from '@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/ModalCloseButton';
 import { useReceiptModal } from '@/store/useReceiptModal';
@@ -13,12 +13,12 @@ export default function Page({ params }: Props) {
   const { isVisible, updateState } = useReceiptModal();
   return (<div className={`${isVisible ? styles.container.visible : styles.container.invisible}`}>
     <div className={`${isVisible ? styles.modal.visible : styles.modal.invisible}`}>
-      <div className="flex justify-between">
+      <div className={styles.header}>
         <div/>
         <div/>
         <ModalCloseButton />
       </div>
-      <Receipt payId={payId} />
+      <ReceiptModal payId={payId} />
     </div>
   </div>);
 }

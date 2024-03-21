@@ -12,7 +12,7 @@ type Props= {
     payId:string;
 }
 export default function ParticipantList({payId}:Props) {
-    const { data: payment, isLoading, error } = useQuery({queryKey: ['payId',payId], queryFn: getPayment}) ;
+    const { data: payment, isLoading, error } = useQuery({queryKey: ['payment',payId], queryFn: getPayment}) ;
     const [participants, setParticipants] = useState<Participant[]>([]);
     useEffect(() => {
         if(!payment) return;

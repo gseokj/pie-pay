@@ -3,14 +3,12 @@ import theme from "@/styles/theme/theme";
 
 export const bankAccountContainer = style({
     position: "relative",
-    marginTop: "4%",
-    marginLeft: "6%",
-    marginRight: "6%",
+    marginTop: "24%",
     padding: "5% 4%",
     borderRadius: "16px",
     backgroundColor: theme.cyan,
     color: "white",
-    boxShadow: "0 3px 6px" + theme.shadow
+    boxShadow: "0 8px 12px" + theme.shadow
 })
 
 export const bankLogoContainer = style({
@@ -41,12 +39,11 @@ export const bankName = style({
 })
 
 export const bankAccountNumber = style({
-    fontSize: "0.8rem"
+    fontSize: "0.9rem"
 })
 
 export const bankAccountBalance = style({
     fontSize: "1.3rem",
-    fontWeight: "600"
 })
 
 export const visibilityContainer = style({
