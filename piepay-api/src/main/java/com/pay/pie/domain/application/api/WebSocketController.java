@@ -1,12 +1,11 @@
 package com.pay.pie.domain.application.api;
 
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,34 +50,67 @@ public class WebSocketController {
 	}
 
 	// /pub/cache 로 메시지를 발행한다.
-	@MessageMapping("/pay-start")
-	// @SendTo("/sub/agree")
-	public void sendMessage(Map<String, Object> params) {
+	// @MessageMapping("/pay-start")
+	// // @SendTo("/sub/agree")
+	// public void sendMessage(Map<String, Object> params) {
+	//
+	// 	// /sub/cache 에 구독중인 client에 메세지를 보낸다.
+	// 	simpleMessageSendingOperations.convertAndSend("/topic/agree/" + params.get("payId"), params);
+	// }
 
-		// /sub/cache 에 구독중인 client에 메세지를 보낸다.
-		simpleMessageSendingOperations.convertAndSend("/topic/agree/" + params.get("payId"), params);
+	/*
+	연결확인용
+	 */
+	@MessageMapping("/channel")
+	@SendTo("/sub/{payId}")
+	public String sendMessage(String message) {
+		simpleMessageSendingOperations.convertAndSend("/sub", "socket connection completed.");
+		return message;
 	}
 
-	@MessageMapping("/agreement/{participantId}")
-	public void requestAgreement(@DestinationVariable Long participantId) {
-		log.info("여기옴?");
+	// @MessageMapping("/{payId}/agree/{participantId}")
+	// @SendTo("/sub/{payId}")
+	// public void requestAgreement(
+	// 	@DestinationVariable Long payId,
+	// 	@DestinationVariable Long participantId) {
+	// 	log.info("여기옴?");
+	// 	agreeParticipantService.requestAgreement(payId, participantId);
+	// }
 
-		agreeParticipantService.requestAgreement(participantId);
+	/*
+	결제 동의
+	 */
+	@MessageMapping("/{payId}/agree/{participantId}")
+	@SendTo("/sub/{payId}")
+	public void respondToAgreement(
+		@DestinationVariable Long payId,
+		@DestinationVariable Long participantId,
+		boolean agreed) {
+		agreeParticipantService.respondToAgreement(payId, participantId);
 	}
 
-	@MessageMapping("/agreement/response/{participantId}")
-	public void respondToAgreement(@DestinationVariable Long participantId, boolean agreed) {
-		agreeParticipantService.respondToAgreement(participantId, agreed);
+	/*
+	대신내주기 요청
+	 */
+	@MessageMapping("/{payId}/instead/{borrowId}")
+	@SendTo("/sub/{payId}")
+	public void requestPayInstead(
+		@DestinationVariable Long payId,
+		@DestinationVariable Long borrowId) {
+		payInsteadService.requestPayInstead(payId, borrowId);
 	}
 
-	@MessageMapping("/payinstead/{participantId}")
-	public void requestPayInstead(@DestinationVariable Long participantId, Long payInsteadId) {
-		payInsteadService.requestPayInstead(participantId, payInsteadId);
-	}
-
-	@MessageMapping("/payinstead/response/{participantId}")
-	public void respondToPayInstead(@DestinationVariable Long participantId, boolean agreed) {
-		payInsteadService.respondToPayInstead(participantId, agreed);
+	/*
+	대신내주기 승낙
+	 */
+	@MessageMapping("/{payId}/instead/{borrowId}/{lendId}")
+	@SendTo("/sub/{payId}")
+	public void respondToPayInstead(
+		@DestinationVariable Long payId,
+		@DestinationVariable Long borrowId,
+		@DestinationVariable Long lendId,
+		boolean agreed) {
+		payInsteadService.respondToPayInstead(payId, borrowId, lendId, agreed);
 	}
 
 	// private PayParticipantService payParticipantService;
