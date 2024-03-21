@@ -44,10 +44,7 @@ public class PayServiceImpl implements PayService {
 	@Override
 	public CompletedPaymentRes processPayment(Long payId) {
 		//참여자 정보
-		List<Participant> participantList = queryFactory
-			.selectFrom(participant)
-			.where(participant.pay.id.eq(payId))
-			.fetch();
+		List<Participant> participantList = payRepository.findParticipantsByPayId(payId);
 
 		log.info("참여자들: {}", participantList);
 
