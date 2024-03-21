@@ -8,7 +8,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
@@ -22,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping
+// @RequestMapping
 @RequiredArgsConstructor
 public class WebSocketController {
 
@@ -37,7 +36,10 @@ public class WebSocketController {
 	// @EventListener은 한개의 매개변수만 가질 수 있다.
 	@EventListener
 	public void handleWebSocketConnectListener(SessionConnectEvent event) {
-		LOGGER.info("Received a new web socket connection");
+		log.info("연결!");
+		StompHeaderAccessor headerAccesor = StompHeaderAccessor.wrap(event.getMessage());
+		String sessionId = headerAccesor.getSessionId();
+		LOGGER.info("Received a new web socket connection : " + sessionId);
 	}
 
 	// 사용자가 웹 소켓 연결을 끊으면 실행됨
@@ -64,6 +66,7 @@ public class WebSocketController {
 	@MessageMapping("/channel")
 	@SendTo("/sub/{payId}")
 	public String sendMessage(String message) {
+		log.info("Received message: {}", message);
 		simpleMessageSendingOperations.convertAndSend("/sub", "socket connection completed.");
 		return message;
 	}
