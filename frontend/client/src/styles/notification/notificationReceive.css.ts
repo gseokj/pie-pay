@@ -11,6 +11,7 @@ export const container = style({
     justifyContent: 'center',
     padding: '1.5rem',
     top: 0,
+    cursor:'pointer',
 
     zIndex: '99',
     margin: '10px',
