@@ -38,7 +38,9 @@ public class SecurityConfig {
 	private static final String[] URL_WHITE_LIST = {
 		"/**", "/error", "/login/**", "/favicon.ico", "/index/**",
 		"/actuator/**", "/actuator", "/api-docs/**", "/swagger-ui/**",
-		"/swagger-resources/**", "/swagger-ui.html", "/api/token/**"
+		"/swagger-resources/**", "/swagger-ui.html", "/api/token/**",
+		"/pub/**", "/sub/**", "/stomp-pay"
+
 	};
 
 	private final CustomOAuth2UserService customOAuth2UserService;

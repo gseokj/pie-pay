@@ -6,6 +6,5 @@ public interface ErrorCode {
 
 	String getDivisionCode();
 
-	String getMessage();
 
 }
