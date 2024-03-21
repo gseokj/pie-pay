@@ -1,9 +1,16 @@
+"use client";
+
+
 import BankAccount from "./component/BankAccount";
-import MeetGroup from "@/app/(post-verification)/component/MeetGroup";
+import MeetGroup from "@/app/(post-verification)/component/meets/MeetGroup";
 import {faker} from "@faker-js/faker";
 import * as styles from "@/styles/main/main.css";
 import * as fontCss from "@/styles/fonts.css";
-import MeetCreateButton from "@/app/(post-verification)/component/MeetCreateButton";
+import MeetCreateButton from "@/app/(post-verification)/component/meets/MeetCreateButton";
+import MeetJoinButton from "@/app/(post-verification)/component/meets/MeetJoinButton";
+import MeetJoinCard from "@/app/(post-verification)/component/meets/MeetJoinCard";
+import MeetJoinModal from "@/app/(post-verification)/component/meets/MeetJoinModal";
+import {useState} from "react";
 
 
 const dummys = [
@@ -126,22 +133,22 @@ const dummys = [
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 10,
+        "memberId": 14,
         "nickname": "m4",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 11,
+        "memberId": 15,
         "nickname": "m5",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 12,
+        "memberId": 16,
         "nickname": "m6",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 13,
+        "memberId": 17,
         "nickname": "m7",
         "profileImage": faker.image.avatar()
       },
@@ -149,7 +156,7 @@ const dummys = [
     favorite: false
   },
   {
-    meetId: 4,
+    meetId: 5,
     meetName: '갈까마귀모임',
     meetDate: '어제',
     meetImage: faker.image.avatar(),
@@ -175,22 +182,22 @@ const dummys = [
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 10,
+        "memberId": 14,
         "nickname": "m4",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 11,
+        "memberId": 15,
         "nickname": "m5",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 12,
+        "memberId": 16,
         "nickname": "m6",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 13,
+        "memberId": 17,
         "nickname": "m7",
         "profileImage": faker.image.avatar()
       },
@@ -198,7 +205,7 @@ const dummys = [
     favorite: false
   },
   {
-    meetId: 4,
+    meetId: 6,
     meetName: '갈까마귀모임',
     meetDate: '어제',
     meetImage: faker.image.avatar(),
@@ -224,22 +231,22 @@ const dummys = [
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 10,
+        "memberId": 14,
         "nickname": "m4",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 11,
+        "memberId": 15,
         "nickname": "m5",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 12,
+        "memberId": 16,
         "nickname": "m6",
         "profileImage": faker.image.avatar()
       },
       {
-        "memberId": 13,
+        "memberId": 17,
         "nickname": "m7",
         "profileImage": faker.image.avatar()
       },
@@ -247,6 +254,8 @@ const dummys = [
     favorite: false
   },
 ]
+
+// const dummys:Dummy[] = []
 
 export interface Dummy {
   meetId: number;
@@ -262,20 +271,35 @@ export interface Dummy {
 }
 
 
-export default async function Main() {
-
+export default function Main() {
+    const [modalVisibility, setModalVisibility] = useState(false)
+    const modalOn = () => {
+        console.log('clicked')
+        setModalVisibility(true);
+    }
     return (
         <>
-            <section className={styles.mainContainer}>
-                <BankAccount />
-                <h1 className={`${styles.heading} ${fontCss.bold}`}>모임 {dummys.length}</h1>
-                {dummys.map((dummy: Dummy)=>{
-                    return (
-                        <MeetGroup dummy={dummy} />
-                    )
-                })}
-                <MeetCreateButton />
-            </section>
+            <BankAccount />
+            <div className={styles.categoryContainer}>
+                <div className={styles.category}>
+                    <h1 className={fontCss.bold}>모임</h1>
+                    <p>{dummys.length}</p>
+                </div>
+                {dummys.length !== 0 &&
+                    <button
+                        className={`${styles.joinButton} ${fontCss.bold}`}
+                        onClick={modalOn}
+                    >모임 입장</button>
+                }
+            </div>
+            {dummys.map((dummy: Dummy) => {
+            return (
+                <MeetGroup dummy={dummy} key={dummy.meetId} />
+            )
+            })}
+            {dummys.length == 0 ? <MeetJoinCard /> : <MeetJoinButton onClick={modalOn} />}
+            <MeetCreateButton />
+            <MeetJoinModal isJoinModalOn={modalVisibility} clickJoinModal={() => { setModalVisibility(false)}} clickExitModal={()=>{setModalVisibility(false)}}/>
         </>
     );
 }
