@@ -30,6 +30,7 @@ public class OrderService {
 
 		Pay pay = payRepository.findById(payId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 payId을 가진 Pay를 찾을 수 없음"));
+		System.out.println("확인" + pay.getMeet().getId());
 		Hibernate.initialize(pay.getMeet());
 		addOrderRequest.setPay(pay);
 
