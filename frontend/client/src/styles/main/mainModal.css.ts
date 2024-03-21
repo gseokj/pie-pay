@@ -21,7 +21,7 @@ export const modalLayout = style({
             left: '30%'
         },
     },
-    transition: "all 0.4s"
+    transition: "all 0.4s ease-in-out"
 });
 
 export const modalOn = style({
@@ -79,7 +79,7 @@ export const modalBackground = style({
             left: "30%"
         }
     },
-    transition: "all 0.4s",
+    transition: "all 0.4s ease-in-out",
 });
 
 export const modalBackgroundOn = style({

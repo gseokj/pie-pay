@@ -24,7 +24,7 @@ export default async function PostVerificationLayout({children}: Props) {
                 <Header/>
                 <HydrationBoundary state={dehydratedState}>
                     <NotificationReceive/>
-                    <div className="pt-[15%] p-5">
+                    <div className="pt-[24%] p-5">
 
                         {children}
                     </div>
