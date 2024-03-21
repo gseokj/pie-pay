@@ -25,11 +25,11 @@ export const modalLayout = style({
 });
 
 export const modalOn = style({
-    bottom: "0"
+    bottom: "0%"
 })
 
 export const modalContentLayout = style({
-    padding: "10% 6%"
+    padding: "15% 6%"
 });
 
 globalStyle(`${modalContentLayout} > h3`, {
@@ -43,14 +43,26 @@ globalStyle(`${modalContentLayout} > p`, {
     color: theme.gray
 });
 
+export const modalHandleArea = style({
+    position: "absolute",
+    top: 0,
+    display: "flex",
+    justifyContent: "center",
+    width: "100%"
+});
+
 export const modalHandle = style({
     height: "0.4rem",
     width: "5rem",
     marginTop: "1rem",
     borderRadius: "0.2rem",
     backgroundColor: theme.skyblue,
-    cursor: "pointer"
+    cursor: "pointer",
 });
+
+export const modalHandleActive = style({
+    backgroundColor: theme.blue
+})
 
 export const modalBackground = style({
     visibility: "hidden",

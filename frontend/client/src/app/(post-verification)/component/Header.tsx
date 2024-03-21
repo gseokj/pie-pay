@@ -16,7 +16,7 @@ export default function Header() {
     const path = usePathname();
     return (
         <div className={styles.container}>
-            <Link href="/" className={styles.logoContainer}><Image className={styles.headerLogo} src={logo} alt='logo'/></Link>
+            <Link href="/" className={styles.logoContainer}><Image className={styles.headerLogo} src={logo} priority={true} alt='logo'/></Link>
             <div className={styles.navigation}>
                 <Link href="/" className={`${styles.buttonContainer} ${fontCss.semibold}`} style={ path === "/" ? {color: theme.blue} : {color: theme.blueGray}}>
                     <MeetingIcon color={ path === "/" ? theme.blue : theme.blueGray} />
