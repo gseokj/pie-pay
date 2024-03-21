@@ -22,10 +22,10 @@ export default async function PaymentModalLayout({children, params}: Props) {
 
 
     return (
-        <div className={styles.container}>
+        <>
             <HydrationBoundary state={dehydratedState}>
                 {children}
             </HydrationBoundary>
-        </div>
+        </>
     );
 }

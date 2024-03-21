@@ -9,12 +9,11 @@ type Props = {
 }
 
 export default function PaymentModalLayout({params}: Props) {
-        const {meetId} = params;
+    const {meetId} = params;
 
 
     return (
-        <div className={styles.container}>
-            <SelectButton meetId={meetId}/>
-        </div>
+        <>
+        </>
     );
 }
