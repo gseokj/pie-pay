@@ -58,7 +58,8 @@ const participants =
                     },
                     "isDrinkAlcohol": false,
                     "payAgree": "await"
-                }
+                },
+
             ]
         }
 const participantsResult =
@@ -96,8 +97,8 @@ const participantsResult =
                     "nickname": "고석주",
                     "profileImage": faker.image.avatar()
                 },
-                "isDrinkAlcohol": true,
-                "payAgree": "agree",
+                "isDrinkAlcohol": false,
+                "payAgree": "await",
                 "payAmount" : "15000"
             },
             {
@@ -119,9 +120,16 @@ const participantsResult =
 // 영수증
 const menuItems = [{menuName: "족발(대)",menuPrice: 62000, quantity: 1},{menuName: "계란찜",menuPrice: 8000, quantity: 1},{menuName: "참이슬",menuPrice: 5000,quantity: 3},{menuName: "카스", menuPrice: 5000, quantity: 2}]
 const menuItems2 = [{menuName: "담배",menuPrice: 4000, quantity: 1},{menuName: "라면",menuPrice: 4000, quantity: 1},{menuName: "참이슬",menuPrice: 5000,quantity: 3},{menuName: "카스", menuPrice: 5000, quantity: 2}]
-const paymentResult = [{orderMenuId:1, storeName: "(주) 뽕족 강남역본점",address: "서울 강남구 테헤란로4길 15(역삼동)",phone:"010-2839-1132",createdAt: "2024.03.08",menuItems,totalAmount:95000},
-    {orderMenuId:2, storeName: "주전부리",address: "서울 강남구 테헤란로4길 15(역삼동)",phone:"010-2839-1132",createdAt: "2024.03.08",menuItems2,totalAmount:20000}]
+const paymentResult = [{orderMenuId:1, storeName: "(주) 뽕족 강남역본점",address: "서울 강남구 테헤란로4길 15(역삼동)",phone:"010-2839-1132",createdAt: "2024-03-20T11:39:04.663Z",menuItems,totalAmount:95000},
+    {orderMenuId:2, storeName: "주전부리",address: "서울 강남구 테헤란로4길 15(역삼동)",phone:"010-2839-1132",createdAt: "2024-03-20T11:39:04.663Z",menuItems2,totalAmount:20000}]
 
+
+const notification = [
+    {notificationId:1 ,message: "40,000원 결제", type: "withdraw", createdAt: "2024-03-20T11:39:04.663Z", readOrNot:false},
+    {notificationId:2 ,message: "128,000 입금", type: "deposit", createdAt: "2024-03-19T11:39:04.663Z", readOrNot:false},
+    {notificationId:3 ,message: "황재언님이 (주) 뽕족 강남역본점에서 28,000원을 대신 지불했습니다.", type: "instead", createdAt: "2024-03-10T11:39:04.663Z", readOrNot:true},
+    {notificationId:4 ,message: "고석주님에게 갚아야 할 금액 23,500원이 남아있습니다.", type: "notification", createdAt: "2024-02-01T11:39:04.663Z" , readOrNot:false},
+]
 const delay = (ms: number) => new Promise((res) => {
     setTimeout(res, ms);
 })
@@ -213,4 +221,11 @@ export const handlers = [
             participantsResult
         )
     }),
+    http.get('/members/notification', ({ request }) => {
+        console.log('알림 리턴');
+        return HttpResponse.json(
+            notification
+        )
+    }),
+
 ];

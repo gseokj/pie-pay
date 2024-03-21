@@ -29,9 +29,7 @@ export default function Page({params}:Props) {
 
     return (
         <div className={styles.container}>
-            <div className={styles.progress}>
                 <Header type={one}/>
-            </div>
             <div className={styles.contentContainer}>
                 <div className={styles.headerContainer}>
                     <p className={styles.title}>결제 멤버를 선택해 주세요</p>

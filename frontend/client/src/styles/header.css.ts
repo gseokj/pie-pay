@@ -3,7 +3,7 @@ import theme from "@/styles/theme/theme";
 
 
 export const container = style({
-    zIndex: "99",
+    zIndex: "5",
     backdropFilter: "blur(8px)",
     display: 'flex',
     justifyContent: 'space-between',

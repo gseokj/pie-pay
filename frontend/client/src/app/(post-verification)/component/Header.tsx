@@ -22,8 +22,8 @@ export default function Header() {
                     <MeetingIcon color={ path === "/" ? theme.blue : theme.blueGray} />
                     모임
                 </Link>
-                <Link href="/alarm" className={`${styles.buttonContainer} ${fontCss.semibold}`} style={ path.includes("alarm") ? {color: theme.blue} : {color: theme.blueGray}}>
-                    <NotificationIcon color={ path.includes("alarm") ? theme.blue : theme.blueGray} />
+                <Link href="/notification" className={`${styles.buttonContainer} ${fontCss.semibold}`} style={ path.includes("notification") ? {color: theme.blue} : {color: theme.blueGray}}>
+                    <NotificationIcon color={ path.includes("notification") ? theme.blue : theme.blueGray} />
                     알림
                 </Link>
                 <Link href="/mypage/1" className={`${styles.buttonContainer} ${fontCss.semibold}`} style={ path.includes("mypage") ? {color: theme.blue} : {color: theme.blueGray}}>

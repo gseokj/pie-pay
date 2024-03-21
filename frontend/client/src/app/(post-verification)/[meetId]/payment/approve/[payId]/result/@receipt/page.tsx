@@ -11,7 +11,7 @@ type Props = {
 export default function Page({ params }: Props) {
   const { payId } = params;
   const { isVisible, updateState } = useReceiptModal();
-  return (<div className={`${isVisible ? styles.container.visible : styles.container.invisible}`}>
+  return (<div className={`${isVisible ? styles.container.invisible : styles.container.visible}`}>
     <div className={`${isVisible ? styles.modal.visible : styles.modal.invisible}`}>
       <div className={styles.header}>
         <div/>

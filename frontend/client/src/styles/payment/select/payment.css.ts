@@ -15,13 +15,14 @@ export const container = style({
     },
     overflowY: 'auto',
     height: '100%',
-    display: 'flex',
     position: 'absolute',
-    justifyContent: 'center',
     backgroundColor: theme.layout,
     padding: '20px',
     top: 0,
     right: 0,
     bottom: 0,
     left: 0,
+    zIndex:10,
+
+
 })
