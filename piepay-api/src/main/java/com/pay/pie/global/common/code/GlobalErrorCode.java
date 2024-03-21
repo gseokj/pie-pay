@@ -3,7 +3,7 @@ package com.pay.pie.global.common.code;
 import lombok.Getter;
 
 @Getter
-public enum GlobalErrorCode implements ErrorCode{
+public enum GlobalErrorCode implements ErrorCode {
 
 	/*
 	 * ******************************* Global Error CodeList ***************************************
@@ -48,7 +48,25 @@ public enum GlobalErrorCode implements ErrorCode{
 	NULL_POINT_ERROR(404, "G010", "Null Point Exception"),
 
 	// @RequestBody 및 @RequestParam, @PathVariable 값이 유효하지 않음
-	NOT_VALID_ERROR(404, "G011", "Handle Validation Exception");
+	NOT_VALID_ERROR(404, "G011", "Handle Validation Exception"),
+
+	UNAUTHORIZED_USER_EXCEPTION(403, "B100", "권한이 없는 사용자입니다."),
+
+	FAILED_OAUTH2_AUTHENTICATION_EXCEPTION(403, "B101", "소셜 로그인에 실패했습니다."),
+
+	INVALID_ACCESS_TOKEN_EXCEPTION(403, "B102", "유효하지 않은 ACCESS TOKEN 입니다."),
+
+	EXPIRED_ACCESS_TOKEN_EXCEPTION(403, "B103", "만료된 ACCESS TOKEN 입니다."),
+
+	INCONSISTENT_ACCESS_TOKEN_EXCEPTION(403, "B104", "일치하지 않는 ACCESS TOKEN 입니다."),
+
+	INVALID_REFRESH_TOKEN_EXCEPTION(403, "B105", "유효하지 않은 REFRESH TOKEN 입니다."),
+
+	EXPIRED_REFRESH_TOKEN_EXCEPTION(403, "B106", "만료된 REFRESH TOKEN 입니다."),
+
+	INCONSISTENT_REFRESH_TOKEN_EXCEPTION(403, "B107", "일치하지 않는 REFRESH TOKEN 입니다."),
+	ILLEGAL_TOKEN_EXCEPTION(403, "B107", "헤더에 토큰 정보가 존재하지 않습니다."),
+	;
 
 	/*
 	 * ******************************* Error Code Constructor ***************************************

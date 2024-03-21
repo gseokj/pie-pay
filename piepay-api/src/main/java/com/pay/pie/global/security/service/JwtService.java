@@ -47,7 +47,7 @@ public class JwtService {
 		SecurityUserDto securityUserDto = SecurityUserDto.builder()
 			.nickname(findMember.getNickname())
 			.email(findMember.getEmail())
-			.role("ROLE_".concat(findMember.getUserRole()))
+			.role(findMember.getMemberRole().getValue())
 			.build();
 
 		return new UsernamePasswordAuthenticationToken(securityUserDto, "",
