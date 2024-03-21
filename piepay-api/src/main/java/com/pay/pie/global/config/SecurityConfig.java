@@ -36,9 +36,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 	private static final String[] URL_WHITE_LIST = {
+		"/**", "/pub/**", "/sub/**", "/pay",
 		"/error", "/login/**", "/favicon.ico", "/index/**",
 		"/actuator/**", "/actuator", "/api-docs/**", "/swagger-ui/**",
-		"/swagger-resources/**", "/swagger-ui.html", "/api/token/**"
+		"/swagger-resources/**", "/swagger-ui.html", "/api/token/**",
+
 	};
 
 	private final CustomOAuth2UserService customOAuth2UserService;
