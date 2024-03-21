@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class Menu extends BaseEntity {
 
 	public enum ManuCategory {
-		FOOD, ALCOHOL
+		NON_ALCOHOL, ALCOHOL
 	}
 
 	@Id
