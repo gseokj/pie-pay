@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
 import {useEffect, useState} from "react";
+import {useRouter} from "next/navigation";
 
 const notification = {
     notificationId: 1,
@@ -23,11 +24,17 @@ const notification = {
 dayjs.extend(relativeTime);
 dayjs.locale('ko')
 export default function NotificationReceive() {
+    const route = useRouter();
     const [isVisible, setIsVisible] = useState<boolean>(false)
     useEffect(() => {
         setTimeout(() => setIsVisible(prevState => !prevState), 100);
     }, []);
-    return (<div className={`${styles.container}  ${isVisible && styles.visible}`}>
+
+    const onClickNotification= ()=>{
+        route.replace("/notification")
+    }
+    return (<div onClick={onClickNotification} className={`${styles.container}  ${isVisible && styles.visible}`}>
+        
         <div className={styles.content}>
             <div className={styles.title}>
                 {notification.type === "withdraw" && <><Image className="" src={withdraw} alt="결제"/><p>결제</p></>}
