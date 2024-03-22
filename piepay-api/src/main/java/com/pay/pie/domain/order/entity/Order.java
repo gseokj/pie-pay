@@ -27,6 +27,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "`order`")
 @Builder
+// @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Order extends BaseEntity {
 
 	public enum PaymentStatus {
@@ -43,7 +44,7 @@ public class Order extends BaseEntity {
 	@JoinColumn(name = "store_id", nullable = false)
 	private Store store;
 
-	@NotNull
+	// @NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "pay_id", nullable = false)
 	private Pay pay;

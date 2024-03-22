@@ -25,6 +25,7 @@ public class CompletedPayServiceImpl implements CompletedPayService {
 	@Override
 	public ReceiptRes getReceipt(Long payId) {
 		Order order = orderRepository.findByPayId(payId);
+		// Order order = new Order();
 		Pay pay = payRepository.findById(payId).orElseThrow(
 			() -> new IllegalArgumentException("해당 Pay 없음")
 		);

@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "menu")
 public class Menu extends BaseEntity {
 
-	public enum ManuCategory {
+	public enum MenuCategory {
 		NON_ALCOHOL, ALCOHOL
 	}
 
@@ -44,8 +44,10 @@ public class Menu extends BaseEntity {
 
 	@NotNull
 	@Column(name = "menu_price", nullable = false)
-	private Long menuPrice;
+	private Integer menuPrice;
 
+	@NotNull
+	@Column(name = "menu_category", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private ManuCategory manuCategory;
+	private Menu.MenuCategory menuCategory;
 }
