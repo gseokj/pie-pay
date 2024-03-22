@@ -28,13 +28,16 @@ export const description = style({
 });
 
 export const passwordWrapper = style({
+  display: 'flex',
+  flexDirection: 'column',
   height: '20%',
   justifyContent: 'center',
-  alignContent: 'center',
+  alignItems: 'center',
 });
 
 export const passwordScreen = style({
   display: 'flex',
+  paddingBottom: '1rem',
 });
 
 export const dotWrapper = style({
@@ -53,4 +56,26 @@ export const dotAfterInput = style({
   height: '1.7rem',
   backgroundColor: theme.blue,
   borderRadius: '100px',
+});
+
+export const messageVisible = style({
+  display: 'flex',
+  position: 'absolute',
+  visibility: 'visible',
+  marginTop: '5rem',
+  fontWeight: 'bold',
+  fontSize: '1.1rem',
+  justifyContent: 'center',
+  color: 'red',
+});
+
+export const messageInvisible = style({
+  display: 'flex',
+  position: 'absolute',
+  visibility: 'hidden',
+  marginTop: '5rem',
+  fontWeight: 'bold',
+  fontSize: '1.1rem',
+  justifyContent: 'center',
+  color: 'red',
 });
