@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Getter
+@Builder
 @Table(name = "order_menu")
 public class OrderMenu extends BaseEntity {
 
@@ -43,4 +45,11 @@ public class OrderMenu extends BaseEntity {
 	@NotNull
 	@Column(name = "quantity", nullable = false)
 	private Integer quantity;
+
+	@Builder // 빌더 패턴으로 객체 생성
+	public OrderMenu(Order order, Menu menu, int quantity) {
+		this.order = order;
+		this.menu = menu;
+		this.quantity = quantity;
+	}
 }

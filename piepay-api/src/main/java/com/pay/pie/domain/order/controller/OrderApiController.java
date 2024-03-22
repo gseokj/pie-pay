@@ -1,6 +1,7 @@
 package com.pay.pie.domain.order.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ public class OrderApiController {
 
 	private final OrderService orderService;
 
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@PostMapping("/receipt/{payId}")
 	public ResponseEntity<BaseResponse<Order>> addReceipt(@PathVariable Long payId) {
 		Order order = orderService.save(payId);
