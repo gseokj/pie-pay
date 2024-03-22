@@ -9,21 +9,24 @@
 
 const theme = {
     // 레이아웃
-    layout: '#f5f5fa',
+    layout: '#f9f9fc',
 
     // 헤더
-    header: 'rgba(245,245,250,0.8)',
+    header: 'rgba(249,249,252,0.8)',
 
     // 버튼
     blue: '#1892EB',
+    blueActive: '#007ed5',
     blueGray: '#9CB0BE',
 
     // 박스
     skyblue: '#DDF1FF',
+    skyblueActive: '#99c9ea',
     orange: '#FFEFE0',
 
     // 그림자
     shadow: '#e8e8e8',
+    modalShadow: '#b4b4b4',
 
 
     // 계좌 관련 (이름은 은행명으로 바꾸어도 됨)

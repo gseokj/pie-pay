@@ -6,6 +6,7 @@ import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
 import {getMembers} from "@/api/member";
 import {getAccount} from "@/api/account";
 import NotificationReceive from "@/app/(post-verification)/component/NotificationReceive";
+import * as styles from "@/styles/main/main.css"
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -24,7 +25,7 @@ export default async function PostVerificationLayout({children}: Props) {
                 <Header/>
                 <HydrationBoundary state={dehydratedState}>
                     <NotificationReceive/>
-                    <div className="pt-[15%] p-5">
+                    <div className={styles.mainContainer}>
 
                         {children}
                     </div>

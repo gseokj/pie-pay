@@ -3,7 +3,7 @@ import {Member, FilterMember} from '@/model/member'
 
 
 
-type State = {
+type Store = {
     filterMembers: FilterMember[]
     setFilterMembers: (members: Member[]) => void;
     handleSearchNickname: (searchTerm: string) => void;
@@ -12,7 +12,7 @@ type State = {
     setHost: (memberId: number) => void;
 };
 
-export const useMemberFilter = create<State>((set) => ({
+export const useMemberFilter = create<Store>((set) => ({
     filterMembers: [],
     setFilterMembers: (members) => {
         set({ filterMembers: members.map(member => ({
@@ -24,25 +24,25 @@ export const useMemberFilter = create<State>((set) => ({
                 isHost: false,
             })) });
     },
-    handleSearchNickname: (searchTerm) => set((state) => ({
-        filterMembers: state.filterMembers.map(member => ({
+    handleSearchNickname: (searchTerm) => set((store) => ({
+        filterMembers: store.filterMembers.map(member => ({
             ...member,
             isFiltered: member.nickname.toLowerCase().includes(searchTerm.toLowerCase())
         }))
     })),
-    handleType: () => set((state) => ({
-        filterMembers: state.filterMembers.map(member => ({
+    handleType: () => set((store) => ({
+        filterMembers: store.filterMembers.map(member => ({
             ...member,
             isTypeAlcohol: !member.isTypeAlcohol
         }))
     })),
-    handleCheck: (memberId, property) => set((state) => ({
-        filterMembers: state.filterMembers.map(member =>
+    handleCheck: (memberId, property) => set((store) => ({
+        filterMembers: store.filterMembers.map(member =>
             member.memberId === memberId ? { ...member, [property]: !member[property] } : member
         )
     })),
-    setHost: (memberId) => set((state) => ({
-        filterMembers: state.filterMembers.map(member => ({
+    setHost: (memberId) => set((store) => ({
+        filterMembers: store.filterMembers.map(member => ({
             ...member,
             isHost: member.memberId === memberId ? true : member.isHost
         }))
