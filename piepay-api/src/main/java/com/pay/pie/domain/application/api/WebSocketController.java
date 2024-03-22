@@ -3,18 +3,24 @@ package com.pay.pie.domain.application.api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import com.pay.pie.domain.participant.application.AgreeParticipantService;
+import com.pay.pie.domain.application.PayAgreeService;
+import com.pay.pie.domain.application.PayInsteadService;
+import com.pay.pie.domain.application.dto.reponse.AgreeRes;
+import com.pay.pie.domain.application.dto.reponse.InsteadRes;
+import com.pay.pie.domain.application.dto.request.AgreeReq;
+import com.pay.pie.domain.application.dto.request.InsteadAgreeReq;
+import com.pay.pie.domain.application.dto.request.InsteadRequestReq;
 import com.pay.pie.domain.participant.application.ParticipantService;
-import com.pay.pie.domain.payInstead.application.PayInsteadService;
+import com.pay.pie.global.security.dto.SecurityUserDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +35,8 @@ public class WebSocketController {
 
 	private final SimpMessageSendingOperations simpleMessageSendingOperations;
 	private final ParticipantService participantService;
-	private final AgreeParticipantService agreeParticipantService;
+	private final PayAgreeService payAgreeService;
+	private final SimpMessagingTemplate messagingTemplate;
 	private final PayInsteadService payInsteadService;
 
 	// 새로운 사용자가 웹 소켓을 연결할 때 실행됨
@@ -51,105 +58,58 @@ public class WebSocketController {
 		LOGGER.info("sessionId Disconnected : " + sessionId);
 	}
 
-	// /pub/cache 로 메시지를 발행한다.
-	// @MessageMapping("/pay-start")
-	// // @SendTo("/sub/agree")
-	// public void sendMessage(Map<String, Object> params) {
-	//
-	// 	// /sub/cache 에 구독중인 client에 메세지를 보낸다.
-	// 	simpleMessageSendingOperations.convertAndSend("/topic/agree/" + params.get("payId"), params);
-	// }
-
-	/*
-	연결확인용
+	/**
+	 * 연결 확인용
+	 * @param message
+	 * @return
 	 */
 	@MessageMapping("/channel")
-	@SendTo("/sub/{payId}")
 	public String sendMessage(String message) {
 		log.info("Received message: {}", message);
 		simpleMessageSendingOperations.convertAndSend("/sub", "socket connection completed.");
 		return message;
 	}
 
-	// @MessageMapping("/{payId}/agree/{participantId}")
-	// @SendTo("/sub/{payId}")
-	// public void requestAgreement(
-	// 	@DestinationVariable Long payId,
-	// 	@DestinationVariable Long participantId) {
-	// 	log.info("여기옴?");
-	// 	agreeParticipantService.requestAgreement(payId, participantId);
-	// }
-
-	/*
-	결제 동의
+	/**
+	 * 결제 동의
+	 * @param agreeReq
 	 */
-	@MessageMapping("/{payId}/agree/{participantId}")
-	@SendTo("/sub/{payId}")
-	public void respondToAgreement(
-		@DestinationVariable Long payId,
-		@DestinationVariable Long participantId,
-		boolean agreed) {
-		agreeParticipantService.respondToAgreement(payId, participantId);
+	@MessageMapping("/agree")
+	public void respondToAgreement(AgreeReq agreeReq) {
+		AgreeRes agreeRes = payAgreeService.respondToAgreement(agreeReq.getPayId(), agreeReq.getParticipantId());
+
+		// Send message to relevant participants via WebSocket
+		messagingTemplate.convertAndSend("/sub/" + agreeReq.getPayId(), agreeRes);
+		log.info("동의 성공");
 	}
 
-	/*
-	대신내주기 요청
+	/**
+	 * 대신내주기 요청
+	 * @param insteadReq
 	 */
-	@MessageMapping("/{payId}/instead/{borrowId}")
-	@SendTo("/sub/{payId}")
+	@MessageMapping("/instead-req")
 	public void requestPayInstead(
-		@DestinationVariable Long payId,
-		@DestinationVariable Long borrowId) {
-		payInsteadService.requestPayInstead(payId, borrowId);
+		@AuthenticationPrincipal SecurityUserDto securityUserDto, InsteadRequestReq insteadReq) {
+		Long borrowerId = securityUserDto.getMemberId();
+		InsteadRes insteadRes = payInsteadService.requestPayInstead(insteadReq.getPayId(), borrowerId);
+
+		// Send message to relevant participants via WebSocket
+		messagingTemplate.convertAndSend("/sub/" + insteadRes.getPayId(), insteadRes);
 	}
 
-	/*
-	대신내주기 승낙
+	/**
+	 * 대신내주기 승낙
+	 * @param insteadReq
 	 */
-	@MessageMapping("/{payId}/instead/{borrowId}/{lendId}")
-	@SendTo("/sub/{payId}")
+	@MessageMapping("/instead-res")
 	public void respondToPayInstead(
-		@DestinationVariable Long payId,
-		@DestinationVariable Long borrowId,
-		@DestinationVariable Long lendId,
-		boolean agreed) {
-		payInsteadService.respondToPayInstead(payId, borrowId, lendId, agreed);
+		@AuthenticationPrincipal SecurityUserDto securityUserDto, InsteadAgreeReq insteadReq) {
+		Long lenderId = securityUserDto.getMemberId();
+		InsteadRes insteadRes = payInsteadService.respondToPayInstead(
+			insteadReq.getPayId(), insteadReq.getBorrowerId(), lenderId);
+
+		// Send message to relevant participants via WebSocket
+		messagingTemplate.convertAndSend("/sub/" + insteadRes.getPayId(), insteadRes);
+
 	}
-
-	// private PayParticipantService payParticipantService;
-	// private final SimpMessageSendingOperations simpMessageSendingOperations;
-	//
-	// @MessageMapping("/hello")
-	// // @SendTo("/greetings")
-	// public void sendMessage(String message) {
-	// 	simpMessageSendingOperations.convertAndSend("/sub/greetings", message);
-	// 	log.info("여기옴??");
-	// 	// return "Hello, " + message + "!";
-	// }
-
-	// @MessageMapping("/hello")
-	// @SendTo("/topic/greeting")
-	// public ResponseEntity<?> messageHandler(AgreeReq agree) {
-	// 	try {
-	// 		boolean success = payParticipantService.processAgreement(agree.getPayId(), agree.getParticipantId(),
-	// 			agree.isPayAgree());
-	// 		AgreeRes agreeRes = AgreeRes.builder()
-	// 			.payId(agree.getPayId())
-	// 			.participantId(agree.getParticipantId())
-	// 			.payAgree(success) // 동의 처리 결과
-	// 			.createdAt(LocalDateTime.now())
-	// 			.build();
-	//
-	// 		return BaseResponse.success(SuccessCode.SELECT_SUCCESS, agreeRes);
-	//
-	// 	} catch (Exception e) {
-	// 		// 예외가 발생할 경우 처리
-	// 		log.error("Error processing agreement: {}", e.getMessage());
-	// 		ErrorResponse errorResponse = ErrorResponse.of()
-	// 			.code(ErrorCode.INTERNAL_SERVER_ERROR)
-	// 			.message("Error processing agreement")
-	// 			.build();
-	// 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-	// 	}
-	// }
 }

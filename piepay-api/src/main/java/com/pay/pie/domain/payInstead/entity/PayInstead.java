@@ -18,12 +18,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Builder
 @Getter
+@Setter
 @Table(name = "pay_instead")
 public class PayInstead extends BaseEntity {
 	@Id
