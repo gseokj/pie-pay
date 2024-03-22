@@ -1,17 +1,17 @@
 "use client";
 
 
+import {useState} from "react";
+import {faker} from "@faker-js/faker";
 import BankAccount from "./component/BankAccount";
 import MeetGroup from "@/app/(post-verification)/component/meets/MeetGroup";
-import {faker} from "@faker-js/faker";
-import * as styles from "@/styles/main/main.css";
-import * as fontCss from "@/styles/fonts.css";
 import MeetCreateButton from "@/app/(post-verification)/component/meets/MeetCreateButton";
 import MeetJoinButton from "@/app/(post-verification)/component/meets/MeetJoinButton";
 import MeetJoinCard from "@/app/(post-verification)/component/meets/MeetJoinCard";
 import MeetJoinModal from "@/app/(post-verification)/component/meets/MeetJoinModal";
-import {useState} from "react";
 import MeetCreateModal from "@/app/(post-verification)/component/meets/MeetCreateModal";
+import * as styles from "@/styles/main/main.css";
+import * as fontStyles from "@/styles/fonts.css";
 
 
 const dummys = [
@@ -285,17 +285,18 @@ export default function Main() {
       console.log('create clicked')
       setCreateModalVisibility(true);
     }
+    
     return (
         <>
             <BankAccount />
             <div className={styles.categoryContainer}>
                 <div className={styles.category}>
-                    <h1 className={fontCss.bold}>모임</h1>
+                    <h1 className={fontStyles.bold}>모임</h1>
                     <p>{dummys.length}</p>
                 </div>
                 {dummys.length !== 0 &&
                     <button
-                        className={`${styles.joinButton} ${fontCss.bold}`}
+                        className={`${styles.joinButton} ${fontStyles.bold}`}
                         onClick={joinModalOn}
                     >모임 입장</button>
                 }

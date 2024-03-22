@@ -33,6 +33,8 @@ const skyBlueActive = style({
     }
 });
 
+
+
 export const mainButton = styleVariants({
     defaultButton: [buttonLayout, buttonShadow],
     bottomButton: [buttonLayout, skyBlueActive, {
@@ -59,3 +61,12 @@ export const mainButton = styleVariants({
         color: "white"
     }]
 });
+
+export const buttonFeatures = styleVariants({
+    withIcon: [{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "0.4rem"
+    }]
+})

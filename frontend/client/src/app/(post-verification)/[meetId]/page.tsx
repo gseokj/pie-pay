@@ -1,6 +1,27 @@
 import {ReactNode} from "react";
-import * as styles from "@/styles/payment/select/payment.css"
-import SelectButton from "@/app/(post-verification)/[meetId]/payment/component/SelectButton";
+import PaymentSelectButton from "@/app/(post-verification)/[meetId]/component/PaymentSelectButton";
+import InviteMemberCard from "@/app/(post-verification)/[meetId]/component/InviteMemberCard";
+
+
+const patchedMeetInfo: MeetInfo = {
+    createdAt: "2024-03-19T15:43:57.3042142",
+    updatedAt: "2024-03-20T15:43:57.3042142",
+    id: 1,
+    meetName: "SSAFY",
+    meetImage: "",
+    meetInvitation: "eb53ad",
+    memberCount: 1
+}
+
+export interface MeetInfo {
+    createdAt: string;
+    updatedAt: string;
+    id: number;
+    meetName: string;
+    meetImage: string;
+    meetInvitation: string;
+    memberCount?: number;
+}
 
 
 type Props = {
@@ -8,12 +29,16 @@ type Props = {
     params: { meetId: string },
 }
 
-export default function PaymentModalLayout({params}: Props) {
+export default function Meet({params}: Props) {
     const {meetId} = params;
-
 
     return (
         <>
+            {patchedMeetInfo.memberCount == 1 ?
+                <InviteMemberCard meetInvitation={ patchedMeetInfo.meetInvitation } />
+                :
+                <PaymentSelectButton meetId={ meetId } />
+            }
         </>
     );
 }
