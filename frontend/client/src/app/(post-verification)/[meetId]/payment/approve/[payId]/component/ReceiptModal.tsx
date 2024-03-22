@@ -1,18 +1,18 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query';
-import { getReceipt } from '@/api/receipt';
 import * as styles from '@/styles/payment/result/receiptmodal.css'
+import {getDateAndTime} from '@/util/dateFormat'
+const menuItems = [{menuName: "족발(대)",menuPrice: 62000, quantity: 1},{menuName: "계란찜",menuPrice: 8000, quantity: 1},{menuName: "참이슬",menuPrice: 5000,quantity: 3},{menuName: "카스", menuPrice: 5000, quantity: 2}]
+const paymentResult = {orderMenuId:1, storeName: "(주) 뽕족 강남역본점",address: "서울 강남구 테헤란로4길 15(역삼동)",phone:"010-2839-1132",createdAt: "2024-03-20T11:39:04.663Z",menuItems,totalAmount:95000}
 
-type Props = { payId: string }
-export default function ReceiptModal({ payId }: Props) {
-  const { data: receipt, isLoading, error } = useQuery({ queryKey: ['receipt', payId], queryFn: getReceipt });
+export default function ReceiptModal() {
+
   return (<div className={styles.container}>
-    <p className={styles.paragraph}>{receipt?.storeName}</p>
+    <p className={styles.paragraph}>{paymentResult.storeName}</p>
     <ul className={styles.ul.store}>
-      <li>{receipt?.phone}</li>
-      <li>{receipt?.address}</li>
-      <li>{receipt?.createdAt}</li>
+      <li>{paymentResult.phone}</li>
+      <li>{paymentResult.address}</li>
+      <li>{getDateAndTime(new Date(paymentResult.createdAt))}</li>
     </ul>
     <ul className={styles.ul.menu}>
       <li>메뉴명</li>
@@ -21,7 +21,7 @@ export default function ReceiptModal({ payId }: Props) {
       <li>합계</li>
     </ul>
     <hr />
-    {receipt && receipt.menuItems && receipt?.menuItems.map((menuItem) => (
+    { paymentResult.menuItems.map((menuItem) => (
       <ul className={styles.ul.menu} key={menuItem.menuName}>
         <li>{menuItem.menuName}</li>
         <li>{menuItem.menuPrice.toLocaleString()}</li>
@@ -32,7 +32,7 @@ export default function ReceiptModal({ payId }: Props) {
     <hr/>
     <ul className={styles.ul.menu}>
       <li/><li/><li/>
-      <li >{receipt?.totalAmount.toLocaleString()}</li>
+      <li >{paymentResult.totalAmount.toLocaleString()}</li>
     </ul>
   </div>);
 }

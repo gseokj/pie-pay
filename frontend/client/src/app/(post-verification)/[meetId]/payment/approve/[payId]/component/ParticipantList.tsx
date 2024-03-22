@@ -2,17 +2,19 @@
 
 import * as styles from "@/styles/payment/agree/participantList.css";
 import {useMemberFilter} from "@/store/useMemberFilter";
-import {useQuery} from "@tanstack/react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getPayment} from "@/api/payment";
 import {useEffect, useState} from "react";
-import {Participant} from "@/model/participant";
+import {Participant, Participants} from "@/model/participant";
 import ProgressSpiner from "@/app/(post-verification)/component/ProgressSpiner";
 
 type Props= {
     payId:string;
 }
 export default function ParticipantList({payId}:Props) {
-    const { data: payment, isLoading, error } = useQuery({queryKey: ['payment',payId], queryFn: getPayment}) ;
+
+    const queryClient = useQueryClient();
+    const payment: Participants |undefined = queryClient.getQueryData(['payment',payId]) ;
     const [participants, setParticipants] = useState<Participant[]>([]);
     useEffect(() => {
         if(!payment) return;

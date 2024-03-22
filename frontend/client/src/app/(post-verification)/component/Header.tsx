@@ -26,7 +26,7 @@ export default function Header() {
                     <NotificationIcon color={ path.includes("notification") ? theme.blue : theme.blueGray} />
                     알림
                 </Link>
-                <Link href="/mypage/1" className={`${styles.buttonContainer} ${fontCss.semibold}`} style={ path.includes("mypage") ? {color: theme.blue} : {color: theme.blueGray}}>
+                <Link href="/mypage" className={`${styles.buttonContainer} ${fontCss.semibold}`} style={ path.includes("mypage") ? {color: theme.blue} : {color: theme.blueGray}}>
                     <ProfileIcon color={ path.includes("mypage") ? theme.blue : theme.blueGray} />
                     내 정보
                 </Link>
