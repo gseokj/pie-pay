@@ -2,20 +2,22 @@ import {globalStyle, style, styleVariants} from "@vanilla-extract/css";
 import theme from "@/styles/theme/theme";
 
 const cardContainer = style({
+    position: "relative",
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "white",
-    borderRadius: "16px",
     marginBottom: "2.2%",
     padding: "4%",
+    backgroundColor: "white",
+    borderRadius: "16px",
     boxShadow: "0 8px 12px" + theme.shadow
 });
 
 export const cardLayout = styleVariants({
     default: [cardContainer],
     furtherPadding: [cardContainer, {
-        padding: "8%",
-        gap: "1rem"
+        marginBottom: "4%",
+        padding: "10%",
+        gap: "1.2rem"
     }],
 });
 
@@ -25,27 +27,51 @@ const cardInner = style({
     alignItems: "start",
 });
 
-globalStyle(`${cardInner} > h3`, {
+// special Inners
+
+const inviteInnerLayout = style({
+    alignItems: "center",
+    padding: "1rem",
+    boxShadow: "none",
+    backgroundColor: theme.skyblue
+});
+
+const imageInnerLayout = style({
+    position: "absolute",
+    top: "0",
+    left: "0",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "48%",
+    backgroundColor: theme.skyblue,
+    borderRadius: "1rem 1rem 0 0"
+});
+
+export const cardInnerLayout = styleVariants({
+    defaultHeader: [cardInner],
+    marginTopHeader: [cardInner, {
+        marginTop: "8rem"
+    }],
+    inviteInner: [cardContainer, cardInner, inviteInnerLayout],
+    imageInner: [cardInner, imageInnerLayout]
+});
+
+// defaultHeader Child style
+
+globalStyle(`${cardInnerLayout.defaultHeader} > h3, ${cardInnerLayout.marginTopHeader} > h3`, {
     fontSize: "1.5rem",
     lineHeight: "1.8rem",
     marginBottom: "0.5rem"
 });
 
-globalStyle(`${cardInner} > p`, {
+globalStyle(`${cardInnerLayout.defaultHeader} > p, ${cardInnerLayout.marginTopHeader} > p`, {
     color: theme.gray,
     fontSize: "1rem",
     lineHeight: "1.4rem"
 });
 
-export const cardInnerLayout = styleVariants({
-    defaultHeader: [cardInner],
-    inviteInner: [cardContainer, cardInner, {
-        alignItems: "center",
-        padding: "1rem",
-        boxShadow: "none",
-        backgroundColor: theme.skyblue
-    }]
-});
+// inviteInner Child style
 
 globalStyle(`${cardInnerLayout.inviteInner} > p`, {
     marginBottom: "0.8rem",

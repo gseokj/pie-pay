@@ -1,6 +1,7 @@
 import {ReactNode} from "react";
 import PaymentSelectButton from "@/app/(post-verification)/[meetId]/component/PaymentSelectButton";
 import InviteMemberCard from "@/app/(post-verification)/[meetId]/component/InviteMemberCard";
+import SelectMeetImageCard from "@/app/(post-verification)/[meetId]/component/SelectMeetImageCard";
 
 
 const patchedMeetInfo: MeetInfo = {
@@ -35,7 +36,10 @@ export default function Meet({params}: Props) {
     return (
         <>
             {patchedMeetInfo.memberCount == 1 ?
-                <InviteMemberCard meetInvitation={ patchedMeetInfo.meetInvitation } />
+                <>
+                    <InviteMemberCard meetInvitation={ patchedMeetInfo.meetInvitation } />
+                    <SelectMeetImageCard />
+                </>
                 :
                 <PaymentSelectButton meetId={ meetId } />
             }

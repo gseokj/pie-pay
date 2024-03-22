@@ -11,7 +11,6 @@ interface InviteMemberProps {
 export default function InviteMemberCard(
     { meetInvitation }: InviteMemberProps) {
 
-
     return (
         <section
             className={ cardStyles.cardLayout.furtherPadding }
