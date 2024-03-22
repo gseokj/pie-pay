@@ -79,7 +79,7 @@ public class PayServiceImpl implements PayService {
 			.from(orderMenu)
 			.join(orderMenu.order, order)
 			.where(order.pay.id.eq(payId)
-				.and(orderMenu.menu.manuCategory.eq(Menu.MenuCategory.NON_ALCOHOL)))
+				.and(orderMenu.menu.menuCategory.eq(Menu.MenuCategory.NON_ALCOHOL)))
 			.fetchOne();
 
 		Long participantsCnt = queryFactory
@@ -106,7 +106,7 @@ public class PayServiceImpl implements PayService {
 			.from(orderMenu)
 			.join(orderMenu.order, order)
 			.where(order.pay.id.eq(payId)
-				.and(orderMenu.menu.manuCategory.eq(Menu.MenuCategory.ALCOHOL)))
+				.and(orderMenu.menu.menuCategory.eq(Menu.MenuCategory.ALCOHOL)))
 			.fetchOne();
 
 		Long drankAlcoholPersonCnt = queryFactory
