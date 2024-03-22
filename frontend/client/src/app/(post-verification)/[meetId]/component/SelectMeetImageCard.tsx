@@ -10,7 +10,7 @@ export default function SelectMeetImageCard() {
             className={ cardStyles.cardLayout.furtherPadding }
         >
             <div
-                className={ cardStyles.cardInnerLayout.imageInner }
+                className={ cardStyles.cardInnerLayout.imageInputInner }
             >
                 <Image
                     src={addImageIcon}

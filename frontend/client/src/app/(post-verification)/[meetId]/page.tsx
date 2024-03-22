@@ -2,7 +2,6 @@
 
 
 import {ReactNode} from "react";
-import {faker} from "@faker-js/faker"
 import PaymentSelectButton from "@/app/(post-verification)/[meetId]/component/PaymentSelectButton";
 import InviteMemberCard from "@/app/(post-verification)/[meetId]/component/InviteMemberCard";
 import SelectMeetImageCard from "@/app/(post-verification)/[meetId]/component/SelectMeetImageCard";
@@ -16,6 +15,7 @@ type Props = {
     params: { meetId: string },
 }
 
+
 export default function Meet({params}: Props) {
     const {meetId} = params;
     const queryClient = useQueryClient();
@@ -23,6 +23,7 @@ export default function Meet({params}: Props) {
 
     return (
         <>
+            <MeetInfoCard params={{ meetId }} />
             {meetInfo.reuslt.meetImage == null ?
                 <>
                     <InviteMemberCard meetInvitation={ meetInfo.reuslt.meetInvitation } />

@@ -14,6 +14,10 @@ const cardContainer = style({
 
 export const cardLayout = styleVariants({
     default: [cardContainer],
+    defaultHorizontal: [cardContainer, {
+        flexDirection: "row",
+        justifyContent: "space-between"
+    }],
     furtherPadding: [cardContainer, {
         marginBottom: "4%",
         padding: "10%",
@@ -27,6 +31,13 @@ const cardInner = style({
     alignItems: "start",
 });
 
+const cardInnerHorizontal = style({
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center"
+})
+
+
 // special Inners
 
 const inviteInnerLayout = style({
@@ -36,7 +47,7 @@ const inviteInnerLayout = style({
     backgroundColor: theme.skyblue
 });
 
-const imageInnerLayout = style({
+const imageInputInnerLayout = style({
     position: "absolute",
     top: "0",
     left: "0",
@@ -53,9 +64,11 @@ export const cardInnerLayout = styleVariants({
     marginTopHeader: [cardInner, {
         marginTop: "8rem"
     }],
+    defaultHorizontal: [cardInnerHorizontal],
     inviteInner: [cardContainer, cardInner, inviteInnerLayout],
-    imageInner: [cardInner, imageInnerLayout]
+    imageInputInner: [cardInner, imageInputInnerLayout]
 });
+
 
 // defaultHeader Child style
 
@@ -70,6 +83,7 @@ globalStyle(`${cardInnerLayout.defaultHeader} > p, ${cardInnerLayout.marginTopHe
     fontSize: "1rem",
     lineHeight: "1.4rem"
 });
+
 
 // inviteInner Child style
 
