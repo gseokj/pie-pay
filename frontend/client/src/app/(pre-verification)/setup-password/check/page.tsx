@@ -18,7 +18,7 @@ interface Password {
 export default function SimplePasswordCheck() {
   // const router = useRouter();
   const [index, setIndex] = useState<number>(0);
-
+  const [result, setResult] = useState<boolean>(true);
   const [password, setPassword] = useState<Password>({
     value0: '',
     value1: '',
@@ -28,22 +28,43 @@ export default function SimplePasswordCheck() {
     value5: '',
   });
 
-  const [oldPassword, setOldPassword] = useState<Password>({
-    value0: '',
-    value1: '',
-    value2: '',
-    value3: '',
-    value4: '',
-    value5: '',
-  });
+  // const [oldPassword, setOldPassword] = useState<Password>({
+  //   value0: '',
+  //   value1: '',
+  //   value2: '',
+  //   value3: '',
+  //   value4: '',
+  //   value5: '',
+  // });
 
   const { password: storePassword }: { password: Password } = useStore();
-  useEffect(() => {
-    setOldPassword(storePassword);
-    console.log('확인 페이지');
-    console.log(oldPassword);
-  }, []);
 
+  // useEffect(() => {
+  //   setOldPassword(storePassword);
+  //   console.log('확인 페이지');
+  //   console.log(oldPassword);
+  // }, []);
+
+  useEffect(() => {
+    console.log(index);
+    console.log(password);
+    if (index === 6) {
+      console.log('======================= 비교 시작 =======================');
+      // setResult(
+      console.log(Object.entries(password).toString());
+      console.log(Object.entries(storePassword).toString());
+      // );
+      // console.log(
+      //   Object.entries(password).toString() ==
+      //     Object.entries(storePassword).toString(),
+      // );
+      setResult(
+        Object.entries(password).toString() ==
+          Object.entries(storePassword).toString(),
+      );
+      console.log(result);
+    }
+  }, [password, index, result]);
   return (
     <div className={styles.container}>
       <div className={styles.textBox}>
@@ -109,6 +130,11 @@ export default function SimplePasswordCheck() {
             ></div>
           </li>
         </ul>
+        <div
+          className={result ? styles.messageInvisible : styles.messageVisible}
+        >
+          비밀번호가 일치하지 않습니다
+        </div>
       </div>
       <VirtualKeboard
         password={password}
