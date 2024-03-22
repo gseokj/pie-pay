@@ -44,7 +44,7 @@ public class Menu extends BaseEntity {
 
 	@NotNull
 	@Column(name = "menu_price", nullable = false)
-	private Integer menuPrice;
+	private Long menuPrice;
 
 	@NotNull
 	@Column(name = "menu_category", nullable = false)
