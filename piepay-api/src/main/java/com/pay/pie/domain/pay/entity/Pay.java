@@ -40,7 +40,7 @@ public class Pay extends BaseEntity {
 
 	// @NotNull
 	@ManyToOne
-	// (fetch = FetchType.LAZY)
+	// (fetch = FetchType.LAZY)  --> 에러 때문에 우선 주석처리함 by 재언
 	@JoinColumn(name = "meet_id")
 	private Meet meet;
 
