@@ -1,8 +1,9 @@
-package com.pay.pie.domain.application.dto.reponse;
+package com.pay.pie.domain.application.dto;
 
 import java.time.LocalDateTime;
 
 import com.pay.pie.domain.participant.entity.Participant;
+import com.pay.pie.domain.pay.entity.Pay;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,20 +12,20 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @Builder
-public class AgreeRes {
+public class AgreeDto {
 
 	private final Long payId;
 	private final Long participantId;
 	private final boolean payAgree;
-	private final boolean allAgreed;
+	private final Pay.PayStatus payStatus;
 	private final LocalDateTime agreeTime;
 
-	public static AgreeRes of(Participant participant, boolean allAgreed) {
-		return AgreeRes.builder()
+	public static AgreeDto of(Participant participant) {
+		return AgreeDto.builder()
 			.payId(participant.getPay().getId())
 			.participantId(participant.getId())
 			.payAgree(true)
-			.allAgreed(allAgreed)
+			.payStatus(participant.getPay().getPayStatus())
 			.agreeTime(LocalDateTime.now())
 			.build();
 	}
