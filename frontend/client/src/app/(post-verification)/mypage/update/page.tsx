@@ -14,7 +14,7 @@ const Me = {
 }
 
 export default function Update() {
-    return (<div className="absolute top-0 right-0 bottom-0 left-0 bg-white z-50 p-4">
+    return (<div className="absolute top-0 right-0 bottom-0 left-0 bg-white z-5 p-4">
         <article className="flex justify-between mb-5">
             <BackButton/>
             <p className="font-bold text-lg">계정관리</p>
