@@ -77,6 +77,56 @@ public class WebSocketController {
 		return message;
 	}
 
+	// @GetMapping("/pay/{payId}")
+	// public ResponseEntity<List<AgreeDto>> loadAgreeData(@PathVariable String payId) {
+	// 	List<AgreeDto> agreeRedis = redisTemplateAgreeData.opsForList().range(payId, 0, 99);
+	//
+	// 	return ResponseEntity.ok(agreeRedis);
+	// }
+
+	/**
+	 * 방 입장 시 초기 정보 조회
+	 * @param payId
+	 * @param headerAccessor 초기 정보 리스트
+	 */
+	@MessageMapping("/InitialData/{payId}")
+	public void checkInitialData(@DestinationVariable String payId, SimpMessageHeaderAccessor headerAccessor) {
+		// 클라이언트가 방에 입장하여 초기 데이터를 확인할 때 호출됩니다.
+		// 해당 방의 초기 정보를 조회하여 클라이언트에게 전송합니다.
+		String sessionId = headerAccessor.getSessionId();
+		List<Object> initialData = new ArrayList<>();
+		Map<Object, Object> agreeData = redisTemplate.opsForHash().entries("payId:" + payId + ":agree");
+		Map<Object, Object> insteadData = redisTemplate.opsForHash().entries("payId:" + payId + ":instead");
+
+		Map<String, Object> formattedData = new HashMap<>();
+		// agreeData 변환 후 저장
+		if (agreeData != null && !agreeData.isEmpty()) {
+			Map<String, Boolean> formattedAgreeData = new HashMap<>();
+			for (Map.Entry<Object, Object> entry : agreeData.entrySet()) {
+				formattedAgreeData.put(entry.getKey().toString(), Boolean.parseBoolean(entry.getValue().toString()));
+			}
+			formattedData.put("agreeData", formattedAgreeData);
+		}
+
+		// insteadData 변환 후 저장
+		if (insteadData != null && !insteadData.isEmpty()) {
+			Map<String, Object> formattedInsteadData = new HashMap<>();
+			for (Map.Entry<Object, Object> entry : insteadData.entrySet()) {
+				formattedInsteadData.put(entry.getKey().toString(), entry.getValue());
+			}
+			formattedData.put("insteadData", formattedInsteadData);
+		}
+
+		// if (agreeData != null) {
+		// 	initialData.add(agreeData);
+		// }
+		// if (insteadData != null) {
+		// 	initialData.add(insteadData);
+		// }
+		log.info("받아올 데이터: {}", formattedData);
+		messagingTemplate.convertAndSendToUser(sessionId, "/sub/initialData/" + payId, formattedData);
+	}
+
 	/**
 	 * 방 입장 시 초기 정보 조회
 	 * @param payId
