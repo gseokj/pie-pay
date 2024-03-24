@@ -44,11 +44,11 @@ public class Participant extends BaseEntity {
 	private Member member;
 
 	@NotNull
-	@Column(name = "is_drink_alcohol", nullable = false)
+	@Column(name = "is_drink_alcohol", nullable = false, columnDefinition = "TINYINT")
 	private Boolean isDrinkAlcohol = true;
 
 	@NotNull
-	@Column(name = "pay_agree", nullable = false)
+	@Column(name = "pay_agree", nullable = false, columnDefinition = "TINYINT")
 	@Builder.Default
 	private Boolean payAgree = false;
 

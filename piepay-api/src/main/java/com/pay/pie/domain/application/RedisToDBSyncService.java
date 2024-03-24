@@ -75,5 +75,11 @@ public class RedisToDBSyncService {
 		// Redis 에서 payId 데이터 삭제
 		redisTemplate.delete("payId" + payId + "agree");
 		redisTemplate.delete("payId" + payId + "instead");
+
+		// pay Status 변경
+		Pay pay = payRepository.findById(payId)
+			.orElseThrow(() -> new IllegalArgumentException("없는 PayId"));
+		pay.setPayStatus(Pay.PayStatus.ING);
+		payRepository.save(pay);
 	}
 }

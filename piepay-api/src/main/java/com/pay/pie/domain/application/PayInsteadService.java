@@ -10,7 +10,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pay.pie.domain.application.dto.reponse.InsteadRes;
+import com.pay.pie.domain.application.dto.InsteadDto;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
 import com.pay.pie.domain.participant.entity.Participant;
 import com.pay.pie.domain.payInstead.dao.PayInsteadRepository;
@@ -32,7 +32,7 @@ public class PayInsteadService {
 	/*
 	대신내주기 요청
 	 */
-	public InsteadRes requestPayInstead(Long payId, Long borrowerId) {
+	public InsteadDto requestPayInstead(Long payId, Long borrowerId) {
 		// Pay instead request logic
 
 		// Save pay instead request in Redis as hash
@@ -40,17 +40,17 @@ public class PayInsteadService {
 		payInsteadInfo.put("borrowerId", borrowerId);
 		redisTemplate.opsForHash().putAll("payId:" + payId + ":instead", payInsteadInfo);
 
-		return InsteadRes.builder()
+		return InsteadDto.builder()
 			.payId(payId)
 			.borrowerId(borrowerId)
-			.lenderId(null)
+			// .lenderId(null)
 			.build();
 	}
 
 	/*
 	대신내주기 승낙
 	 */
-	public InsteadRes respondToPayInstead(Long payId, Long borrowerId, Long lenderId) {
+	public InsteadDto respondToPayInstead(Long payId, Long borrowerId, Long lenderId) {
 		// Pay instead response logic
 
 		// Retrieve existing pay instead request from Redis hash
@@ -70,16 +70,18 @@ public class PayInsteadService {
 
 				//borrowId 결제동의 정보도 redis에 저장
 				redisTemplate.opsForHash().put(
-					"payId:" + payId + ":agree", "participantId:" + participantBorrower.getId(),
+					"payId:" + payId + ":agree",
+					"participantId:" + participantBorrower.getId(),
 					"true"
 				);
 
 			}
 		}
 
-		return InsteadRes.builder()
+		return InsteadDto.builder()
 			.payId(payId)
 			.borrowerId(borrowerId)
-			.lenderId(lenderId).build();
+			.lenderId(lenderId)
+			.build();
 	}
 }
