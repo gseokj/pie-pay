@@ -22,5 +22,4 @@ public class PayRepositoryImpl implements PayRepositoryCustom {
 			.fetch();
 
 	}
-
 }

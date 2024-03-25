@@ -54,5 +54,5 @@ public class PayInstead extends BaseEntity {
 
 	@NotNull
 	@Column(name = "is_payback", nullable = false)
-	private Boolean isPayback = false;
+	private Boolean payback = false;
 }

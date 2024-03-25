@@ -30,10 +30,10 @@ public class MemberMeetService {
 		this.meetRepository = meetRepository;
 	}
 
-	public MemberMeet save(AddMemberMeetRequest request) {
+	public MemberMeet save(AddMemberMeetRequest request, Long memberId) {
 		Meet meet = meetRepository.findByMeetInvitation(request.getMeetInvitation())
 			.orElseThrow(() -> new IllegalArgumentException("해당 meetInvitation을 가진 Meet을 찾을 수 없음"));
-		Member member = memberRepository.findById(request.getMemberId())
+		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 memberId를 가진 Member를 찾을 수 없음"));
 		// 수정 시작
 		MemberMeet newMemberMeet = new MemberMeet();
@@ -86,7 +86,7 @@ public class MemberMeetService {
 			.orElseThrow(() -> new IllegalArgumentException("유효한 MemberMeet을 찾을 수 없음"));
 
 		memberMeet.setTopFixed(!memberMeet.isTopFixed());
-		
+
 		return memberMeetRepository.save(memberMeet);
 	}
 }

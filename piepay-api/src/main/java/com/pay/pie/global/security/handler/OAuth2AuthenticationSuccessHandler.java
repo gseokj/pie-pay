@@ -43,7 +43,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 			// accessToken을 쿼리스트링에 담는 url을 만들어준다.
 			String redirectURI = UriComponentsBuilder.fromUriString("http://localhost:3000/success")
 				.queryParam("accessToken", accessToken)
-				.queryParam("refresh-token", refreshToken)
+				.queryParam("refreshToken", refreshToken)
 				.build()
 				.encode(StandardCharsets.UTF_8)
 				.toUriString();
@@ -55,7 +55,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 			// 인증 절차가 끝나지 않은 회원
 			String redirectURI = UriComponentsBuilder.fromUriString("http://localhost:3000/auth")
 				.queryParam("accessToken", accessToken)
-				.queryParam("refresh-token", refreshToken)
+				.queryParam("refreshToken", refreshToken)
 				.build()
 				.encode(StandardCharsets.UTF_8)
 				.toUriString();

@@ -12,6 +12,8 @@ import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 public interface MemberMeetRepository extends JpaRepository<MemberMeet, Long> {
 	List<MemberMeet> findByMeetId(Long meetId);
 
+	List<MemberMeet> findAllByMeet(Meet meet);
+
 	List<MemberMeet> findByMemberId(Long memberId);
 
 	Optional<MemberMeet> findByMeetAndMember(Meet meet, Member member);

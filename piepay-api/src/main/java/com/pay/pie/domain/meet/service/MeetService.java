@@ -59,7 +59,7 @@ public class MeetService {
 	public Meet getMeet(long meetId) {
 		// Meet meet = meetRepository.findById(meetId)
 		// 	.orElseThrow(() -> new IllegalArgumentException("not found: " + meetId));
-
+		
 		return meetRepository.findById(meetId)
 			.orElseThrow(() -> new IllegalArgumentException("not found: " + meetId));
 	}

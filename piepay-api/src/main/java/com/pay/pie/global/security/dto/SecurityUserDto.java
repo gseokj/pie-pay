@@ -11,5 +11,6 @@ public class SecurityUserDto {
 	private String nickname;
 	private String picture;
 	private String role;
+	private String userKey;
 	private Integer memberNo;
 }

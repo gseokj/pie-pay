@@ -16,10 +16,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Entity
+@Getter
 @Table(name = "menu")
 public class Menu extends BaseEntity {
 
@@ -46,6 +48,8 @@ public class Menu extends BaseEntity {
 	@Column(name = "menu_price", nullable = false)
 	private Long menuPrice;
 
+	@NotNull
+	@Column(name = "menu_category", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private MenuCategory menuCategory;
+	private Menu.MenuCategory menuCategory;
 }

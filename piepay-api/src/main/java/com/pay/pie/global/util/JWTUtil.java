@@ -7,6 +7,8 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.pay.pie.global.security.dto.TokenDto;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -38,6 +40,10 @@ public class JWTUtil {
 		this.accessTokenExpireTime = accessTokenExpireTime;
 		this.refreshTokenExpireTime = refreshTokenExpireTime;
 		this.issuer = issuer;
+	}
+
+	public TokenDto generateToken(String email, String role) {
+		return new TokenDto(generateAccessToken(email, role), generateRefreshToken(email, role));
 	}
 
 	public String generateAccessToken(String email, String role) {
