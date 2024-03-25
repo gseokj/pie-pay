@@ -1,5 +1,6 @@
 package com.pay.pie.domain.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pay.pie.domain.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Table(name = "store")
-// @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Store extends BaseEntity {
 
 	public enum StoreCategory {

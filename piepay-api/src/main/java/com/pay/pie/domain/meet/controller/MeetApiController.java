@@ -1,5 +1,6 @@
 package com.pay.pie.domain.meet.controller;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -28,6 +29,8 @@ import com.pay.pie.domain.memberMeet.dto.AddMemberMeetRequest;
 import com.pay.pie.domain.memberMeet.dto.AllMemberMeetResponse;
 import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
+import com.pay.pie.domain.order.dao.OrderRepository;
+import com.pay.pie.domain.order.entity.Order;
 import com.pay.pie.domain.pay.application.PayServiceImpl;
 import com.pay.pie.domain.pay.entity.Pay;
 import com.pay.pie.global.common.BaseResponse;
@@ -45,6 +48,7 @@ public class MeetApiController {
 	private final MeetRepository meetRepository;
 	private final PayServiceImpl payService;
 	private final MemberMeetRepository memberMeetRepository;
+	private final OrderRepository orderRepository;
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	// HTTP 메서드가 POST일 때 전달받은 URL과 동일하면 매서드로 매핑
@@ -128,7 +132,12 @@ public class MeetApiController {
 	public ResponseEntity<BaseResponse<List<PayResponse>>> getPayByMeetId(@PathVariable long meetId) {
 		List<PayResponse> payResponses = payService.findPayByMeetId(meetId)
 			.stream()
-			.map(PayResponse::new)
+			// .map(PayResponse::new)
+			.map(pay -> {
+				List<Order> orders = orderRepository.findAllByPay(pay);
+				return new PayResponse(pay, orders);
+			})
+			.sorted(Comparator.comparing(PayResponse::getUpdatedAt).reversed()) // updated_at을 기준으로 내림차순으로 정렬
 			.toList();
 
 		return BaseResponse.success(
