@@ -12,6 +12,7 @@ import com.pay.pie.domain.application.dto.request.AgreeReq;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
 import com.pay.pie.domain.participant.entity.Participant;
 import com.pay.pie.domain.pay.dao.PayRepository;
+import com.pay.pie.domain.pay.entity.Pay;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,7 @@ public class PayAgreeService {
 		// Redis
 		redisTemplate.opsForHash().put(
 			"payId:" + agreeReq.getPayId() + ":agree",
-			"participantId:" + agreeReq.getParticipantId(), "true"
+			"participantId" + agreeReq.getParticipantId(), agreeReq.getParticipantId().toString()
 
 		);
 
@@ -45,15 +46,15 @@ public class PayAgreeService {
 		boolean allAgreed = checkAllParticipantsAgreed(agreeReq.getPayId());
 		log.info("redis:{}", allAgreed);
 
-		// if (allAgreed) {
-		// 	// redis -> DB
-		// 	redisToDBSyncService.syncDataFromRedisToDB(agreeReq.getPayId());
-		// 	// pay Status 변경
-		// 	Pay pay = payRepository.findById(agreeReq.getPayId())
-		// 		.orElseThrow(() -> new IllegalArgumentException("없는 PayId"));
-		// 	pay.setPayStatus(Pay.PayStatus.ING);
-		// 	payRepository.save(pay);
-		// }
+		if (allAgreed) {
+			// redis -> DB
+			// redisToDBSyncService.syncDataFromRedisToDB(agreeReq.getPayId());
+			// pay Status 변경
+			Pay pay = payRepository.findById(agreeReq.getPayId())
+				.orElseThrow(() -> new IllegalArgumentException("없는 PayId"));
+			pay.setPayStatus(Pay.PayStatus.ING);
+			payRepository.save(pay);
+		}
 
 		return AgreeDto.of(participant);
 	}

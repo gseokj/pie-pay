@@ -45,7 +45,7 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		registry.addEndpoint("/pay")
 			// .addInterceptors()
 			// .setAllowedOrigins("*");
-			.setAllowedOriginPatterns("http://localhost:8080", "https://jxy.me/");
+			.setAllowedOriginPatterns("http://localhost:8080", "https://jxy.me/", "http://localhost:3000");
 		// .setAllowedOriginPatterns("*")
 		// .withSockJS(); // 커넥션을 맺는 경로 설정. 만약 WebSocket을 사용할 수 없는 브라우저라면 다른 방식을 사용하도록 설정
 		log.info("SOCKET 연결!");
