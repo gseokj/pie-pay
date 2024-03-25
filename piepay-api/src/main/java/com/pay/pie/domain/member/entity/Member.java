@@ -1,14 +1,20 @@
 package com.pay.pie.domain.member.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.pay.pie.domain.BaseEntity;
+import com.pay.pie.domain.account.entity.Account;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -59,8 +65,21 @@ public class Member extends BaseEntity {
 	@Column(name = "api_key")
 	private String apiKey;
 
+	@OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+	List<Account> accountList = new ArrayList<>();
+
 	public void registerPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public void registerPaymentPassword(String paymentPassword) {
+		this.payPassword = paymentPassword;
+		finishVerify();
+	}
+
+	// 모든 인증이 끝나고 권한을 변경
+	private void finishVerify() {
+		this.memberRole = MemberRole.ROLE_CERTIFIED_MEMBER;
 	}
 
 	@Builder(builderMethodName = "of")
