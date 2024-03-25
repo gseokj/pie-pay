@@ -10,10 +10,13 @@ public class MeetResponse {
 	private final String meetName;
 	private final String meetImage;
 	private final String meetInvitation;
+	private final int membersCount;
 
-	public MeetResponse(Meet meet) {
+	public MeetResponse(Meet meet, int membersCount) {
+
 		this.meetName = meet.getMeetName();
 		this.meetImage = meet.getMeetImage();
 		this.meetInvitation = meet.getMeetInvitation();
+		this.membersCount = membersCount;
 	}
 }

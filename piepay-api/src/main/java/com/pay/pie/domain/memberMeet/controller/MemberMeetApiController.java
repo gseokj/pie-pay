@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.memberMeet.dto.AddMemberMeetRequest;
+import com.pay.pie.domain.memberMeet.dto.MemberMeetResponse;
 import com.pay.pie.domain.memberMeet.entity.MemberMeet;
+import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
 import com.pay.pie.global.common.BaseResponse;
 import com.pay.pie.global.common.code.SuccessCode;
@@ -24,17 +27,20 @@ import lombok.RequiredArgsConstructor;
 public class MemberMeetApiController {
 
 	private final MemberMeetService memberMeetService;
+	private final MemberMeetRepository memberMeetRepository;
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@PostMapping("/meet/join")
-	public ResponseEntity<BaseResponse<MemberMeet>> addMemberMeet(@RequestBody AddMemberMeetRequest request,
+	public ResponseEntity<BaseResponse<MemberMeetResponse>> addMemberMeet(@RequestBody AddMemberMeetRequest request,
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
 		Long memberId = securityUserDto.getMemberId();
 		MemberMeet savedMemberMeet = memberMeetService.save(request, memberId);
 
+		Meet meet = savedMemberMeet.getMeet();
+
 		return BaseResponse.success(
 			SuccessCode.UPDATE_SUCCESS,
-			savedMemberMeet);
+			new MemberMeetResponse(savedMemberMeet, memberMeetRepository.findAllByMeet(meet).size()));
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")

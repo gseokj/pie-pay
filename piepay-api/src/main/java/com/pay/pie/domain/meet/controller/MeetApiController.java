@@ -24,8 +24,9 @@ import com.pay.pie.domain.meet.dto.UpdateMeetNameRequest;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.meet.service.MeetService;
-import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.memberMeet.dto.AddMemberMeetRequest;
+import com.pay.pie.domain.memberMeet.dto.AllMemberMeetResponse;
+import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
 import com.pay.pie.domain.pay.application.PayServiceImpl;
 import com.pay.pie.domain.pay.entity.Pay;
@@ -43,13 +44,13 @@ public class MeetApiController {
 	private final MemberMeetService memberMeetService;
 	private final MeetRepository meetRepository;
 	private final PayServiceImpl payService;
-	private final MemberRepository memberRepository;
+	private final MemberMeetRepository memberMeetRepository;
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	// HTTP 메서드가 POST일 때 전달받은 URL과 동일하면 매서드로 매핑
 	@PostMapping("/meet")
 	// 요청 본문 값 매핑
-	public ResponseEntity<BaseResponse<Meet>> addMeet(@RequestBody AddMeetRequest request,
+	public ResponseEntity<BaseResponse<MeetResponse>> addMeet(@RequestBody AddMeetRequest request,
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
 		Meet savedMeet = meetService.save(request);
 
@@ -62,7 +63,7 @@ public class MeetApiController {
 		// 요청한 자원이 성공적으로 생성되었으며 저장된 블로그 글 정보를 응답에 담아 전송
 		return BaseResponse.success(
 			SuccessCode.INSERT_SUCCESS,
-			savedMeet);
+			new MeetResponse(savedMeet, memberMeetRepository.findAllByMeet(savedMeet).size()));
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
@@ -100,15 +101,15 @@ public class MeetApiController {
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@GetMapping("member/meets")
-	public ResponseEntity<BaseResponse<List<MeetResponse>>> getAllMeet(
+	public ResponseEntity<BaseResponse<List<AllMemberMeetResponse>>> getAllMeet(
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
 		Long memberId = securityUserDto.getMemberId();
-		List<MeetResponse> meetResponses = memberMeetService.findMeetByMemberId(memberId)
+		List<AllMemberMeetResponse> meetResponses = memberMeetService.findMeetByMemberId(memberId)
 			.stream()
 			.map(memberMeet -> {
 				Meet meet = meetRepository.findById(memberMeet.getMeet().getId()).orElse(null);
 				if (meet != null) {
-					return new MeetResponse(meet);
+					return new AllMemberMeetResponse(memberMeet, memberMeetRepository.findAllByMeet(meet).size());
 				} else {
 					// Member가 없는 경우에 대한 처리
 					return null;
@@ -153,12 +154,12 @@ public class MeetApiController {
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@GetMapping("meet/{meetId}")
-	public ResponseEntity<BaseResponse<Meet>> getMeet(@PathVariable long meetId) {
+	public ResponseEntity<BaseResponse<MeetResponse>> getMeet(@PathVariable long meetId) {
 		Meet meet = meetService.getMeet(meetId);
-
+		int memberCount = memberMeetRepository.findAllByMeet(meet).size();
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
-			meet);
+			new MeetResponse(meet, memberCount));
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
