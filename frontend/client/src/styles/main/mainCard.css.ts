@@ -68,6 +68,14 @@ export const cardInnerLayout = styleVariants({
         marginLeft: "0.75rem"
     }],
     defaultHorizontal: [cardInnerHorizontal],
+    paymentHorizontalInner: [cardInnerHorizontal],
+    paymentVerticalInner: [cardInner, {
+        marginTop: "1rem"
+    }],
+    paymentSpaceBetweenInner: [cardInnerHorizontal, {
+        marginTop: "0.5rem",
+        justifyContent: "space-between"
+    }],
     inviteInner: [cardContainer, cardInner, inviteInnerLayout],
     imageInputInner: [cardInner, imageInputInnerLayout]
 });
@@ -88,7 +96,7 @@ globalStyle(`${cardInnerLayout.defaultHeader} > p, ${cardInnerLayout.marginTopHe
 });
 
 
-// smallHeader Chile style
+// smallHeader Child style
 
 globalStyle(`${cardInnerLayout.smallHeader} > h5`, {
     fontSize: "1rem"
@@ -96,7 +104,7 @@ globalStyle(`${cardInnerLayout.smallHeader} > h5`, {
 
 globalStyle(`${cardInnerLayout.smallHeader} > p`, {
     color: theme.gray,
-    fontSize: "0.75rem",
+    fontSize: "0.8rem",
 });
 
 
@@ -113,3 +121,40 @@ globalStyle(`${cardInnerLayout.inviteInner} > h1`, {
     fontSize: "2rem",
     lineHeight: "2rem"
 });
+
+// paymentHorizontalInner Child style
+
+globalStyle(`${cardInnerLayout.paymentHorizontalInner} > p`, {
+    marginRight: "0.5rem",
+    fontSize: "0.8rem",
+    color: theme.gray
+})
+
+globalStyle(`${cardInnerLayout.paymentHorizontalInner} > h5`, {
+    fontSize: "0.8rem",
+})
+
+// paymentVerticalInner Child style
+
+globalStyle(`${cardInnerLayout.paymentVerticalInner} > h5`, {
+    fontSize: "1rem",
+    color: theme.gray
+})
+
+globalStyle(`${cardInnerLayout.paymentVerticalInner} > h3`, {
+    fontSize: "1.25rem"
+})
+
+globalStyle(`${cardInnerLayout.paymentSpaceBetweenInner} > h3`, {
+    fontSize: "1.5rem"
+})
+
+// font colors
+
+export const completed = style({
+    color: theme.completed
+})
+
+export const unpaid = style({
+    color: theme.unpaid
+})

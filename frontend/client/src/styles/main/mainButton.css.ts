@@ -76,3 +76,14 @@ export const smallButton = style({
     borderRadius: "0.5rem",
     backgroundColor: theme.blue
 })
+
+export const cardButton = style({
+    padding: "0.75rem 1.8rem",
+    borderRadius: "30px",
+    backgroundColor: theme.skyblue,
+    selectors: {
+        "&:active": {
+            backgroundColor: theme.skyblueActive
+        }
+    }
+})

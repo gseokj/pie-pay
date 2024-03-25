@@ -8,8 +8,6 @@ import SelectMeetImageCard from "@/app/(post-verification)/[meetId]/component/Se
 import MeetInfoCard from "@/app/(post-verification)/[meetId]/component/MeetInfoCard";
 import {useQueryClient} from "@tanstack/react-query";
 import {GetMeetInfoResponse} from "@/model/meet";
-import * as mainStyles from "@/styles/main/main.css";
-import * as fontStyles from "@/styles/fonts.css";
 import MemberLayout from "@/app/(post-verification)/[meetId]/component/MemberLayout";
 import PaymentLayout from "@/app/(post-verification)/[meetId]/component/PaymentLayout";
 import HighlightLayout from "@/app/(post-verification)/[meetId]/component/HighlightLayout";
@@ -47,7 +45,7 @@ export default function Meet({params}: Props) {
                 :
                 <>
                     <MemberLayout meetId={meetId} />
-                    <PaymentLayout />
+                    <PaymentLayout meetId={meetId} />
                     <HighlightLayout />
                     <PaymentSelectButton meetId={meetId}/>
                 </>
