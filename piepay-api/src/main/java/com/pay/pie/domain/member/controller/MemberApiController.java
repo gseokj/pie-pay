@@ -5,6 +5,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +18,7 @@ import com.pay.pie.domain.member.service.MemberService;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
 import com.pay.pie.global.common.BaseResponse;
 import com.pay.pie.global.common.code.SuccessCode;
+import com.pay.pie.global.security.dto.SecurityUserDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -50,4 +53,22 @@ public class MemberApiController {
 			SuccessCode.SELECT_SUCCESS,
 			memberResponses);
 	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@GetMapping("member/detail")
+	public ResponseEntity<BaseResponse<MemberResponse>> getMemberDetail(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
+		Long memberId = securityUserDto.getMemberId();
+		MemberResponse memberResponse = new MemberResponse(memberRepository.findById(memberId).orElseThrow());
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			memberResponse);
+	}
+
+	// @PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	// @GetMapping("member/meets")
+	// public ResponseEntity<BaseResponse<List<Account>>> getAccounts(
+	// 	@AuthenticationPrincipal SecurityUserDto securityUserDto) {
+	// }
 }
