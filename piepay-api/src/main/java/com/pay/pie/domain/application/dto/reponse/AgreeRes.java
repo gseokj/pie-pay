@@ -16,14 +16,17 @@ public class AgreeRes {
 	private final Long payId;
 	private final Long participantId;
 	private final boolean payAgree;
-	private final LocalDateTime createdAt;
+	private final boolean allAgreed;
+	private final LocalDateTime agreeTime;
 
-	public static AgreeRes of(Participant participant) {
+	public static AgreeRes of(Participant participant, boolean allAgreed) {
 		return AgreeRes.builder()
 			.payId(participant.getPay().getId())
 			.participantId(participant.getId())
-			.payAgree(participant.getPayAgree())
-			.createdAt(participant.getPay().getCreatedAt())
+			.payAgree(true)
+			.allAgreed(allAgreed)
+			.agreeTime(LocalDateTime.now())
 			.build();
 	}
+
 }
