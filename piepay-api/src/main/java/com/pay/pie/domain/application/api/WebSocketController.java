@@ -76,14 +76,14 @@ public class WebSocketController {
 		simpleMessageSendingOperations.convertAndSend("/sub", "socket connection completed.");
 		return message;
 	}
-	
+
 	/**
 	 * 방 입장 시 초기 정보 조회
 	 * @param payId
 	 * @param headerAccessor 초기 정보 리스트
 	 */
 	// @MessageMapping("/InitialData/{payId}")
-	@MessageMapping("/InitialData/{payId}")
+	@MessageMapping("/initialData/{payId}")
 	public void checkInitialData(@DestinationVariable String payId, SimpMessageHeaderAccessor headerAccessor) {
 		// 클라이언트가 방에 입장하여 초기 데이터를 확인할 때 호출됩니다.
 		// 해당 방의 초기 정보를 조회하여 클라이언트에게 전송합니다.
