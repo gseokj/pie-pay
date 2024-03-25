@@ -76,55 +76,59 @@ public class WebSocketController {
 		simpleMessageSendingOperations.convertAndSend("/sub", "socket connection completed.");
 		return message;
 	}
-
-	// @GetMapping("/pay/{payId}")
-	// public ResponseEntity<List<AgreeDto>> loadAgreeData(@PathVariable String payId) {
-	// 	List<AgreeDto> agreeRedis = redisTemplateAgreeData.opsForList().range(payId, 0, 99);
-	//
-	// 	return ResponseEntity.ok(agreeRedis);
-	// }
-
+	
 	/**
 	 * 방 입장 시 초기 정보 조회
 	 * @param payId
 	 * @param headerAccessor 초기 정보 리스트
 	 */
+	// @MessageMapping("/InitialData/{payId}")
 	@MessageMapping("/InitialData/{payId}")
 	public void checkInitialData(@DestinationVariable String payId, SimpMessageHeaderAccessor headerAccessor) {
 		// 클라이언트가 방에 입장하여 초기 데이터를 확인할 때 호출됩니다.
 		// 해당 방의 초기 정보를 조회하여 클라이언트에게 전송합니다.
 		String sessionId = headerAccessor.getSessionId();
-		List<Object> initialData = new ArrayList<>();
+		log.info("sessionId: {}", sessionId);
 		Map<Object, Object> agreeData = redisTemplate.opsForHash().entries("payId:" + payId + ":agree");
 		Map<Object, Object> insteadData = redisTemplate.opsForHash().entries("payId:" + payId + ":instead");
+		log.info("agreeData: {}", agreeData);
+		log.info("insteadData: {}", insteadData);
 
 		Map<String, Object> formattedData = new HashMap<>();
+
 		// agreeData 변환 후 저장
+		List<Map<String, Object>> formattedAgreeDataList = new ArrayList<>();
 		if (agreeData != null && !agreeData.isEmpty()) {
-			Map<String, Boolean> formattedAgreeData = new HashMap<>();
 			for (Map.Entry<Object, Object> entry : agreeData.entrySet()) {
-				formattedAgreeData.put(entry.getKey().toString(), Boolean.parseBoolean(entry.getValue().toString()));
+				Map<String, Object> participantData = new HashMap<>();
+				String participantId = entry.getValue().toString(); // participantId 추출
+				participantData.put("participantId", participantId);
+				formattedAgreeDataList.add(participantData);
 			}
-			formattedData.put("agreeData", formattedAgreeData);
+		} else {
+			// agreeData가 없는 경우 빈 리스트 추가
+			formattedAgreeDataList = new ArrayList<>();
 		}
+		formattedData.put("agreeData", formattedAgreeDataList);
 
 		// insteadData 변환 후 저장
+		List<Map<String, Object>> formattedInsteadDataList = new ArrayList<>();
 		if (insteadData != null && !insteadData.isEmpty()) {
-			Map<String, Object> formattedInsteadData = new HashMap<>();
 			for (Map.Entry<Object, Object> entry : insteadData.entrySet()) {
-				formattedInsteadData.put(entry.getKey().toString(), entry.getValue());
+				Map<Object, Object> insteadDataMap = (Map<Object, Object>)entry.getValue(); // Map으로 형변환
+				Map<String, Object> insteadDataItem = new HashMap<>();
+				insteadDataItem.put("borrowerId", insteadDataMap.get("borrowerId")); // borrowerId 추가
+				insteadDataItem.put("lenderId", insteadDataMap.get("lenderId")); // lenderId 추가
+				formattedInsteadDataList.add(insteadDataItem);
 			}
-			formattedData.put("insteadData", formattedInsteadData);
+		} else {
+			// insteadData가 없는 경우 빈 리스트 추가
+			formattedInsteadDataList = new ArrayList<>();
 		}
-
-		// if (agreeData != null) {
-		// 	initialData.add(agreeData);
-		// }
-		// if (insteadData != null) {
-		// 	initialData.add(insteadData);
-		// }
-		log.info("받아올 데이터: {}", formattedData);
-		messagingTemplate.convertAndSendToUser(sessionId, "/sub/initialData/" + payId, formattedData);
+		formattedData.put("insteadData", formattedInsteadDataList);
+		// 클라이언트에게 데이터 전송
+		log.info("초기데이터: {}", formattedData);
+		messagingTemplate.convertAndSend("/sub/initialData/" + payId, formattedData);
 	}
 
 	/**
