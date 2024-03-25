@@ -49,6 +49,7 @@ public class JwtService {
 			.nickname(findMember.getNickname())
 			.email(findMember.getEmail())
 			.role(findMember.getMemberRole().getValue())
+			.userKey(findMember.getApiKey())
 			.build();
 
 		return new UsernamePasswordAuthenticationToken(securityUserDto, "",
