@@ -291,12 +291,12 @@ export default function Main() {
             <BankAccount />
             <div className={styles.categoryContainer}>
                 <div className={styles.category}>
-                    <h1 className={fontStyles.bold}>모임</h1>
+                    <h3 className={fontStyles.bold}>모임</h3>
                     <p>{dummys.length}</p>
                 </div>
                 {dummys.length !== 0 &&
                     <button
-                        className={`${styles.joinButton} ${fontStyles.bold}`}
+                        className={`${fontStyles.bold}`}
                         onClick={joinModalOn}
                     >모임 입장</button>
                 }

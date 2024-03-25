@@ -64,6 +64,9 @@ export const cardInnerLayout = styleVariants({
     marginTopHeader: [cardInner, {
         marginTop: "8rem"
     }],
+    smallHeader: [cardInner, {
+        marginLeft: "0.75rem"
+    }],
     defaultHorizontal: [cardInnerHorizontal],
     inviteInner: [cardContainer, cardInner, inviteInnerLayout],
     imageInputInner: [cardInner, imageInputInnerLayout]
@@ -82,6 +85,18 @@ globalStyle(`${cardInnerLayout.defaultHeader} > p, ${cardInnerLayout.marginTopHe
     color: theme.gray,
     fontSize: "1rem",
     lineHeight: "1.4rem"
+});
+
+
+// smallHeader Chile style
+
+globalStyle(`${cardInnerLayout.smallHeader} > h5`, {
+    fontSize: "1rem"
+});
+
+globalStyle(`${cardInnerLayout.smallHeader} > p`, {
+    color: theme.gray,
+    fontSize: "0.75rem",
 });
 
 
