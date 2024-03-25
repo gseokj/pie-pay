@@ -9,4 +9,5 @@ public interface ParticipantService {
 
 	SelectedPartiesRes selectParticipant(Long meetId, Long openerId, List<ParticipantReq> participants);
 
+	SelectedPartiesRes getParticipant(Long payId);
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/pay/parties")
+@RequestMapping("/pay/parties")
 @RequiredArgsConstructor
 public class ParticipantController {
 
@@ -44,5 +46,19 @@ public class ParticipantController {
 		SelectedPartiesRes selectedPartiesRes = participantService.selectParticipant(meetId, openerId, participants);
 
 		return BaseResponse.success(SuccessCode.CHECK_SUCCESS, selectedPartiesRes);
+	}
+
+	/**
+	 * 결제 참여자 확인
+	 * @param payId 페이 ID
+	 * @return
+	 */
+	@GetMapping("/{payId}")
+	public ResponseEntity<BaseResponse<SelectedPartiesRes>> getParticipant(
+		@PathVariable Long payId) {
+		SelectedPartiesRes selectedPartiesRes = participantService.getParticipant(payId);
+
+		return BaseResponse.success(SuccessCode.CHECK_SUCCESS, selectedPartiesRes);
+
 	}
 }

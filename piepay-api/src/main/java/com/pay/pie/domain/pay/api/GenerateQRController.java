@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/pay/qr")
+@RequestMapping("/pay/qr")
 @RequiredArgsConstructor
 public class GenerateQRController {
 
@@ -31,7 +31,7 @@ public class GenerateQRController {
 	@GetMapping
 	public ResponseEntity<byte[]> generateQRCode(@RequestParam Long payId) {
 		// redis -> DB
-		// redisToDBSyncService.syncDataFromRedisToDB(payId);
+		redisToDBSyncService.syncDataFromRedisToDB(payId);
 
 		// pay Status 변경
 		// 	Pay pay = payRepository.findById(agreeReq.getPayId())

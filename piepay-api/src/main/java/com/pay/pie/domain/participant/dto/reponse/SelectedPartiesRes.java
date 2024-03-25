@@ -24,7 +24,7 @@ public class SelectedPartiesRes {
 	public static SelectedPartiesRes of(Pay pay, List<ParticipantDto> participants) {
 		return SelectedPartiesRes.builder()
 			.payId(pay.getId())
-			// .meetId(pay.getMeet().getId())
+			.meetId(pay.getMeet().getId())
 			.payStatus(pay.getPayStatus())
 			.createAt(pay.getCreatedAt())
 			.participants(participants)
