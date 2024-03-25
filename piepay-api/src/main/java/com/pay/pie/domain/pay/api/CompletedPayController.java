@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/pay")
+@RequestMapping("/pay/receipt")
 @RequiredArgsConstructor
 public class CompletedPayController {
 
@@ -27,7 +27,7 @@ public class CompletedPayController {
 	 * @param payId 결제 ID
 	 * @return 영수증 정보
 	 */
-	@GetMapping("/receipt/{payId}")
+	@GetMapping("/{payId}")
 	public ResponseEntity<BaseResponse<ReceiptRes>> getReceipt(@PathVariable Long payId) {
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,

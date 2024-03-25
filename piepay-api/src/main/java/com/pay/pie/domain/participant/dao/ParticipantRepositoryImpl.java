@@ -2,6 +2,9 @@ package com.pay.pie.domain.participant.dao;
 
 import static com.pay.pie.domain.participant.entity.QParticipant.*;
 
+import java.util.List;
+
+import com.pay.pie.domain.participant.entity.Participant;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,14 @@ public class ParticipantRepositoryImpl implements ParticipantRepositoryCustom {
 			.where(participant.pay.id.eq(payId))
 			.fetch()
 			.size();
+	}
+
+	@Override
+	public List<Participant> findByPayId(Long payId) {
+		return queryFactory
+			.selectFrom(participant)
+			.where(participant.pay.id.eq(payId))
+			.fetch();
 	}
 
 	// @Override

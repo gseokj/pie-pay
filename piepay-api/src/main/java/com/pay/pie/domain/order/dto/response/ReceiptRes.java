@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.pay.pie.domain.order.entity.Order;
 import com.pay.pie.domain.orderMenu.entity.OrderMenu;
+import com.pay.pie.domain.participant.dto.CompletedPaymentParticipantDto;
 import com.pay.pie.domain.pay.entity.Pay;
 import com.pay.pie.domain.store.dto.StoreInfoDto;
 
@@ -20,6 +21,7 @@ public class ReceiptRes {
 	private Long id;
 	private StoreInfoDto storeInfo;
 	private Long totalAmount;
+	private List<CompletedPaymentParticipantDto> completedPaymentParticipantDtoList;
 	private LocalDateTime createdAt;
 	private List<OrderMenu> orderManus;
 
