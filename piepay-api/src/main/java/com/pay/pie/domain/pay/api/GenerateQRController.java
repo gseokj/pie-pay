@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pay.pie.domain.application.RedisToDBSyncService;
 import com.pay.pie.domain.pay.application.GenerateQRService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class GenerateQRController {
 
 	private final GenerateQRService generateQRService;
+	private final RedisToDBSyncService redisToDBSyncService;
 
 	/**
 	 * QR코드 생성
@@ -28,6 +30,14 @@ public class GenerateQRController {
 	 */
 	@GetMapping
 	public ResponseEntity<byte[]> generateQRCode(@RequestParam Long payId) {
+		// redis -> DB
+		// redisToDBSyncService.syncDataFromRedisToDB(payId);
+
+		// pay Status 변경
+		// 	Pay pay = payRepository.findById(agreeReq.getPayId())
+		// 		.orElseThrow(() -> new IllegalArgumentException("없는 PayId"));
+		// 	pay.setPayStatus(Pay.PayStatus.ING);
+		// 	payRepository.save(pay);
 
 		try {
 			byte[] qrCodeimage = generateQRService.generateQRCode(payId);

@@ -7,7 +7,11 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import com.pay.pie.domain.application.dto.AgreeDto;
+import com.pay.pie.domain.application.dto.InsteadDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,6 +47,36 @@ public class RedisConfig {
 		// redisTemplate.setDefaultSerializer(new StringRedisSerializer());
 
 		return redisTemplate;
+	}
+
+	@Bean
+	public RedisTemplate<String, AgreeDto> redisTemplateAgreeData() {
+		RedisTemplate<String, AgreeDto> redisTemplateAgreeData = new RedisTemplate<>();
+		redisTemplateAgreeData.setConnectionFactory(redisConnectionFactory());
+
+		redisTemplateAgreeData.setKeySerializer(new StringRedisSerializer());        // Key Serializer
+		redisTemplateAgreeData.setValueSerializer(
+			new Jackson2JsonRedisSerializer<>(String.class));      // Value Serializer
+
+		redisTemplateAgreeData.setHashKeySerializer(new StringRedisSerializer());
+		redisTemplateAgreeData.setHashValueSerializer(new StringRedisSerializer());
+		
+		return redisTemplateAgreeData;
+	}
+
+	@Bean
+	public RedisTemplate<String, InsteadDto> redisTemplateInsteadData() {
+		RedisTemplate<String, InsteadDto> redisTemplateInsteadData = new RedisTemplate<>();
+		redisTemplateInsteadData.setConnectionFactory(redisConnectionFactory());
+
+		redisTemplateInsteadData.setKeySerializer(new StringRedisSerializer());        // Key Serializer
+		redisTemplateInsteadData.setValueSerializer(
+			new Jackson2JsonRedisSerializer<>(String.class));      // Value Serializer
+
+		redisTemplateInsteadData.setHashKeySerializer(new StringRedisSerializer());
+		redisTemplateInsteadData.setHashValueSerializer(new StringRedisSerializer());
+
+		return redisTemplateInsteadData;
 	}
 
 }
