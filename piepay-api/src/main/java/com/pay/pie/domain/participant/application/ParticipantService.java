@@ -7,6 +7,7 @@ import com.pay.pie.domain.participant.dto.request.ParticipantReq;
 
 public interface ParticipantService {
 
-	SelectedPartiesRes selectParticipant(Long openerId, List<ParticipantReq> participants);
+	SelectedPartiesRes selectParticipant(Long meetId, Long openerId, List<ParticipantReq> participants);
 
+	SelectedPartiesRes getParticipant(Long payId);
 }

@@ -37,6 +37,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 	private static final String[] URL_WHITE_LIST = {
 		"/pub/**", "/sub/**", "/pay",
+		"/InitialData/**",
 		"/error", "/login/**", "/favicon.ico", "/index/**",
 		"/actuator/**", "/actuator", "/api-docs/**", "/swagger-ui/**",
 		"/swagger-resources/**", "/swagger-ui.html", "/api/token/**",
@@ -83,7 +84,8 @@ public class SecurityConfig {
 		final List<String> allowedHeaders = List.of("*");
 		final List<String> allowedOriginPatterns = List.of(
 			"http://localhost:8080",
-			"http://localhost:3000"
+			"http://localhost:3000",
+			"https://jxy.me/"
 		);
 		return request -> {
 			CorsConfiguration config = new CorsConfiguration();
