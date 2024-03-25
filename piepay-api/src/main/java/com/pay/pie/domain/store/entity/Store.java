@@ -4,6 +4,8 @@ import com.pay.pie.domain.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,7 +21,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Table(name = "store")
+// @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Store extends BaseEntity {
+
+	public enum StoreCategory {
+		FOOD, LEISURE, TRANSPORT
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,8 +47,13 @@ public class Store extends BaseEntity {
 	@Column(name = "address", nullable = false, length = 50)
 	private String address;
 
-	@Size(max = 11)
+	@Size(max = 20)
 	@NotNull
-	@Column(name = "phone", nullable = false, length = 11)
+	@Column(name = "phone", nullable = false, length = 20)
 	private String phone;
+
+	@NotNull
+	@Column(name = "store_category", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Store.StoreCategory storeCategory;
 }

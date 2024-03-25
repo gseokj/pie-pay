@@ -1,5 +1,6 @@
 package com.pay.pie.domain.pay.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pay.pie.domain.BaseEntity;
 import com.pay.pie.domain.meet.entity.Meet;
 
@@ -7,7 +8,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,6 +26,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "pay")
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Pay extends BaseEntity {
 
 	public enum PayStatus {
@@ -38,7 +39,8 @@ public class Pay extends BaseEntity {
 	private Long id;
 
 	// @NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
+	// (fetch = FetchType.LAZY)  --> 에러 때문에 우선 주석처리함 by 재언
 	@JoinColumn(name = "meet_id")
 	private Meet meet;
 

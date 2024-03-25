@@ -1,7 +1,5 @@
 package com.pay.pie.domain.pay.application;
 
-import java.util.List;
-
 import static com.pay.pie.domain.order.entity.QOrder.*;
 import static com.pay.pie.domain.orderMenu.entity.QOrderMenu.*;
 import static com.pay.pie.domain.participant.entity.QParticipant.*;
@@ -17,8 +15,8 @@ import com.pay.pie.domain.menu.entity.Menu;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
 import com.pay.pie.domain.participant.entity.Participant;
 import com.pay.pie.domain.pay.dao.PayRepository;
-import com.pay.pie.domain.pay.entity.Pay;
 import com.pay.pie.domain.pay.dto.response.CompletedPaymentRes;
+import com.pay.pie.domain.pay.entity.Pay;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -57,6 +55,7 @@ public class PayServiceImpl implements PayService {
 
 		return null;
 	}
+
 	public Pay findRecentPayByMeetId(long meetId) {
 		Meet meet = meetRepository.findById(meetId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 meetId을 가진 Meet을 찾을 수 없음"));
@@ -80,7 +79,7 @@ public class PayServiceImpl implements PayService {
 			.from(orderMenu)
 			.join(orderMenu.order, order)
 			.where(order.pay.id.eq(payId)
-				.and(orderMenu.menu.manuCategory.eq(Menu.ManuCategory.NON_ALCOHOL)))
+				.and(orderMenu.menu.menuCategory.eq(Menu.MenuCategory.NON_ALCOHOL)))
 			.fetchOne();
 
 		Long participantsCnt = queryFactory
@@ -107,7 +106,7 @@ public class PayServiceImpl implements PayService {
 			.from(orderMenu)
 			.join(orderMenu.order, order)
 			.where(order.pay.id.eq(payId)
-				.and(orderMenu.menu.manuCategory.eq(Menu.ManuCategory.ALCOHOL)))
+				.and(orderMenu.menu.menuCategory.eq(Menu.MenuCategory.ALCOHOL)))
 			.fetchOne();
 
 		Long drankAlcoholPersonCnt = queryFactory
