@@ -25,15 +25,14 @@ public class GenerateQRServiceImpl implements GenerateQRService {
 	@Transactional(readOnly = true)
 	public byte[] generateQRCode(Long payId) throws WriterException, IOException {
 
-		String url = "https://___/your-receipt/" + payId;
+		String url = "https://localhost:3000/your-receipt/" + payId;
 		int width = 200;
 		int height = 200;
 		BitMatrix bitMatrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		MatrixToImageWriter.writeToStream(bitMatrix, "PNG", out);
-		// log.info("out: {}", out);
+		log.info("out: {}", out);
 		return out.toByteArray();
-		// return new byte[0];
 	}
 }

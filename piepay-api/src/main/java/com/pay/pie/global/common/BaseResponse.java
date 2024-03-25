@@ -12,7 +12,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @JsonPropertyOrder({"status", "message", "result"})
 public class BaseResponse<T> {
-	private T reuslt;
+	private T result;
 	private int status;
 	private String message;
 

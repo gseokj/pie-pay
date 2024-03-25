@@ -7,7 +7,7 @@
 // import org.springframework.web.bind.annotation.RequestParam;
 // import org.springframework.web.bind.annotation.RestController;
 //
-// import com.pay.pie.domain.participant.application.AgreeParticipantService;
+// import com.pay.pie.domain.application.PayAgreeService;
 // import com.pay.pie.domain.payInstead.application.PayInsteadService;
 //
 // import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@
 // @RequestMapping("/pay-participants")
 // public class PayParticipantController {
 //
-// 	private final AgreeParticipantService agreeParticipantService;
+// 	private final PayAgreeService agreeParticipantService;
 // 	private final PayInsteadService payInsteadService;
 //
 // 	@PostMapping("/{participantId}/agreement")

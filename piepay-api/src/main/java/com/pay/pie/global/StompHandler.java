@@ -4,8 +4,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.simp.stomp.StompCommand;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 
@@ -25,27 +23,27 @@ public class StompHandler implements ChannelInterceptor {
 	// websocket을 통해 들어온 요청이 처리 되기전 실행됨
 	@Override
 	public Message<?> preSend(Message<?> message, MessageChannel channel) {
-		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-		// websocket 연결시 헤더의 jwt token 유효성 검증
-		if (StompCommand.CONNECT == accessor.getCommand()) {
-			String authorizationHeader = accessor.getFirstNativeHeader("Authorization");
-			if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-				String token = authorizationHeader.substring(7); // Extract the token excluding "Bearer "
-				try {
-					jwtUtil.verifyJwtToken(token);
-					// Token is valid
-					log.info("JWT Token is valid");
-				} catch (Exception e) {
-					// Token is not valid
-					log.error("JWT Token validation failed: {}", e.getMessage());
-					throw new RuntimeException("JWT Token validation failed");
-				}
-			} else {
-				// No token provided
-				log.error("No JWT Token provided in the Authorization header");
-				throw new RuntimeException("No JWT Token provided");
-			}
-		}
+		// StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+		// // websocket 연결시 헤더의 jwt token 유효성 검증
+		// if (StompCommand.CONNECT == accessor.getCommand()) {
+		// 	String authorizationHeader = accessor.getFirstNativeHeader("Authorization");
+		// 	if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+		// 		String token = authorizationHeader.substring(7); // Extract the token excluding "Bearer "
+		// 		try {
+		// 			jwtUtil.verifyJwtToken(token);
+		// 			// Token is valid
+		// 			log.info("JWT Token is valid");
+		// 		} catch (Exception e) {
+		// 			// Token is not valid
+		// 			log.error("JWT Token validation failed: {}", e.getMessage());
+		// 			throw new RuntimeException("JWT Token validation failed");
+		// 		}
+		// 	} else {
+		// 		// No token provided
+		// 		log.error("No JWT Token provided in the Authorization header");
+		// 		throw new RuntimeException("No JWT Token provided");
+		// 	}
+		// }
 		return message;
 	}
 
