@@ -43,14 +43,14 @@ export default function PaymentLayout({ meetId }: PaymentProps) {
 
     return (
         <section>
-            <div className={mainStyles.categoryContainer}>
-                <h3 className={fontStyles.bold}>결제 내역</h3>
+            <div className={ mainStyles.categoryContainer.default }>
+                <h3 className={ fontStyles.bold }>결제 내역</h3>
                 <button
-                    className={fontStyles.bold}
-                    onClick={onClickPush}
+                    className={ fontStyles.bold }
+                    onClick={ onClickPush }
                 >더보기</button>
             </div>
-            <PaymentCard props={paymentHistory[0]} />
+            <PaymentCard props={ paymentHistory[0] } />
         </section>
     );
 }

@@ -12,11 +12,41 @@ const cardContainer = style({
     boxShadow: "0 8px 12px" + theme.shadow
 });
 
+
+export const highlightCardContainer = style({
+    position: "absolute",
+    width: "100%",
+    left: 0,
+    padding: "0 5%",
+    paddingBottom: "5%",
+    overflowX: "auto",
+    whiteSpace: "nowrap",
+    '::-webkit-scrollbar': {
+        display: "none"
+    },
+    '@media': {
+        'screen and (min-width: 768px)': {
+            '::-webkit-scrollbar': {
+                display: 'block',
+                height: '8px',
+            },
+            '::-webkit-scrollbar-thumb': {
+                backgroundColor: '#D3D3D3'
+            },
+        },
+    },
+})
+
 export const cardLayout = styleVariants({
     default: [cardContainer],
     defaultHorizontal: [cardContainer, {
         flexDirection: "row",
         justifyContent: "space-between"
+    }],
+    default80: [cardContainer, {
+        display: "inline-block",
+        marginRight: "2.5%",
+        width: "75%",
     }],
     furtherPadding: [cardContainer, {
         marginBottom: "4%",
@@ -68,9 +98,10 @@ export const cardInnerLayout = styleVariants({
         marginLeft: "0.75rem"
     }],
     defaultHorizontal: [cardInnerHorizontal],
+    iconHeader: [cardInnerHorizontal],
     paymentHorizontalInner: [cardInnerHorizontal],
     paymentVerticalInner: [cardInner, {
-        marginTop: "1rem"
+        marginTop: "0.8rem"
     }],
     paymentSpaceBetweenInner: [cardInnerHorizontal, {
         marginTop: "0.5rem",
@@ -137,6 +168,7 @@ globalStyle(`${cardInnerLayout.paymentHorizontalInner} > h5`, {
 // paymentVerticalInner Child style
 
 globalStyle(`${cardInnerLayout.paymentVerticalInner} > h5`, {
+    marginBottom: "0.1rem",
     fontSize: "1rem",
     color: theme.gray
 })
@@ -147,6 +179,11 @@ globalStyle(`${cardInnerLayout.paymentVerticalInner} > h3`, {
 
 globalStyle(`${cardInnerLayout.paymentSpaceBetweenInner} > h3`, {
     fontSize: "1.5rem"
+})
+
+globalStyle(`${cardInnerLayout.iconHeader} > h3`, {
+    marginLeft: "0.5rem",
+    fontSize: "1.25rem"
 })
 
 // font colors

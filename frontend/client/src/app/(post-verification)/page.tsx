@@ -289,7 +289,7 @@ export default function Main() {
     return (
         <>
             <BankAccount />
-            <div className={styles.categoryContainer}>
+            <div className={styles.categoryContainer.default}>
                 <div className={styles.category}>
                     <h3 className={fontStyles.bold}>모임</h3>
                     <p>{dummys.length}</p>
