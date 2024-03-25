@@ -56,11 +56,19 @@ public class Member extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private MemberRole memberRole;
 
+	@Column(name = "api_key")
+	private String apiKey;
+
+	public void registerPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
 	@Builder(builderMethodName = "of")
-	public Member(String nickname, String profileImage, String email, MemberRole memberRole) {
+	public Member(String nickname, String profileImage, String email, MemberRole memberRole, String apiKey) {
 		this.nickname = nickname;
 		this.profileImage = profileImage;
 		this.email = email;
 		this.memberRole = memberRole;
+		this.apiKey = apiKey;
 	}
 }
