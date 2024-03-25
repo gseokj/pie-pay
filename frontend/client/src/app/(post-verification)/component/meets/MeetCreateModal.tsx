@@ -6,6 +6,9 @@ import * as buttonStyles from "@/styles/main/mainButton.css";
 import * as fontCss from "@/styles/fonts.css";
 import RandomName from "@/app/(post-verification)/component/utils/RandomName";
 import {useEffect, useState} from "react";
+import {CreateMeetRequest, CreateMeetResponse} from "@/model/meet";
+import { postCreateMeet } from "@/api/meet";
+import {useRouter} from "next/navigation";
 
 interface CreateMeetModalProps{
     isCreateMeetModalOn: boolean;
@@ -23,6 +26,23 @@ export default function MeetCreateModal({ isCreateMeetModalOn, clickCreate, clic
     const [currentY, setCurrentY] = useState(0);
     const [dragging, setDragging] = useState(false);
     const [modalY, setModalY] = useState(-56);
+
+    const router = useRouter();
+
+    async function createMeetRequest(meetName: string) {
+        const meetData: CreateMeetRequest = {
+            meetName: meetName
+        };
+        const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaWUiLCJleHAiOjEwNzExMDgwNjk4LCJzdWIiOiJzaGFxODhAZGF1bS5uZXQiLCJyb2xlcyI6IlJPTEVfTk9UX0NFUlRJRklFRCJ9.vaLabNJyskgDWrwJFODM2g7PaZiTOpRRbZSIfMR10w8";
+
+        try {
+            const response = await postCreateMeet(meetData, token);
+            console.log("Success Create", response);
+            router.push(`/${response.reuslt.id}`);
+        } catch (error) {
+            console.error("Fail Create", error);
+        }
+    }
 
     useEffect(()=>{
         if (isCreateMeetModalOn) {
@@ -54,8 +74,10 @@ export default function MeetCreateModal({ isCreateMeetModalOn, clickCreate, clic
     const createMeet = () => {
         if (meetName === '') {
             console.log(randomName);
+            createMeetRequest(randomName);
         } else {
             console.log(meetName);
+            createMeetRequest(meetName);
         }
         setMeetName('');
         setModalOn(false);

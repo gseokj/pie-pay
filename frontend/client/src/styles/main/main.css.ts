@@ -1,4 +1,4 @@
-import {globalStyle, style} from "@vanilla-extract/css";
+import {globalStyle, style, styleVariants} from "@vanilla-extract/css";
 import theme from "@/styles/theme/theme";
 
 export const mainContainer = style({
@@ -25,21 +25,63 @@ globalStyle(`${mainContainer} > *:first-child`, {
 export const categoryContainer = style({
     display: "flex",
     justifyContent: "space-between",
-    fontSize: "1.25rem",
+    alignItems: "end",
+    fontSize: "1rem",
     marginTop: "10%",
     marginBottom: "3%"
 })
 
-export const joinButton = style({
+globalStyle(`${categoryContainer} > h3`, {
+    fontSize: "1.25rem"
+});
+
+globalStyle(`${categoryContainer} > h5`, {
+    color: theme.blueGray
+});
+
+globalStyle(`${categoryContainer} > button`, {
     textDecoration: "underline",
-    textUnderlineOffset: "0.3rem",
+    textUnderlineOffset: "0.2rem",
     color: theme.blueGray
 })
 
 export const category = style({
-    display: "flex"
+    display: "flex",
+    fontSize: "1.25rem"
 })
 
 globalStyle(`${category} > p`, {
     marginLeft: "0.4rem"
+});
+
+const imageContainer = style({
+    display: "flex",
+    flexWrap: "nowrap",
+    width: "50%",
+    gap: "0.5rem",
+    marginRight: "1rem"
+});
+
+export const imageLayout = style({
+    borderRadius: "12px"
+});
+
+const profileContainer = style({
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+});
+
+export const containers = styleVariants({
+    imageContainer: [imageContainer],
+    profileContainer: [profileContainer]
+});
+
+export const visibility = styleVariants({
+    visible: [{
+        visibility: "visible"
+    }],
+    invisible: [{
+        visibility: "hidden"
+    }]
 });
