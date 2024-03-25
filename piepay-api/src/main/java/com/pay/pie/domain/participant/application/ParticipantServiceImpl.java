@@ -29,14 +29,14 @@ public class ParticipantServiceImpl implements ParticipantService {
 	private final PayRepository payRepository;
 
 	@Override
-	public SelectedPartiesRes selectParticipant(Long openerId, List<ParticipantReq> participants) {
+	public SelectedPartiesRes selectParticipant(Long meetId, Long openerId, List<ParticipantReq> participants) {
 
 		List<ParticipantDto> participantDtoList = new ArrayList<>();
 
 		// Pay 테이블 생성
 		Pay pay = payRepository.save(Pay.builder()
 			.payStatus(Pay.PayStatus.OPEN)
-			// .meet(meetId)
+			// .meet()
 			.openerId(openerId)
 			.build());
 
