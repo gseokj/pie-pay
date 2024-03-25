@@ -71,8 +71,7 @@ public class PayInsteadService {
 				//borrowId 결제동의 정보도 redis에 저장
 				redisTemplate.opsForHash().put(
 					"payId:" + payId + ":agree",
-					"participantId:" + participantBorrower.getId(),
-					"true"
+					"participantId" + participantBorrower.getId(), participantBorrower.getId().toString()
 				);
 
 			}
