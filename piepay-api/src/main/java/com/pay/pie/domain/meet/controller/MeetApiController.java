@@ -24,6 +24,8 @@ import com.pay.pie.domain.meet.dto.UpdateMeetNameRequest;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.meet.service.MeetService;
+import com.pay.pie.domain.member.dao.MemberRepository;
+import com.pay.pie.domain.memberMeet.dto.AddMemberMeetRequest;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
 import com.pay.pie.domain.pay.application.PayServiceImpl;
 import com.pay.pie.domain.pay.entity.Pay;
@@ -41,13 +43,21 @@ public class MeetApiController {
 	private final MemberMeetService memberMeetService;
 	private final MeetRepository meetRepository;
 	private final PayServiceImpl payService;
+	private final MemberRepository memberRepository;
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	// HTTP 메서드가 POST일 때 전달받은 URL과 동일하면 매서드로 매핑
 	@PostMapping("/meet")
 	// 요청 본문 값 매핑
-	public ResponseEntity<BaseResponse<Meet>> addMeet(@RequestBody AddMeetRequest request) {
+	public ResponseEntity<BaseResponse<Meet>> addMeet(@RequestBody AddMeetRequest request,
+		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
 		Meet savedMeet = meetService.save(request);
+
+		String invitation = savedMeet.getMeetInvitation();
+		Long memberId = securityUserDto.getMemberId();
+		AddMemberMeetRequest addMemberMeetRequest = new AddMemberMeetRequest();
+		addMemberMeetRequest.setMeetInvitation(invitation);
+		memberMeetService.save(addMemberMeetRequest, memberId);
 
 		// 요청한 자원이 성공적으로 생성되었으며 저장된 블로그 글 정보를 응답에 담아 전송
 		return BaseResponse.success(
