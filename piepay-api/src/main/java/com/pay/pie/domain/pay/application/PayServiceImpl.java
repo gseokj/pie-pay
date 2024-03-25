@@ -55,7 +55,6 @@ public class PayServiceImpl implements PayService {
 
 		return null;
 	}
-
 	public Pay findRecentPayByMeetId(long meetId) {
 		Meet meet = meetRepository.findById(meetId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 meetId을 가진 Meet을 찾을 수 없음"));
