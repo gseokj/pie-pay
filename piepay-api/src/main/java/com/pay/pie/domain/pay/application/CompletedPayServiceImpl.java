@@ -20,7 +20,6 @@ public class CompletedPayServiceImpl implements CompletedPayService {
 
 	private final PayRepository payRepository;
 	private final OrderRepository orderRepository;
-	// private final JPAQueryFactory query;
 
 	@Override
 	public ReceiptRes getReceipt(Long payId) {
@@ -30,6 +29,14 @@ public class CompletedPayServiceImpl implements CompletedPayService {
 			() -> new IllegalArgumentException("해당 Pay 없음")
 		);
 
-		return ReceiptRes.of(order, pay);
+		// return ReceiptRes.builder()
+		// 	.storeInfo(StoreInfoDto.of(order.getStore()))
+		// 	.totalAmount(order.getTotalAmount())
+		// 	.completedPaymentParticipantDtoList()
+		// 	.payInsteadDtoList()
+		// 	.orderManus()
+		// 	.createdAt(order.getCreatedAt())
+		// 	.build();
+		return null;
 	}
 }

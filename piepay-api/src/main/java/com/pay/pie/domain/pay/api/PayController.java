@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/pay/payment")
+@RequestMapping("/pay/payment")
 @RequiredArgsConstructor
 public class PayController {
 
