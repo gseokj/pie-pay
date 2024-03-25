@@ -3,6 +3,7 @@ package com.pay.pie.global.util.bank;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -140,7 +141,7 @@ public class BankUtil {
 		body.put("institutionCode", "00100");
 		body.put("fintechAppNo", "001");
 		body.put("apiServiceCode", "inquireAccountList");
-		body.put("institutionTransactionUniqueNo", "12340211918039997722");
+		body.put("institutionTransactionUniqueNo", createRandomNumber());
 		body.put("apiKey", API_KEY);
 		body.put("userKey", "587a94fa-804d-4338-afce-ec861341b754");
 
@@ -167,7 +168,7 @@ public class BankUtil {
 		body.put("institutionCode", "00100");
 		body.put("fintechAppNo", "001");
 		body.put("apiServiceCode", "inquireAccountInfo");
-		body.put("institutionTransactionUniqueNo", "12340990912330199703");
+		body.put("institutionTransactionUniqueNo", createRandomNumber());
 		body.put("apiKey", API_KEY);
 		body.put("userKey", "d1830ff3-444e-4ecb-92a2-bd5a915d3600");
 
@@ -209,7 +210,7 @@ public class BankUtil {
 		body.put("institutionCode", "00100");
 		body.put("fintechAppNo", "001");
 		body.put("apiServiceCode", "inquireAccountBalance");
-		body.put("institutionTransactionUniqueNo", "12340923912399199203");
+		body.put("institutionTransactionUniqueNo", createRandomNumber());
 		body.put("apiKey", API_KEY);
 		body.put("userKey", "d1830ff3-444e-4ecb-92a2-bd5a915d3600");
 
@@ -237,7 +238,7 @@ public class BankUtil {
 	}
 
 	// 회원 계좌 1원 입금
-	public void transferAccountOneWon(String bankCode, String accountNo) {
+	public void transferAccountOneWon(String bankCode, String accountNo, String userKey) {
 		Map<String, String> body = new HashMap<>();
 		body.put("apiName", "receivedTransferAccountNumber");
 		body.put("transmissionDate", "20240101");
@@ -245,9 +246,9 @@ public class BankUtil {
 		body.put("institutionCode", "00100");
 		body.put("fintechAppNo", "001");
 		body.put("apiServiceCode", "receivedTransferAccountNumber");
-		body.put("institutionTransactionUniqueNo", "12090990912391199203");
+		body.put("institutionTransactionUniqueNo", createRandomNumber());
 		body.put("apiKey", API_KEY);
-		body.put("userKey", "d1830ff3-444e-4ecb-92a2-bd5a915d3600");
+		body.put("userKey", userKey);
 
 		JSONObject jsonRequest = new JSONObject();
 		jsonRequest.put("Header", body);
@@ -284,7 +285,7 @@ public class BankUtil {
 		body.put("institutionCode", "00100");
 		body.put("fintechAppNo", "001");
 		body.put("apiServiceCode", "accountTransfer");
-		body.put("institutionTransactionUniqueNo", "12090990185693899203");
+		body.put("institutionTransactionUniqueNo", createRandomNumber());
 		body.put("apiKey", API_KEY);
 		body.put("userKey", "d1830ff3-444e-4ecb-92a2-bd5a915d3600");
 
@@ -328,6 +329,17 @@ public class BankUtil {
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException("잘못된 데이터 형식");
 		}
+	}
+
+	public String createRandomNumber() {
+		Random random = new Random();
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < 20; i++) {
+			int number = random.nextInt(9);
+			sb.append(number);
+		}
+		return sb.toString();
 	}
 
 }
