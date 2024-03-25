@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.member.application.MemberCertificationService;
-import com.pay.pie.domain.member.dto.request.PhoneVerificationRequest;
 import com.pay.pie.domain.member.dto.request.PhoneVerificationCheckRequest;
+import com.pay.pie.domain.member.dto.request.PhoneVerificationRequest;
 import com.pay.pie.global.common.BaseResponse;
 import com.pay.pie.global.common.code.SuccessCode;
 import com.pay.pie.global.security.dto.SecurityUserDto;
@@ -26,20 +26,20 @@ public class MemberCertificationController {
 
 	@PreAuthorize("hasAnyRole('ROLE_NOT_CERTIFIED')")
 	@PostMapping("/phone-number")
-	public void sendCertificationNumber(
-		@RequestBody PhoneVerificationRequest phoneVerificationRequest,
-		@AuthenticationPrincipal SecurityUserDto securityUserDto
+	public ResponseEntity<BaseResponse<String>> sendCertificationNumber(
+		@RequestBody PhoneVerificationRequest phoneVerificationRequest
 	) {
 		memberCertificationService.sendCertificationNumber(phoneVerificationRequest);
+		return BaseResponse.success(SuccessCode.CHECK_SUCCESS, "본인 인증이 완료되었습니다");
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_NOT_CERTIFIED')")
 	@PostMapping("/phone-number/confirm")
 	public ResponseEntity<BaseResponse<String>> confirmPhoneCertificationNumber(
-		@RequestBody PhoneVerificationCheckRequest phoneVerificationCheckRequest
+		@RequestBody PhoneVerificationCheckRequest phoneVerificationCheckRequest,
+		@AuthenticationPrincipal SecurityUserDto securityUserDto
 	) {
-
-		memberCertificationService.checkCertificationNumber(phoneVerificationCheckRequest);
+		memberCertificationService.checkCertificationNumber(phoneVerificationCheckRequest, securityUserDto);
 		return BaseResponse.success(SuccessCode.CHECK_SUCCESS, "본인 인증이 완료되었습니다");
 	}
 
