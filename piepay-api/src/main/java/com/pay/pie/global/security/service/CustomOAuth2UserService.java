@@ -15,6 +15,7 @@ import com.pay.pie.domain.member.entity.MemberRole;
 import com.pay.pie.global.security.user.CustomOauth2User;
 import com.pay.pie.global.security.user.OAuth2Attribute;
 import com.pay.pie.global.security.user.OAuth2UserInfo;
+import com.pay.pie.global.util.bank.BankUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +26,14 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 	private final MemberService memberService;
+	private final BankUtil bankUtil;
 
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws AuthenticationException {
 
 		OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
 		String registrationId = oAuth2UserRequest.getClientRegistration().getRegistrationId();
-		String userNameAttributeName = loadUserNameAttributeName(oAuth2UserRequest);
+		String userNameAttributeName = loadUserNameAttributeName(oAuth2UserRequest); //id
 
 		OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(
 			registrationId,
@@ -41,8 +43,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 		OAuth2UserInfo oAuth2UserInfo = oAuth2Attribute.getOauth2UserInfo();
 		String email = oAuth2UserInfo.getEmail();
-
-		Member findMember = memberService.findByEmail(email).orElse(joinMember(oAuth2UserInfo));
+		Member findMember = memberService.findByEmail(email).orElseGet(() -> joinMember(oAuth2UserInfo));
 
 		return new CustomOauth2User(
 			Collections.singleton(new SimpleGrantedAuthority(findMember.getMemberRole().getValue())),
@@ -61,15 +62,21 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	}
 
 	Member joinMember(OAuth2UserInfo oAuth2UserInfo) {
+
+		String newMemberEmail = oAuth2UserInfo.getEmail();
+		String userApiKey = bankUtil.createUser(newMemberEmail);
+
 		return memberService.save(Member.of()
-			.email(oAuth2UserInfo.getEmail())
+			.email(newMemberEmail)
 			.nickname(oAuth2UserInfo.getNickname())
 			.profileImage(oAuth2UserInfo.getProfileImage())
 			.memberRole(MemberRole.ROLE_NOT_CERTIFIED_MEMBER)
+			.apiKey(userApiKey)
 			.build());
 	}
 
 }
+
 
 
 
