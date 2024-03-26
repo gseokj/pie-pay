@@ -18,11 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class GenerateQRServiceImpl implements GenerateQRService {
 
 	@Override
-	@Transactional(readOnly = true)
 	public byte[] generateQRCode(Long payId) throws WriterException, IOException {
 
 		String url = "https://localhost:3000/your-receipt/" + payId;
