@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.repository.MeetRepository;
+import com.pay.pie.domain.member.dao.MemberRepository;
+import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
 import com.pay.pie.domain.menu.entity.Menu;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
 import com.pay.pie.domain.participant.entity.Participant;
@@ -32,6 +34,8 @@ public class PayServiceImpl implements PayService {
 	private final MeetRepository meetRepository;
 	private final ParticipantRepository participantRepository;
 	private final JPAQueryFactory queryFactory;
+	private final MemberRepository memberRepository;
+	private final MemberMeetRepository memberMeetRepository;
 
 	public List<Pay> findPayByMeetId(long meetId) {
 		Meet meet = meetRepository.findById(meetId)
@@ -55,6 +59,7 @@ public class PayServiceImpl implements PayService {
 
 		return null;
 	}
+
 	public Pay findRecentPayByMeetId(long meetId) {
 		Meet meet = meetRepository.findById(meetId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 meetId을 가진 Meet을 찾을 수 없음"));
@@ -136,5 +141,12 @@ public class PayServiceImpl implements PayService {
 
 			participantRepository.save(participant);
 		}
+	}
+
+	public List<Pay> findPayByMemberId(long memberId) {
+		List<Meet> meets = meetRepository.findAllBy
+		Member member = memberRepository.findById(memberId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 memberId을 가진 Member을 찾을 수 없음"));
+		return payRepository.findByMeetOrderByCreatedAtDesc(member);
 	}
 }

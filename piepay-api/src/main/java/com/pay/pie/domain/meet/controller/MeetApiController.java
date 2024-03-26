@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.meet.dto.AddMeetRequest;
 import com.pay.pie.domain.meet.dto.MeetResponse;
+import com.pay.pie.domain.meet.dto.MeetStatusResponse;
 import com.pay.pie.domain.meet.dto.PayResponse;
 import com.pay.pie.domain.meet.dto.UpdateInvitationRequest;
 import com.pay.pie.domain.meet.dto.UpdateMeetImageRequest;
@@ -147,11 +148,11 @@ public class MeetApiController {
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@GetMapping("meet/{meetId}/paystatus")
-	public ResponseEntity<BaseResponse<Meet>> getPayStatus(@PathVariable long meetId) {
+	public ResponseEntity<BaseResponse<MeetStatusResponse>> getPayStatus2(@PathVariable long meetId) {
 		Pay pay = payService.findRecentPayByMeetId(meetId);
-		Meet meet;
+		MeetStatusResponse meet;
 		if (pay.getPayStatus() == Pay.PayStatus.ING) {
-			meet = pay.getMeet();
+			meet = new MeetStatusResponse(pay.getMeet());
 		} else {
 			meet = null;
 		}
@@ -186,5 +187,35 @@ public class MeetApiController {
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
 			latestPay);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@GetMapping("meet/paystatus")
+	public ResponseEntity<BaseResponse<MeetStatusResponse>> getPayStatus(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
+		List<MemberMeet> memberMeets = memberMeetRepository.findByMemberId(securityUserDto.getMemberId());
+
+		List<Pay> payResponses = memberMeets
+			.stream()
+			// .map(PayResponse::new)
+			.map(memberMeet -> {
+				Meet meet = memberMeet.getMeet();
+				List<Order> orders = orderRepository.findAllByPay(pay);
+				return new PayResponse(pay, orders);
+			})
+			.sorted(Comparator.comparing(PayResponse::getUpdatedAt).reversed()) // updated_at을 기준으로 내림차순으로 정렬
+			.toList();
+
+		Pay pay = payService.findRecentPayByMeetId(meetId);
+		MeetStatusResponse meet;
+		if (pay.getPayStatus() == Pay.PayStatus.ING) {
+			meet = new MeetStatusResponse(pay.getMeet());
+		} else {
+			meet = null;
+		}
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			meet);
 	}
 }
