@@ -13,13 +13,13 @@ interface Meet {
 
 interface CreateMeetResponse {
     message: string;
-    reuslt: Meet;
+    result: Meet;
     status: number;
 }
 
 interface GetMeetInfoResponse {
     message: string;
-    reuslt: Meet;
+    result: Meet;
     status: number;
 }
 

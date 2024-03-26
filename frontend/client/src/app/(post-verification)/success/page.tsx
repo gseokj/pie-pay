@@ -1,42 +1,34 @@
 "use client";
 
 
-import { useEffect } from 'react';
-import {useRouter, useSearchParams} from "next/navigation";
+import {useRouter} from "next/navigation";
 
-export default function UseTokenExample() {
+
+export default function Success({
+    searchParams
+}: {
+    searchParams : { [key: string]: string | string[] | undefined }
+}) {
     const router = useRouter();
-    const params = useSearchParams();
 
-    useEffect(() => {
-
-    }, [params]); // router.query가 변경될 때마다 useEffect 재실행
-
-    const accessToken = params.get("accessToken");
-    const refreshToken = params.get("refreshToken");
-    console.log(accessToken)
-    console.log(refreshToken)
+    const accessToken = searchParams.accessToken;
+    const refreshToken = searchParams.refreshToken;
 
     if (accessToken && refreshToken) {
-        console.log('go')
-        // API를 호출하여 쿠키에 토큰 저장
-        fetch(`/success/api/auth/setTokens?accessToken=${accessToken}&refreshToken=${refreshToken}`, {
-            method: 'POST',
+        fetch(`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/success/api?accessToken=${accessToken}&refreshToken=${refreshToken}`, {
+            method: 'POST'
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Tokens are saved', data);
+                console.log('token saved', data);
                 router.push('/');
-                // 필요한 경우, 토큰 저장 후 추가 작업 수행
             })
-            .catch(error => console.error('Error saving tokens:', error));
+            .catch(error => console.error(error));
     }
-
-    console.log('로그인 성공');
 
     return (
         <div>
-            <h1>Token 사용 예제</h1>
+            로그인 완료!
         </div>
-    );
-};
+    )
+}

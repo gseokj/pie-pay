@@ -37,9 +37,9 @@ export default function Meet({params}: Props) {
     return (
         <>
             <MeetInfoCard params={{ meetId }} />
-            {meetInfo.reuslt.meetImage !== null ?
+            {meetInfo.result.meetImage !== null ?
                 <>
-                    <InviteMemberCard meetInvitation={ meetInfo.reuslt.meetInvitation } />
+                    <InviteMemberCard meetInvitation={ meetInfo.result.meetInvitation } />
                     <SelectMeetImageCard />
                 </>
                 :

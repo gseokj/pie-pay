@@ -1,10 +1,14 @@
 import {CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse} from "@/model/meet";
 import testAxios from "@/util/testAxios";
 import {QueryFunction} from "@tanstack/query-core";
+import {cookies} from "next/headers";
 const axios = testAxios();
 
 
 export const postCreateMeet = async (meetData: CreateMeetRequest, token: string):Promise<CreateMeetResponse> => {
+
+    // const token = cookies().get('accessToken');
+    // console.log(token);
 
     try {
         const response = await axios.post(`/meet`, meetData, {
