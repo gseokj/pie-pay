@@ -2,6 +2,8 @@
 FROM amazoncorretto:17
 # 작업 디렉토리를 설정
 WORKDIR /home/web/piepay
+# 8081 포트로 매핑
+EXPOSE 8081
 # 변수 선언
 ARG JAR_FILE=piepay-api-0.0.1-SNAPSHOT.jar
 # 호스트의 빌드 파일을 Docker 이미지 내로 복사
