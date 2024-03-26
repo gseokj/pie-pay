@@ -2,7 +2,7 @@ import {style, styleVariants} from "@vanilla-extract/css";
 import theme from "@/styles/theme/theme";
 
 const buttonLayout = style({
-    padding: "1.1rem 0",
+    padding: "1.3rem 0",
     borderRadius: "16px",
     backgroundColor: theme.blue,
     textAlign: "center",
@@ -33,6 +33,8 @@ const skyBlueActive = style({
     }
 });
 
+
+
 export const mainButton = styleVariants({
     defaultButton: [buttonLayout, buttonShadow],
     bottomButton: [buttonLayout, skyBlueActive, {
@@ -59,3 +61,18 @@ export const mainButton = styleVariants({
         color: "white"
     }]
 });
+
+export const buttonFeatures = styleVariants({
+    withIcon: [{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "0.4rem"
+    }]
+});
+
+export const smallButton = style({
+    padding: "0.4rem 1.6rem",
+    borderRadius: "0.5rem",
+    backgroundColor: theme.blue
+})

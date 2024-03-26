@@ -1,3 +1,5 @@
+"use client";
+
 import {Dummy} from "../../page";
 import * as styles from "@/styles/main/cardLayout.css";
 import * as fontCss from "@/styles/fonts.css";
@@ -5,6 +7,7 @@ import StarIcon from "@/app/(post-verification)/component/icons/StarIcon";
 import moreDots from "@/assets/icons/moreDots.svg";
 import theme from "@/styles/theme/theme";
 import Image from "next/image";
+import {useRouter} from "next/navigation";
 
 
 interface MeetMember {
@@ -16,9 +19,15 @@ interface MeetMember {
 
 export default function MeetGroup(props : {dummy: Dummy}){
     const { dummy } = props;
+
+    const router = useRouter();
+    const enterMeetRoom = () => {
+        router.push(`/${dummy.meetId}`);
+    }
+
     return (
         <>
-            <div className={styles.cardLayout.meetGroup}>
+            <div className={styles.cardLayout.meetGroup} onClick={enterMeetRoom}>
                 <div className={styles.lineLayout.lineOne}>
                     <div className={styles.meetInfo}>
                         <div className={styles.meetImageContainer}>

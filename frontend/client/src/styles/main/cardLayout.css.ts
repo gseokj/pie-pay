@@ -21,17 +21,14 @@ export const cardLayout = styleVariants({
 
 const lineContainer = style({
     display: "flex",
-
+    justifyContent: "space-between",
 })
 
 export const lineLayout = styleVariants({
     lineOne: [lineContainer, {
-        justifyContent: "space-between",
         marginBottom: "1.8rem"
     }],
-    lineTwo: [lineContainer, {
-        justifyContent: "space-between",
-    }],
+    lineTwo: [lineContainer],
 })
 
 export const lineLayoutJoin = styleVariants({
