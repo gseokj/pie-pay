@@ -58,7 +58,7 @@ public class MemberApiController {
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@GetMapping("member/detail")
+	@GetMapping("member")
 	public ResponseEntity<BaseResponse<MemberResponse>> getMemberDetail(
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
 		Long memberId = securityUserDto.getMemberId();
