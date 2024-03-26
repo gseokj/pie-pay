@@ -1,6 +1,7 @@
 package com.pay.pie.domain.pay.api;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/pay/payment")
 @RequiredArgsConstructor
+@Transactional
 public class PayController {
 
 	private final PayService payService;
