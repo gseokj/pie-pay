@@ -18,9 +18,9 @@ export default function Success({
         fetch(`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/success/api?accessToken=${accessToken}&refreshToken=${refreshToken}`, {
             method: 'POST'
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log('token saved', data);
+            .then(response => {
+                console.log(response);
+                console.log('token saved');
                 router.push('/');
             })
             .catch(error => console.error(error));

@@ -9,6 +9,7 @@ interface Meet {
     meetName: string;
     meetImage: string|null;
     meetInvitation: string;
+
 }
 
 interface CreateMeetResponse {

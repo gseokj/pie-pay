@@ -29,14 +29,35 @@ export default function MeetCreateModal({ isCreateMeetModalOn, clickCreate, clic
 
     const router = useRouter();
 
+    const getCookie = (name: string): string | undefined => {
+        const nameLenPlus = (name.length + 1);
+        return document.cookie.split(';').map(c => c.trim()).filter(cookie => {
+            return cookie.substring(0, nameLenPlus) === `${name}=`;
+        }).map(cookie => {
+            return decodeURIComponent(cookie.substring(nameLenPlus));
+        })[0] || undefined;
+    };
+
     async function createMeetRequest(meetName: string) {
         const meetData: CreateMeetRequest = {
             meetName: meetName
         };
-        const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaWUiLCJleHAiOjEwNzExMDgwNjk4LCJzdWIiOiJzaGFxODhAZGF1bS5uZXQiLCJyb2xlcyI6IlJPTEVfTk9UX0NFUlRJRklFRCJ9.vaLabNJyskgDWrwJFODM2g7PaZiTOpRRbZSIfMR10w8";
+        const token = getCookie('accessToken');
+        console.log("token", token);
+
+        // if (typeof token === 'string') {
+        //
+        //     try {
+        //         const response = await postCreateMeet(meetData);
+        //         console.log("Success Create", response);
+        //         router.push(`/${response.result.id}`);
+        //     } catch (error) {
+        //         console.error("Fail Create", error);
+        //     }
+        // }
 
         try {
-            const response = await postCreateMeet(meetData, token);
+            const response = await postCreateMeet(meetData);
             console.log("Success Create", response);
             router.push(`/${response.result.id}`);
         } catch (error) {
