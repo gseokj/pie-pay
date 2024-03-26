@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.pay.pie.domain.BaseEntity;
 import com.pay.pie.domain.account.entity.Account;
+import com.pay.pie.domain.member.dto.UpdateMemberRequest;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -89,5 +90,10 @@ public class Member extends BaseEntity {
 		this.email = email;
 		this.memberRole = memberRole;
 		this.apiKey = apiKey;
+	}
+
+	public void updateMember(UpdateMemberRequest request) {
+		this.profileImage = request.getProfileImage();
+		this.nickname = request.getNickname();
 	}
 }

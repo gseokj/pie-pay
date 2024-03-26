@@ -9,12 +9,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pay.pie.domain.member.application.MemberServiceImpl;
 import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.dto.MemberResponse;
+import com.pay.pie.domain.member.dto.UpdateMemberRequest;
 import com.pay.pie.domain.member.entity.Member;
-import com.pay.pie.domain.member.service.MemberService;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
 import com.pay.pie.global.common.BaseResponse;
 import com.pay.pie.global.common.code.SuccessCode;
@@ -26,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class MemberApiController {
 
-	private final MemberService memberService;
+	private final MemberServiceImpl memberService;
 	private final MemberMeetService memberMeetService;
 	private final MemberRepository memberRepository;
 
@@ -66,9 +69,15 @@ public class MemberApiController {
 			memberResponse);
 	}
 
-	// @PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	// @GetMapping("member/meets")
-	// public ResponseEntity<BaseResponse<List<Account>>> getAccounts(
-	// 	@AuthenticationPrincipal SecurityUserDto securityUserDto) {
-	// }
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@PutMapping("member")
+	public ResponseEntity<BaseResponse<Member>> updateMember(@AuthenticationPrincipal SecurityUserDto securityUserDto,
+		@RequestBody UpdateMemberRequest request) {
+		Long memberId = securityUserDto.getMemberId();
+		Member updatedMember = memberService.updateMember(memberId, request);
+
+		return BaseResponse.success(
+			SuccessCode.UPDATE_SUCCESS,
+			updatedMember);
+	}
 }
