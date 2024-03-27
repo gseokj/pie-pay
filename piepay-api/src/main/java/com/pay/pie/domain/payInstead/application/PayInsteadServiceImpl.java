@@ -69,7 +69,8 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 			bankUtil.sendErrorCode("에러발생");
 		}
 
-		// payInstead DB update
-		// soft delete 
+		// payInstead DB update 이체완료
+		payInstead.setPayback(true);
+		payInsteadRepository.save(payInstead);
 	}
 }
