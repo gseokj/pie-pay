@@ -28,6 +28,7 @@ import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.meet.service.MeetService;
 import com.pay.pie.domain.memberMeet.dto.AddMemberMeetRequest;
 import com.pay.pie.domain.memberMeet.dto.AllMemberMeetResponse;
+import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
 import com.pay.pie.domain.order.dao.OrderRepository;
@@ -200,7 +201,7 @@ public class MeetApiController {
 			// .map(PayResponse::new)
 			.map(memberMeet -> {
 				Meet meet = memberMeet.getMeet();
-				List<Order> orders = orderRepository.findAllByPay(pay);
+				Pay pay = payService.findPayByMeetId()
 				return new PayResponse(pay, orders);
 			})
 			.sorted(Comparator.comparing(PayResponse::getUpdatedAt).reversed()) // updated_at을 기준으로 내림차순으로 정렬
