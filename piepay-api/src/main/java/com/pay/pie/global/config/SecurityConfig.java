@@ -85,7 +85,8 @@ public class SecurityConfig {
 		final List<String> allowedOriginPatterns = List.of(
 			"http://localhost:8080",
 			"http://localhost:3000",
-			"https://jxy.me/"
+			"https://jxy.me/",
+			"https://j10a402.p.ssafy.io"
 		);
 		return request -> {
 			CorsConfiguration config = new CorsConfiguration();
