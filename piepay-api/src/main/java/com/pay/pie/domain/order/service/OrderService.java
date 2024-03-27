@@ -39,7 +39,7 @@ public class OrderService {
 		Random random = new Random();
 		int randomIndex = random.nextInt(storesSize);
 		addOrderRequest.setStore(stores.get(randomIndex));
-		addOrderRequest.setTotalAmount(99999L);
+		addOrderRequest.setTotalAmount(0L);
 
 		addOrderRequest.setPaymentStatus(Order.PaymentStatus.UNPAID);
 
