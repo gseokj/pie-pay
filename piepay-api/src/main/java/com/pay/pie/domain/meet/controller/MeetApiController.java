@@ -3,6 +3,7 @@ package com.pay.pie.domain.meet.controller;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,7 @@ import com.pay.pie.domain.memberMeet.service.MemberMeetService;
 import com.pay.pie.domain.order.dao.OrderRepository;
 import com.pay.pie.domain.order.entity.Order;
 import com.pay.pie.domain.pay.application.PayServiceImpl;
+import com.pay.pie.domain.pay.dto.response.PayStatusIngResponse;
 import com.pay.pie.domain.pay.entity.Pay;
 import com.pay.pie.global.common.BaseResponse;
 import com.pay.pie.global.common.code.SuccessCode;
@@ -194,31 +196,27 @@ public class MeetApiController {
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@GetMapping("meet/paystatus")
-	public ResponseEntity<BaseResponse<MeetStatusResponse>> getPayStatus(
+	public ResponseEntity<BaseResponse<List<Optional<PayStatusIngResponse>>>> getPayStatus(
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
 		List<MemberMeet> memberMeets = memberMeetRepository.findByMemberId(securityUserDto.getMemberId());
-
-		List<Pay> payResponses = memberMeets
+		List<Optional<PayStatusIngResponse>> payResponses = memberMeets
 			.stream()
 			// .map(PayResponse::new)
 			.map(memberMeet -> {
-				Meet meet = memberMeet.getMeet();
-				Pay pay = payService.findPayByMeetId()
-				return new PayResponse(pay, orders);
+				Long meetId = memberMeet.getMeet().getId();
+				Pay pay = payService.findRecentPayByMeetId(meetId);
+				if (pay != null && pay.getPayStatus() == Pay.PayStatus.ING) {
+					return Optional.of(new PayStatusIngResponse(pay));
+				} else {
+					return Optional.<PayStatusIngResponse>empty();
+				}
 			})
-			.sorted(Comparator.comparing(PayResponse::getUpdatedAt).reversed()) // updated_at을 기준으로 내림차순으로 정렬
-			.toList();
-
-		Pay pay = payService.findRecentPayByMeetId(meetId);
-		MeetStatusResponse meet;
-		if (pay.getPayStatus() == Pay.PayStatus.ING) {
-			meet = new MeetStatusResponse(pay.getMeet());
-		} else {
-			meet = null;
-		}
+			// .sorted(Comparator.comparing(PayResponse::getUpdatedAt).reversed()) // updated_at을 기준으로 내림차순으로 정렬
+			.filter(Optional::isPresent)
+			.collect(Collectors.toList());
 
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
-			meet);
+			payResponses);
 	}
 }

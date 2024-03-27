@@ -143,10 +143,10 @@ public class PayServiceImpl implements PayService {
 		}
 	}
 
-	public List<Pay> findPayByMemberId(long memberId) {
-		List<Meet> meets = meetRepository.findAllBy
-		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 memberId을 가진 Member을 찾을 수 없음"));
-		return payRepository.findByMeetOrderByCreatedAtDesc(member);
-	}
+	// public List<Pay> findPayByMemberId(long memberId) {
+	// 	List<Meet> meets = meetRepository.findAllBy
+	// 	Member member = memberRepository.findById(memberId)
+	// 		.orElseThrow(() -> new IllegalArgumentException("해당 memberId을 가진 Member을 찾을 수 없음"));
+	// 	return payRepository.findByMeetOrderByCreatedAtDesc(member);
+	// }
 }
