@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class PayServiceImpl implements PayService {
 
 	private final PayRepository payRepository;
@@ -47,6 +46,7 @@ public class PayServiceImpl implements PayService {
 	}
 
 	@Override
+	@Transactional
 	public CompletedPaymentRes processPayment(Long payId) {
 		//참여자 정보
 		List<Participant> participantList = payRepository.findParticipantsByPayId(payId);

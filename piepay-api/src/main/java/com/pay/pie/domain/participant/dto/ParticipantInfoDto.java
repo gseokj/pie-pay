@@ -10,7 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @Builder
-public class CompletedPaymentParticipantDto {
+public class ParticipantInfoDto {
 
 	private final Long participantId;
 	private final SelectedMemberInfoDto memberInfo;
@@ -18,8 +18,8 @@ public class CompletedPaymentParticipantDto {
 	private final Boolean payAgree;
 	private final Long payAmount;
 
-	public static CompletedPaymentParticipantDto of(Participant participant) {
-		return CompletedPaymentParticipantDto.builder()
+	public static ParticipantInfoDto of(Participant participant) {
+		return ParticipantInfoDto.builder()
 			.participantId(participant.getId())
 			.memberInfo(SelectedMemberInfoDto.of(participant.getMember()))
 			.isDrinkAlcohol(participant.getIsDrinkAlcohol())
