@@ -14,7 +14,7 @@
 //
 // @RestController
 // @RequiredArgsConstructor
-// @RequestMapping("/pay-participants")
+// @RequestMapping("/api/pay-participants")
 // public class PayParticipantController {
 //
 // 	private final PayAgreeService agreeParticipantService;
