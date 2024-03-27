@@ -17,7 +17,12 @@ public class OrderResponse {
 		this.orderId = order.getId();
 		this.store = order.getStore();
 		this.paymentStatus = order.getPaymentStatus();
-		this.totalAmount = order.getTotalAmount();
+		// newOrderMenuResponses에 있는 menuPrice 값들을 모두 더한 값을 계산
+		Long totalMenuPrice = newOrderMenuResponses.stream()
+			.mapToLong(response -> response.getMenu().getMenuPrice() * response.getQuantity())
+			.sum();
+
+		this.totalAmount = order.getTotalAmount() + totalMenuPrice;
 		this.newOrderMenusResponse = newOrderMenuResponses;
 	}
 

@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/pay/qr")
+@RequestMapping("/pay/qr")
 @RequiredArgsConstructor
 public class GenerateQRController {
 

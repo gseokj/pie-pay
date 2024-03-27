@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -80,6 +81,29 @@ public class MemberCertificationController {
 	@PreAuthorize("hasAnyRole('ROLE_NOT_CERTIFIED')")
 	@PostMapping("/payment/password/confirm")
 	public ResponseEntity<BaseResponse<TokenDto>> reEnterPaymentPassword(
+		@RequestBody PaymentPasswordRequest paymentPasswordRequest,
+		@AuthenticationPrincipal SecurityUserDto securityUserDto
+	) {
+
+		return BaseResponse.success(
+			SuccessCode.CHECK_SUCCESS,
+			memberCertificationService.reEnterPaymentPassword(paymentPasswordRequest, securityUserDto)
+		);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@PutMapping("/payment/password")
+	public ResponseEntity<BaseResponse<String>> setPaymentPassword2(
+		@RequestBody PaymentPasswordRequest paymentPasswordRequest,
+		@AuthenticationPrincipal SecurityUserDto securityUserDto
+	) {
+		memberCertificationService.setPaymentPassword(paymentPasswordRequest, securityUserDto);
+		return BaseResponse.success(SuccessCode.CHECK_SUCCESS, "Pay Password 입력 완료");
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@PutMapping("/payment/password/confirm")
+	public ResponseEntity<BaseResponse<TokenDto>> reEnterPaymentPassword2(
 		@RequestBody PaymentPasswordRequest paymentPasswordRequest,
 		@AuthenticationPrincipal SecurityUserDto securityUserDto
 	) {

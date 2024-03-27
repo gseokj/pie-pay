@@ -9,5 +9,4 @@ public interface MemberService {
 	Member save(Member member);
 
 	Optional<Member> findByEmail(String email);
-
 }
