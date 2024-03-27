@@ -27,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class PayServiceImpl implements PayService {
 
 	private final PayRepository payRepository;
@@ -43,7 +42,15 @@ public class PayServiceImpl implements PayService {
 		return payRepository.findByMeetOrderByCreatedAtDesc(meet);
 	}
 
+	public Pay findRecentPayByMeetId(long meetId) {
+		Meet meet = meetRepository.findById(meetId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 meetId을 가진 Meet을 찾을 수 없음"));
+
+		return payRepository.findFirstByMeetOrderByCreatedAtDesc(meet);
+	}
+
 	@Override
+	@Transactional
 	public CompletedPaymentRes processPayment(Long payId) {
 		//참여자 정보
 		List<Participant> participantList = payRepository.findParticipantsByPayId(payId);
@@ -58,13 +65,6 @@ public class PayServiceImpl implements PayService {
 		// 은행 이체 요청 로직
 
 		return null;
-	}
-
-	public Pay findRecentPayByMeetId(long meetId) {
-		Meet meet = meetRepository.findById(meetId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 meetId을 가진 Meet을 찾을 수 없음"));
-
-		return payRepository.findFirstByMeetOrderByCreatedAtDesc(meet);
 	}
 
 	/**
