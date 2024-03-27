@@ -29,7 +29,7 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 
 	@Override
 	public void paybackInsteadPayment(Long payInsteadId, SecurityUserDto securityUserDto) {
-		// Borrower(나)
+		// borrower(나)
 		Long borrowerId = securityUserDto.getMemberId();
 		Member borrower = memberRepository.findById(borrowerId)
 			.orElseThrow(
@@ -41,18 +41,35 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 				() -> new IllegalArgumentException("lender는 없는 회원입니다.")
 			);
 
-		// borrower 잔액 조회
-		Account account = queryFactory
+		// borrower 계좌 조회
+		Account borrowerAccount = queryFactory
 			.selectFrom(QAccount.account)
 			.where(QAccount.account.member.eq(borrower))
 			.fetchOne();
-
-		String accountBalance = bankUtil.getAccountBalance(account.getBankCode(), account.getAccountNo(),
+		// borrower 잔액 조회
+		String accountBalance = bankUtil.getAccountBalance(borrowerAccount.getBankCode(),
+			borrowerAccount.getAccountNo(),
 			securityUserDto.getUserKey());
-		if (Long.parseLong(accountBalance) >= payInstead.getAmount()) {
-			// 이체 진행
 
+		// lender 계좌 조회
+		Account lenderAccount = queryFactory
+			.selectFrom(QAccount.account)
+			.where(QAccount.account.member.eq(lender))
+			.fetchOne();
+
+		// 이체 진행
+		if (Long.parseLong(accountBalance) >= payInstead.getAmount()) {
+			bankUtil.transferAccount(
+				lenderAccount.getBankCode(),
+				lenderAccount.getAccountNo(),
+				payInstead.getAmount().intValue(),
+				borrowerAccount.getBankCode(),
+				borrowerAccount.getAccountNo());
+		} else {
+			bankUtil.sendErrorCode("에러발생");
 		}
 
+		// payInstead DB update
+		// soft delete 
 	}
 }
