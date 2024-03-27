@@ -12,14 +12,14 @@ import lombok.Getter;
 @Builder
 public class ParticipantDto {
 
-	private final Long id;
+	private final Long participantId;
 	private final SelectedMemberInfoDto memberInfo;
 	private final Boolean isDrinkAlcohol;
 	private final Boolean payAgree;
 
 	public static ParticipantDto of(Participant participant) {
 		return ParticipantDto.builder()
-			.id(participant.getId())
+			.participantId(participant.getId())
 			.memberInfo(SelectedMemberInfoDto.of(participant.getMember()))
 			.isDrinkAlcohol(participant.getIsDrinkAlcohol())
 			.payAgree(participant.getPayAgree())
