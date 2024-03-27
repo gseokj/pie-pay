@@ -49,9 +49,9 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 
 		String accountBalance = bankUtil.getAccountBalance(account.getBankCode(), account.getAccountNo(),
 			securityUserDto.getUserKey());
-		if (Long.parseLong(accountBalance) > payInstead.getAmount()) {
+		if (Long.parseLong(accountBalance) >= payInstead.getAmount()) {
 			// 이체 진행
-			
+
 		}
 
 	}
