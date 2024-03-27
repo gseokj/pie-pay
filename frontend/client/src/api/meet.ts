@@ -7,14 +7,19 @@ import axios from "axios";
 
 export const postCreateMeet = async (meetData: CreateMeetRequest):Promise<CreateMeetResponse> => {
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/api`, {
+    const token = await(await fetch(`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/api/auth`, {
         method: 'GET'
-    }).then(res => console.log(res));
+    })).json();
+
+    console.log(token, "!!!!!!!!!!!11");
+    const accessToken = token.data.value;
+    console.log(accessToken);
+
 
     try {
-        const response = await testAxios().post(`/meet`, meetData, {
+        const response = await testAxios().post(`/api/meet`, meetData, {
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${accessToken}`
             }
         });
         return response.data;
