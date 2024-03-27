@@ -42,7 +42,7 @@ public class OrderApiController {
 	private final OrderRepository orderRepository;
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@PostMapping("/receipt/{payId}")
+	@PostMapping("/your-receipt/{payId}")
 	public ResponseEntity<BaseResponse<OrderResponse>> addReceipt(@PathVariable Long payId) {
 		Order order = orderService.save(payId);
 		Long orderId = order.getId();
