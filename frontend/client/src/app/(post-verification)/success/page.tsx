@@ -2,6 +2,7 @@
 
 
 import {useRouter} from "next/navigation";
+import {getMyInfo} from "@/api/user";
 
 
 export default function Success({
@@ -21,9 +22,16 @@ export default function Success({
             .then(response => {
                 console.log(response);
                 console.log('token saved');
-                router.push('/');
+                setSession();
             })
             .catch(error => console.error(error));
+    }
+    const setSession = async () => {
+        const myInfo = await getMyInfo();
+        console.log(myInfo);
+        // sessionStorage.setItem()
+        router.push('/');
+
     }
 
     return (
