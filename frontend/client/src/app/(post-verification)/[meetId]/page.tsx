@@ -8,8 +8,6 @@ import SelectMeetImageCard from "@/app/(post-verification)/[meetId]/component/Se
 import MeetInfoCard from "@/app/(post-verification)/[meetId]/component/MeetInfoCard";
 import {useQueryClient} from "@tanstack/react-query";
 import {GetMeetInfoResponse} from "@/model/meet";
-import * as mainStyles from "@/styles/main/main.css";
-import * as fontStyles from "@/styles/fonts.css";
 import MemberLayout from "@/app/(post-verification)/[meetId]/component/MemberLayout";
 import PaymentLayout from "@/app/(post-verification)/[meetId]/component/PaymentLayout";
 import HighlightLayout from "@/app/(post-verification)/[meetId]/component/HighlightLayout";
@@ -35,23 +33,25 @@ export default function Meet({params}: Props) {
     const {meetId} = params;
     const queryClient = useQueryClient();
     const meetInfo = queryClient.getQueryData(["meetInfo",meetId]) as GetMeetInfoResponse;
+    console.log(meetInfo);
+    console.log(meetId);
 
     return (
         <>
-            <MeetInfoCard params={{ meetId }} />
-            {meetInfo.reuslt.meetImage !== null ?
-                <>
-                    <InviteMemberCard meetInvitation={ meetInfo.reuslt.meetInvitation } />
-                    <SelectMeetImageCard />
-                </>
-                :
-                <>
-                    <MemberLayout meetId={meetId} />
-                    <PaymentLayout />
-                    <HighlightLayout />
-                    <PaymentSelectButton meetId={meetId}/>
-                </>
-            }
+            {/*<MeetInfoCard params={{ meetId }} />*/}
+            {/*{meetInfo.result.meetImage !== null ?*/}
+            {/*    <>*/}
+            {/*        <InviteMemberCard meetInvitation={ meetInfo.result.meetInvitation } />*/}
+            {/*        <SelectMeetImageCard />*/}
+            {/*    </>*/}
+            {/*    :*/}
+            {/*    <>*/}
+            {/*        <MemberLayout meetId={meetId} />*/}
+            {/*        <PaymentLayout meetId={meetId} />*/}
+            {/*        <HighlightLayout meetId={meetId} />*/}
+            {/*        <PaymentSelectButton meetId={meetId}/>*/}
+            {/*    </>*/}
+            {/*}*/}
         </>
     );
 }

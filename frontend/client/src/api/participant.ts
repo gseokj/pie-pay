@@ -6,7 +6,7 @@ const axios = localAxios();
 export const getMembers: QueryFunction<Member[]> = async ({ queryKey }) => {
     const [_,meetId] = queryKey;
     try {
-        const res = await axios.get(`/meet/${meetId}`);
+        const res = await axios.get(`api/meet/${meetId}`);
         return res.data;
     } catch (error) {
         console.error('Failed to fetch data', error);

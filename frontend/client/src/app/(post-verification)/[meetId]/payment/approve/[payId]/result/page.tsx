@@ -1,9 +1,7 @@
 import Header from "@/app/(post-verification)/[meetId]/payment/component/Header";
 import three from "@/assets/icons/payment3.svg";
-import {useRouter} from "next/navigation";
 import * as styles from "@/styles/payment/result/result.css";
 import ParticipantResultList from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/ParticipantResultList";
-import { useReceiptModal } from '@/store/useReceiptModal';
 import ReceiptBox from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/ReceiptBox";
 
 type Props={

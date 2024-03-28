@@ -4,14 +4,14 @@ export interface Participant {
     participantId: number;
     memberInfo: Member;
     isDrinkAlcohol: boolean;
-    payAgree: "await"|"agree"|"deny";
+    payAgree: boolean | undefined;
     payAmount: number;
 }
 
-export interface Participants {
+export interface Payment {
     participantId: number;
     createdAt: string;
     participants: Participant[];
-    payStatus: "open" | "ing" | "complete" | "close";
+    payStatus: "OPEN" | "ING" | "COMPLETE" | "CLOSE";
 }
 
