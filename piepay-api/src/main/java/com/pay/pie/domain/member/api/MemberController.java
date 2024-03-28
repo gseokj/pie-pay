@@ -18,6 +18,7 @@ import com.pay.pie.domain.member.application.MemberServiceImpl;
 import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.dto.MemberResponse;
 import com.pay.pie.domain.member.dto.UpdateMemberRequest;
+import com.pay.pie.domain.member.dto.response.MemberDetailResponse;
 import com.pay.pie.domain.member.entity.Member;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
 import com.pay.pie.global.common.BaseResponse;
@@ -35,6 +36,9 @@ public class MemberController {
 	private final MemberMeetService memberMeetService;
 	private final MemberRepository memberRepository;
 
+	// 모임내에 회원을 조회하는 api 같습니다.
+	// MemberController 는 순수하게 member 와 관련된 요청만 들어와야 해요
+	// MemberMeet 이나 Meet 으로 옮겨주세요 !!
 	@GetMapping("/meet/{meetId}/member")
 	public ResponseEntity<BaseResponse<List<MemberResponse>>> findMemberMeet(@PathVariable long meetId) {
 		List<MemberResponse> memberResponses = memberMeetService.findMemberByMeetId(meetId)
@@ -61,25 +65,26 @@ public class MemberController {
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@GetMapping("/member")
-	public ResponseEntity<BaseResponse<MemberResponse>> getMemberDetail(
-		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
-		Long memberId = securityUserDto.getMemberId();
-		MemberResponse memberResponse = new MemberResponse(memberRepository.findById(memberId).orElseThrow());
-
+	public ResponseEntity<BaseResponse<MemberDetailResponse>> getMemberDetail(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto
+	) {
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
-			memberResponse);
+			memberService.getMemberDetail(securityUserDto.getMemberId())
+		);
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@PutMapping("/member")
-	public ResponseEntity<BaseResponse<Member>> updateMember(@AuthenticationPrincipal SecurityUserDto securityUserDto,
-		@RequestBody UpdateMemberRequest request) {
-		Long memberId = securityUserDto.getMemberId();
-		Member updatedMember = memberService.updateMember(memberId, request);
+	public ResponseEntity<BaseResponse<MemberDetailResponse>> updateMember(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto,
+		@RequestBody UpdateMemberRequest request
+	) {
 
 		return BaseResponse.success(
 			SuccessCode.UPDATE_SUCCESS,
-			updatedMember);
+			memberService.updateMemberDetail(securityUserDto.getMemberId(), request)
+		);
 	}
 }
+
