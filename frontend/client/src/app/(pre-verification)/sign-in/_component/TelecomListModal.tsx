@@ -1,6 +1,6 @@
 'use client';
 
-import * as styles from '@/styles/signin/telecomlistmodal.css';
+import * as styles from '@/styles/signin/modal.css';
 import React, { useState, useEffect } from 'react';
 
 type Props = {
@@ -11,6 +11,15 @@ export default function TelecomListModal({ onClose, onSelect }: Props) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [closing, setClosing] = useState(false); // 닫힘 상태 관리
+
+  const telecomList = [
+    { telecom: 'SKT' },
+    { telecom: 'KT' },
+    { telecom: 'LG U+' },
+    { telecom: 'SKT 알뜰폰' },
+    { telecom: 'KT 알뜰폰' },
+    { telecom: 'LG U+ 알뜰폰' },
+  ];
 
   // 사용자가 일정 거리 이상 슬라이드 했는지 확인하고 모달을 닫음
   const handleTouchMove = (e: React.TouchEvent) => {
