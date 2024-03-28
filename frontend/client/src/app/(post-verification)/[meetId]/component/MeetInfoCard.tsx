@@ -5,6 +5,7 @@ import settingIcon from "@/assets/icons/setting.svg";
 import * as mainStyles from "@/styles/main/main.css";
 import * as cardStyles from "@/styles/main/mainCard.css";
 import * as fontStyles from "@/styles/fonts.css";
+import {useRouter} from "next/navigation";
 
 
 type Props = {
@@ -14,6 +15,8 @@ type Props = {
 
 export default function MeetInfoCard({params}: Props) {
     const {meetId} = params;
+    const router = useRouter();
+
     const meetInfo = {
         meetName: "meetName",
         meetImage: null,
@@ -22,9 +25,14 @@ export default function MeetInfoCard({params}: Props) {
     const defaultImage = faker.image.avatarGitHub();
     const createdDate = dayjs(meetInfo.createdAt);
 
+    const onClickPush = () => {
+        router.push(`/${meetId}/setting`)
+    };
+
     return (
         <section
             className={ cardStyles.cardLayout.defaultHorizontal }
+            onClick={onClickPush}
         >
             <div
                 className={ cardStyles.cardInnerLayout.defaultHorizontal }

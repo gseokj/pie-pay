@@ -22,7 +22,7 @@ globalStyle(`${mainContainer} > *:first-child`, {
     marginTop: "24%",
 })
 
-export const categoryContainer = style({
+const categoryLayout = style({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "end",
@@ -31,15 +31,22 @@ export const categoryContainer = style({
     marginBottom: "3%"
 })
 
-globalStyle(`${categoryContainer} > h3`, {
+export const categoryContainer = styleVariants({
+    default: [categoryLayout],
+    smallMargin: [categoryLayout, {
+        marginTop: "6.5%"
+    }]
+})
+
+globalStyle(`${categoryContainer.default} > h3, ${categoryContainer.smallMargin} > h3`, {
     fontSize: "1.25rem"
 });
 
-globalStyle(`${categoryContainer} > h5`, {
+globalStyle(`${categoryContainer.default} > h5, ${categoryContainer.smallMargin} > h5`, {
     color: theme.blueGray
 });
 
-globalStyle(`${categoryContainer} > button`, {
+globalStyle(`${categoryContainer.default} > button, ${categoryContainer.smallMargin} > button`, {
     textDecoration: "underline",
     textUnderlineOffset: "0.2rem",
     color: theme.blueGray

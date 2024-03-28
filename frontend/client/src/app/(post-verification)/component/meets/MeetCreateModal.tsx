@@ -30,18 +30,24 @@ export default function MeetCreateModal({ isCreateMeetModalOn, clickCreate, clic
     const router = useRouter();
 
     async function createMeetRequest(meetName: string) {
-        const meetData: CreateMeetRequest = {
-            meetName: meetName
-        };
-        const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaWUiLCJleHAiOjEwNzExMDgwNjk4LCJzdWIiOiJzaGFxODhAZGF1bS5uZXQiLCJyb2xlcyI6IlJPTEVfTk9UX0NFUlRJRklFRCJ9.vaLabNJyskgDWrwJFODM2g7PaZiTOpRRbZSIfMR10w8";
 
         try {
-            const response = await postCreateMeet(meetData, token);
+            const response = await postCreateMeet({ meetName:meetName });
             console.log("Success Create", response);
-            router.push(`/${response.reuslt.id}`);
+            router.push(`/${response.result.meetId}`);
         } catch (error) {
             console.error("Fail Create", error);
         }
+
+        // const response = await (await fetch(`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/api/meet`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json;charset=utf-8'
+        //     },
+        //     body: JSON.stringify({ meetName: meetName })
+        // })).json();
+        //
+        // console.log(response);
     }
 
     useEffect(()=>{

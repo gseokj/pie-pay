@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const LocalAxios = () => {
+const testAxios = () => {
 
     const instance = axios.create({
         baseURL: process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
@@ -11,4 +11,4 @@ const LocalAxios = () => {
     return instance;
 };
 
-export default LocalAxios;
+export default testAxios;
