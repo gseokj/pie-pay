@@ -41,8 +41,6 @@ export const title = style({
     fontSize: '25px'
 })
 
-
-
 export const image = style({
     borderRadius: '20px',
     margin: '7px'

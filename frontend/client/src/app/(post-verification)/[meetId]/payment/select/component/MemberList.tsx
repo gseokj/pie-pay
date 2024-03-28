@@ -12,8 +12,8 @@ import {FilterMember} from "@/model/member";
 
 export default function MemberList() {
     const {filterMembers, handleCheck} = useMemberFilter();
-     const onClickAgree = (member:FilterMember) => {
-         if (member.isHost) {
+     const onClickAgree = (member:FilterMember,index:number) => {
+         if (index==0) {
              alert("나는 방장이다");
              return;
         }
@@ -25,17 +25,17 @@ export default function MemberList() {
         <div className={styles.memberContainer}>
             {filterMembers.filter(member => member.isFiltered)
                 .sort((a, b) => (a.isHost === b.isHost) ? 0 : a.isHost ? -1 : 1)
-                .map(member => (
+                .map((member,index) => (
 
           <div key={member.memberId} className={`${styles.container}  ${member.isSelected && styles.backgroundSkyBlue}`}>
             <div className={styles.memberList}>
                 <img className={styles.image} src={member.profileImage} alt="" width={50}/>
                 <p className={styles.memberName}>
-                    {member.isHost && `나 (${member.nickname})`}
-                    {!member.isHost && member.nickname}
+                    {index===0 && `나 (${member.nickname})`}
+                    {index!==0 && member.nickname}
                 </p>
             </div>
-            <button onClick={()=>onClickAgree(member)}>
+            <button onClick={()=>onClickAgree(member,index)}>
                 {member.isSelected && !member.isTypeAlcohol && <Image className={styles.checkbox} src={check} alt="check"/>}
                 {!member.isSelected && <Image className={styles.checkbox} src={uncheck} alt="uncheck"/>}
             </button>

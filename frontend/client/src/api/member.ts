@@ -5,7 +5,7 @@ const axios = localAxios();
 
 export const getMembers: QueryFunction<Member[]> = async ({ queryKey }) => {
     const [_,meetId] = queryKey;
-    const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaWUiLCJleHAiOjEwNzExNTAwMTQzLCJzdWIiOiJoZ29hMjAwMEBuYXZlci5jb20iLCJyb2xlcyI6IlJPTEVfTk9UX0NFUlRJRklFRCJ9.hGZ4jBwzHS-qnjwhJtNA2UcxqiwAg4uVfIUhdv-RJzI";
+    const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaWUiLCJleHAiOjEwNzExNjAyNjczLCJzdWIiOiJoZ29hMjAwMEBuYXZlci5jb20iLCJyb2xlcyI6IlJPTEVfQ0VSVElGSUVEIn0.8xCi66F_2cE-encJ0vSg4iTgzDTWKonjILJf0n33Hfs";
 
     try {
         const response = await axios.get(`api/meet/${meetId}/member`, {
