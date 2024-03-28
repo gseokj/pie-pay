@@ -18,6 +18,7 @@ import com.pay.pie.domain.member.application.MemberServiceImpl;
 import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.dto.MemberResponse;
 import com.pay.pie.domain.member.dto.UpdateMemberRequest;
+import com.pay.pie.domain.member.dto.response.MemberDetailResponse;
 import com.pay.pie.domain.member.entity.Member;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
 import com.pay.pie.global.common.BaseResponse;
@@ -61,26 +62,26 @@ public class MemberController {
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@GetMapping("/member")
-	public ResponseEntity<BaseResponse<MemberResponse>> getMemberDetail(
-		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
-		Long memberId = securityUserDto.getMemberId();
-		MemberResponse memberResponse = new MemberResponse(memberRepository.findById(memberId).orElseThrow());
-
+	public ResponseEntity<BaseResponse<MemberDetailResponse>> getMemberDetail(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto
+	) {
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
-			memberResponse);
+			memberService.getMemberDetail(securityUserDto.getMemberId())
+		);
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@PutMapping("/member")
-	public ResponseEntity<BaseResponse<Member>> updateMember(@AuthenticationPrincipal SecurityUserDto securityUserDto,
-		@RequestBody UpdateMemberRequest request) {
-		Long memberId = securityUserDto.getMemberId();
-		Member updatedMember = memberService.updateMember(memberId, request);
+	public ResponseEntity<BaseResponse<MemberDetailResponse>> updateMember(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto,
+		@RequestBody UpdateMemberRequest request
+	) {
 
 		return BaseResponse.success(
 			SuccessCode.UPDATE_SUCCESS,
-			updatedMember
+			memberService.updateMemberDetail(securityUserDto.getMemberId(), request)
 		);
 	}
 }
+
