@@ -1,5 +1,6 @@
 // TelecomListModal.css.ts
 import { style, keyframes } from '@vanilla-extract/css';
+import theme from '@/styles/theme/theme';
 
 const slideUp = keyframes({
   from: {
@@ -84,4 +85,8 @@ export const liStyle = style({
 export const title = style({
   fontSize: '1.7em',
   fontWeight: 'bold',
+});
+
+export const content = style({
+  marginTop: '2rem',
 });
