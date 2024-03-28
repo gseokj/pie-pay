@@ -4,6 +4,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import ProgressBar from '../_component/ProgressBar';
 import * as styles from '@/styles/signin/singin.css';
 import TelecomListModal from '../_component/TelecomListModal';
+import TermsAgreeModal from '../_component/TermsAgreeModal';
 
 export default function Page() {
   const [info, setInfo] = useState({
@@ -16,6 +17,7 @@ export default function Page() {
   });
 
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showTermsModal, setShowTermsModal] = useState<boolean>(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -52,6 +54,14 @@ export default function Page() {
 
   const closeModal = () => {
     setShowModal(false);
+  };
+
+  const handleShowTermsModal = () => {
+    setShowTermsModal(true);
+  };
+
+  const closeTermsModal = () => {
+    setShowTermsModal(false);
   };
 
   useEffect(() => {
@@ -127,12 +137,15 @@ export default function Page() {
               onChange={handleChange}
             ></input>
           </div>
-          <div className={styles.submitButton}>본인인증</div>
+          <div className={styles.submitButton} onClick={handleShowTermsModal}>
+            본인 인증
+          </div>
         </form>
       </div>
       {showModal && (
         <TelecomListModal onClose={closeModal} onSelect={setTelecom} />
       )}
+      {showTermsModal && <TermsAgreeModal onClose={closeTermsModal} />}
     </div>
   );
 }

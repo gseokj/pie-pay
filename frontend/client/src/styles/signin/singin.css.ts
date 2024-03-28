@@ -116,6 +116,9 @@ export const submitButton = style({
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
-  height: '20%',
+  height: '17%',
+  borderRadius: '20px',
   backgroundColor: theme.blue,
+  color: 'white',
+  fontSize: '1.5rem',
 });

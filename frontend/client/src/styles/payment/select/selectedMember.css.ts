@@ -22,7 +22,10 @@ export const selectedContainer = style({
 
 export const image = style({
     borderRadius: '15px',
-    margin: '2px'
+    margin: '2px',
+    width: '3.2rem',
+    height: '3.2rem',
+
 })
 
 
