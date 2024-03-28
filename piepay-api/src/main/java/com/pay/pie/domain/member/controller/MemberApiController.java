@@ -80,6 +80,7 @@ public class MemberApiController {
 
 		return BaseResponse.success(
 			SuccessCode.UPDATE_SUCCESS,
-			updatedMember);
+			updatedMember
+		);
 	}
 }
