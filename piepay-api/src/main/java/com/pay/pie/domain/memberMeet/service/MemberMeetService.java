@@ -2,7 +2,6 @@ package com.pay.pie.domain.memberMeet.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pay.pie.domain.meet.entity.Meet;
@@ -13,6 +12,7 @@ import com.pay.pie.domain.memberMeet.dto.AddMemberMeetRequest;
 import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -22,23 +22,20 @@ public class MemberMeetService {
 	private final MemberRepository memberRepository;
 	private final MeetRepository meetRepository;
 
-	@Autowired
-	public MemberMeetService(MemberRepository memberRepository, MemberMeetRepository memberMeetRepository,
-		MeetRepository meetRepository) {
-		this.memberRepository = memberRepository;
-		this.memberMeetRepository = memberMeetRepository;
-		this.meetRepository = meetRepository;
-	}
-
+	@Transactional
 	public MemberMeet save(AddMemberMeetRequest request, Long memberId) {
 		Meet meet = meetRepository.findByMeetInvitation(request.getMeetInvitation())
 			.orElseThrow(() -> new IllegalArgumentException("해당 meetInvitation을 가진 Meet을 찾을 수 없음"));
 		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 memberId를 가진 Member를 찾을 수 없음"));
 		// 수정 시작
-		MemberMeet newMemberMeet = new MemberMeet();
-		newMemberMeet.setMeet(meet);
-		newMemberMeet.setMember(member);
+		// MemberMeet newMemberMeet = new MemberMeet();
+		// newMemberMeet.setMeet(meet);
+		// newMemberMeet.setMember(member);
+		MemberMeet newMemberMeet = MemberMeet.builder()
+			.member(member)
+			.meet(meet)
+			.build();
 
 		List<MemberMeet> allMemberMeets = memberMeetRepository.findAll();
 
@@ -52,9 +49,9 @@ public class MemberMeetService {
 		if (existingMemberMeet != null) {
 			return existingMemberMeet;
 		} else {
-			request.setMeet(meet);
-			request.setMember(member);
-			return memberMeetRepository.save(request.toEntity());
+			// request.setMeet(meet);
+			// request.setMember(member);
+			return newMemberMeet;
 		}
 	}
 
@@ -88,5 +85,9 @@ public class MemberMeetService {
 		memberMeet.setTopFixed(!memberMeet.isTopFixed());
 
 		return memberMeetRepository.save(memberMeet);
+	}
+
+	public List<MemberMeet> findAllByMeet(Meet meet) {
+		return memberMeetRepository.findAllByMeet(meet);
 	}
 }
