@@ -31,7 +31,7 @@ public class RedisToDBSyncService {
 	// Redis -> DB 저장
 	public void syncDataFromRedisToDB(Long payId) {
 		// Redis 에서 정보를 읽어옵니다.
-		Map<Object, Object> agreementData = redisTemplate.opsForHash().entries("payId" + payId + "agree");
+		Map<Object, Object> agreementData = redisTemplate.opsForHash().entries("payId" + payId + "true");
 		Map<Object, Object> insteadData = redisTemplate.opsForHash().entries("payId" + payId + "instead");
 		log.info("agreeDataFromRedis: {}", agreementData);
 		log.info("insteadDataFromRedis: {}", insteadData);
@@ -73,7 +73,8 @@ public class RedisToDBSyncService {
 		}
 
 		// Redis 에서 payId 데이터 삭제
-		redisTemplate.delete("payId" + payId + "agree");
+		redisTemplate.delete("payId" + payId + "true");
+		redisTemplate.delete("payId" + payId + "false");
 		redisTemplate.delete("payId" + payId + "instead");
 
 		// pay Status 변경
