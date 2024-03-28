@@ -111,7 +111,7 @@ public class PayAgreeService {
 		return AgreeDto.builder()
 			.payId(insteadAgreeReq.getPayId())
 			.participantId(participantBorrower.getId())
-			.payAgree(participantBorrower.getPayAgree())
+			.payAgree(true)
 			.payStatus(participantBorrower.getPay().getPayStatus())
 			.build();
 	}
