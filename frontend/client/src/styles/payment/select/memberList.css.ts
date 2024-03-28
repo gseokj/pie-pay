@@ -35,7 +35,9 @@ export const backgroundSkyBlue = style({
 })
 export const image = style({
     borderRadius: '15px',
-    margin: '7px'
+    margin: '7px',
+    width: '3.5rem',
+    height: '3.5rem'
 })
 
 

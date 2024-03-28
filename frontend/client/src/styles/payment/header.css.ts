@@ -5,7 +5,7 @@ import theme from '@/styles/theme/theme';
 export const header = style({
     // Mobile width
     width: '100%',
-
+    height: '10%',
     // Default width
     '@media': {
         'screen and (min-width: 768px)': {
