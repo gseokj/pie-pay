@@ -72,7 +72,7 @@ public class WebSocketController {
 	@MessageMapping("/channel")
 	public String sendMessage(String message) {
 		log.info("Received message: {}", message);
-		simpleMessageSendingOperations.convertAndSend("/sub", "socket connection completed.");
+		simpleMessageSendingOperations.convertAndSend("/api/sub", "socket connection completed.");
 		return message;
 	}
 
@@ -144,7 +144,7 @@ public class WebSocketController {
 
 		// 클라이언트에게 데이터 전송
 		log.info("초기데이터: {}", formattedData);
-		messagingTemplate.convertAndSend("/sub/initialData/" + payId, formattedData);
+		messagingTemplate.convertAndSend("/api/sub/initialData/" + payId, formattedData);
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class WebSocketController {
 		AgreeDto agreeDto = payAgreeService.respondToAgreement(agreeReq, memberId);
 
 		// Send message to relevant participants via WebSocket
-		messagingTemplate.convertAndSend("/sub/" + agreeReq.getPayId(), agreeDto);
+		messagingTemplate.convertAndSend("/api/sub/" + agreeReq.getPayId(), agreeDto);
 		log.info("동의 성공");
 	}
 
@@ -192,7 +192,7 @@ public class WebSocketController {
 			insteadReq.getPayId(), insteadReq.getBorrowerId(), lenderId);
 
 		// Send message to relevant participants via WebSocket
-		messagingTemplate.convertAndSend("/sub/" + insteadDto.getPayId(), insteadDto);
+		messagingTemplate.convertAndSend("/api/sub/" + insteadDto.getPayId(), insteadDto);
 
 	}
 }
