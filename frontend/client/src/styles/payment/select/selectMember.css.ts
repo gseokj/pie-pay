@@ -28,7 +28,6 @@ export const progress = style({
 
 export const headerContainer = style({
     width: '100%',
-    marginTop: '30px',
     position: 'sticky',
     backgroundColor: theme.layout,
     paddingLeft: '15px',

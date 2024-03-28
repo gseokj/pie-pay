@@ -23,6 +23,7 @@ export default function Page({params}:Props) {
     const { setFilterMembers } = useMemberFilter();
 
     useEffect(() => {
+        console.log(Members);
         if(!Members || Members.length<=0) return;
         setFilterMembers(Members);
     }, [Members]);
