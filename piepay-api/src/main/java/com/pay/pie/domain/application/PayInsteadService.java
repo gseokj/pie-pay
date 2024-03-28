@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pay.pie.domain.application.dto.InsteadDto;
+import com.pay.pie.domain.application.dto.request.InsteadAgreeReq;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
 import com.pay.pie.domain.participant.entity.Participant;
 import com.pay.pie.domain.payInstead.dao.PayInsteadRepository;
@@ -45,9 +46,9 @@ public class PayInsteadService {
 	/*
 	대신내주기 승낙
 	 */
-	public InsteadDto respondToPayInstead(Long payId, Long borrowerId, Long lenderId) {
+	public InsteadDto respondToPayInstead(InsteadAgreeReq insteadAgreeReq) {
 		// Pay instead response logic
-		Participant participantBorrower = participantRepository.findByMemberId(borrowerId);
+		Participant participantBorrower = participantRepository.findByMemberId(insteadAgreeReq.getBorrowerId());
 
 		// Retrieve existing pay instead request from Redis hash
 		// Map<Object, Object> payInsteadInfo = redisTemplate.opsForHash().entries("payId:" + payId + ":instead");
@@ -80,15 +81,15 @@ public class PayInsteadService {
 		// );
 
 		redisTemplate.opsForHash().put(
-			"payId:" + payId + ":true",
+			"payId:" + insteadAgreeReq.getPayId() + ":true",
 			"participantId:" + participantBorrower.getId(),
 			participantBorrower.getId().toString()
 		);
 
 		return InsteadDto.builder()
-			.payId(payId)
-			.borrowerId(borrowerId)
-			.lenderId(lenderId)
+			.payId(insteadAgreeReq.getPayId())
+			.borrowerId(insteadAgreeReq.getBorrowerId())
+			.lenderId(insteadAgreeReq.getLenderId())
 			.build();
 	}
 }

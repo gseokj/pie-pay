@@ -10,5 +10,6 @@ import lombok.Getter;
 public class AgreeReq {
 
 	private final Long payId;
+	private final Long participantId;
 	private final boolean payAgree;
 }

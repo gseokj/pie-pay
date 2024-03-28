@@ -34,15 +34,18 @@ public class PayAgreeService {
 	private final RedisToDBSyncService redisToDBSyncService;
 	private final JPAQueryFactory jpaQueryFactory;
 
-	public AgreeDto respondToAgreement(AgreeReq agreeReq, Long memberId) {
+	public AgreeDto respondToAgreement(AgreeReq agreeReq) {
 		// 동의 로직
-		Participant participant = participantRepository.findByMemberId(memberId);
-		log.info("participant: {}", participant.getId());
+		Participant participant = participantRepository.findById(agreeReq.getParticipantId())
+			.orElseThrow(
+				() -> new IllegalArgumentException("해당 participantId가 없음")
+			);
+		log.info("participant: {}", agreeReq.getParticipantId());
 		// Redis
 		redisTemplate.opsForHash().put(
 			"payId:" + agreeReq.getPayId() + ":" + agreeReq.isPayAgree(),
-			"participantId:" + participant.getId(),
-			participant.getId().toString()
+			"participantId:" + agreeReq.getParticipantId(),
+			agreeReq.getParticipantId().toString()
 		);
 		log.info("redis에 저장완료?");
 		// Redis에 모든 참가자 동의가 있는지 확인

@@ -13,7 +13,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.application.PayAgreeService;
@@ -23,7 +22,6 @@ import com.pay.pie.domain.application.dto.InsteadDto;
 import com.pay.pie.domain.application.dto.request.AgreeReq;
 import com.pay.pie.domain.application.dto.request.InsteadAgreeReq;
 import com.pay.pie.domain.participant.application.ParticipantService;
-import com.pay.pie.global.security.dto.SecurityUserDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -152,13 +150,9 @@ public class WebSocketController {
 	 * @param agreeReq
 	 */
 	@MessageMapping("/agree")
-	public void respondToAgreement(
-		@AuthenticationPrincipal SecurityUserDto securityUserDto,
-		AgreeReq agreeReq) {
-		Long memberId = securityUserDto.getMemberId();
+	public void respondToAgreement(AgreeReq agreeReq) {
 		log.info("payId:{}", agreeReq.getPayId());
-		log.info("memberId: {}", memberId);
-		AgreeDto agreeDto = payAgreeService.respondToAgreement(agreeReq, memberId);
+		AgreeDto agreeDto = payAgreeService.respondToAgreement(agreeReq);
 
 		// Send message to relevant participants via WebSocket
 		messagingTemplate.convertAndSend("/api/sub/" + agreeReq.getPayId(), agreeDto);
@@ -184,12 +178,8 @@ public class WebSocketController {
 	 * @param insteadReq
 	 */
 	@MessageMapping("/instead-res")
-	public void respondToPayInstead(
-		@AuthenticationPrincipal SecurityUserDto securityUserDto,
-		InsteadAgreeReq insteadReq) {
-		Long lenderId = securityUserDto.getMemberId();
-		InsteadDto insteadDto = payInsteadService.respondToPayInstead(
-			insteadReq.getPayId(), insteadReq.getBorrowerId(), lenderId);
+	public void respondToPayInstead(InsteadAgreeReq insteadReq) {
+		InsteadDto insteadDto = payInsteadService.respondToPayInstead(insteadReq);
 
 		// Send message to relevant participants via WebSocket
 		messagingTemplate.convertAndSend("/api/sub/" + insteadDto.getPayId(), insteadDto);
