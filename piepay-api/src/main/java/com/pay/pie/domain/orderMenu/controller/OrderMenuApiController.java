@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +16,10 @@ import com.pay.pie.domain.menu.entity.Menu;
 import com.pay.pie.domain.menu.repository.MenuRepository;
 import com.pay.pie.domain.order.dao.OrderRepository;
 import com.pay.pie.domain.order.entity.Order;
+import com.pay.pie.domain.order.service.OrderService;
 import com.pay.pie.domain.orderMenu.dto.AddOrderMenuRequest;
 import com.pay.pie.domain.orderMenu.dto.NewOrderMenuResponse;
+import com.pay.pie.domain.orderMenu.dto.OrderMenuOfOrderResponse;
 import com.pay.pie.domain.orderMenu.entity.OrderMenu;
 import com.pay.pie.domain.orderMenu.repository.OrderMenuRepository;
 import com.pay.pie.domain.orderMenu.service.OrderMenuService;
@@ -37,6 +40,7 @@ public class OrderMenuApiController {
 	private final StoreRepository storeRepository;
 	private final OrderMenuRepository orderMenuRepository;
 	private final OrderRepository orderRepository;
+	private final OrderService orderService;
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@PostMapping("/receipt/{orderId}/detail")
@@ -75,5 +79,20 @@ public class OrderMenuApiController {
 		return BaseResponse.success(
 			SuccessCode.INSERT_SUCCESS,
 			orderMenus);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@GetMapping("/receipt/{orderId}/detail")
+	public ResponseEntity<BaseResponse<OrderMenuOfOrderResponse>> getOrderMenu(@PathVariable Long orderId) {
+		List<NewOrderMenuResponse> newOrderMenuResponses = orderMenuService.findByOrderId(orderId)
+			.stream()
+			.map(NewOrderMenuResponse::new)
+			.toList();
+
+		Long totalPayAmount = orderService.findById(orderId).getTotalAmount();
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			new OrderMenuOfOrderResponse(newOrderMenuResponses, totalPayAmount));
 	}
 }

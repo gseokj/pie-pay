@@ -46,4 +46,7 @@ public class OrderService {
 		return orderRepository.save(addOrderRequest.toEntity());
 	}
 
+	public Order findById(Long orderId) {
+		return orderRepository.findById(orderId).orElseThrow();
+	}
 }

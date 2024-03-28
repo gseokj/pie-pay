@@ -145,11 +145,8 @@ public class MeetApiController {
 			// 	return new PayResponse(pay, orders);
 			// })
 			.map(pay -> {
-				List<Order> orders = orderRepository.findAllByPay(pay);
-				List<OrderOfPayResponse> orderResponses = orders.stream()
-					.map(OrderOfPayResponse::new)
-					.collect(Collectors.toList());
-				return new PayResponse(pay, orderResponses);
+				Order order = orderRepository.findByPayId(pay.getId());
+				return new PayResponse(pay, new OrderOfPayResponse(order));
 			})
 			.sorted(Comparator.comparing(PayResponse::getUpdatedAt).reversed()) // updated_at을 기준으로 내림차순으로 정렬
 			.toList();
