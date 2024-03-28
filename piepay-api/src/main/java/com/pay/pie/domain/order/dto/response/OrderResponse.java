@@ -6,6 +6,9 @@ import com.pay.pie.domain.order.entity.Order;
 import com.pay.pie.domain.orderMenu.dto.NewOrderMenuResponse;
 import com.pay.pie.domain.store.entity.Store;
 
+import lombok.Getter;
+
+@Getter
 public class OrderResponse {
 	private final Long orderId;
 	private final Store store;
