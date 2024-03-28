@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import * as styles from '@/styles/signin/TermItem.css'; // Vanilla Extract 스타일 임포트
+import * as styles from '@/styles/signin/termItem.css'; // Vanilla Extract 스타일 임포트
 
 type Props = {
   title: string;
