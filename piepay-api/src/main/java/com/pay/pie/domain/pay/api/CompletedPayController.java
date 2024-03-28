@@ -16,18 +16,26 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/pay/receipt")
+@RequestMapping("/api/pay/info")
 @RequiredArgsConstructor
 public class CompletedPayController {
 
 	private final CompletedPayService payService;
+
+	// @GetMapping("/{payId}")
+	// public ResponseEntity<BaseResponse<PayInfoRes>> getPayInfo(@PathVariable Long payId) {
+	// 	return BaseResponse.success(
+	// 		SuccessCode.CHECK_SUCCESS,
+	// 		payService.getPayInfo(payId)
+	// 	);
+	// }
 
 	/**
 	 * 해당 결제 영수증 조회
 	 * @param payId 결제 ID
 	 * @return 영수증 정보
 	 */
-	@GetMapping("/{payId}")
+	@GetMapping("/receipt/{payId}")
 	public ResponseEntity<BaseResponse<ReceiptRes>> getReceipt(@PathVariable Long payId) {
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
