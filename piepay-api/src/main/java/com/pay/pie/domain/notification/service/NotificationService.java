@@ -19,4 +19,8 @@ public class NotificationService {
 	public List<Notification> findAllByMember(Member member) {
 		return notificationRepository.findAllByMember(member);
 	}
+
+	public Notification findById(Long notificationId) {
+		return notificationRepository.findById(notificationId).orElseThrow();
+	}
 }
