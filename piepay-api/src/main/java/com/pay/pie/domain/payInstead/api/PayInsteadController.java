@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/pay/payback")
+@RequestMapping("/api/pay/payback")
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class PayInsteadController {

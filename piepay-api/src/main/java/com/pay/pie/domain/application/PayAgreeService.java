@@ -9,10 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pay.pie.domain.application.dto.AgreeDto;
 import com.pay.pie.domain.application.dto.request.AgreeReq;
+import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
 import com.pay.pie.domain.participant.entity.Participant;
 import com.pay.pie.domain.pay.dao.PayRepository;
 import com.pay.pie.domain.pay.entity.Pay;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,22 +28,23 @@ public class PayAgreeService {
 
 	private final RedisTemplate<String, String> redisTemplate;
 	private final SimpMessagingTemplate messagingTemplate;
+	private final MemberRepository memberRepository;
 	private final ParticipantRepository participantRepository;
 	private final PayRepository payRepository;
 	private final RedisToDBSyncService redisToDBSyncService;
+	private final JPAQueryFactory jpaQueryFactory;
 
-	public AgreeDto respondToAgreement(AgreeReq agreeReq) {
+	public AgreeDto respondToAgreement(AgreeReq agreeReq, Long memberId) {
 		// 동의 로직
-		Participant participant = participantRepository.findById(agreeReq.getParticipantId())
-			.orElseThrow(() -> new IllegalArgumentException("없는 참가자"));
-
+		Participant participant = participantRepository.findByMemberId(memberId);
+		log.info("participant: {}", participant.getId());
 		// Redis
 		redisTemplate.opsForHash().put(
-			"payId:" + agreeReq.getPayId() + ":agree",
-			"participantId" + agreeReq.getParticipantId(), agreeReq.getParticipantId().toString()
-
+			"payId:" + agreeReq.getPayId() + ":" + agreeReq.isPayAgree(),
+			"participantId:" + participant.getId(),
+			participant.getId().toString()
 		);
-
+		log.info("redis에 저장완료?");
 		// Redis에 모든 참가자 동의가 있는지 확인
 		boolean allAgreed = checkAllParticipantsAgreed(agreeReq.getPayId());
 		log.info("redis:{}", allAgreed);
@@ -66,9 +69,10 @@ public class PayAgreeService {
 		Long totalParticipants = participantRepository.getTotalParticipants(payId);
 		log.info("payId: {}, 참여자수: {}", payId, totalParticipants);
 		// Redis 에서 해당 payId에 대한 모든 참가자의 동의 정보를 조회
-		Map<Object, Object> agreeInfo = redisTemplate.opsForHash().entries("payId:" + payId + ":agree");
+		Map<Object, Object> agreeInfo = redisTemplate.opsForHash().entries("payId:" + payId + ":true");
 		// Redis 에 저장된 동의한 참가자 수
 		int agreedParticipantsCount = agreeInfo.size();
+		log.info("동의자 수: {}", agreedParticipantsCount);
 		// 모든 참가자가 동의했는지 여부를 확인
 		return agreedParticipantsCount == totalParticipants;
 	}

@@ -18,7 +18,7 @@ public class SelectedPartiesRes {
 	private Long payId;
 	private Long meetId;
 	private Pay.PayStatus payStatus;
-	private LocalDateTime createAt;
+	private LocalDateTime createdAt;
 	private List<ParticipantDto> participants;
 
 	public static SelectedPartiesRes of(Pay pay, List<ParticipantDto> participants) {
@@ -26,7 +26,7 @@ public class SelectedPartiesRes {
 			.payId(pay.getId())
 			.meetId(pay.getMeet().getId())
 			.payStatus(pay.getPayStatus())
-			.createAt(pay.getCreatedAt())
+			.createdAt(pay.getCreatedAt())
 			.participants(participants)
 			.build();
 	}

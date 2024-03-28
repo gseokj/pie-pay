@@ -271,6 +271,7 @@ public class BankUtil {
 		}
 	}
 
+	// 이체
 	public void transferAccount(
 		String depositBankCode,
 		String depositAccountNo,
@@ -293,7 +294,7 @@ public class BankUtil {
 		jsonRequest.put("Header", body);
 		jsonRequest.put("depositBankCode", depositBankCode);
 		jsonRequest.put("depositAccountNo", depositAccountNo);
-		jsonRequest.put("depositTransactionSummary", "입근이체 계좌");
+		jsonRequest.put("depositTransactionSummary", "입금이체 계좌");
 		jsonRequest.put("transactionBalance", transactionBalance);
 		jsonRequest.put("withdrawalBankCode", withdrawalBankCode);
 		jsonRequest.put("withdrawalAccountNo", withdrawalAccountNo);
@@ -323,6 +324,7 @@ public class BankUtil {
 			String errorMessage = switch (errorResponse.getResponseCode()) {
 				case "A1003" -> "존재하지 않는 계좌입니다";
 				case "H1007" -> "기관거래고유번호가 중복된 값입니다";
+				case "A1014" -> " 계좌 잔액이 부족하여 거래가 실패했습니다.";
 				default -> "에러 발생";
 			};
 			throw new RuntimeException(errorMessage);
