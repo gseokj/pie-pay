@@ -13,7 +13,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.application.PayAgreeService;
@@ -21,9 +20,7 @@ import com.pay.pie.domain.application.PayInsteadService;
 import com.pay.pie.domain.application.dto.AgreeDto;
 import com.pay.pie.domain.application.dto.InsteadDto;
 import com.pay.pie.domain.application.dto.request.AgreeReq;
-import com.pay.pie.domain.application.dto.request.InsteadAgreeReq;
 import com.pay.pie.domain.participant.application.ParticipantService;
-import com.pay.pie.global.security.dto.SecurityUserDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -86,43 +83,68 @@ public class WebSocketController {
 	public void checkInitialData(@DestinationVariable String payId, SimpMessageHeaderAccessor headerAccessor) {
 		// 클라이언트가 방에 입장하여 초기 데이터를 확인할 때 호출됩니다.
 		// 해당 방의 초기 정보를 조회하여 클라이언트에게 전송합니다.
-		String sessionId = headerAccessor.getSessionId();
-		log.info("sessionId: {}", sessionId);
+		// String sessionId = headerAccessor.getSessionId();
+		// log.info("sessionId: {}", sessionId);
+		// Map<Object, Object> agreeTrueData = redisTemplate.opsForHash().entries("payId:" + payId + ":true");
+		// Map<Object, Object> agreeFalseData = redisTemplate.opsForHash().entries("payId:" + payId + ":false");
+		// // Map<Object, Object> insteadData = redisTemplate.opsForHash().entries("payId:" + payId + ":instead");
+		// log.info("agreeTrueData: {}", agreeTrueData);
+		// log.info("agreeFalseData: {}", agreeFalseData);
+		// // log.info("insteadData: {}", insteadData);
+		//
+		// Map<String, Object> formattedData = new HashMap<>();
+		//
+		// // agreeData 변환 후 저장
+		// List<Map<String, Object>> formattedAgreeTrueList = new ArrayList<>();
+		// if (agreeTrueData != null && !agreeTrueData.isEmpty()) {
+		// 	for (Map<String, Object> stringObjectMap : formattedAgreeTrueList) {
+		//
+		// 	}
+		// 	for (Map.Entry<Object, Object> entry : agreeTrueData.entrySet()) {
+		// 		log.info("agreeTrueData: {}", entry.getValue().toString());
+		// 		Map<String, Object> participantData = new HashMap<>();
+		// 		String participantId = entry.getValue().toString(); // participantId 추출
+		// 		participantData.put("participantId", participantId);
+		// 		formattedAgreeTrueList.add(participantData);
+		// 	}
+		// } else {
+		// 	// agreeData가 없는 경우 빈 리스트 추가
+		// 	formattedAgreeTrueList = new ArrayList<>();
+		// }
+		//
+		// List<Map<String, Object>> formattedAgreeFalseList = new ArrayList<>();
+		// if (agreeFalseData != null && !agreeFalseData.isEmpty()) {
+		// 	for (Map.Entry<Object, Object> entry : agreeFalseData.entrySet()) {
+		// 		Map<String, Object> participantData = new HashMap<>();
+		// 		String participantId = entry.getValue().toString(); // participantId 추출
+		// 		participantData.put("participantId", participantId);
+		// 		formattedAgreeFalseList.add(participantData);
+		// 	}
+		// } else {
+		// 	// agreeData가 없는 경우 빈 리스트 추가
+		// 	formattedAgreeFalseList = new ArrayList<>();
+		// }
+
+		////////////////////////////////
 		Map<Object, Object> agreeTrueData = redisTemplate.opsForHash().entries("payId:" + payId + ":true");
 		Map<Object, Object> agreeFalseData = redisTemplate.opsForHash().entries("payId:" + payId + ":false");
-		// Map<Object, Object> insteadData = redisTemplate.opsForHash().entries("payId:" + payId + ":instead");
-		log.info("agreeData: {}", agreeTrueData);
-		log.info("agreeData: {}", agreeFalseData);
-		// log.info("insteadData: {}", insteadData);
 
-		Map<String, Object> formattedData = new HashMap<>();
+		Map<String, Object> agreeData = new HashMap<>();
+		List<Integer> agreeTrueParticipantIds = new ArrayList<>();
+		List<Integer> agreeFalseParticipantIds = new ArrayList<>();
 
-		// agreeData 변환 후 저장
-		List<Map<String, Object>> formattedAgreeTrueList = new ArrayList<>();
-		if (agreeTrueData != null && !agreeTrueData.isEmpty()) {
-			for (Map.Entry<Object, Object> entry : agreeTrueData.entrySet()) {
-				Map<String, Object> participantData = new HashMap<>();
-				String participantId = entry.getValue().toString(); // participantId 추출
-				participantData.put("participantId", participantId);
-				formattedAgreeTrueList.add(participantData);
-			}
-		} else {
-			// agreeData가 없는 경우 빈 리스트 추가
-			formattedAgreeTrueList = new ArrayList<>();
+		for (Map.Entry<Object, Object> entry : agreeTrueData.entrySet()) {
+			agreeTrueParticipantIds.add(Integer.parseInt(entry.getValue().toString()));
+		}
+		for (Map.Entry<Object, Object> entry : agreeFalseData.entrySet()) {
+			agreeFalseParticipantIds.add(Integer.parseInt(entry.getValue().toString()));
 		}
 
-		List<Map<String, Object>> formattedAgreeFalseList = new ArrayList<>();
-		if (agreeFalseData != null && !agreeFalseData.isEmpty()) {
-			for (Map.Entry<Object, Object> entry : agreeFalseData.entrySet()) {
-				Map<String, Object> participantData = new HashMap<>();
-				String participantId = entry.getValue().toString(); // participantId 추출
-				participantData.put("participantId", participantId);
-				formattedAgreeFalseList.add(participantData);
-			}
-		} else {
-			// agreeData가 없는 경우 빈 리스트 추가
-			formattedAgreeFalseList = new ArrayList<>();
-		}
+		agreeData.put("agreeTrue", agreeTrueParticipantIds);
+		agreeData.put("agreeFalse", agreeFalseParticipantIds);
+
+		log.info("초기데이터: {}", agreeData);
+		/////////////////////////////////////////////
 
 		// formattedData.put("agreeData", formattedAgreeDataList);
 
@@ -143,8 +165,9 @@ public class WebSocketController {
 		// formattedData.put("insteadData", formattedInsteadDataList);
 
 		// 클라이언트에게 데이터 전송
-		log.info("초기데이터: {}", formattedData);
-		messagingTemplate.convertAndSend("/api/sub/initialData/" + payId, formattedData);
+		// log.info("초기데이터: {}", formattedData);
+		messagingTemplate.convertAndSend("/api/sub/initialData/" + payId, agreeData);
+		// messagingTemplate.convertAndSend("/api/sub/initialData/" + payId, formattedData);
 	}
 
 	/**
@@ -152,13 +175,9 @@ public class WebSocketController {
 	 * @param agreeReq
 	 */
 	@MessageMapping("/agree")
-	public void respondToAgreement(
-		@AuthenticationPrincipal SecurityUserDto securityUserDto,
-		AgreeReq agreeReq) {
-		Long memberId = securityUserDto.getMemberId();
+	public void respondToAgreement(AgreeReq agreeReq) {
 		log.info("payId:{}", agreeReq.getPayId());
-		log.info("memberId: {}", memberId);
-		AgreeDto agreeDto = payAgreeService.respondToAgreement(agreeReq, memberId);
+		AgreeDto agreeDto = payAgreeService.respondToAgreement(agreeReq);
 
 		// Send message to relevant participants via WebSocket
 		messagingTemplate.convertAndSend("/api/sub/" + agreeReq.getPayId(), agreeDto);
@@ -181,18 +200,15 @@ public class WebSocketController {
 
 	/**
 	 * 대신내주기 승낙
-	 * @param insteadReq
+	 * @param insteadAgreeReq
 	 */
 	@MessageMapping("/instead-res")
-	public void respondToPayInstead(
-		@AuthenticationPrincipal SecurityUserDto securityUserDto,
-		InsteadAgreeReq insteadReq) {
-		Long lenderId = securityUserDto.getMemberId();
-		InsteadDto insteadDto = payInsteadService.respondToPayInstead(
-			insteadReq.getPayId(), insteadReq.getBorrowerId(), lenderId);
+	public void respondToPayInstead(InsteadDto insteadAgreeReq) {
+		// InsteadDto insteadDto = payInsteadService.respondToPayInstead(insteadAgreeReq);
+		AgreeDto agreeDto = payAgreeService.respondToPayInstead(insteadAgreeReq);
 
 		// Send message to relevant participants via WebSocket
-		messagingTemplate.convertAndSend("/api/sub/" + insteadDto.getPayId(), insteadDto);
+		messagingTemplate.convertAndSend("/api/sub/" + insteadAgreeReq.getPayId(), agreeDto);
 
 	}
 }

@@ -1,6 +1,7 @@
 package com.pay.pie.domain.application;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pay.pie.domain.application.dto.AgreeDto;
+import com.pay.pie.domain.application.dto.InsteadDto;
 import com.pay.pie.domain.application.dto.request.AgreeReq;
 import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
@@ -34,15 +36,18 @@ public class PayAgreeService {
 	private final RedisToDBSyncService redisToDBSyncService;
 	private final JPAQueryFactory jpaQueryFactory;
 
-	public AgreeDto respondToAgreement(AgreeReq agreeReq, Long memberId) {
+	public AgreeDto respondToAgreement(AgreeReq agreeReq) {
 		// 동의 로직
-		Participant participant = participantRepository.findByMemberId(memberId);
-		log.info("participant: {}", participant.getId());
+		Participant participant = participantRepository.findById(agreeReq.getParticipantId())
+			.orElseThrow(
+				() -> new IllegalArgumentException("해당 participantId가 없음")
+			);
+		log.info("participant: {}, payAgree: {}", agreeReq.getParticipantId(), agreeReq.isPayAgree());
 		// Redis
 		redisTemplate.opsForHash().put(
 			"payId:" + agreeReq.getPayId() + ":" + agreeReq.isPayAgree(),
-			"participantId:" + participant.getId(),
-			participant.getId().toString()
+			"participantId:" + agreeReq.getParticipantId(),
+			agreeReq.getParticipantId().toString()
 		);
 		log.info("redis에 저장완료?");
 		// Redis에 모든 참가자 동의가 있는지 확인
@@ -59,7 +64,56 @@ public class PayAgreeService {
 			payRepository.save(pay);
 		}
 
-		return AgreeDto.of(participant);
+		return AgreeDto.builder()
+			.payId(agreeReq.getPayId())
+			.participantId(agreeReq.getParticipantId())
+			.payAgree(agreeReq.isPayAgree())
+			.payStatus(participant.getPay().getPayStatus())
+			// .agreeTime(LocalDateTime.now())
+			.build();
+
+	}
+
+	/*
+	대신내주기 승낙
+	 */
+	public AgreeDto respondToPayInstead(InsteadDto insteadAgreeReq) {
+		// Pay instead response logic
+		log.info("borrowerId: {}", insteadAgreeReq.getBorrowerId());
+		Participant participantBorrower = participantRepository.findByMemberIdAndPayId(
+			insteadAgreeReq.getBorrowerId(),
+			insteadAgreeReq.getPayId());
+
+		// 대신내주기 정보 redis에 담기
+		String insteadKey = "payId:" + insteadAgreeReq.getPayId() + ":instead:" + UUID.randomUUID();
+		redisTemplate.opsForHash().put(insteadKey, "borrowerId", insteadAgreeReq.getBorrowerId().toString());
+		redisTemplate.opsForHash().put(insteadKey, "lenderId", insteadAgreeReq.getLenderId().toString());
+
+		// 대신내주기 수락했으니 동의 상태로 변경
+		redisTemplate.opsForHash().put(
+			"payId:" + insteadAgreeReq.getPayId() + ":true",
+			"participantId:" + participantBorrower.getId(),
+			participantBorrower.getId().toString()
+		);
+
+		boolean allAgreed = checkAllParticipantsAgreed(insteadAgreeReq.getPayId());
+		if (allAgreed) {
+			// pay Status 변경
+			Pay pay = payRepository.findById(insteadAgreeReq.getPayId())
+				.orElseThrow(() -> new IllegalArgumentException("없는 PayId"));
+			pay.setPayStatus(Pay.PayStatus.ING);
+			payRepository.save(pay);
+		}
+
+		redisTemplate.opsForHash()
+			.delete("payId:" + insteadAgreeReq.getPayId() + ":false", "participantId:" + participantBorrower.getId());
+
+		return AgreeDto.builder()
+			.payId(insteadAgreeReq.getPayId())
+			.participantId(participantBorrower.getId())
+			.payAgree(participantBorrower.getPayAgree())
+			.payStatus(participantBorrower.getPay().getPayStatus())
+			.build();
 	}
 
 	/*
