@@ -106,7 +106,7 @@ export default function MemberLayout({ meetId }: MemberProps) {
 
     return (
         <section>
-            <div className={ mainStyles.categoryContainer }>
+            <div className={ mainStyles.categoryContainer.smallMargin }>
                 <h5>멤버 {memberList.length}</h5>
                 <button
                     className={ fontStyles.bold }

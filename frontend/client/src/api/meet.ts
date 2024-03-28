@@ -1,17 +1,15 @@
 import {CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse} from "@/model/meet";
 import testAxios from "@/util/testAxios";
+import authAxios from "@/util/authAxios";
 import {QueryFunction} from "@tanstack/query-core";
-const axios = testAxios();
 
 
-export const postCreateMeet = async (meetData: CreateMeetRequest, token: string):Promise<CreateMeetResponse> => {
+export const postCreateMeet = async (meetData: CreateMeetRequest):Promise<CreateMeetResponse> => {
 
     try {
-        const response = await axios.post(`/meet`, meetData, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+        const axiosInstance = await authAxios();
+        const response = await axiosInstance.post(`/api/meet`, meetData);
+        console.log('success to get data', response.data);
         return response.data;
     } catch (error) {
         console.error('Failed to fetch data', error);
@@ -21,17 +19,16 @@ export const postCreateMeet = async (meetData: CreateMeetRequest, token: string)
 
 export const getMeetInfo: QueryFunction<GetMeetInfoResponse> = async ({ queryKey }) => {
     const [_,meetId] = queryKey;
-    const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaWUiLCJleHAiOjEwNzExMDgwNjk4LCJzdWIiOiJzaGFxODhAZGF1bS5uZXQiLCJyb2xlcyI6IlJPTEVfTk9UX0NFUlRJRklFRCJ9.vaLabNJyskgDWrwJFODM2g7PaZiTOpRRbZSIfMR10w8";
+    console.log(meetId, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 
     try {
-        const response = await axios.get(`/meet/${meetId}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+        console.log("ff");
+        const axiosInstance = await authAxios();
+        const response = await axiosInstance.get(`/api/meet/${meetId}`);
+        console.log('success to get data', response.data);
         return response.data;
     } catch (error) {
-        console.error('Failed to fetch data', error);
-        throw new Error('Failed to fetch data');
+        console.error('Failed to get data', error);
+        throw new Error('Failed to get data');
     }
 }
