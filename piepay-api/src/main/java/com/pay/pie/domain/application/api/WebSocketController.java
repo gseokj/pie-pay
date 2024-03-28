@@ -88,26 +88,42 @@ public class WebSocketController {
 		// 해당 방의 초기 정보를 조회하여 클라이언트에게 전송합니다.
 		String sessionId = headerAccessor.getSessionId();
 		log.info("sessionId: {}", sessionId);
-		Map<Object, Object> agreeData = redisTemplate.opsForHash().entries("payId:" + payId + ":true");
+		Map<Object, Object> agreeTrueData = redisTemplate.opsForHash().entries("payId:" + payId + ":true");
+		Map<Object, Object> agreeFalseData = redisTemplate.opsForHash().entries("payId:" + payId + ":false");
 		// Map<Object, Object> insteadData = redisTemplate.opsForHash().entries("payId:" + payId + ":instead");
-		log.info("agreeData: {}", agreeData);
+		log.info("agreeData: {}", agreeTrueData);
+		log.info("agreeData: {}", agreeFalseData);
 		// log.info("insteadData: {}", insteadData);
 
-		// Map<String, Object> formattedData = new HashMap<>();
+		Map<String, Object> formattedData = new HashMap<>();
 
 		// agreeData 변환 후 저장
-		List<Map<String, Object>> formattedAgreeDataList = new ArrayList<>();
-		if (agreeData != null && !agreeData.isEmpty()) {
-			for (Map.Entry<Object, Object> entry : agreeData.entrySet()) {
+		List<Map<String, Object>> formattedAgreeTrueList = new ArrayList<>();
+		if (agreeTrueData != null && !agreeTrueData.isEmpty()) {
+			for (Map.Entry<Object, Object> entry : agreeTrueData.entrySet()) {
 				Map<String, Object> participantData = new HashMap<>();
 				String participantId = entry.getValue().toString(); // participantId 추출
 				participantData.put("participantId", participantId);
-				formattedAgreeDataList.add(participantData);
+				formattedAgreeTrueList.add(participantData);
 			}
 		} else {
 			// agreeData가 없는 경우 빈 리스트 추가
-			formattedAgreeDataList = new ArrayList<>();
+			formattedAgreeTrueList = new ArrayList<>();
 		}
+
+		List<Map<String, Object>> formattedAgreeFalseList = new ArrayList<>();
+		if (agreeFalseData != null && !agreeFalseData.isEmpty()) {
+			for (Map.Entry<Object, Object> entry : agreeFalseData.entrySet()) {
+				Map<String, Object> participantData = new HashMap<>();
+				String participantId = entry.getValue().toString(); // participantId 추출
+				participantData.put("participantId", participantId);
+				formattedAgreeFalseList.add(participantData);
+			}
+		} else {
+			// agreeData가 없는 경우 빈 리스트 추가
+			formattedAgreeFalseList = new ArrayList<>();
+		}
+
 		// formattedData.put("agreeData", formattedAgreeDataList);
 
 		// insteadData 변환 후 저장
@@ -127,9 +143,8 @@ public class WebSocketController {
 		// formattedData.put("insteadData", formattedInsteadDataList);
 
 		// 클라이언트에게 데이터 전송
-		// log.info("초기데이터: {}", formattedData);
-		messagingTemplate.convertAndSend("/sub/initialData/" + payId, formattedAgreeDataList);
-		// messagingTemplate.convertAndSend("/sub/initialData/" + payId, formattedData);
+		log.info("초기데이터: {}", formattedData);
+		messagingTemplate.convertAndSend("/sub/initialData/" + payId, formattedData);
 	}
 
 	/**
@@ -170,7 +185,8 @@ public class WebSocketController {
 	 */
 	@MessageMapping("/instead-res")
 	public void respondToPayInstead(
-		@AuthenticationPrincipal SecurityUserDto securityUserDto, InsteadAgreeReq insteadReq) {
+		@AuthenticationPrincipal SecurityUserDto securityUserDto,
+		InsteadAgreeReq insteadReq) {
 		Long lenderId = securityUserDto.getMemberId();
 		InsteadDto insteadDto = payInsteadService.respondToPayInstead(
 			insteadReq.getPayId(), insteadReq.getBorrowerId(), lenderId);
