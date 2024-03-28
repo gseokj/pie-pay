@@ -116,9 +116,39 @@ export const submitButton = style({
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
-  height: '17%',
+  height: '10%',
+  marginBottom: '2rem',
   borderRadius: '20px',
   backgroundColor: theme.blue,
   color: 'white',
   fontSize: '1.5rem',
+});
+
+export const timerContainer = style({
+  height: '10%',
+});
+
+export const numberContainer = style({
+  display: 'flex',
+});
+
+export const hiddenInput = style({
+  opacity: 0,
+  position: 'absolute',
+  width: 0,
+  height: 0,
+  border: 'none',
+  padding: 0,
+  margin: 0,
+});
+
+export const retryMent = style({
+  display: 'flex',
+  height: '6%',
+  alignItems: 'flex-end',
+  fontWeight: 'bold',
+  fontSize: '1.2rem',
+  color: theme.gray,
+  textDecoration: 'underline',
+  textDecorationColor: theme.gray,
 });

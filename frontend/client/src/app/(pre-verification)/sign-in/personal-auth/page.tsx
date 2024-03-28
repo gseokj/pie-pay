@@ -5,6 +5,7 @@ import ProgressBar from '../_component/ProgressBar';
 import * as styles from '@/styles/signin/singin.css';
 import TelecomListModal from '../_component/TelecomListModal';
 import TermsAgreeModal from '../_component/TermsAgreeModal';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
   const [info, setInfo] = useState({
@@ -16,8 +17,16 @@ export default function Page() {
     phone: '',
   });
 
+  const router = useRouter();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showTermsModal, setShowTermsModal] = useState<boolean>(false);
+  const [moveFlag, setMoveFlag] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (moveFlag) {
+      router.push('/sign-in/personal-auth/input-number');
+    }
+  });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -137,15 +146,17 @@ export default function Page() {
               onChange={handleChange}
             ></input>
           </div>
-          <div className={styles.submitButton} onClick={handleShowTermsModal}>
-            본인 인증
-          </div>
         </form>
+        <div className={styles.submitButton} onClick={handleShowTermsModal}>
+          본인 인증
+        </div>
       </div>
       {showModal && (
         <TelecomListModal onClose={closeModal} onSelect={setTelecom} />
       )}
-      {showTermsModal && <TermsAgreeModal onClose={closeTermsModal} />}
+      {showTermsModal && (
+        <TermsAgreeModal onClose={closeTermsModal} setMoveFlag={setMoveFlag} />
+      )}
     </div>
   );
 }

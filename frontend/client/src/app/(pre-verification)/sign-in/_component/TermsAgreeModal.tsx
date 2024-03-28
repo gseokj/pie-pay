@@ -1,14 +1,15 @@
 'use client';
 
 import * as styles from '@/styles/signin/modal.css';
-import TermsItem from './TermsItem';
+import TermsItem from '@/app/(pre-verification)/sign-in/_component/TermsItem';
 import React, { useState, useEffect, use } from 'react';
 
 type Props = {
   onClose(): void;
+  setMoveFlag(value: boolean): void;
 };
 
-export default function TeamsAgreeModal({ onClose }: Props) {
+export default function TeamsAgreeModal({ onClose, setMoveFlag }: Props) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [closing, setClosing] = useState(false); // 닫힘 상태 관리
@@ -31,6 +32,7 @@ export default function TeamsAgreeModal({ onClose }: Props) {
     if (isChecked1 && isChecked2) {
       setClosing(true); // 닫힘 애니메이션 시작
       onClose(); // onClose 함수를 호출하여 모달을 닫음
+      setMoveFlag(true);
     }
   }, [isChecked1, isChecked2, onClose]);
 
