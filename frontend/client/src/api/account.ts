@@ -1,13 +1,13 @@
 import { QueryFunction } from "@tanstack/query-core";
-import { Member } from "@/model/member";
-import localAxios from "@/util/localAxios";
 import {Account} from "@/model/account";
-
-const axios = localAxios();
+import authAxios from '@/util/authAxios';
 
 export const getAccount: QueryFunction<Account> = async () => {
+        const axios = await authAxios();
     try {
-        const res = await axios.get('/members/accounts');
+        const res = await axios.get('/members/accounts',{
+        });
+        console.log(res);
         return res.data;
     } catch (error) {
         console.error('Failed to fetch data', error);

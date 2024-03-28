@@ -20,7 +20,7 @@ export default function ParticipateButton({ meetId }: Props) {
     const {setPayment,payment} = usePayment();
     const { mutate } = useMutation({
 
-        mutationFn: (id) => axios.post(`http://localhost:8080/api/pay/parties?meetId=${meetId}`, filterMembers.filter(member=>member.isSelected),
+        mutationFn: (id) => axios.post(`https://j10a402.p.ssafy.io/api/pay/parties?meetId=${meetId}`, filterMembers.filter(member=>member.isSelected),
           {
               headers: {
                   'Authorization': `Bearer ${token}`
