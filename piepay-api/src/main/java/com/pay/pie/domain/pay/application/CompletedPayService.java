@@ -4,4 +4,5 @@ import com.pay.pie.domain.order.dto.response.ReceiptRes;
 
 public interface CompletedPayService {
 	ReceiptRes getReceipt(Long payId);
+	
 }

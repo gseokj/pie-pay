@@ -22,7 +22,6 @@ import com.pay.pie.domain.application.dto.AgreeDto;
 import com.pay.pie.domain.application.dto.InsteadDto;
 import com.pay.pie.domain.application.dto.request.AgreeReq;
 import com.pay.pie.domain.application.dto.request.InsteadAgreeReq;
-import com.pay.pie.domain.application.dto.request.InsteadRequestReq;
 import com.pay.pie.domain.participant.application.ParticipantService;
 import com.pay.pie.global.security.dto.SecurityUserDto;
 
@@ -89,43 +88,60 @@ public class WebSocketController {
 		// 해당 방의 초기 정보를 조회하여 클라이언트에게 전송합니다.
 		String sessionId = headerAccessor.getSessionId();
 		log.info("sessionId: {}", sessionId);
-		Map<Object, Object> agreeData = redisTemplate.opsForHash().entries("payId:" + payId + ":agree");
-		Map<Object, Object> insteadData = redisTemplate.opsForHash().entries("payId:" + payId + ":instead");
-		log.info("agreeData: {}", agreeData);
-		log.info("insteadData: {}", insteadData);
+		Map<Object, Object> agreeTrueData = redisTemplate.opsForHash().entries("payId:" + payId + ":true");
+		Map<Object, Object> agreeFalseData = redisTemplate.opsForHash().entries("payId:" + payId + ":false");
+		// Map<Object, Object> insteadData = redisTemplate.opsForHash().entries("payId:" + payId + ":instead");
+		log.info("agreeData: {}", agreeTrueData);
+		log.info("agreeData: {}", agreeFalseData);
+		// log.info("insteadData: {}", insteadData);
 
 		Map<String, Object> formattedData = new HashMap<>();
 
 		// agreeData 변환 후 저장
-		List<Map<String, Object>> formattedAgreeDataList = new ArrayList<>();
-		if (agreeData != null && !agreeData.isEmpty()) {
-			for (Map.Entry<Object, Object> entry : agreeData.entrySet()) {
+		List<Map<String, Object>> formattedAgreeTrueList = new ArrayList<>();
+		if (agreeTrueData != null && !agreeTrueData.isEmpty()) {
+			for (Map.Entry<Object, Object> entry : agreeTrueData.entrySet()) {
 				Map<String, Object> participantData = new HashMap<>();
 				String participantId = entry.getValue().toString(); // participantId 추출
 				participantData.put("participantId", participantId);
-				formattedAgreeDataList.add(participantData);
+				formattedAgreeTrueList.add(participantData);
 			}
 		} else {
 			// agreeData가 없는 경우 빈 리스트 추가
-			formattedAgreeDataList = new ArrayList<>();
+			formattedAgreeTrueList = new ArrayList<>();
 		}
-		formattedData.put("agreeData", formattedAgreeDataList);
 
-		// insteadData 변환 후 저장
-		List<Map<String, Object>> formattedInsteadDataList = new ArrayList<>();
-		if (insteadData != null && !insteadData.isEmpty()) {
-			for (Map.Entry<Object, Object> entry : insteadData.entrySet()) {
-				Map<Object, Object> insteadDataMap = (Map<Object, Object>)entry.getValue(); // Map으로 형변환
-				Map<String, Object> insteadDataItem = new HashMap<>();
-				insteadDataItem.put("borrowerId", insteadDataMap.get("borrowerId")); // borrowerId 추가
-				insteadDataItem.put("lenderId", insteadDataMap.get("lenderId")); // lenderId 추가
-				formattedInsteadDataList.add(insteadDataItem);
+		List<Map<String, Object>> formattedAgreeFalseList = new ArrayList<>();
+		if (agreeFalseData != null && !agreeFalseData.isEmpty()) {
+			for (Map.Entry<Object, Object> entry : agreeFalseData.entrySet()) {
+				Map<String, Object> participantData = new HashMap<>();
+				String participantId = entry.getValue().toString(); // participantId 추출
+				participantData.put("participantId", participantId);
+				formattedAgreeFalseList.add(participantData);
 			}
 		} else {
-			// insteadData가 없는 경우 빈 리스트 추가
-			formattedInsteadDataList = new ArrayList<>();
+			// agreeData가 없는 경우 빈 리스트 추가
+			formattedAgreeFalseList = new ArrayList<>();
 		}
-		formattedData.put("insteadData", formattedInsteadDataList);
+
+		// formattedData.put("agreeData", formattedAgreeDataList);
+
+		// insteadData 변환 후 저장
+		// List<Map<String, Object>> formattedInsteadDataList = new ArrayList<>();
+		// if (insteadData != null && !insteadData.isEmpty()) {
+		// 	for (Map.Entry<Object, Object> entry : insteadData.entrySet()) {
+		// 		Map<Object, Object> insteadDataMap = (Map<Object, Object>)entry.getValue(); // Map으로 형변환
+		// 		Map<String, Object> insteadDataItem = new HashMap<>();
+		// 		insteadDataItem.put("borrowerId", insteadDataMap.get("borrowerId")); // borrowerId 추가
+		// 		insteadDataItem.put("lenderId", insteadDataMap.get("lenderId")); // lenderId 추가
+		// 		formattedInsteadDataList.add(insteadDataItem);
+		// 	}
+		// } else {
+		// 	// insteadData가 없는 경우 빈 리스트 추가
+		// 	formattedInsteadDataList = new ArrayList<>();
+		// }
+		// formattedData.put("insteadData", formattedInsteadDataList);
+
 		// 클라이언트에게 데이터 전송
 		log.info("초기데이터: {}", formattedData);
 		messagingTemplate.convertAndSend("/sub/initialData/" + payId, formattedData);
@@ -136,29 +152,32 @@ public class WebSocketController {
 	 * @param agreeReq
 	 */
 	@MessageMapping("/agree")
-	public void respondToAgreement(AgreeReq agreeReq) {
+	public void respondToAgreement(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto,
+		AgreeReq agreeReq) {
+		Long memberId = securityUserDto.getMemberId();
 		log.info("payId:{}", agreeReq.getPayId());
-		AgreeDto agreeDto = payAgreeService.respondToAgreement(agreeReq);
+		log.info("memberId: {}", memberId);
+		AgreeDto agreeDto = payAgreeService.respondToAgreement(agreeReq, memberId);
 
 		// Send message to relevant participants via WebSocket
 		messagingTemplate.convertAndSend("/sub/" + agreeReq.getPayId(), agreeDto);
-		// messagingTemplate.convertAndSend("/sub/" + agreeReq.getPayId(), "power of love");
 		log.info("동의 성공");
 	}
 
-	/**
-	 * 대신내주기 요청
-	 * @param insteadReq
-	 */
-	@MessageMapping("/instead-req")
-	public void requestPayInstead(
-		@AuthenticationPrincipal SecurityUserDto securityUserDto, InsteadRequestReq insteadReq) {
-		Long borrowerId = securityUserDto.getMemberId();
-		InsteadDto insteadDto = payInsteadService.requestPayInstead(insteadReq.getPayId(), borrowerId);
-
-		// Send message to relevant participants via WebSocket
-		messagingTemplate.convertAndSend("/sub/" + insteadDto.getPayId(), insteadDto);
-	}
+	// /**
+	//  * 대신내주기 요청
+	//  * @param insteadReq
+	//  */
+	// @MessageMapping("/instead-req")
+	// public void requestPayInstead(
+	// 	@AuthenticationPrincipal SecurityUserDto securityUserDto, InsteadRequestReq insteadReq) {
+	// 	Long borrowerId = securityUserDto.getMemberId();
+	// 	InsteadDto insteadDto = payInsteadService.requestPayInstead(insteadReq.getPayId(), borrowerId);
+	//
+	// 	// Send message to relevant participants via WebSocket
+	// 	messagingTemplate.convertAndSend("/sub/" + insteadDto.getPayId(), insteadDto);
+	// }
 
 	/**
 	 * 대신내주기 승낙
@@ -166,7 +185,8 @@ public class WebSocketController {
 	 */
 	@MessageMapping("/instead-res")
 	public void respondToPayInstead(
-		@AuthenticationPrincipal SecurityUserDto securityUserDto, InsteadAgreeReq insteadReq) {
+		@AuthenticationPrincipal SecurityUserDto securityUserDto,
+		InsteadAgreeReq insteadReq) {
 		Long lenderId = securityUserDto.getMemberId();
 		InsteadDto insteadDto = payInsteadService.respondToPayInstead(
 			insteadReq.getPayId(), insteadReq.getBorrowerId(), lenderId);

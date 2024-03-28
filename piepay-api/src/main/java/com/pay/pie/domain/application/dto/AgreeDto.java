@@ -1,7 +1,5 @@
 package com.pay.pie.domain.application.dto;
 
-import java.time.LocalDateTime;
-
 import com.pay.pie.domain.participant.entity.Participant;
 import com.pay.pie.domain.pay.entity.Pay;
 
@@ -18,15 +16,15 @@ public class AgreeDto {
 	private final Long participantId;
 	private final boolean payAgree;
 	private final Pay.PayStatus payStatus;
-	private final LocalDateTime agreeTime;
+	// private final LocalDateTime agreeTime;
 
 	public static AgreeDto of(Participant participant) {
 		return AgreeDto.builder()
 			.payId(participant.getPay().getId())
 			.participantId(participant.getId())
-			.payAgree(true)
+			.payAgree(participant.getPayAgree())
 			.payStatus(participant.getPay().getPayStatus())
-			.agreeTime(LocalDateTime.now())
+			// .agreeTime(LocalDateTime.now())
 			.build();
 	}
 

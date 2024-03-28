@@ -1,6 +1,7 @@
 package com.pay.pie.domain.memberMeet.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pay.pie.domain.meet.dto.MeetResponse;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 
@@ -11,14 +12,14 @@ import lombok.Getter;
 public class AllMemberMeetResponse {
 
 	// private final Member member;
-	private final Meet meet;
-	private final int memberCount;
+	private final MeetResponse meet;
+	// private final int memberCount;
 	private final boolean isTopFixed;
 
 	public AllMemberMeetResponse(MemberMeet memberMeet, int memberCount) {
-		// this.member = memberMeet.getMember();
-		this.meet = initializeAndUnproxy(memberMeet.getMeet());
-		this.memberCount = memberCount;
+		this.meet = new MeetResponse(memberMeet.getMeet(), memberCount);
+		// this.meetResponse = initializeAndUnproxy(memberMeet.getMeet());
+		// this.memberCount = memberCount;
 		this.isTopFixed = memberMeet.isTopFixed();
 	}
 

@@ -53,6 +53,7 @@ public class PayInstead extends BaseEntity {
 	private Long amount;
 
 	@NotNull
+	@Builder.Default
 	@Column(name = "is_payback", nullable = false)
 	private Boolean payback = false;
 }

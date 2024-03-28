@@ -24,7 +24,7 @@ public class GenerateQRServiceImpl implements GenerateQRService {
 	@Override
 	public byte[] generateQRCode(Long payId) throws WriterException, IOException {
 
-		String url = "https://localhost:3000/your-receipt/" + payId;
+		String url = "https://localhost:8080/api/your-receipt/" + payId;
 		int width = 200;
 		int height = 200;
 		BitMatrix bitMatrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);

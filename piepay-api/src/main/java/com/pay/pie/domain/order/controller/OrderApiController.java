@@ -42,7 +42,7 @@ public class OrderApiController {
 	private final OrderRepository orderRepository;
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@PostMapping("/receipt/{payId}")
+	@PostMapping("/your-receipt/{payId}")
 	public ResponseEntity<BaseResponse<OrderResponse>> addReceipt(@PathVariable Long payId) {
 		Order order = orderService.save(payId);
 		Long orderId = order.getId();
@@ -74,8 +74,6 @@ public class OrderApiController {
 				addOrderMenuRequest.setQuantity(menuAmount);
 
 				OrderMenu savedOrderMenu = orderMenuService.save(addOrderMenuRequest);
-				// orderMenus.add(savedOrderMenu);
-				// OrderMenu newOrderMenu = NewOrderMenuResponse(savedOrderMenu);
 				orderMenus.add(new NewOrderMenuResponse(savedOrderMenu));
 			}
 		}
@@ -83,8 +81,5 @@ public class OrderApiController {
 		return BaseResponse.success(
 			SuccessCode.INSERT_SUCCESS,
 			new OrderResponse(order, orderMenus));
-		// return BaseResponse.success(
-		// 	SuccessCode.INSERT_SUCCESS,
-		// 	order);
 	}
 }
