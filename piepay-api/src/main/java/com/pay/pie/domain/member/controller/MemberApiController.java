@@ -5,25 +5,33 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pay.pie.domain.member.application.MemberServiceImpl;
 import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.dto.MemberResponse;
+import com.pay.pie.domain.member.dto.UpdateMemberRequest;
 import com.pay.pie.domain.member.entity.Member;
-import com.pay.pie.domain.member.service.MemberService;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
 import com.pay.pie.global.common.BaseResponse;
 import com.pay.pie.global.common.code.SuccessCode;
+import com.pay.pie.global.security.dto.SecurityUserDto;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@RequestMapping("/api")
 @RestController
 public class MemberApiController {
 
-	private final MemberService memberService;
+	private final MemberServiceImpl memberService;
 	private final MemberMeetService memberMeetService;
 	private final MemberRepository memberRepository;
 
@@ -49,5 +57,29 @@ public class MemberApiController {
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
 			memberResponses);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@GetMapping("/member")
+	public ResponseEntity<BaseResponse<MemberResponse>> getMemberDetail(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
+		Long memberId = securityUserDto.getMemberId();
+		MemberResponse memberResponse = new MemberResponse(memberRepository.findById(memberId).orElseThrow());
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			memberResponse);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@PutMapping("/member")
+	public ResponseEntity<BaseResponse<Member>> updateMember(@AuthenticationPrincipal SecurityUserDto securityUserDto,
+		@RequestBody UpdateMemberRequest request) {
+		Long memberId = securityUserDto.getMemberId();
+		Member updatedMember = memberService.updateMember(memberId, request);
+
+		return BaseResponse.success(
+			SuccessCode.UPDATE_SUCCESS,
+			updatedMember);
 	}
 }

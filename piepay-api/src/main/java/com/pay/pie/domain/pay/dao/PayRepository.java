@@ -14,4 +14,6 @@ public interface PayRepository extends JpaRepository<Pay, Long>, PayRepositoryCu
 
 	Pay findFirstByMeetOrderByCreatedAtDesc(Meet meet);
 
+	List<Pay> findAllByMeetOrderByCreatedAtDesc(Meet meet);
+
 }

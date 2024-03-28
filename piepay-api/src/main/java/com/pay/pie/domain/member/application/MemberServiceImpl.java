@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pay.pie.domain.member.dao.MemberRepository;
+import com.pay.pie.domain.member.dto.UpdateMemberRequest;
 import com.pay.pie.domain.member.entity.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,14 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Optional<Member> findByEmail(String email) {
 		return memberRepository.findByEmail(email);
+	}
+
+	@Transactional
+	public Member updateMember(long memberId, UpdateMemberRequest request) {
+		Member member = memberRepository.findById(memberId)
+			.orElseThrow(() -> new IllegalArgumentException("not found: " + memberId));
+		member.updateMember(request);
+
+		return member;
 	}
 }

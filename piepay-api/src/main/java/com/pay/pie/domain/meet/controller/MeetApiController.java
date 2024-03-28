@@ -3,6 +3,7 @@ package com.pay.pie.domain.meet.controller;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.meet.dto.AddMeetRequest;
 import com.pay.pie.domain.meet.dto.MeetResponse;
+import com.pay.pie.domain.meet.dto.MeetStatusResponse;
 import com.pay.pie.domain.meet.dto.PayResponse;
 import com.pay.pie.domain.meet.dto.UpdateInvitationRequest;
 import com.pay.pie.domain.meet.dto.UpdateMeetImageRequest;
@@ -28,11 +30,13 @@ import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.meet.service.MeetService;
 import com.pay.pie.domain.memberMeet.dto.AddMemberMeetRequest;
 import com.pay.pie.domain.memberMeet.dto.AllMemberMeetResponse;
+import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
 import com.pay.pie.domain.order.dao.OrderRepository;
 import com.pay.pie.domain.order.entity.Order;
 import com.pay.pie.domain.pay.application.PayServiceImpl;
+import com.pay.pie.domain.pay.dto.response.PayStatusIngResponse;
 import com.pay.pie.domain.pay.entity.Pay;
 import com.pay.pie.global.common.BaseResponse;
 import com.pay.pie.global.common.code.SuccessCode;
@@ -73,7 +77,7 @@ public class MeetApiController {
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@PatchMapping("meet/{id}/invitation")
+	@PatchMapping("/meet/{id}/invitation")
 	public ResponseEntity<BaseResponse<Meet>> updateInvitation(@PathVariable long id,
 		UpdateInvitationRequest request) {
 		Meet updatedMeet = meetService.updateMeetInvitation(id, request);
@@ -84,7 +88,7 @@ public class MeetApiController {
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@PutMapping("meet/{id}/image")
+	@PutMapping("/meet/{id}/image")
 	public ResponseEntity<BaseResponse<Meet>> updateMeetImage(@PathVariable long id,
 		@RequestBody UpdateMeetImageRequest request) {
 		Meet updatedMeet = meetService.updateMeetImage(id, request);
@@ -95,7 +99,7 @@ public class MeetApiController {
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@PutMapping("meet/{id}/name")
+	@PutMapping("/meet/{id}/name")
 	public ResponseEntity<BaseResponse<Meet>> updateMeetName(@PathVariable long id,
 		@RequestBody UpdateMeetNameRequest request) {
 		Meet updatedMeet = meetService.updateMeetName(id, request);
@@ -106,7 +110,7 @@ public class MeetApiController {
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@GetMapping("member/meets")
+	@GetMapping("/member/meets")
 	public ResponseEntity<BaseResponse<List<AllMemberMeetResponse>>> getAllMeet(
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
 		Long memberId = securityUserDto.getMemberId();
@@ -130,7 +134,7 @@ public class MeetApiController {
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@GetMapping("meet/{meetId}/payment")
+	@GetMapping("/meet/{meetId}/payment")
 	public ResponseEntity<BaseResponse<List<PayResponse>>> getPayByMeetId(@PathVariable long meetId) {
 		List<PayResponse> payResponses = payService.findPayByMeetId(meetId)
 			.stream()
@@ -148,12 +152,12 @@ public class MeetApiController {
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@GetMapping("meet/{meetId}/paystatus")
-	public ResponseEntity<BaseResponse<Meet>> getPayStatus(@PathVariable long meetId) {
+	@GetMapping("/meet/{meetId}/paystatus")
+	public ResponseEntity<BaseResponse<MeetStatusResponse>> getPayStatus2(@PathVariable long meetId) {
 		Pay pay = payService.findRecentPayByMeetId(meetId);
-		Meet meet;
+		MeetStatusResponse meet;
 		if (pay.getPayStatus() == Pay.PayStatus.ING) {
-			meet = pay.getMeet();
+			meet = new MeetStatusResponse(pay.getMeet());
 		} else {
 			meet = null;
 		}
@@ -164,7 +168,7 @@ public class MeetApiController {
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@GetMapping("meet/{meetId}")
+	@GetMapping("/meet/{meetId}")
 	public ResponseEntity<BaseResponse<MeetResponse>> getMeet(@PathVariable long meetId) {
 		Meet meet = meetService.getMeet(meetId);
 		int memberCount = memberMeetRepository.findAllByMeet(meet).size();
@@ -174,7 +178,7 @@ public class MeetApiController {
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@GetMapping("meet/{meetId}/payment/latest")
+	@GetMapping("/meet/{meetId}/payment/latest")
 	public ResponseEntity<BaseResponse<Pay>> getLatestPayment(@PathVariable long meetId) {
 		Meet meet = meetService.getMeet(meetId);
 		List<Pay> pays = payService.findPayByMeetId(meetId);
@@ -188,5 +192,31 @@ public class MeetApiController {
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
 			latestPay);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@GetMapping("/meet/paystatus")
+	public ResponseEntity<BaseResponse<List<Optional<PayStatusIngResponse>>>> getPayStatus(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
+		List<MemberMeet> memberMeets = memberMeetRepository.findByMemberId(securityUserDto.getMemberId());
+		List<Optional<PayStatusIngResponse>> payResponses = memberMeets
+			.stream()
+			// .map(PayResponse::new)
+			.map(memberMeet -> {
+				Long meetId = memberMeet.getMeet().getId();
+				Pay pay = payService.findRecentPayByMeetId(meetId);
+				if (pay != null && pay.getPayStatus() == Pay.PayStatus.ING) {
+					return Optional.of(new PayStatusIngResponse(pay));
+				} else {
+					return Optional.<PayStatusIngResponse>empty();
+				}
+			})
+			// .sorted(Comparator.comparing(PayResponse::getUpdatedAt).reversed()) // updated_at을 기준으로 내림차순으로 정렬
+			.filter(Optional::isPresent)
+			.collect(Collectors.toList());
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			payResponses);
 	}
 }
