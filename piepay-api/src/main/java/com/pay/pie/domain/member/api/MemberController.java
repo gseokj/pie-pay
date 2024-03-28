@@ -1,4 +1,4 @@
-package com.pay.pie.domain.member.controller;
+package com.pay.pie.domain.member.api;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @RestController
-public class MemberApiController {
+public class MemberController {
 
 	private final MemberServiceImpl memberService;
 	private final MemberMeetService memberMeetService;
