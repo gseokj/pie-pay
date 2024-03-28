@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.member.application.MemberServiceImpl;
@@ -26,6 +27,7 @@ import com.pay.pie.global.security.dto.SecurityUserDto;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@RequestMapping("/api")
 @RestController
 public class MemberApiController {
 
@@ -58,7 +60,7 @@ public class MemberApiController {
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@GetMapping("member")
+	@GetMapping("/member")
 	public ResponseEntity<BaseResponse<MemberResponse>> getMemberDetail(
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
 		Long memberId = securityUserDto.getMemberId();
