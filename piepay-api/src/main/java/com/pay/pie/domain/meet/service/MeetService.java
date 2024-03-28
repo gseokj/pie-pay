@@ -1,5 +1,7 @@
 package com.pay.pie.domain.meet.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,8 +61,12 @@ public class MeetService {
 	public Meet getMeet(long meetId) {
 		// Meet meet = meetRepository.findById(meetId)
 		// 	.orElseThrow(() -> new IllegalArgumentException("not found: " + meetId));
-		
+
 		return meetRepository.findById(meetId)
 			.orElseThrow(() -> new IllegalArgumentException("not found: " + meetId));
+	}
+
+	public Optional<Meet> findById(long meetId) {
+		return meetRepository.findById(meetId);
 	}
 }

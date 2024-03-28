@@ -1,14 +1,19 @@
 package com.pay.pie.domain.meet.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.pay.pie.domain.BaseEntity;
+import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotNull;
@@ -40,6 +45,9 @@ public class Meet extends BaseEntity {
 	@NotNull
 	@Column(name = "meet_invitation", nullable = false, length = 10)
 	private String meetInvitation;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "meet")
+	private List<MemberMeet> memberMeetList = new ArrayList<>();
 
 	@Builder // 빌더 패턴으로 객체 생성
 	public Meet(String meetName, String meetImage) {

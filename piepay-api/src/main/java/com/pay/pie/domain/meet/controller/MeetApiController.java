@@ -117,9 +117,9 @@ public class MeetApiController {
 		List<AllMemberMeetResponse> meetResponses = memberMeetService.findMeetByMemberId(memberId)
 			.stream()
 			.map(memberMeet -> {
-				Meet meet = meetRepository.findById(memberMeet.getMeet().getId()).orElse(null);
+				Meet meet = meetService.findById(memberMeet.getMeet().getId()).orElse(null);
 				if (meet != null) {
-					return new AllMemberMeetResponse(memberMeet, memberMeetRepository.findAllByMeet(meet).size());
+					return new AllMemberMeetResponse(memberMeet, memberMeetService.findAllByMeet(meet).size());
 				} else {
 					// Member가 없는 경우에 대한 처리
 					return null;

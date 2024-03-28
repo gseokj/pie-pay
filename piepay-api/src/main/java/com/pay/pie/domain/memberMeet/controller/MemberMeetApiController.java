@@ -15,12 +15,12 @@ import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.memberMeet.dto.AddMemberMeetRequest;
 import com.pay.pie.domain.memberMeet.dto.MemberMeetResponse;
 import com.pay.pie.domain.memberMeet.entity.MemberMeet;
-import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
 import com.pay.pie.global.common.BaseResponse;
 import com.pay.pie.global.common.code.SuccessCode;
 import com.pay.pie.global.security.dto.SecurityUserDto;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -29,10 +29,10 @@ import lombok.RequiredArgsConstructor;
 public class MemberMeetApiController {
 
 	private final MemberMeetService memberMeetService;
-	private final MemberMeetRepository memberMeetRepository;
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@PostMapping("/meet/join")
+	@Transactional
 	public ResponseEntity<BaseResponse<MemberMeetResponse>> addMemberMeet(@RequestBody AddMemberMeetRequest request,
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
 		Long memberId = securityUserDto.getMemberId();
@@ -42,11 +42,12 @@ public class MemberMeetApiController {
 
 		return BaseResponse.success(
 			SuccessCode.UPDATE_SUCCESS,
-			new MemberMeetResponse(savedMemberMeet, memberMeetRepository.findAllByMeet(meet).size()));
+			new MemberMeetResponse(savedMemberMeet, memberMeetService.findAllByMeet(meet).size()));
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@DeleteMapping("/meet/{meetId}")
+	@Transactional
 	public ResponseEntity<BaseResponse<Void>> deleteMemberMeet(@PathVariable Long meetId,
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
 		Long memberId = securityUserDto.getMemberId();
@@ -59,6 +60,7 @@ public class MemberMeetApiController {
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@PatchMapping("/meet/{meetId}/favorite")
+	@Transactional
 	public ResponseEntity<BaseResponse<MemberMeet>> favoriteMemberMeet(@PathVariable Long meetId,
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
 		Long memberId = securityUserDto.getMemberId();
