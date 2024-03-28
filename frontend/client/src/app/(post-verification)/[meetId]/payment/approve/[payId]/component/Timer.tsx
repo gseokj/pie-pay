@@ -4,6 +4,7 @@ import {getPayment} from "@/api/payment";
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
+import { usePayment } from '@/store/usePayment';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 10,
@@ -21,8 +22,10 @@ type Props={
     payId:string;
 }
 export default function Page({payId}:Props){
-    const { data: payment, isLoading, error } = useQuery({queryKey: ['payId',payId], queryFn: getPayment}) ;
+    const { payment, isLoading, updatePayment } = usePayment();
+
     const createdAtDate = new Date(payment?.createdAt || "1970-01-01T00:00:00.000Z").getTime();
+
     const [currDate, setCurrDate] = useState(new Date());
     const [remainingTime, setRemainingTime] = useState(90);
     const [progressBar, setProgressBar] = useState(0)
