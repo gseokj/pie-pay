@@ -42,7 +42,7 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		// web socket 통신 url
-		registry.addEndpoint("/pay-ws")
+		registry.addEndpoint("/pay")
 			// .addInterceptors()
 			// .setAllowedOrigins("*");
 			.setAllowedOriginPatterns(

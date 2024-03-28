@@ -32,10 +32,13 @@ public class ParticipantRepositoryImpl implements ParticipantRepositoryCustom {
 	}
 
 	@Override
-	public Participant findByMemberId(Long memberId) {
+	public Participant findByMemberIdAndPayId(Long memberId, Long payId) {
 		return queryFactory
 			.selectFrom(participant)
-			.where(participant.member.id.eq(memberId))
+			.where(
+				participant.member.id.eq(memberId)
+					.and(participant.pay.id.eq(payId))
+			)
 			.fetchOne();
 	}
 
