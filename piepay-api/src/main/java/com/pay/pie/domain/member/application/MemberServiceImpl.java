@@ -36,4 +36,8 @@ public class MemberServiceImpl implements MemberService {
 
 		return member;
 	}
+
+	public Optional<Member> findById(Long memberId) {
+		return memberRepository.findById(memberId);
+	}
 }

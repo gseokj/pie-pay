@@ -74,8 +74,6 @@ public class OrderApiController {
 				addOrderMenuRequest.setQuantity(menuAmount);
 
 				OrderMenu savedOrderMenu = orderMenuService.save(addOrderMenuRequest);
-				// orderMenus.add(savedOrderMenu);
-				// OrderMenu newOrderMenu = NewOrderMenuResponse(savedOrderMenu);
 				orderMenus.add(new NewOrderMenuResponse(savedOrderMenu));
 			}
 		}
@@ -83,8 +81,5 @@ public class OrderApiController {
 		return BaseResponse.success(
 			SuccessCode.INSERT_SUCCESS,
 			new OrderResponse(order, orderMenus));
-		// return BaseResponse.success(
-		// 	SuccessCode.INSERT_SUCCESS,
-		// 	order);
 	}
 }
