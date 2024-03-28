@@ -50,7 +50,7 @@ export default function MyPage() {
     const updateMember = () => route.push('mypage/update');
 
     return (
-        <div className="w-[100%] h-[100%] flex flex-col justify-around">
+        <div className="w-[100%] h-[70%] flex flex-col justify-around">
             <section className="w-[100%] h-[13%] flex justify-between p-3 bg-white rounded-2xl ">
                 <div className="flex items-center mb-3">
                     <img className="h-[3rem] mr-3 rounded-lg" src={Me.profileImage}/>
@@ -78,7 +78,7 @@ export default function MyPage() {
             <section>
                 <div className="flex justify-between">
                     <p className="font-bold mb-2 text-lg">미정산 내역</p>
-                    <p className="text-gray-500 text-xs">더 보기</p>
+                    <button  onClick={()=>route.push("mypage/unsettled")} className="text-gray-500 text-xs">더 보기</button>
                 </div>
                 <div className="flex flex-col  h-[80%] justify-between p-4 bg-white rounded-xl shadow-xl">
                     <div className="flex">
@@ -98,7 +98,7 @@ export default function MyPage() {
             <section>
                 <div className="flex justify-between mb-2">
                     <p className="font-bold text-lg">결제 내역</p>
-                    <p className="text-gray-500 text-xs">더 보기</p>
+                    <button onClick={()=>route.push("mypage/payment-list")} className="text-gray-500 text-xs">더 보기</button>
                 </div>
                 <div className="flex flex-col h-[100%] justify-between p-4 bg-white rounded-xl shadow-xl">
                     <div className="flex">
