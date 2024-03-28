@@ -31,6 +31,14 @@ public class ParticipantRepositoryImpl implements ParticipantRepositoryCustom {
 			.fetch();
 	}
 
+	@Override
+	public Participant findByMemberId(Long memberId) {
+		return queryFactory
+			.selectFrom(participant)
+			.where(participant.member.id.eq(memberId))
+			.fetchOne();
+	}
+
 	// @Override
 	// public boolean existsParticipantByIdAndPayId(Long participantId, Long payId) {
 	// 	return queryFactory
