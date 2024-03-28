@@ -33,23 +33,25 @@ export default function Meet({params}: Props) {
     const {meetId} = params;
     const queryClient = useQueryClient();
     const meetInfo = queryClient.getQueryData(["meetInfo",meetId]) as GetMeetInfoResponse;
+    console.log(meetInfo);
+    console.log(meetId);
 
     return (
         <>
-            <MeetInfoCard params={{ meetId }} />
-            {meetInfo.result.meetImage !== null ?
-                <>
-                    <InviteMemberCard meetInvitation={ meetInfo.result.meetInvitation } />
-                    <SelectMeetImageCard />
-                </>
-                :
-                <>
-                    <MemberLayout meetId={meetId} />
-                    <PaymentLayout meetId={meetId} />
-                    <HighlightLayout meetId={meetId} />
-                    <PaymentSelectButton meetId={meetId}/>
-                </>
-            }
+            {/*<MeetInfoCard params={{ meetId }} />*/}
+            {/*{meetInfo.result.meetImage !== null ?*/}
+            {/*    <>*/}
+            {/*        <InviteMemberCard meetInvitation={ meetInfo.result.meetInvitation } />*/}
+            {/*        <SelectMeetImageCard />*/}
+            {/*    </>*/}
+            {/*    :*/}
+            {/*    <>*/}
+            {/*        <MemberLayout meetId={meetId} />*/}
+            {/*        <PaymentLayout meetId={meetId} />*/}
+            {/*        <HighlightLayout meetId={meetId} />*/}
+            {/*        <PaymentSelectButton meetId={meetId}/>*/}
+            {/*    </>*/}
+            {/*}*/}
         </>
     );
 }

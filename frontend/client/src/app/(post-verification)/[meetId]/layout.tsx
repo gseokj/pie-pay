@@ -2,7 +2,6 @@ import type {Metadata} from "next";
 import {ReactNode} from "react";
 import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
 import {getMembers} from "@/api/member";
-import * as styles from "@/styles/meet/meetMain.css"
 import {getMeetInfo} from "@/api/meet";
 
 export const metadata: Metadata = {
@@ -20,6 +19,7 @@ export default async function PaymentModalLayout({children, params}: Props) {
     const queryClient = new QueryClient();
     await queryClient.prefetchQuery({queryKey: ['members',meetId], queryFn: getMembers});
     await queryClient.prefetchQuery({queryKey: ['meetInfo',meetId], queryFn: getMeetInfo});
+    console.log("hello");
     const dehydratedState = dehydrate(queryClient);
 
 

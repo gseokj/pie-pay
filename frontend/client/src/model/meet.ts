@@ -5,11 +5,11 @@ interface CreateMeetRequest {
 interface Meet {
     createdAt: string;
     updatedAt: string;
-    id: number;
+    meetId: number;
     meetName: string;
     meetImage: string|null;
     meetInvitation: string;
-
+    membersCount: number;
 }
 
 interface CreateMeetResponse {

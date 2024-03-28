@@ -28,8 +28,8 @@ export default function Success({
     }
     const setSession = async () => {
         const myInfo = await getMyInfo();
-        console.log(myInfo);
-        // sessionStorage.setItem()
+        sessionStorage.setItem('myInfo', JSON.stringify(myInfo.result));
+        // JSON.parse(sessionStorage.getItem('myInfo'));
         router.push('/');
 
     }

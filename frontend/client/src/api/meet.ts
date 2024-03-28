@@ -6,17 +6,10 @@ import {QueryFunction} from "@tanstack/query-core";
 
 export const postCreateMeet = async (meetData: CreateMeetRequest):Promise<CreateMeetResponse> => {
 
-    // const token = await(await fetch(`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/api/auth`, {
-    //     method: 'GET'
-    // })).json();
-    //
-    // console.log(token, "!!!!!!!!!!!11");
-    // const accessToken = token.data.value;
-    // console.log(accessToken);
-
     try {
         const axiosInstance = await authAxios();
         const response = await axiosInstance.post(`/api/meet`, meetData);
+        console.log('success to get data', response.data);
         return response.data;
     } catch (error) {
         console.error('Failed to fetch data', error);
@@ -26,17 +19,16 @@ export const postCreateMeet = async (meetData: CreateMeetRequest):Promise<Create
 
 export const getMeetInfo: QueryFunction<GetMeetInfoResponse> = async ({ queryKey }) => {
     const [_,meetId] = queryKey;
-    const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaWUiLCJleHAiOjEwNzExMDgwNjk4LCJzdWIiOiJzaGFxODhAZGF1bS5uZXQiLCJyb2xlcyI6IlJPTEVfTk9UX0NFUlRJRklFRCJ9.vaLabNJyskgDWrwJFODM2g7PaZiTOpRRbZSIfMR10w8";
+    console.log(meetId, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 
     try {
-        const response = await testAxios().get(`/meet/${meetId}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+        console.log("ff");
+        const axiosInstance = await authAxios();
+        const response = await axiosInstance.get(`/api/meet/${meetId}`);
+        console.log('success to get data', response.data);
         return response.data;
     } catch (error) {
-        console.error('Failed to fetch data', error);
-        throw new Error('Failed to fetch data');
+        console.error('Failed to get data', error);
+        throw new Error('Failed to get data');
     }
 }

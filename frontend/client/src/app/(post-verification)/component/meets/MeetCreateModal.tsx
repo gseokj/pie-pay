@@ -34,7 +34,7 @@ export default function MeetCreateModal({ isCreateMeetModalOn, clickCreate, clic
         try {
             const response = await postCreateMeet({ meetName:meetName });
             console.log("Success Create", response);
-            router.push(`/${response.result.id}`);
+            router.push(`/${response.result.meetId}`);
         } catch (error) {
             console.error("Fail Create", error);
         }

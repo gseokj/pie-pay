@@ -7,7 +7,6 @@ export function middleware(request: NextRequest) {
         if (request.cookies.has('accessToken')) {
             return NextResponse.rewrite(new URL('/', request.url));
         }
-
     } else if (request.nextUrl.pathname.startsWith('/success')) {
         if (request.cookies.has('accessToken')) {
             return NextResponse.rewrite(new URL('/', request.url));
@@ -20,5 +19,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/:path']
+    matcher: ['/:path', '/login', '/success']
 }
