@@ -1,5 +1,4 @@
 import {CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse} from "@/model/meet";
-import testAxios from "@/util/testAxios";
 import authAxios from "@/util/authAxios";
 import {QueryFunction} from "@tanstack/query-core";
 
@@ -32,3 +31,16 @@ export const getMeetInfo: QueryFunction<GetMeetInfoResponse> = async ({ queryKey
         throw new Error('Failed to get data');
     }
 }
+
+export const getMyMeets = async () => {
+    try {
+        console.log('GetMyMeets!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
+        const axiosInstance = await authAxios();
+        const response = await axiosInstance.get(`api/member/meets`);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to get data', error);
+        throw new Error('Failed to get data');
+    }
+};

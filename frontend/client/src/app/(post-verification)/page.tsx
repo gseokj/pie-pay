@@ -12,6 +12,7 @@ import MeetJoinModal from "@/app/(post-verification)/component/meets/MeetJoinMod
 import MeetCreateModal from "@/app/(post-verification)/component/meets/MeetCreateModal";
 import * as styles from "@/styles/main/main.css";
 import * as fontStyles from "@/styles/fonts.css";
+import {getMeetInfo, getMyMeets} from "@/api/meet";
 
 
 const dummys = [
@@ -273,6 +274,14 @@ export interface Dummy {
 
 
 export default function Main() {
+    // const getMeets = async () => {
+    //   const res = await getMyMeets();
+    //   console.log('myMeets', res);
+    //   return res;
+    // }
+    //
+    // getMeets();
+
     const [joinModalVisibility, setJoinModalVisibility] = useState(false)
     const [createModalVisibility, setCreateModalVisibility] = useState(false)
 

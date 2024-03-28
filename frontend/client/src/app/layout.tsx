@@ -9,6 +9,14 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({children,}: Readonly<{ children: React.ReactNode; }>) {
+    const getToken = async () => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/api/auth`, {
+            method: 'GET'
+        })
+        const token = await response.json();
+        console.log(token);
+    }
+    getToken();
     return (
         <html lang="en">
             <body className={styles.body} >

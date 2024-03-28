@@ -24,4 +24,16 @@ interface GetMeetInfoResponse {
     status: number;
 }
 
+interface MeetInMeets {
+    meet: Meet;
+    memberCount: number;
+    topFixed: boolean;
+}
+
+interface GetMyMeetsResponse {
+    status: number;
+    message: string;
+    result: MeetInMeets[];
+}
+
 export type { CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse };

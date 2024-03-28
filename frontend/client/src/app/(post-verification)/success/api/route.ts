@@ -13,10 +13,14 @@ export async function POST(request: NextRequest, response: NextResponse) {
         cookies().set('accessToken', accessToken, {
             httpOnly: true,
             path: '/',
+            sameSite: 'none',
+            secure: true
         });
         cookies().set('refreshToken', refreshToken, {
             httpOnly: true,
             path: '/',
+            sameSite: 'none',
+            secure: true
         });
 
         res.cookies.set('accessToken', accessToken);

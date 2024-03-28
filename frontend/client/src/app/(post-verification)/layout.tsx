@@ -8,6 +8,7 @@ import {getAccount} from "@/api/account";
 import NotificationReceive from "@/app/(post-verification)/component/NotificationReceive";
 import * as styles from "@/styles/main/main.css"
 import {getMyInfo} from "@/api/user";
+import {getMyMeets} from "@/api/meet";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -19,6 +20,7 @@ type Props = { children: ReactNode, modal: ReactNode }
 export default async function PostVerificationLayout({children}: Props) {
     const queryClient = new QueryClient();
     await queryClient.prefetchQuery({queryKey: ['account'], queryFn: getAccount});
+    await queryClient.prefetchQuery({queryKey: ['myMeets'], queryFn: getMyMeets});
     const dehydratedState = dehydrate(queryClient);
     return (
         <div className="h-screen">
