@@ -10,7 +10,7 @@ public interface ParticipantRepositoryCustom {
 
 	List<Participant> findByPayId(Long payId);
 
-	Participant findByMemberId(Long memberId);
+	Participant findByMemberIdAndPayId(Long memberId, Long payId);
 
 	// boolean existsParticipantByIdAndPayId(Long participantId, Long payId);
 
