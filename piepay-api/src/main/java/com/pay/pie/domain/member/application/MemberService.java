@@ -12,5 +12,6 @@ public interface MemberService {
 	MemberDetailResponse getMemberDetail(Long memberId);
 	MemberDetailResponse updateMemberDetail(Long memberId , UpdateMemberRequest request);
 	Optional<Member> findMemberByEmail(String email);
+	Member findMemberById(Long id);
 
 }

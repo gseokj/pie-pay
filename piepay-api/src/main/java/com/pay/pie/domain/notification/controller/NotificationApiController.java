@@ -33,7 +33,7 @@ public class NotificationApiController {
 	@GetMapping("/notifications")
 	public ResponseEntity<BaseResponse<List<NotificationResponse>>> findAllByMember(
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
-		Member member = memberService.findById(securityUserDto.getMemberId()).orElseThrow();
+		Member member = memberService.findMemberById(securityUserDto.getMemberId());
 		List<NotificationResponse> notifications = notificationService.findAllByMember(member)
 			.stream()
 			.peek(notification -> System.out.println("Notification ID: " + notification.getMessage()))
@@ -42,7 +42,8 @@ public class NotificationApiController {
 
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
-			notifications);
+			notifications
+		);
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
@@ -53,14 +54,15 @@ public class NotificationApiController {
 
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
-			notificationResponse);
+			notificationResponse
+		);
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@GetMapping("/notifications/existence")
 	public ResponseEntity<BaseResponse<Long>> checkUnreadNotifications(
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
-		Member member = memberService.findById(securityUserDto.getMemberId()).orElseThrow();
+		Member member = memberService.findMemberById(securityUserDto.getMemberId());
 		Long unreadNotification = notificationService.findAllByMember(member)
 			.stream()
 			.filter(notification -> !notification.getReadOrNot())
@@ -68,6 +70,7 @@ public class NotificationApiController {
 
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
-			unreadNotification);
+			unreadNotification
+		);
 	}
 }
