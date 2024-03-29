@@ -1,13 +1,20 @@
 import {CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse} from "@/model/meet";
 import authAxios from "@/util/authAxios";
 import {QueryFunction} from "@tanstack/query-core";
+import axios from "axios";
+import {GetMyInfoResponse} from "@/model/user";
+import {cookies} from "next/headers";
+import {NextRequest} from "next/server";
 
 
-export const postCreateMeet = async (meetData: CreateMeetRequest):Promise<CreateMeetResponse> => {
+export const postCreateMeet = async (meetData: CreateMeetRequest, token: string):Promise<CreateMeetResponse> => {
 
     try {
-        const axiosInstance = await authAxios();
-        const response = await axiosInstance.post(`/api/meet`, meetData);
+        const response = await authAxios.post(`/api/meet`, meetData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        });
         console.log('success to get data', response.data);
         return response.data;
     } catch (error) {
@@ -17,13 +24,14 @@ export const postCreateMeet = async (meetData: CreateMeetRequest):Promise<Create
 }
 
 export const getMeetInfo: QueryFunction<GetMeetInfoResponse> = async ({ queryKey }) => {
-    const [_,meetId] = queryKey;
-    console.log(meetId, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-
+    const [_,meetId,token] = queryKey;
     try {
         console.log("ff");
-        const axiosInstance = await authAxios();
-        const response = await axiosInstance.get(`/api/meet/${meetId}`);
+        const response = await authAxios.get(`/api/meet/${meetId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        });
         console.log('success to get data', response.data);
         return response.data;
     } catch (error) {
@@ -32,15 +40,33 @@ export const getMeetInfo: QueryFunction<GetMeetInfoResponse> = async ({ queryKey
     }
 }
 
-export const getMyMeets = async () => {
+export const getMyMeets:QueryFunction<GetMyInfoResponse> = async ({ queryKey }) => {
+    const [_,token] =queryKey;
     try {
-        console.log('GetMyMeets!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
-        const axiosInstance = await authAxios();
-        const response = await axiosInstance.get(`api/member/meets`);
-        console.log(response.data);
+        const response = await authAxios.get(`/api/member/meets`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        });
         return response.data;
     } catch (error) {
         console.error('Failed to get data', error);
         throw new Error('Failed to get data');
     }
 };
+
+export const refreshRequest = async (token: string) => {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/token/refresh`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json;charset=utf-8",
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        return response;
+    } catch (error) {
+        console.error('Failed to get data', error);
+        throw new Error('Failed to get data');
+    }
+}

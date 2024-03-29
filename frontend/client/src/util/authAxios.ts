@@ -1,30 +1,21 @@
 import axios from "axios";
 
-const authAxios = async () => {
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/api/auth`, {
-            method: 'GET'
-        });
-        const token = await response.json();
-
-        if (token.data && token.data.value) {
-            const accessToken = token.data.value;
-
-            const instance = axios.create({
-                baseURL: process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
-                headers: {
-                    "Content-Type": "application/json;charset=utf-8",
-                    'Authorization': `Bearer ${accessToken}`
-                },
-            });
-            return instance;
-        } else {
-            throw new Error("Token not found or invalid");
+function getCookie(name: string) {
+    let cookieArray = document.cookie.split('; ');
+    for(let i = 0; i < cookieArray.length; i++) {
+        let cookiePair = cookieArray[i].split('=');
+        if(name == cookiePair[0]) {
+            return cookiePair[1];
         }
-    } catch (error) {
-        console.error("Error fetching auth token:", error);
-        throw error;
     }
-};
+    return null;
+}
+
+const authAxios = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
+    headers: {
+        "Content-Type": "application/json;charset=utf-8",
+    },
+});
 
 export default authAxios;
