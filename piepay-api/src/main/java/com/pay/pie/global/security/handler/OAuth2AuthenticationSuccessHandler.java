@@ -42,7 +42,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		if (role.equals(MemberRole.ROLE_CERTIFIED_MEMBER.getValue())) {
 
 
-			ResponseCookie cookie = ResponseCookie.from("refreshToken", "Bearer "+refreshToken)
+			ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
 				.maxAge(7 *24 * 60 * 60)
 				.path("/")
 				.secure(true)
