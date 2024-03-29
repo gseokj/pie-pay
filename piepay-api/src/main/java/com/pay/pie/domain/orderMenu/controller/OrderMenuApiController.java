@@ -84,12 +84,6 @@ public class OrderMenuApiController {
 	// @PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@GetMapping("/receipt/{orderId}/detail")
 	public ResponseEntity<BaseResponse<OrderMenuOfOrderResponse>> getOrderMenu(@PathVariable Long orderId) {
-		// Long totalPayAmount = orderService.findById(orderId).getTotalAmount();
-		// List<NewOrderMenuResponse> newOrderMenuResponses = orderMenuService.findByOrderId(orderId)
-		// 	.stream()
-		// 	.map(NewOrderMenuResponse::new)
-		// 	.toList();
-
 		List<OrderMenu> orderMenus = orderMenuService.findByOrderId(orderId);
 		StoreInfoDto store = StoreInfoDto.of(orderService.findById(orderId).getStore());
 
