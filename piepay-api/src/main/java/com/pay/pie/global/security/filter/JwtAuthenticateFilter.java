@@ -37,12 +37,6 @@ public class JwtAuthenticateFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
 		@NonNull FilterChain filterChain) throws ServletException, IOException {
 
-		Cookie[] cookies = request.getCookies();
-		for (Cookie c: cookies){
-			System.out.println(c.getName());
-			System.out.println(c.getValue());
-		}
-
 		// WHITE LIST의 패스에 대한 JWT 토큰 검증 패스
 		if (PatternMatchUtils.simpleMatch(URL_WHITE_LIST, request.getRequestURI())) {
 			filterChain.doFilter(request, response);
