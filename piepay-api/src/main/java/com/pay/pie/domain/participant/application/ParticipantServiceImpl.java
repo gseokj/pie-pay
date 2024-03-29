@@ -16,6 +16,8 @@ import com.pay.pie.domain.participant.dto.request.ParticipantReq;
 import com.pay.pie.domain.participant.entity.Participant;
 import com.pay.pie.domain.pay.dao.PayRepository;
 import com.pay.pie.domain.pay.entity.Pay;
+import com.pay.pie.global.security.dto.SecurityUserDto;
+import com.pay.pie.global.util.bank.BankUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +32,23 @@ public class ParticipantServiceImpl implements ParticipantService {
 	private final MemberRepository memberRepository;
 	private final PayRepository payRepository;
 	private final MeetRepository meetRepository;
+	private final BankUtil bankUtil;
 
 	@Override
-	public SelectedPartiesRes selectParticipant(Long meetId, Long openerId, List<ParticipantReq> participants) {
+	public SelectedPartiesRes selectParticipant(Long meetId, SecurityUserDto securityUserDto,
+		List<ParticipantReq> participants) {
 
 		List<ParticipantDto> participantDtoList = new ArrayList<>();
+
+		/*
+		openerId로 가상계좌 생성
+		 */
+		//
+		Long openerId = securityUserDto.getMemberId();
+		String openerUserKey = securityUserDto.getUserKey();
+		// 국민은행 가상계좌 생성
+		// OpenAccountRes virtualAccount = bankUtil.openAccount(
+		// 	openerUserKey, "004-1-74fe2deafd3277").getBody();
 
 		// Pay 테이블 생성
 		Pay pay = payRepository.save(Pay.builder()
