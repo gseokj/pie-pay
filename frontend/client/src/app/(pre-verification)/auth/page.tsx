@@ -1,30 +1,33 @@
-'use client'
+"use client";
 
-import BackButton from "@/app/(pre-verification)/component/BackButton";
+
 import {useRouter} from "next/navigation";
-import {useEffect} from "react";
 
-export default function Auth() {
-    useEffect(()=>{
-        const params = new URLSearchParams(location.search);
-        const user = {
-            email: params.get("email")
-        };
-        console.log(user);
-    },[]);
 
+export default function Success({
+                                    searchParams
+                                }: {
+    searchParams : { [key: string]: string | string[] | undefined }
+}) {
     const router = useRouter();
+    const accessToken = searchParams.accessToken;
 
-    const onClickButton = (path: string) => {
-        if (path === "account") router.push("/account")
+    const setToken = async () => {
 
+        if (typeof accessToken === 'string') {
+            document.cookie = `accessToken=${accessToken}`;
+            // refreshRequest(accessToken);
+            router.push('/sign-in/personal-auth');
+        } else {
+            router.back();
+        }
     }
-    return (
 
-        <>
-            <BackButton/>
-            <button type="button" onClick={() => onClickButton("account")} className="border-2 p-5">계좌테스트</button>
-            Auth Page
-        </>
-    );
+    setToken();
+
+    return (
+      <div>
+          로그인 완료!
+      </div>
+    )
 }

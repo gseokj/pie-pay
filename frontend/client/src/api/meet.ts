@@ -57,12 +57,13 @@ export const getMyMeets:QueryFunction<GetMyInfoResponse> = async ({ queryKey }) 
 
 export const refreshRequest = async (token: string) => {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/token/refresh`, {
+        const response = await authAxios({
             method: 'POST',
+            url: `/api/token/refresh`,
             headers: {
-                "Content-Type": "application/json;charset=utf-8",
                 'Authorization': `Bearer ${token}`
-            }
+            },
+            withCredentials: true
         })
         return response;
     } catch (error) {

@@ -20,7 +20,8 @@ export default function Success({
         if (typeof accessToken === 'string') {
             document.cookie = `accessToken=${accessToken}`;
             setSession(accessToken);
-            refreshRequest(accessToken);
+            // refreshRequest(accessToken);
+            router.push('/');
         } else {
             router.back();
         }
@@ -37,7 +38,6 @@ export default function Success({
     return (
         <div>
             로그인 완료!
-            <button>get</button>
         </div>
     )
 }
