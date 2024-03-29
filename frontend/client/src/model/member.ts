@@ -3,6 +3,10 @@ export interface Member{
     nickname: string;
     profileImage: string;
 }
+export interface Me extends Member{
+    phoneNumber: string;
+    email: string;
+}
 
 export interface FilterMember extends Member {
     isDrinkAlcohol: boolean;
