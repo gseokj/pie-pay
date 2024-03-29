@@ -13,9 +13,7 @@ import com.pay.pie.domain.application.dto.AgreeDto;
 import com.pay.pie.domain.application.dto.InsteadDto;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Configuration
 @EnableRedisRepositories // redis 사용
 @RequiredArgsConstructor
@@ -25,11 +23,6 @@ public class RedisConfig {
 
 	@Bean
 	public RedisConnectionFactory redisConnectionFactory() {
-		System.out.println(redisProperties.getHost());
-		System.out.println(redisProperties.getPort());
-		log.info("111111111111111" + redisProperties.getHost());
-		log.info("111111111111111" + redisProperties.getPort());
-
 		return new LettuceConnectionFactory(redisProperties.getHost(), redisProperties.getPort());
 	}
 
