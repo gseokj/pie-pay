@@ -64,7 +64,8 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 				lenderAccount.getAccountNo(),
 				payInstead.getAmount().intValue(),
 				borrowerAccount.getBankCode(),
-				borrowerAccount.getAccountNo());
+				borrowerAccount.getAccountNo(),
+				borrowerAccount.getMember().getApiKey());
 		} else {
 			bankUtil.sendErrorCode("에러발생");
 		}

@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -24,6 +25,7 @@ import com.pay.pie.global.util.bank.dto.AccountListResponse;
 import com.pay.pie.global.util.bank.dto.AccountResponse;
 import com.pay.pie.global.util.bank.dto.ErrorResponse;
 import com.pay.pie.global.util.bank.dto.MemberResponse;
+import com.pay.pie.global.util.bank.dto.OpenAccountRes;
 import com.pay.pie.global.util.bank.dto.TransferAccountResponse;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +44,7 @@ public class BankUtil {
 	private final String INQUIRE_ACCOUNT_BALANCE_URL;
 	private final String RECEIVE_TRANSFER_ACCOUNT_URL;
 	private final String TRANSFER_ACCOUNT_URL;
+	private final String OPEN_ACCOUNT_URL;
 
 	public BankUtil(
 		@Value(value = "${bank.api-key}") String apiKey,
@@ -52,6 +55,7 @@ public class BankUtil {
 		@Value(value = "${bank.url.inquire-account-balance}") String inquireAccountBalanceUrl,
 		@Value(value = "${bank.url.receiveTransferAccount}") String receiveTransferAccountUrl,
 		@Value(value = "${bank.url.transfer-account}") String transferAccountUrl,
+		@Value(value = "https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/openAccount") String openAccountUrl,
 		RestTemplate restTemplate
 	) {
 		API_KEY = apiKey;
@@ -62,6 +66,7 @@ public class BankUtil {
 		INQUIRE_ACCOUNT_BALANCE_URL = inquireAccountBalanceUrl;
 		RECEIVE_TRANSFER_ACCOUNT_URL = receiveTransferAccountUrl;
 		TRANSFER_ACCOUNT_URL = transferAccountUrl;
+		OPEN_ACCOUNT_URL = openAccountUrl;
 		this.restTemplate = restTemplate;
 		headers.setContentType(MediaType.APPLICATION_JSON);
 	}
@@ -272,12 +277,14 @@ public class BankUtil {
 	}
 
 	// 이체
+	@Async
 	public void transferAccount(
 		String depositBankCode,
 		String depositAccountNo,
 		int transactionBalance,
 		String withdrawalBankCode,
-		String withdrawalAccountNo
+		String withdrawalAccountNo,
+		String userKey
 	) {
 		Map<String, String> body = new HashMap<>();
 		body.put("apiName", "accountTransfer");
@@ -288,7 +295,7 @@ public class BankUtil {
 		body.put("apiServiceCode", "accountTransfer");
 		body.put("institutionTransactionUniqueNo", createRandomNumber());
 		body.put("apiKey", API_KEY);
-		body.put("userKey", "d1830ff3-444e-4ecb-92a2-bd5a915d3600");
+		body.put("userKey", userKey);
 
 		JSONObject jsonRequest = new JSONObject();
 		jsonRequest.put("Header", body);
@@ -299,6 +306,13 @@ public class BankUtil {
 		jsonRequest.put("withdrawalBankCode", withdrawalBankCode);
 		jsonRequest.put("withdrawalAccountNo", withdrawalAccountNo);
 		jsonRequest.put("withdrawalTransactionSummary", "출금이체 계좌");
+
+		System.out.println(depositBankCode);
+		System.out.println(depositAccountNo);
+		System.out.println(transactionBalance);
+		System.out.println(withdrawalBankCode);
+		System.out.println(withdrawalAccountNo);
+		System.out.println(userKey);
 
 		HttpEntity<String> entity = new HttpEntity<>(jsonRequest.toString(), headers);
 		try {
@@ -312,6 +326,38 @@ public class BankUtil {
 			sendErrorCode(e.getResponseBodyAsString());
 		}
 
+	}
+
+	// 계좌 생성
+	public ResponseEntity<OpenAccountRes> openAccount(String userKey, String accountTypeUniqueNo) {
+		Map<String, String> body = new HashMap<>();
+		body.put("apiName", "receivedTransferAccountNumber");
+		body.put("transmissionDate", "20240101");
+		body.put("transmissionTime", "121212");
+		body.put("institutionCode", "00100");
+		body.put("fintechAppNo", "001");
+		body.put("apiServiceCode", "receivedTransferAccountNumber");
+		body.put("institutionTransactionUniqueNo", createRandomNumber());
+		body.put("apiKey", API_KEY);
+		body.put("userKey", userKey);
+
+		JSONObject jsonRequest = new JSONObject();
+		jsonRequest.put("Header", body);
+		jsonRequest.put("accountTypeUniqueNo", accountTypeUniqueNo);
+
+		HttpEntity<String> entity = new HttpEntity<>(jsonRequest.toString(), headers);
+		ResponseEntity<OpenAccountRes> bankResponse = null;
+		try {
+			bankResponse = restTemplate.exchange(
+				OPEN_ACCOUNT_URL,
+				HttpMethod.POST,
+				entity,
+				OpenAccountRes.class
+			);
+		} catch (HttpClientErrorException e) {
+			sendErrorCode(e.getResponseBodyAsString());
+		}
+		return bankResponse;
 	}
 
 	public void sendErrorCode(String responseBody) {
