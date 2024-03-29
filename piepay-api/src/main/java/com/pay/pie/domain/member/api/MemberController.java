@@ -36,6 +36,9 @@ public class MemberController {
 	private final MemberMeetService memberMeetService;
 	private final MemberRepository memberRepository;
 
+	// 모임내에 회원을 조회하는 api 같습니다.
+	// MemberController 는 순수하게 member 와 관련된 요청만 들어와야 해요
+	// MemberMeet 이나 Meet 으로 옮겨주세요 !!
 	@GetMapping("/meet/{meetId}/member")
 	public ResponseEntity<BaseResponse<List<MemberResponse>>> findMemberMeet(@PathVariable long meetId) {
 		List<MemberResponse> memberResponses = memberMeetService.findMemberByMeetId(meetId)
