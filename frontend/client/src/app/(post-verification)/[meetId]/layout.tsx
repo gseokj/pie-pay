@@ -3,6 +3,7 @@ import {ReactNode} from "react";
 import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
 import {getMembers} from "@/api/member";
 import {getMeetInfo, getMyMeets} from "@/api/meet";
+import {cookies} from "next/headers";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -15,9 +16,12 @@ type Props = {
 }
 
 export default async function PaymentModalLayout({children, params}: Props) {
+    const token = cookies().get('accessToken');
+
     const {meetId} = params;
     const queryClient = new QueryClient();
     await queryClient.prefetchQuery({queryKey: ['members',meetId], queryFn: getMembers});
+    await queryClient.prefetchQuery({queryKey: ['meetInfo',meetId,token?.value], queryFn: getMeetInfo});
     console.log("hello");
     const dehydratedState = dehydrate(queryClient);
 

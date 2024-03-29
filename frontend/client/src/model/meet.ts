@@ -2,6 +2,12 @@ interface CreateMeetRequest {
     meetName: string;
 }
 
+interface CreateMeetResponse {
+    message: string;
+    result: Meet;
+    status: number;
+}
+
 interface Meet {
     createdAt: string;
     updatedAt: string;
@@ -10,12 +16,6 @@ interface Meet {
     meetImage: string|null;
     meetInvitation: string;
     membersCount: number;
-}
-
-interface CreateMeetResponse {
-    message: string;
-    result: Meet;
-    status: number;
 }
 
 interface GetMeetInfoResponse {
