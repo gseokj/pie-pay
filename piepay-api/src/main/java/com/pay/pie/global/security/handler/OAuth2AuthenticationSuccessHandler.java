@@ -3,6 +3,7 @@ package com.pay.pie.global.security.handler;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -40,6 +41,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		// 회원이 존재하면 jwt token 발행을 시작한다.
 		if (role.equals(MemberRole.ROLE_CERTIFIED_MEMBER.getValue())) {
 
+
+			ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+				.maxAge(7 *24 * 60 * 60)
+				.path("/")
+				.secure(true)
+				.sameSite("None")
+				.httpOnly(true)
+				.build();
+
 			// accessToken을 쿼리스트링에 담는 url을 만들어준다.
 			String redirectURI = UriComponentsBuilder.fromUriString("http://localhost:3000/success")
 				.queryParam("accessToken", accessToken)
@@ -49,6 +59,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 				.toUriString();
 			log.info("redirect 준비");
 			// 로그인 확인 페이지로 리다이렉트 시킨다.
+			response.setHeader("Set-Cookie", cookie.toString());
 			getRedirectStrategy().sendRedirect(request, response, redirectURI);
 
 		} else {
