@@ -37,6 +37,7 @@ export default function Page() {
       inputRef.current.focus();
     }
   }, []);
+
   const focusInput = () => {
     if (inputRef.current) {
       inputRef.current.focus();
