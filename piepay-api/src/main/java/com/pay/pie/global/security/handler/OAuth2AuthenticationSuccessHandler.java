@@ -37,23 +37,21 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		String accessToken = jwtUtil.generateAccessToken(email, role);
 		String refreshToken = jwtUtil.generateRefreshToken(email, role);
 
+		ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+			.maxAge(7 * 24 * 60 * 60)
+			.path("/")
+			.secure(true)
+			.sameSite("None")
+			.httpOnly(true)
+			.build();
+
 		// 인증 절차가 끝난 회원
 		// 회원이 존재하면 jwt token 발행을 시작한다.
 		if (role.equals(MemberRole.ROLE_CERTIFIED_MEMBER.getValue())) {
 
-
-			ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-				.maxAge(7 *24 * 60 * 60)
-				.path("/")
-				.secure(true)
-				.sameSite("None")
-				.httpOnly(true)
-				.build();
-
 			// accessToken을 쿼리스트링에 담는 url을 만들어준다.
 			String redirectURI = UriComponentsBuilder.fromUriString("http://localhost:3000/success")
 				.queryParam("accessToken", accessToken)
-				.queryParam("refreshToken", refreshToken)
 				.build()
 				.encode(StandardCharsets.UTF_8)
 				.toUriString();
@@ -63,14 +61,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 			getRedirectStrategy().sendRedirect(request, response, redirectURI);
 
 		} else {
+
 			// 인증 절차가 끝나지 않은 회원
 			String redirectURI = UriComponentsBuilder.fromUriString("http://localhost:3000/auth")
 				.queryParam("accessToken", accessToken)
-				.queryParam("refreshToken", refreshToken)
 				.build()
 				.encode(StandardCharsets.UTF_8)
 				.toUriString();
 			// 회원가입 페이지로 리다이렉트 시킨다.
+			response.setHeader("Set-Cookie", cookie.toString());
 			getRedirectStrategy().sendRedirect(request, response, redirectURI);
 		}
 	}
