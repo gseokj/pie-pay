@@ -22,7 +22,7 @@ public class AuthController {
 	private final JwtService jwtService;
 
 	@PostMapping("/refresh")
-	public ResponseEntity<BaseResponse<String>> rotateJwtToken(@CookieValue(value = "Set-Cookie") String refreshToken) {
+	public ResponseEntity<BaseResponse<String>> rotateJwtToken(@CookieValue(value = "refreshToken") String refreshToken) {
 		log.info(refreshToken);
 		log.info(refreshToken);
 		log.info(refreshToken);
