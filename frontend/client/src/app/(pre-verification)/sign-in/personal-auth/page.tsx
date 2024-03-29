@@ -22,6 +22,14 @@ export default function Page() {
   const [showTermsModal, setShowTermsModal] = useState<boolean>(false);
   const [moveFlag, setMoveFlag] = useState<boolean>(false);
 
+  const [inputErrors, setInputErrors] = useState({
+    name: false,
+    birth: false,
+    genderNum: false,
+    telecom: false,
+    phone: false,
+  });
+
   useEffect(() => {
     if (moveFlag) {
       router.push('/sign-in/personal-auth/input-number');
@@ -69,6 +77,28 @@ export default function Page() {
     setShowTermsModal(true);
   };
 
+  // 본인인증 버튼 클릭 이벤트 핸들러
+  const handleSubmit = () => {
+    // 입력 필드별로 빈 값 여부 확인
+    const newInputErrors = {
+      name: info.name === '',
+      birth: info.birth === '',
+      genderNum: info.genderNum === '',
+      telecom: info.telecom === '',
+      phone: info.phone === '',
+    };
+
+    setInputErrors(newInputErrors);
+
+    // 모든 입력 필드가 채워져 있을 때만 본인인증 절차 진행
+    const allFieldsFilled = Object.values(newInputErrors).every(
+      (error) => !error,
+    );
+    if (allFieldsFilled) {
+      setShowTermsModal(true);
+    }
+  };
+
   const closeTermsModal = () => {
     setShowTermsModal(false);
   };
@@ -89,7 +119,7 @@ export default function Page() {
             <div className={styles.itemName}>이름</div>
             <input
               type="text"
-              className={styles.inputBox}
+              className={`${styles.inputBox} ${inputErrors.name ? styles.inputError : ''}`}
               name="name"
               value={info.name}
               onChange={handleChange}
@@ -99,7 +129,7 @@ export default function Page() {
             <div className={styles.itemName}>주민등록번호</div>
             <div className={styles.boxWrapper}>
               <input
-                className={styles.numInputBox1}
+                className={`${styles.numInputBox1} ${inputErrors.birth ? styles.inputError : ''}`}
                 type="text"
                 name="birth"
                 maxLength={6}
@@ -109,7 +139,7 @@ export default function Page() {
               <div className={styles.numInputBox2Wrapper}>
                 <div className={styles.minusBox}></div>
                 <input
-                  className={styles.numInputBox2}
+                  className={`${styles.numInputBox2} ${inputErrors.genderNum ? styles.inputError : ''}`}
                   type="text"
                   name="genderNum"
                   maxLength={1}
@@ -128,7 +158,7 @@ export default function Page() {
           <div className={styles.itemWrapper} onClick={handleShowModal}>
             <div className={styles.itemName}>통신사</div>
             <input
-              className={styles.inputBox}
+              className={`${styles.inputBox} ${inputErrors.telecom ? styles.inputError : ''}`}
               type="text"
               name="telecom"
               value={info.telecom}
@@ -139,7 +169,7 @@ export default function Page() {
           <div className={styles.itemWrapper}>
             <div className={styles.itemName}>휴대폰 번호</div>
             <input
-              className={styles.inputBox}
+              className={`${styles.inputBox} ${inputErrors.phone ? styles.inputError : ''}`}
               type="number"
               name="phone"
               value={info.phone}
@@ -147,7 +177,7 @@ export default function Page() {
             ></input>
           </div>
         </form>
-        <div className={styles.submitButton} onClick={handleShowTermsModal}>
+        <div className={styles.submitButton} onClick={handleSubmit}>
           본인 인증
         </div>
       </div>

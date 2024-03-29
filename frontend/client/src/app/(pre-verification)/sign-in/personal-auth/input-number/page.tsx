@@ -15,9 +15,13 @@ export default function Page() {
     num4: '',
     num5: '',
   });
+  const [isComplete, setIsComplete] = useState(true);
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null); // 입력 필드에 대한 참조를 생성합니다.
-
+  const [message, setMessage] = useState('인증번호가 오지 않았어요'); // 메시지 상태 추가
+  const [messagePart1, setMessagePart1] =
+    useState('인증번호가 입력되지 않았어요');
+  const [messagePart2, setMessagePart2] = useState('인증번호가 오지 않았나요?');
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     // 숫자키, 백스페이스, 삭제, 방향키, Tab만 허용
     if (
@@ -37,6 +41,24 @@ export default function Page() {
       inputRef.current.focus();
     }
   }, []);
+
+  const handleSubmit = () => {
+    const isAllFilled = Object.values(number).every((num) => num !== '');
+    setIsComplete(isAllFilled); // 모든 필드가 채워졌는지 상태 업데이트
+  };
+
+  const MessageDisplay = () => {
+    if (isComplete) {
+      return <div className={styles.retryMent}>{message}</div>;
+    } else {
+      return (
+        <div className={styles.retryMent}>
+          <div className={styles.errorMent}>{messagePart1}</div>
+          <div>{messagePart2}</div>
+        </div>
+      );
+    }
+  };
 
   const focusInput = () => {
     if (inputRef.current) {
@@ -99,9 +121,11 @@ export default function Page() {
         <div className={styles.numberContainer} onClick={focusInput}>
           <NumberDisplay number={number} />
         </div>
-        <div className={styles.retryMent}>인증번호가 오지 않았어요</div>
+        <MessageDisplay />
       </div>
-      <div className={styles.submitButton}>본인 인증</div>
+      <div className={styles.submitButton} onClick={handleSubmit}>
+        본인 인증
+      </div>
     </div>
   );
 }
