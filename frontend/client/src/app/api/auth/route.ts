@@ -1,16 +1,14 @@
 import {NextResponse, NextRequest} from "next/server";
+import {cookies} from "next/headers";
 
 export async function GET(req: NextRequest) {
-    console.log('request in.................................................')
-    const token = await req.cookies.get('accessToken');
-    const value = token?.value;
+    console.log('request in.................................................', cookies().has('accessToken'));
 
-    const t = JSON.stringify(token);
-    console.log(token, "root token!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-    if (typeof token?.value === 'string') {
-        return NextResponse.json({ data: token}, { status: 200 });
+    if (cookies().has('accessToken')) {
+        console.log('success.......................................................');
+        return NextResponse.json({ data: cookies().get('accessToken') }, { status: 200 });
     } else {
-        return NextResponse.json({ data: token }, { status: 400 });
+        console.log('fail.......................................................');
+        return NextResponse.json({ data: 'no,...........' }, { status: 400 });
     }
 }

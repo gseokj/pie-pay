@@ -3,10 +3,13 @@ import {QueryFunction} from "@tanstack/query-core";
 import {GetMyInfoResponse} from "@/model/user";
 
 
-export const getMyInfo = async () => {
+export const getMyInfo = async (token: string) => {
     try {
-        const axiosInstance = await authAxios();
-        const response = await axiosInstance.get(`api/member`);
+        const response = await authAxios.get(`api/member`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        });
         return response.data;
     } catch (error) {
         console.error('Failed to get data', error);

@@ -10,13 +10,17 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
     if (typeof accessToken === 'string' && typeof refreshToken === 'string') {
 
-        cookies().set('accessToken', accessToken, {
+        cookies().set('accessToken', `${accessToken}`, {
             httpOnly: true,
             path: '/',
+            sameSite: 'none',
+            secure: true
         });
         cookies().set('refreshToken', refreshToken, {
             httpOnly: true,
             path: '/',
+            sameSite: 'none',
+            secure: true
         });
 
         res.cookies.set('accessToken', accessToken);
