@@ -139,11 +139,6 @@ public class MeetApiController {
 	public ResponseEntity<BaseResponse<List<PayResponse>>> getPayByMeetId(@PathVariable long meetId) {
 		List<PayResponse> payResponses = payService.findPayByMeetId(meetId)
 			.stream()
-			// .map(PayResponse::new)
-			// .map(pay -> {
-			// 	List<Order> orders = orderRepository.findAllByPay(pay);
-			// 	return new PayResponse(pay, orders);
-			// })
 			.map(pay -> {
 				Order order = orderRepository.findByPayId(pay.getId());
 				return new PayResponse(pay, new OrderOfPayResponse(order));
