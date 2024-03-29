@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.order.dto.response.ReceiptRes;
 import com.pay.pie.domain.pay.application.CompletedPayService;
+import com.pay.pie.domain.pay.dto.response.PayInfoRes;
 import com.pay.pie.global.common.BaseResponse;
 import com.pay.pie.global.common.code.SuccessCode;
 
@@ -22,14 +23,6 @@ public class CompletedPayController {
 
 	private final CompletedPayService payService;
 
-	// @GetMapping("/{payId}")
-	// public ResponseEntity<BaseResponse<PayInfoRes>> getPayInfo(@PathVariable Long payId) {
-	// 	return BaseResponse.success(
-	// 		SuccessCode.CHECK_SUCCESS,
-	// 		payService.getPayInfo(payId)
-	// 	);
-	// }
-
 	/**
 	 * 해당 결제 영수증 조회
 	 * @param payId 결제 ID
@@ -42,4 +35,16 @@ public class CompletedPayController {
 			payService.getReceipt(payId));
 	}
 
+	/**
+	 * 해당 결제 각 participant amount 조회
+	 * @param payId 결제 ID
+	 * @return payInfo
+	 */
+	@GetMapping("/{payId}")
+	public ResponseEntity<BaseResponse<PayInfoRes>> getPayInfo(@PathVariable Long payId) {
+		return BaseResponse.success(
+			SuccessCode.CHECK_SUCCESS,
+			payService.getPayInfo(payId)
+		);
+	}
 }

@@ -15,7 +15,7 @@ import lombok.Builder;
 @Builder
 public class ReceiptRes {
 
-	private Long id;
+	private Long orderId;
 	private StoreInfoDto storeInfo;
 	private Long totalAmount;
 	private List<ParticipantInfoDto> completedPaymentParticipantDtoList;

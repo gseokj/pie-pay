@@ -11,4 +11,5 @@ public class InsteadAgreeReq {
 
 	private final Long payId;
 	private final Long borrowerId;
+	private final Long lenderId;
 }

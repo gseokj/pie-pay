@@ -14,6 +14,7 @@ import com.pay.pie.domain.participant.dao.ParticipantRepository;
 import com.pay.pie.domain.participant.dto.ParticipantInfoDto;
 import com.pay.pie.domain.participant.entity.Participant;
 import com.pay.pie.domain.pay.dao.PayRepository;
+import com.pay.pie.domain.pay.dto.response.PayInfoRes;
 import com.pay.pie.domain.pay.entity.Pay;
 import com.pay.pie.domain.payInstead.dao.PayInsteadRepository;
 import com.pay.pie.domain.payInstead.dto.PayInsteadDto;
@@ -63,6 +64,31 @@ public class CompletedPayServiceImpl implements CompletedPayService {
 			.payInsteadDtoList(payInsteadDtoList)
 			.orderManus(orderMenus)
 			.createdAt(order.getCreatedAt())
+			.build();
+	}
+
+	@Override
+	public PayInfoRes getPayInfo(Long payId) {
+		Pay pay = payRepository.findById(payId)
+			.orElseThrow(
+				() -> new IllegalArgumentException("해당 Pay 없음")
+			);
+
+		List<Participant> participants = participantRepository.findByPayId(pay.getId());
+		List<ParticipantInfoDto> participantInfoDtoList = participants
+			.stream()
+			.map(ParticipantInfoDto::of)
+			.toList();
+
+		List<PayInstead> payInsteads = payInsteadRepository.findByPayId(pay.getId());
+		List<PayInsteadDto> payInsteadDtoList = payInsteads
+			.stream()
+			.map(PayInsteadDto::of)
+			.toList();
+
+		return PayInfoRes.builder()
+			.completedPaymentParticipantDtoList(participantInfoDtoList)
+			.payInsteadDtoList(payInsteadDtoList)
 			.build();
 	}
 }
