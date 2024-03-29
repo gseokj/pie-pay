@@ -43,7 +43,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 		OAuth2UserInfo oAuth2UserInfo = oAuth2Attribute.getOauth2UserInfo();
 		String email = oAuth2UserInfo.getEmail();
-		Member findMember = memberService.findByEmail(email).orElseGet(() -> joinMember(oAuth2UserInfo));
+		Member findMember = memberService.findMemberByEmail(email).orElseGet(() -> joinMember(oAuth2UserInfo));
 
 		return new CustomOauth2User(
 			Collections.singleton(new SimpleGrantedAuthority(findMember.getMemberRole().getValue())),

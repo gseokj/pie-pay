@@ -7,7 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.dto.UpdateMemberRequest;
+import com.pay.pie.domain.member.dto.response.MemberDetailResponse;
 import com.pay.pie.domain.member.entity.Member;
+import com.pay.pie.domain.member.exception.MemberException;
+import com.pay.pie.domain.member.exception.MemberExceptionCode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,20 +27,31 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Optional<Member> findByEmail(String email) {
+	public MemberDetailResponse getMemberDetail(Long memberId) {
+
+		return MemberDetailResponse.of(memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberException(MemberExceptionCode.NOT_FOUND_MEMBER)));
+	}
+
+	@Override
+	@Transactional
+	public MemberDetailResponse updateMemberDetail(Long memberId, UpdateMemberRequest request) {
+		Member findMember = memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberException(MemberExceptionCode.NOT_FOUND_MEMBER));
+
+		findMember.updateMember(request);
+		return MemberDetailResponse.of(findMember);
+	}
+
+	@Override
+	public Optional<Member> findMemberByEmail(String email) {
 		return memberRepository.findByEmail(email);
 	}
 
-	@Transactional
-	public Member updateMember(long memberId, UpdateMemberRequest request) {
-		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new IllegalArgumentException("not found: " + memberId));
-		member.updateMember(request);
-
-		return member;
+	@Override
+	public Member findMemberById(Long id) {
+		return memberRepository.findById(id)
+			.orElseThrow(() -> new MemberException(MemberExceptionCode.NOT_FOUND_MEMBER));
 	}
 
-	public Optional<Member> findById(Long memberId) {
-		return memberRepository.findById(memberId);
-	}
 }
