@@ -31,14 +31,11 @@ export default function TermsItem({
         <span className={styles.checkboxDesign}></span>{' '}
         {/* 가짜 체크박스 디자인 */}
       </label>
-      <div className={styles.titleBox}>
-        {title}{' '}
-        <button
-          onClick={() => setIsContentVisible(!isContentVisible)}
-          className={styles.dropdownButton}
-        >
-          ▼
-        </button>
+      <div
+        className={styles.titleBox}
+        onClick={() => setIsContentVisible(!isContentVisible)}
+      >
+        {title} <button className={styles.dropdownButton}>▼</button>
       </div>
 
       {isContentVisible && <p className={styles.termsContent}>{content}</p>}
