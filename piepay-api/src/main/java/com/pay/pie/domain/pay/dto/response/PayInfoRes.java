@@ -14,6 +14,6 @@ import lombok.Getter;
 @Builder
 public class PayInfoRes {
 
-	private List<ParticipantInfoDto> completedPaymentParticipantDtoList;
-	private List<PayInsteadDto> payInsteadDtoList;
+	private List<ParticipantInfoDto> participants;
+	private List<PayInsteadDto> payInsteadList;
 }

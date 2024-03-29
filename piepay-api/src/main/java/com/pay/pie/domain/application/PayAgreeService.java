@@ -33,7 +33,6 @@ public class PayAgreeService {
 	private final MemberRepository memberRepository;
 	private final ParticipantRepository participantRepository;
 	private final PayRepository payRepository;
-	private final RedisToDBSyncService redisToDBSyncService;
 	private final JPAQueryFactory jpaQueryFactory;
 
 	public AgreeDto respondToAgreement(AgreeReq agreeReq) {
