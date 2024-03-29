@@ -11,12 +11,12 @@ export default function SelectedMember() {
     return (
 
         <div className={styles.selectedContainer}>
-            {filterMembers.filter(member => member.isSelected).sort((a, b) => (a.isHost === b.isHost) ? 0 : a.isHost ? -1 : 1).map(member => (
+            {filterMembers.filter(member => member.isSelected).map((member,index) => (
                 <div className={styles.member} key={member.memberId}>
                     <img className={styles.image} src={member.profileImage} alt="" width={50}/>
                     <p className={styles.memberName}>
-                        {member.isHost && "나"}
-                        {!member.isHost && member.nickname}
+                        {index===0 && "나"}
+                        {index!==0 && member.nickname}
                     </p>
                     {member.isDrinkAlcohol && member.isTypeAlcohol && <div className={styles.animationPing}>
                     <span className="relative flex h-3 w-3 ">

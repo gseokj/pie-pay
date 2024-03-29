@@ -18,7 +18,7 @@ type Props = { children: ReactNode, modal: ReactNode }
 
 export default async function PostVerificationLayout({children}: Props) {
     const queryClient = new QueryClient();
-    await queryClient.prefetchQuery({queryKey: ['account'], queryFn: getAccount});
+    // await queryClient.prefetchQuery({queryKey: ['account'], queryFn: getAccount});
     const dehydratedState = dehydrate(queryClient);
     return (
         <div className="h-screen">

@@ -23,8 +23,9 @@ export default function Page({params}:Props) {
     const { setFilterMembers } = useMemberFilter();
 
     useEffect(() => {
+        const myInfo:Member = JSON.parse(sessionStorage.getItem("myInfo")!);
         if(!Members || Members.length<=0) return;
-        setFilterMembers(Members);
+        setFilterMembers(Members.sort((member)=>member.memberId==myInfo.memberId ? -1 : 1));
     }, [Members]);
 
     return (

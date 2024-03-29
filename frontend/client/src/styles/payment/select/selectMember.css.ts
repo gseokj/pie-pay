@@ -28,7 +28,6 @@ export const progress = style({
 
 export const headerContainer = style({
     width: '100%',
-    marginTop: '30px',
     position: 'sticky',
     backgroundColor: theme.layout,
     paddingLeft: '15px',
@@ -41,8 +40,6 @@ export const title = style({
     fontWeight: 'bold',
     fontSize: '25px'
 })
-
-
 
 export const image = style({
     borderRadius: '20px',
