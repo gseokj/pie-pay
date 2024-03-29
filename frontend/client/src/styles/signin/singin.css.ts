@@ -148,8 +148,9 @@ export const hiddenInput = style({
 
 export const retryMent = style({
   display: 'flex',
-  height: '6%',
-  alignItems: 'flex-end',
+  flexDirection: 'column',
+  height: '10%',
+  alignItems: 'flex-start',
   fontWeight: 'bold',
   fontSize: '1.2rem',
   color: theme.gray,
@@ -164,4 +165,17 @@ export const termsBox = style({
 export const dropdownButton = style({
   marginLeft: 'auto', // 버튼을 오른쪽 끝으로 이동시킴
   color: theme.lightGray,
+});
+
+export const inputError = style({
+  // 입력되지 않았을 때의 스타일
+  border: '2px solid red',
+  borderColor: 'red',
+});
+
+export const errorMent = style({
+  // 입력되지 않았을 때의 스타일
+  color: 'red',
+  textDecoration: 'underline',
+  textDecorationColor: 'red',
 });
