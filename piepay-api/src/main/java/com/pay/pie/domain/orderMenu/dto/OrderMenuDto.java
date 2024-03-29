@@ -1,6 +1,6 @@
 package com.pay.pie.domain.orderMenu.dto;
 
-import com.pay.pie.domain.menu.entity.Menu;
+import com.pay.pie.domain.orderMenu.entity.OrderMenu;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,17 +11,18 @@ import lombok.Getter;
 @Builder
 public class OrderMenuDto {
 
-	private final Menu menu;
+	private final String menuName;
+	private final Long menuPrice;
+	private final Integer quantity;
 	private final Integer total;
 
-	public static OrderMenuDto of(Menu menu) {
+	public static OrderMenuDto of(OrderMenu orderMenu) {
+		int total = orderMenu.getMenu().getMenuPrice().intValue() * orderMenu.getQuantity();
 		return OrderMenuDto.builder()
-			.menu(Menu.builder()
-				.id(menu.getId())
-				.menuName(menu.getMenuName())
-				.menuPrice(menu.getMenuPrice())
-				.build())
-			.total((int)(menu.getMenuPrice() * menu.getMenuPrice()))
+			.menuName(orderMenu.getMenu().getMenuName())
+			.menuPrice(orderMenu.getMenu().getMenuPrice())
+			.quantity(orderMenu.getQuantity())
+			.total(total)
 			.build();
 	}
 }

@@ -25,7 +25,7 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 	private final PayInsteadRepository payInsteadRepository;
 	private final MemberRepository memberRepository;
 	private final JPAQueryFactory queryFactory;
-	private BankUtil bankUtil;
+	private final BankUtil bankUtil;
 
 	@Override
 	public void paybackInsteadPayment(Long payInsteadId, SecurityUserDto securityUserDto) {
@@ -47,7 +47,8 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 			.where(QAccount.account.member.eq(borrower))
 			.fetchOne();
 		// borrower 잔액 조회
-		String accountBalance = bankUtil.getAccountBalance(borrowerAccount.getBankCode(),
+		String accountBalance = bankUtil.getAccountBalance(
+			borrowerAccount.getBankCode(),
 			borrowerAccount.getAccountNo(),
 			securityUserDto.getUserKey());
 

@@ -14,11 +14,8 @@ import com.pay.pie.domain.account.entity.Account;
 import com.pay.pie.domain.account.entity.QAccount;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.repository.MeetRepository;
-import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.entity.Member;
-import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
 import com.pay.pie.domain.menu.entity.Menu;
-import com.pay.pie.domain.order.dao.OrderRepository;
 import com.pay.pie.domain.order.dto.OrderDto;
 import com.pay.pie.domain.order.entity.Order;
 import com.pay.pie.domain.order.entity.QOrder;
@@ -46,9 +43,6 @@ public class PayServiceImpl implements PayService {
 	private final MeetRepository meetRepository;
 	private final ParticipantRepository participantRepository;
 	private final JPAQueryFactory queryFactory;
-	private final MemberRepository memberRepository;
-	private final MemberMeetRepository memberMeetRepository;
-	private final OrderRepository orderRepository;
 	private final BankUtil bankUtil;
 
 	public List<Pay> findPayByMeetId(long meetId) {
@@ -149,7 +143,7 @@ public class PayServiceImpl implements PayService {
 		return CompletedPaymentRes.builder()
 			.payId(payId)
 			.payStatus(pay.getPayStatus())
-			.orderDto(OrderDto.of(order))
+			.orderInfo(OrderDto.of(order))
 			.participants(
 				participantList
 					.stream()
@@ -170,7 +164,7 @@ public class PayServiceImpl implements PayService {
 		음식값
 		 */
 		Long nonAlcoholCosts = queryFactory
-			.select(orderMenu.menu.menuPrice.sum())
+			.select(orderMenu.menu.menuPrice.multiply(orderMenu.quantity).sum())
 			.from(orderMenu)
 			.join(orderMenu.order, order)
 			.where(order.pay.id.eq(payId)
@@ -199,7 +193,7 @@ public class PayServiceImpl implements PayService {
 		주류값
 		 */
 		Long alcoholCosts = queryFactory
-			.select(orderMenu.menu.menuPrice.sum())
+			.select(orderMenu.menu.menuPrice.multiply(orderMenu.quantity).sum())
 			.from(orderMenu)
 			.join(orderMenu.order, order)
 			.where(order.pay.id.eq(payId)
@@ -245,7 +239,7 @@ public class PayServiceImpl implements PayService {
 				.fetch();
 
 			for (PayInstead payInstead : borrowerPayInsteadList) {
-				basePayAmount += payInstead.getAmount();
+				basePayAmount -= payInstead.getAmount();
 			}
 
 			// PayInstead에서 해당 참여자가 lender로 나타나는 경우
@@ -255,7 +249,7 @@ public class PayServiceImpl implements PayService {
 				.fetch();
 
 			for (PayInstead payInstead : lenderPayInsteadList) {
-				basePayAmount -= payInstead.getAmount();
+				basePayAmount += payInstead.getAmount();
 			}
 
 			// 계산된 PayAmount 설정

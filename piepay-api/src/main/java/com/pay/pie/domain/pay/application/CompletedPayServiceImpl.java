@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pay.pie.domain.order.dao.OrderRepository;
 import com.pay.pie.domain.order.dto.response.ReceiptRes;
 import com.pay.pie.domain.order.entity.Order;
+import com.pay.pie.domain.orderMenu.dto.OrderMenuDto;
+import com.pay.pie.domain.orderMenu.entity.OrderMenu;
 import com.pay.pie.domain.orderMenu.repository.OrderMenuRepository;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
 import com.pay.pie.domain.participant.dto.ParticipantInfoDto;
@@ -57,14 +59,12 @@ public class CompletedPayServiceImpl implements CompletedPayService {
 		// 	.map(PayInsteadDto::of)
 		// 	.toList();
 		//
-		// OrderMenu orderMenu = orderMenuRepository.findByOrderId(order.getId());
+		List<OrderMenu> orderMenus = orderMenuRepository.findByOrderId(order.getId());
 
 		return ReceiptRes.builder()
 			.orderId(order.getId())
 			.storeInfo(StoreInfoDto.of(order.getStore()))
-			// .orderMenus(orderMenu.getMenu().stream()
-			// 	.map(OrderMenuDto::of)
-			// 	.collect(Collectors.toList()))
+			.orderMenus(orderMenus.stream().map(OrderMenuDto::of).toList())
 			.totalAmount(order.getTotalAmount())
 			.createdAt(pay.getCreatedAt())
 			.build();
@@ -93,8 +93,8 @@ public class CompletedPayServiceImpl implements CompletedPayService {
 			.toList();
 
 		return PayInfoRes.builder()
-			.completedPaymentParticipantDtoList(participantInfoDtoList)
-			.payInsteadDtoList(payInsteadDtoList)
+			.participants(participantInfoDtoList)
+			.payInsteadList(payInsteadDtoList)
 			.build();
 	}
 }
