@@ -1,19 +1,13 @@
 'use client'
 
 import {faker} from "@faker-js/faker";
-import setting from "@/assets/icons/setting.svg"
-import Image from "next/image";
-import BankAccount from "@/app/(post-verification)/component/BankAccount";
 import React from "react";
-import addAccount from "@/assets/icons/addaccount.svg";
 import {useRouter} from "next/navigation";
 import {getDate} from "@/util/dateFormat"
-const Me = {
-    memberId: 1,
-    profileImage: faker.image.avatar(),
-    nickname: '함승찬짱',
-    phoneNumber: '010-2839-1132'
-}
+import * as styles from "@/styles/mypage/myPageMain.css"
+import MyInfo from '@/app/(post-verification)/mypage/component/MyInfo';
+import MyAccount from '@/app/(post-verification)/mypage/component/MyAccount';
+
 const Borrower = {
     memberId: 5,
     profileImage: faker.image.avatar(),
@@ -46,35 +40,10 @@ const Payment = {
 
 export default function MyPage() {
     const route =useRouter();
-
-    const updateMember = () => route.push('mypage/update');
-
     return (
-        <div className="w-[100%] h-[70%] flex flex-col justify-around">
-            <section className="w-[100%] h-[13%] flex justify-between p-3 bg-white rounded-2xl ">
-                <div className="flex items-center mb-3">
-                    <img className="h-[3rem] mr-3 rounded-lg" src={Me.profileImage}/>
-                    <div className="flex flex-col">
-                        <p className="font-bold ">{Me.nickname}</p>
-                        <p className="text-xs text-gray-500">{Me.phoneNumber}</p>
-                    </div>
-                </div>
-                <div>
-                    <Image onClick={updateMember} className="cursor-pointer" src={setting} alt="톱니바퀴"/>
-                </div>
-            </section>
-            <section>
-                <p className="font-bold mb-2">내 계좌 1</p>
-                <div className="flex justify-between">
-                    <div className="w-[80%]">
-                        <BankAccount/>
-                    </div>
-                    <div className="flex flex-col bg-sky-300 rounded-2xl p-2 justify-center items-center ">
-                        <Image src={addAccount} alt=""/>
-                        <p className="mt-2 text-blue-700 text-xs">계좌 추가</p>
-                    </div>
-                </div>
-            </section>
+        <div className={styles.container}>
+            <MyInfo/>
+            <MyAccount/>
             <section>
                 <div className="flex justify-between">
                     <p className="font-bold mb-2 text-lg">미정산 내역</p>

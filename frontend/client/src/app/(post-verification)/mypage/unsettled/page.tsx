@@ -7,6 +7,7 @@ import { faker } from '@faker-js/faker';
 import { getDate } from '@/util/dateFormat';
 import dropdown from '@/assets/icons/dropdown.svg';
 import dropup from '@/assets/icons/dropup.svg';
+import { Member } from '@/model/member';
 
 const Me = {
   memberId: 1,
@@ -62,6 +63,8 @@ const result = [{
 
   }];
 export default function Unsettled() {
+
+
   return (
 
     <div className="absolute top-0 right-0 bottom-0 left-0 bg-white z-50 p-4">
