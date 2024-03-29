@@ -1,5 +1,6 @@
 package com.pay.pie.global.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,11 +24,13 @@ public class RedisConfig {
 	// Redis 서버와의 연결 정보를 저장하는 객체
 	private final RedisProperties redisProperties;
 
+	@Value(value = "${spring.data.redis.host}")
+	private String host;
+
 	@Bean
 	public RedisConnectionFactory redisConnectionFactory() {
-		System.out.println(redisProperties.getHost());
-		System.out.println(redisProperties.getPort());
-		return new LettuceConnectionFactory(redisProperties.getHost(), redisProperties.getPort());
+
+		return new LettuceConnectionFactory(host, redisProperties.getPort());
 	}
 
 	@Bean
