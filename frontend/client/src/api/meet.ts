@@ -1,4 +1,4 @@
-import {CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse} from "@/model/meet";
+import {CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse, GetMyMeetsResponse} from "@/model/meet";
 import authAxios from "@/util/authAxios";
 import {QueryFunction} from "@tanstack/query-core";
 import axios from "axios";
@@ -40,7 +40,7 @@ export const getMeetInfo: QueryFunction<GetMeetInfoResponse> = async ({ queryKey
     }
 }
 
-export const getMyMeets:QueryFunction<GetMyInfoResponse> = async ({ queryKey }) => {
+export const getMyMeets:QueryFunction<GetMyMeetsResponse> = async ({ queryKey }) => {
     const [_,token] =queryKey;
     try {
         const response = await authAxios.get(`/api/member/meets`, {

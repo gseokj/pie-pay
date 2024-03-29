@@ -13,6 +13,8 @@ import MeetCreateModal from "@/app/(post-verification)/component/meets/MeetCreat
 import * as styles from "@/styles/main/main.css";
 import * as fontStyles from "@/styles/fonts.css";
 import {getMeetInfo, getMyMeets} from "@/api/meet";
+import {QueryClient, useQueryClient} from "@tanstack/react-query";
+import {GetMyMeetsResponse} from "@/model/meet";
 
 
 const dummys = [
@@ -274,13 +276,9 @@ export interface Dummy {
 
 
 export default function Main() {
-    // const getMeets = async () => {
-    //   const res = await getMyMeets();
-    //   console.log('myMeets', res);
-    //   return res;
-    // }
-    //
-    // getMeets();
+    const queryClient = useQueryClient();
+    const myMeets: GetMyMeetsResponse|undefined = queryClient.getQueryData(['myMeets']);
+    console.log(myMeets);
 
     const [joinModalVisibility, setJoinModalVisibility] = useState(false)
     const [createModalVisibility, setCreateModalVisibility] = useState(false)

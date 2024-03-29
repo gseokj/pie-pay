@@ -26,7 +26,6 @@ interface GetMeetInfoResponse {
 
 interface MeetInMeets {
     meet: Meet;
-    memberCount: number;
     topFixed: boolean;
 }
 
@@ -36,4 +35,4 @@ interface GetMyMeetsResponse {
     result: MeetInMeets[];
 }
 
-export type { CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse };
+export type { CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse, GetMyMeetsResponse };

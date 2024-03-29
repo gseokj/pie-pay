@@ -6,6 +6,8 @@ import * as styles from '@/styles/signin/singin.css';
 import TelecomListModal from '../_component/TelecomListModal';
 import TermsAgreeModal from '../_component/TermsAgreeModal';
 import { useRouter } from 'next/navigation';
+import {getCookie} from "@/util/getCookie";
+import {postUserInfo} from "@/api/auth";
 
 export default function Page() {
   const [info, setInfo] = useState({
@@ -29,6 +31,8 @@ export default function Page() {
     telecom: false,
     phone: false,
   });
+  const token = getCookie('accessToken');
+  postUserInfo(token);
 
   useEffect(() => {
     if (moveFlag) {
