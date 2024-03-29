@@ -41,9 +41,10 @@ public class ParticipantController {
 		@RequestParam Long meetId,
 		@RequestBody List<ParticipantReq> participants) {
 
-		Long openerId = securityUserDto.getMemberId();
+		// Long openerId = securityUserDto.getMemberId();
 		System.out.println("participants = " + participants);
-		SelectedPartiesRes selectedPartiesRes = participantService.selectParticipant(meetId, openerId, participants);
+		SelectedPartiesRes selectedPartiesRes = participantService.selectParticipant(meetId, securityUserDto,
+			participants);
 
 		return BaseResponse.success(SuccessCode.CHECK_SUCCESS, selectedPartiesRes);
 	}
