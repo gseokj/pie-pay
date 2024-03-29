@@ -25,7 +25,11 @@ export const title = style({
   height: '20%',
 
   fontWeight: 'bold',
-  fontSize: '1.5rem',
+  fontSize: '1.7rem',
+});
+export const subTitle = style({
+  paddingLeft: '15px',
+  fontSize: '1.2rem',
 });
 
 export const formContainer = style({
@@ -151,4 +155,13 @@ export const retryMent = style({
   color: theme.gray,
   textDecoration: 'underline',
   textDecorationColor: theme.gray,
+});
+
+export const termsBox = style({
+  height: '40%',
+});
+
+export const dropdownButton = style({
+  marginLeft: 'auto', // 버튼을 오른쪽 끝으로 이동시킴
+  color: theme.lightGray,
 });
