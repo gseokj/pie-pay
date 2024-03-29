@@ -1,6 +1,6 @@
 package com.pay.pie.global.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -14,26 +14,20 @@ import com.pay.pie.domain.application.dto.AgreeDto;
 import com.pay.pie.domain.application.dto.InsteadDto;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Configuration
-@Slf4j
 @EnableRedisRepositories // redis 사용
 @RequiredArgsConstructor
 public class RedisConfig {
 
-
-	@Value(value = "${spring.data.redis.host}")
-	private String host;
-
-	@Value(value = "${spring.data.redis.port}")
-	private int port;
+	// Redis 서버와의 연결 정보를 저장하는 객체
+	private final RedisProperties redisProperties;
 
 	@Bean
 	public RedisConnectionFactory redisConnectionFactory() {
-		log.info("111111111111111111111111111111111111111111"+host);
-		log.info("111111111111111111111111111111111111111111"+port);
-		return new LettuceConnectionFactory(host, port);
+		System.out.println(redisProperties.getHost());
+		System.out.println(redisProperties.getPort());
+		return new LettuceConnectionFactory(redisProperties.getHost(), redisProperties.getPort());
 	}
 
 	@Bean
@@ -86,4 +80,3 @@ public class RedisConfig {
 	}
 
 }
-
