@@ -18,6 +18,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
@@ -35,6 +36,7 @@ public class JwtAuthenticateFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
 		@NonNull FilterChain filterChain) throws ServletException, IOException {
+
 		// WHITE LIST의 패스에 대한 JWT 토큰 검증 패스
 		if (PatternMatchUtils.simpleMatch(URL_WHITE_LIST, request.getRequestURI())) {
 			filterChain.doFilter(request, response);

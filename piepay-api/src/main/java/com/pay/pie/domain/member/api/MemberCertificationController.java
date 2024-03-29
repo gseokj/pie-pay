@@ -35,7 +35,7 @@ public class MemberCertificationController {
 		@RequestBody PhoneVerificationRequest phoneVerificationRequest
 	) {
 		memberCertificationService.sendCertificationNumber(phoneVerificationRequest);
-		return BaseResponse.success(SuccessCode.CHECK_SUCCESS, "본인 인증이 완료되었습니다");
+		return BaseResponse.success(SuccessCode.VERIFICATION_REQUEST_SUCCESS, "본인 인증이 완료되었습니다");
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_NOT_CERTIFIED')")
@@ -45,7 +45,7 @@ public class MemberCertificationController {
 		@AuthenticationPrincipal SecurityUserDto securityUserDto
 	) {
 		memberCertificationService.checkCertificationNumber(phoneVerificationCheckRequest, securityUserDto);
-		return BaseResponse.success(SuccessCode.CHECK_SUCCESS, "본인 인증이 완료되었습니다");
+		return BaseResponse.success(SuccessCode.VERIFICATION_SUCCESS, "본인 인증이 완료되었습니다");
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_NOT_CERTIFIED')")
@@ -55,7 +55,7 @@ public class MemberCertificationController {
 		@AuthenticationPrincipal SecurityUserDto securityUserDto
 	) {
 		memberCertificationService.sendAccountCertificationNumber(accountVerificationRequest, securityUserDto);
-		return BaseResponse.success(SuccessCode.CHECK_SUCCESS, "입금자명 확인!");
+		return BaseResponse.success(SuccessCode.VERIFICATION_REQUEST_SUCCESS, "입금자명 확인!");
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_NOT_CERTIFIED')")
@@ -65,7 +65,7 @@ public class MemberCertificationController {
 		@AuthenticationPrincipal SecurityUserDto securityUserDto
 	) {
 		memberCertificationService.checkCertificationWord(accountVerificationCheckRequest, securityUserDto);
-		return BaseResponse.success(SuccessCode.CHECK_SUCCESS, "통장 인증 완료");
+		return BaseResponse.success(SuccessCode.VERIFICATION_SUCCESS, "통장 인증 완료");
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_NOT_CERTIFIED')")
@@ -75,7 +75,7 @@ public class MemberCertificationController {
 		@AuthenticationPrincipal SecurityUserDto securityUserDto
 	) {
 		memberCertificationService.setPaymentPassword(paymentPasswordRequest, securityUserDto);
-		return BaseResponse.success(SuccessCode.CHECK_SUCCESS, "Pay Password 입력 완료");
+		return BaseResponse.success(SuccessCode.VERIFICATION_REQUEST_SUCCESS, "Pay Password 입력 완료");
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_NOT_CERTIFIED')")
@@ -86,7 +86,7 @@ public class MemberCertificationController {
 	) {
 
 		return BaseResponse.success(
-			SuccessCode.CHECK_SUCCESS,
+			SuccessCode.VERIFICATION_SUCCESS,
 			memberCertificationService.reEnterPaymentPassword(paymentPasswordRequest, securityUserDto)
 		);
 	}
