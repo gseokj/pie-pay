@@ -35,4 +35,4 @@ interface GetMyMeetsResponse {
     result: MeetInMeets[];
 }
 
-export type { CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse, GetMyMeetsResponse };
+export type { Meet, CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse, GetMyMeetsResponse };

@@ -5,7 +5,7 @@ import {ReactNode} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import {getCookie} from "@/util/getCookie";
 import MeetInfoCard from "@/app/(post-verification)/[meetId]/component/MeetInfoCard";
-import {GetMeetInfoResponse} from "@/model/meet";
+import {GetMeetInfoResponse, Meet} from "@/model/meet";
 import InviteMemberCard from "@/app/(post-verification)/[meetId]/component/InviteMemberCard";
 import SelectMeetImageCard from "@/app/(post-verification)/[meetId]/component/SelectMeetImageCard";
 import MemberLayout from "@/app/(post-verification)/[meetId]/component/MemberLayout";
@@ -20,6 +20,17 @@ type Props = {
 }
 
 
+const dummy: Meet = {
+    createdAt: '2012-11-26T13:51:50.417-07:00',
+    updatedAt: '2012-01-26T13:51:50.417-07:00',
+    meetId: 2,
+    meetName: '갈까마귀모임',
+    meetImage: null,
+    meetInvitation: '7AB83Y',
+    membersCount: 2,
+}
+
+
 export default function Meet({params}: Props) {
     const token = getCookie('accessToken');
     const {meetId} = params;
@@ -27,18 +38,18 @@ export default function Meet({params}: Props) {
     const meetInfo: GetMeetInfoResponse | undefined = queryClient.getQueryData(['meetInfo', meetId, token]);
     console.log(meetInfo);
 
-    if (typeof meetInfo !== 'undefined') {
+    if (typeof dummy !== 'undefined') {
         return (
           <>
               <>
-                  <MeetInfoCard params={{ meetId }} />
-                  {typeof meetInfo !== 'undefined' && meetInfo.result.membersCount === 1 ?
+                  {typeof dummy !== 'undefined' && dummy.membersCount === 1 ?
                     <>
-                      {meetInfo.result.membersCount === 1 && <InviteMemberCard meetInvitation={ meetInfo.result.meetInvitation } />}
-                      {meetInfo.result.meetImage === null && <SelectMeetImageCard />}
+                      {dummy.membersCount === 1 && <InviteMemberCard meetInvitation={ dummy.meetInvitation } />}
+                      {dummy.meetImage === null && <SelectMeetImageCard />}
                     </>
                     :
                     <>
+                        <MeetInfoCard params={{ meetId }} />
                         <MemberLayout meetId={meetId} />
                         <PaymentLayout meetId={meetId} />
                         <HighlightLayout meetId={meetId} />

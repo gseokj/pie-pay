@@ -33,7 +33,7 @@ export default async function PostVerificationLayout({children}: Props) {
     const queryClient = new QueryClient();
     const token = cookies().get('accessToken')?.value;
 
-    // await queryClient.prefetchQuery({queryKey: ['account'], queryFn: getAccount});
+    await queryClient.prefetchQuery({queryKey: ['account', token], queryFn: getAccount});
     await queryClient.prefetchQuery({queryKey: ['myMeets', token], queryFn: getMyMeets});
     const dehydratedState = dehydrate(queryClient);
     return (

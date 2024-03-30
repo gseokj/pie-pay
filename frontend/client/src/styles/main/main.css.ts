@@ -1,5 +1,35 @@
 import {globalStyle, style, styleVariants} from "@vanilla-extract/css";
 import theme from "@/styles/theme/theme";
+import {setTableContainer} from "@/styles/meet/meetMain.css";
+
+export const detailHeader = style({
+    width: '100%',
+    height: '10%',
+    '@media': {
+        'screen and (min-width: 768px)': {
+            width: '40%',
+            left: '30%',
+        },
+    },
+    position: 'fixed',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+    top: 0,
+    left: 0,
+    backgroundColor: theme.layout,
+});
+
+globalStyle(`${detailHeader} > h1`, {
+    fontSize: "1.5rem"
+});
+
+globalStyle(`${detailHeader} > button`, {
+    position: "absolute",
+    top: "30%",
+    left: "6%"
+});
 
 export const mainContainer = style({
     padding: "4% 6% 0 6%",
@@ -73,6 +103,19 @@ export const imageLayout = style({
     borderRadius: "12px"
 });
 
+export const buttonContainerRound = style({
+    padding: "0.4rem",
+    borderRadius: "50%",
+    backgroundColor: theme.blue,
+});
+
+export const line = style({
+    backgroundColor: theme.lightGray,
+    width: "100%",
+    height: "1px",
+    transition: "all 1s"
+});
+
 const profileContainer = style({
     display: "flex",
     justifyContent: "space-between",
@@ -90,5 +133,8 @@ export const visibility = styleVariants({
     }],
     invisible: [{
         visibility: "hidden"
+    }],
+    none: [{
+        display: "none"
     }]
 });

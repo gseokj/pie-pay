@@ -9,6 +9,7 @@ import {useEffect, useState} from "react";
 import {CreateMeetRequest, CreateMeetResponse} from "@/model/meet";
 import { postCreateMeet } from "@/api/meet";
 import {useRouter} from "next/navigation";
+import {getCookie} from "@/util/getCookie";
 
 interface CreateMeetModalProps{
     isCreateMeetModalOn: boolean;
@@ -28,26 +29,21 @@ export default function MeetCreateModal({ isCreateMeetModalOn, clickCreate, clic
     const [modalY, setModalY] = useState(-56);
 
     const router = useRouter();
+    const token = getCookie('accessToken');
 
     async function createMeetRequest(meetName: string) {
 
-        try {
-            const response = await postCreateMeet({ meetName:meetName });
-            console.log("Success Create", response);
-            router.push(`/${response.result.meetId}`);
-        } catch (error) {
-            console.error("Fail Create", error);
+        if (typeof token === 'string') {
+            try {
+                const response = await postCreateMeet({ meetName:meetName }, token);
+                console.log("Success Create", response);
+                router.push(`/${response.result.meetId}`);
+            } catch (error) {
+                console.error("Fail Create", error);
+            }
+        } else {
+            console.error('fail to get token');
         }
-
-        // const response = await (await fetch(`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/api/meet`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json;charset=utf-8'
-        //     },
-        //     body: JSON.stringify({ meetName: meetName })
-        // })).json();
-        //
-        // console.log(response);
     }
 
     useEffect(()=>{
@@ -87,6 +83,7 @@ export default function MeetCreateModal({ isCreateMeetModalOn, clickCreate, clic
         }
         setMeetName('');
         setModalOn(false);
+        setModalY(-56);
         clickCreate();
     }
 
