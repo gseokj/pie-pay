@@ -1,13 +1,14 @@
 'use client';
-
+import { postRequestVerify } from '@/api/signin';
+import { VerifyPhoneNumber, VerifyPhoneNumberResponse } from '@/model/signin';
 import { ChangeEvent, useEffect, useState } from 'react';
 import ProgressBar from '../_component/ProgressBar';
 import * as styles from '@/styles/signin/singin.css';
 import TelecomListModal from '../_component/TelecomListModal';
 import TermsAgreeModal from '../_component/TermsAgreeModal';
 import { useRouter } from 'next/navigation';
-import {getCookie} from "@/util/getCookie";
-import {postUserInfo} from "@/api/auth";
+import { getCookie } from '@/util/getCookie';
+import { postUserInfo } from '@/api/auth';
 
 export default function Page() {
   const [info, setInfo] = useState({
@@ -23,6 +24,7 @@ export default function Page() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showTermsModal, setShowTermsModal] = useState<boolean>(false);
   const [moveFlag, setMoveFlag] = useState<boolean>(false);
+  const [agree, setAgree] = useState<boolean>(false);
 
   const [inputErrors, setInputErrors] = useState({
     name: false,
@@ -31,14 +33,27 @@ export default function Page() {
     telecom: false,
     phone: false,
   });
-  const token = getCookie('accessToken');
-  postUserInfo(token);
+  const token = getCookie('accessToken') as string;
+  // postUserInfo(token);
 
   useEffect(() => {
-    if (moveFlag) {
-      router.push('/sign-in/personal-auth/input-number');
-    }
-  });
+    const sendVerificationRequest = async () => {
+      if (moveFlag && agree) {
+        console.log('인증 진행');
+        {
+          try {
+            const request: VerifyPhoneNumber = {
+              phoneNumber: info.phone,
+            };
+            const response = await postRequestVerify(request, token);
+            console.log('Verification response:', response);
+          } catch (error) {}
+        }
+        router.push('/sign-in/personal-auth/input-number');
+      }
+    };
+    sendVerificationRequest();
+  }, [moveFlag, agree]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -107,9 +122,9 @@ export default function Page() {
     setShowTermsModal(false);
   };
 
-  useEffect(() => {
-    console.log(info);
-  }, [info]);
+  // useEffect(() => {
+  //   console.log(info);
+  // }, [info]);
 
   return (
     <div className={styles.container}>
@@ -174,7 +189,7 @@ export default function Page() {
             <div className={styles.itemName}>휴대폰 번호</div>
             <input
               className={`${styles.inputBox} ${inputErrors.phone ? styles.inputError : ''}`}
-              type="number"
+              type="text"
               name="phone"
               value={info.phone}
               onChange={handleChange}
@@ -189,7 +204,11 @@ export default function Page() {
         <TelecomListModal onClose={closeModal} onSelect={setTelecom} />
       )}
       {showTermsModal && (
-        <TermsAgreeModal onClose={closeTermsModal} setMoveFlag={setMoveFlag} />
+        <TermsAgreeModal
+          setAgree={setAgree}
+          onClose={closeTermsModal}
+          setMoveFlag={setMoveFlag}
+        />
       )}
     </div>
   );

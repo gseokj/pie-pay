@@ -7,9 +7,14 @@ import React, { useState, useEffect, use } from 'react';
 type Props = {
   onClose(): void;
   setMoveFlag(value: boolean): void;
+  setAgree(value: boolean): void;
 };
 
-export default function TeamsAgreeModal({ onClose, setMoveFlag }: Props) {
+export default function TeamsAgreeModal({
+  onClose,
+  setMoveFlag,
+  setAgree,
+}: Props) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [closing, setClosing] = useState(false); // 닫힘 상태 관리
@@ -31,6 +36,7 @@ export default function TeamsAgreeModal({ onClose, setMoveFlag }: Props) {
   useEffect(() => {
     if (isChecked1 && isChecked2) {
       setClosing(true); // 닫힘 애니메이션 시작
+      setAgree(true);
       onClose(); // onClose 함수를 호출하여 모달을 닫음
       setMoveFlag(true);
     }
