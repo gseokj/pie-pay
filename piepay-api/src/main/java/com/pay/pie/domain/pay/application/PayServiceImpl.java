@@ -110,8 +110,9 @@ public class PayServiceImpl implements PayService {
 				.orElse(null);
 			log.info("memberId: {}", account.getMember().getId());
 			log.info("accountNO: {}", account.getAccountNo());
+			log.info("payAmount: {}", participant.getPayAmount());
 
-			if (account != null) {
+			if (account != null && participant.getPayAmount() != 0) {
 				bankUtil.transferAccount(
 					StoreBankCode,
 					StoreAccount,
@@ -239,6 +240,7 @@ public class PayServiceImpl implements PayService {
 				.fetch();
 
 			for (PayInstead payInstead : borrowerPayInsteadList) {
+				payInstead.setAmount(basePayAmount);
 				basePayAmount -= payInstead.getAmount();
 			}
 
