@@ -227,11 +227,12 @@ public class PayServiceImpl implements PayService {
 			.fetch();
 		log.info("payInstead: {}", payInsteadList);
 
-		// 참여자 정보 저장
 		for (Participant participant : participants) {
 			// 음주 여부에 따른 기본 PayAmount 설정
 			Long basePayAmount =
 				participant.getIsDrinkAlcohol() ? (nonAlcoholPortionCost + alcoholPortionCost) : nonAlcoholPortionCost;
+			participant.setPayAmount(basePayAmount);
+			log.info("payInstead건 무시한 basePayAmount: {}", basePayAmount);
 
 			if (!payInsteadList.isEmpty()) {
 				// PayInstead에서 해당 참여자가 borrower로 나타나는 경우
@@ -242,6 +243,32 @@ public class PayServiceImpl implements PayService {
 
 				for (PayInstead payInstead : borrowerPayInsteadList) {
 					payInstead.setAmount(basePayAmount);
+				}
+
+				// PayInstead에서 해당 참여자가 lender로 나타나는 경우
+				List<PayInstead> lenderPayInsteadList = queryFactory
+					.selectFrom(QPayInstead.payInstead)
+					.where(QPayInstead.payInstead.lender.eq(participant.getMember()))
+					.fetch();
+
+				for (PayInstead payInstead : lenderPayInsteadList) {
+					payInstead.setAmount(basePayAmount);
+				}
+			}
+		}
+
+		if (!payInsteadList.isEmpty()) {
+			for (Participant participant : participants) {
+				log.info("payInstead건 존재!");
+				// PayInstead에서 해당 참여자가 borrower로 나타나는 경우
+				Long basePayAmount = participant.getPayAmount();
+				log.info("주류유무만 반영된 basePayAmount: {}", basePayAmount);
+				List<PayInstead> borrowerPayInsteadList = queryFactory
+					.selectFrom(QPayInstead.payInstead)
+					.where(QPayInstead.payInstead.borrower.eq(participant.getMember()))
+					.fetch();
+
+				for (PayInstead payInstead : borrowerPayInsteadList) {
 					basePayAmount -= payInstead.getAmount();
 				}
 
@@ -254,13 +281,14 @@ public class PayServiceImpl implements PayService {
 				for (PayInstead payInstead : lenderPayInsteadList) {
 					basePayAmount += payInstead.getAmount();
 				}
+				// 참여자 정보 저장
+				// 계산된 PayAmount 설정
+				log.info("추가한 basePayAmount: {}", basePayAmount);
+				participant.setPayAmount(basePayAmount);
+
+				// 변경된 참여자 정보 저장
+				participantRepository.save(participant);
 			}
-
-			// 계산된 PayAmount 설정
-			participant.setPayAmount(basePayAmount);
-
-			// 변경된 참여자 정보 저장
-			participantRepository.save(participant);
 		}
 		// for (Participant participant : participants) {
 		// 	if (participant.getIsDrinkAlcohol()) {
