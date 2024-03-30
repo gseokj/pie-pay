@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,7 +43,7 @@ public class OrderMenuApiController {
 	private final OrderRepository orderRepository;
 	private final OrderService orderService;
 
-	// @PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	 @PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@PostMapping("/receipt/{orderId}/detail")
 	public ResponseEntity<BaseResponse<List<NewOrderMenuResponse>>> addOrderMenu(@PathVariable Long orderId) {
 
@@ -81,7 +82,7 @@ public class OrderMenuApiController {
 			orderMenus);
 	}
 
-	// @PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	 @PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@GetMapping("/receipt/{orderId}/detail")
 	public ResponseEntity<BaseResponse<OrderMenuOfOrderResponse>> getOrderMenu(@PathVariable Long orderId) {
 		List<OrderMenu> orderMenus = orderMenuService.findByOrderId(orderId);
