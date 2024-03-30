@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pay.pie.domain.meet.dto.AddMeetRequest;
+import com.pay.pie.domain.meet.dto.HighlightResponse;
+import com.pay.pie.domain.meet.dto.MeetResponse;
 import com.pay.pie.domain.meet.dto.UpdateInvitationRequest;
 import com.pay.pie.domain.meet.dto.UpdateMeetImageRequest;
 import com.pay.pie.domain.meet.dto.UpdateMeetNameRequest;
@@ -68,5 +70,11 @@ public class MeetService {
 
 	public Optional<Meet> findById(long meetId) {
 		return meetRepository.findById(meetId);
+	}
+
+	public HighlightResponse getHighlight(long meetId) {
+		Object[] queryResult = meetRepository.getHighlight(meetId);
+		MeetResponse meetResponse = new MeetResponse((Meet)queryResult[0], 960401);
+		return new HighlightResponse(meetResponse);
 	}
 }

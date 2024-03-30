@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.meet.dto.AddMeetRequest;
+import com.pay.pie.domain.meet.dto.HighlightResponse;
 import com.pay.pie.domain.meet.dto.MeetResponse;
 import com.pay.pie.domain.meet.dto.MeetStatusResponse;
 import com.pay.pie.domain.meet.dto.PayResponse;
@@ -74,7 +75,7 @@ public class MeetApiController {
 		// 요청한 자원이 성공적으로 생성되었으며 저장된 블로그 글 정보를 응답에 담아 전송
 		return BaseResponse.success(
 			SuccessCode.INSERT_SUCCESS,
-			new MeetResponse(savedMeet, memberMeetRepository.findAllByMeet(savedMeet).size()));
+			new MeetResponse(savedMeet, memberMeetService.findAllByMeet(savedMeet).size()));
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
@@ -171,7 +172,7 @@ public class MeetApiController {
 	@GetMapping("/meet/{meetId}")
 	public ResponseEntity<BaseResponse<MeetResponse>> getMeet(@PathVariable long meetId) {
 		Meet meet = meetService.getMeet(meetId);
-		int memberCount = memberMeetRepository.findAllByMeet(meet).size();
+		int memberCount = memberMeetService.findAllByMeet(meet).size();
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
 			new MeetResponse(meet, memberCount));
@@ -218,5 +219,16 @@ public class MeetApiController {
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
 			payResponses);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@GetMapping("/meet/{meetId}/highlight")
+	public ResponseEntity<BaseResponse<HighlightResponse>> getHighlight(@PathVariable long meetId,
+		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
+		HighlightResponse highlightResponse = meetService.getHighlight(meetId);
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			highlightResponse);
 	}
 }

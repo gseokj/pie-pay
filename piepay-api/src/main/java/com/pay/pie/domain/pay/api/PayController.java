@@ -29,6 +29,7 @@ public class PayController {
 	 */
 	@PostMapping("/{payId}")
 	public ResponseEntity<BaseResponse<CompletedPaymentRes>> processPayment(@PathVariable Long payId) {
+		log.info("결제프로세스 시작!!");
 
 		return BaseResponse.success(SuccessCode.SELECT_SUCCESS, payService.processPayment(payId));
 	}

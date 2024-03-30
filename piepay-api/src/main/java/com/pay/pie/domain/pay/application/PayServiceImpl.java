@@ -5,20 +5,30 @@ import static com.pay.pie.domain.orderMenu.entity.QOrderMenu.*;
 import static com.pay.pie.domain.participant.entity.QParticipant.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pay.pie.domain.account.entity.Account;
+import com.pay.pie.domain.account.entity.QAccount;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.repository.MeetRepository;
-import com.pay.pie.domain.member.dao.MemberRepository;
-import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
+import com.pay.pie.domain.member.entity.Member;
 import com.pay.pie.domain.menu.entity.Menu;
+import com.pay.pie.domain.order.dto.OrderDto;
+import com.pay.pie.domain.order.entity.Order;
+import com.pay.pie.domain.order.entity.QOrder;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
+import com.pay.pie.domain.participant.dto.ParticipantInfoDto;
 import com.pay.pie.domain.participant.entity.Participant;
 import com.pay.pie.domain.pay.dao.PayRepository;
 import com.pay.pie.domain.pay.dto.response.CompletedPaymentRes;
 import com.pay.pie.domain.pay.entity.Pay;
+import com.pay.pie.domain.pay.entity.QPay;
+import com.pay.pie.domain.payInstead.entity.PayInstead;
+import com.pay.pie.domain.payInstead.entity.QPayInstead;
+import com.pay.pie.global.util.bank.BankUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -33,8 +43,7 @@ public class PayServiceImpl implements PayService {
 	private final MeetRepository meetRepository;
 	private final ParticipantRepository participantRepository;
 	private final JPAQueryFactory queryFactory;
-	private final MemberRepository memberRepository;
-	private final MemberMeetRepository memberMeetRepository;
+	private final BankUtil bankUtil;
 
 	public List<Pay> findPayByMeetId(long meetId) {
 		Meet meet = meetRepository.findById(meetId)
@@ -54,17 +63,93 @@ public class PayServiceImpl implements PayService {
 	public CompletedPaymentRes processPayment(Long payId) {
 		//참여자 정보
 		List<Participant> participantList = payRepository.findParticipantsByPayId(payId);
-
 		log.info("참여자들: {}", participantList);
 
 		// 결제 테이블에 가게정보, 영수증 정보 저장
+		Order order = queryFactory.selectFrom(QOrder.order)
+			.where(QOrder.order.pay.id.eq(payId))
+			.fetchOne();
+		log.info("orderId: {}", order.getId());
+
+		Pay pay = queryFactory
+			.selectFrom(QPay.pay)
+			.where(QPay.pay.id.eq(payId))
+			.fetchOne();
+		log.info("payId: {}", payId);
+
+		pay.setTotalPayAmount(order.getTotalAmount());
+		payRepository.save(pay);
+		log.info("pay 정보 저장!");
+		// List<OrderMenu> orderMenus = orderRepository.getOrderMenuById(order.getId());
+
+		// Long totalNonAlcoholPrice = orderRepository.getTotalNonAlcoholPrice(order != null ? order.getId() : null);
+		// Long totalAlcoholPrice = orderRepository.getTotalAlcoholPrice(order != null ? order.getId() : null);
+
+		// 가맹점 계좌
+		String StoreBankCode = "001";
+		String StoreAccount = "0017247212643255";
+
+		// 은행 이체 요청 로직(가상계좌 없음)
+		List<Member> memberList = participantList.stream()
+			.map(Participant::getMember)
+			.toList();
+
+		List<Account> accountList = queryFactory
+			.selectFrom(QAccount.account)
+			.where(QAccount.account.member.in(memberList))
+			.fetch();
 
 		// 개인 결제 금액 계산
-		calculatePortionCost(payId, participantList);
+		calculatePortionCost(payId, memberList, participantList);
 
-		// 은행 이체 요청 로직
+		// 이체
+		for (Participant participant : participantList) {
+			Account account = accountList.stream()
+				.filter(acc -> acc.getMember().equals(participant.getMember()))
+				.findFirst()
+				.orElse(null);
+			log.info("memberId: {}", account.getMember().getId());
+			log.info("accountNO: {}", account.getAccountNo());
 
-		return null;
+			if (account != null) {
+				bankUtil.transferAccount(
+					StoreBankCode,
+					StoreAccount,
+					participant.getPayAmount().intValue(),
+					account.getBankCode(),
+					account.getAccountNo(),
+					account.getMember().getApiKey()
+				);
+			}
+		}
+
+		// for (Participant participant : participantList) {
+		// 	Account account = queryFactory
+		// 		.selectFrom(QAccount.account)
+		// 		.where(QAccount.account.member.eq(participant.getMember()))
+		// 		.fetchOne();
+		// 	// 이체
+		// 	bankUtil.transferAccount(
+		// 		account.getBankCode(),
+		// 		account.getAccountNo(),
+		// 		Long.valueOf(participant.getPayAmount()).intValue(),
+		// 		StoreBankCode, StoreAccount);
+		// }
+
+		// payStatus -> Complete로 변환
+		pay.setPayStatus(Pay.PayStatus.COMPLETE);
+		order.setPaymentStatus(Order.PaymentStatus.PAID);
+
+		return CompletedPaymentRes.builder()
+			.payId(payId)
+			.payStatus(pay.getPayStatus())
+			.orderInfo(OrderDto.of(order))
+			.participants(
+				participantList
+					.stream()
+					.map(ParticipantInfoDto::of)
+					.collect(Collectors.toList()))
+			.build();
 	}
 
 	/**
@@ -72,32 +157,34 @@ public class PayServiceImpl implements PayService {
 	 * @param payId
 	 * @param participants
 	 */
-	private void calculatePortionCost(Long payId, List<Participant> participants) {
+	private void calculatePortionCost(Long payId, List<Member> memberList, List<Participant> participants) {
 		Long totalPayAmount = payRepository.findById(payId).get().getTotalPayAmount();
 		log.info("총금액: {}", totalPayAmount);
 		/*
 		음식값
 		 */
-		Long nonCosts = queryFactory
-			.select(orderMenu.menu.menuPrice.sum())
+		Long nonAlcoholCosts = queryFactory
+			.select(orderMenu.menu.menuPrice.multiply(orderMenu.quantity).sum())
 			.from(orderMenu)
 			.join(orderMenu.order, order)
 			.where(order.pay.id.eq(payId)
 				.and(orderMenu.menu.menuCategory.eq(Menu.MenuCategory.NON_ALCOHOL)))
 			.fetchOne();
+		nonAlcoholCosts = nonAlcoholCosts != null ? nonAlcoholCosts : 0L;
 
 		Long participantsCnt = queryFactory
 			.select(participant.count())
 			.from(participant)
 			.where(participant.pay.id.eq(payId))
 			.fetchOne();
+		participantsCnt = participantsCnt != null ? participantsCnt : 0L;
 
-		log.info("비주류값: {}, 인원: {}", nonCosts, participantsCnt);
+		log.info("비주류값: {}, 인원: {}", nonAlcoholCosts, participantsCnt);
 
 		// 배분
 		Long nonAlcoholPortionCost = 0L;
 		if (participantsCnt != 0) {
-			nonAlcoholPortionCost = nonCosts / participantsCnt;
+			nonAlcoholPortionCost = nonAlcoholCosts / participantsCnt;
 		} else {
 			log.warn("참여인원 0명이므로 비주류값 배분 불가");
 		}
@@ -106,12 +193,13 @@ public class PayServiceImpl implements PayService {
 		주류값
 		 */
 		Long alcoholCosts = queryFactory
-			.select(orderMenu.menu.menuPrice.sum())
+			.select(orderMenu.menu.menuPrice.multiply(orderMenu.quantity).sum())
 			.from(orderMenu)
 			.join(orderMenu.order, order)
 			.where(order.pay.id.eq(payId)
 				.and(orderMenu.menu.menuCategory.eq(Menu.MenuCategory.ALCOHOL)))
 			.fetchOne();
+		alcoholCosts = alcoholCosts != null ? alcoholCosts : 0L;
 
 		Long drankAlcoholPersonCnt = queryFactory
 			.select(participant.count())
@@ -119,28 +207,68 @@ public class PayServiceImpl implements PayService {
 			.where(participant.pay.id.eq(payId)
 				.and(participant.isDrinkAlcohol.isTrue()))
 			.fetchOne();
+		drankAlcoholPersonCnt = drankAlcoholPersonCnt != null ? drankAlcoholPersonCnt : 0L;
 
 		log.info("술값: {}, 술마신인원: {}", alcoholCosts, drankAlcoholPersonCnt);
 
 		// 배분
 		Long alcoholPortionCost = 0L;
-		if (drankAlcoholPersonCnt != 0) {
+		if (drankAlcoholPersonCnt != 0 && alcoholCosts != 0) {
 			alcoholPortionCost = alcoholCosts / drankAlcoholPersonCnt;
 		} else {
-			log.warn("참여인원 0명이므로 주류값 배분 불가");
+			log.warn("참여인원 0명 or 술값 0원 이므로 주류값 배분 불가");
 		}
+
+		// 대신내주기 정보 반영
+		List<PayInstead> payInsteadList = queryFactory
+			.selectFrom(QPayInstead.payInstead)
+			.where(QPayInstead.payInstead.pay.id.eq(payId))
+			.fetch();
+		log.info("payInstead: {}", payInsteadList);
 
 		// 참여자 정보 저장
 		for (Participant participant : participants) {
-			if (participant.getIsDrinkAlcohol()) {
-				Long totalPortionCost = nonAlcoholPortionCost + alcoholPortionCost;
-				participant.setPayAmount(totalPortionCost);
-			} else {
-				participant.setPayAmount(nonAlcoholPortionCost);
+			// 음주 여부에 따른 기본 PayAmount 설정
+			Long basePayAmount =
+				participant.getIsDrinkAlcohol() ? (nonAlcoholPortionCost + alcoholPortionCost) : nonAlcoholPortionCost;
+
+			// PayInstead에서 해당 참여자가 borrower로 나타나는 경우
+			List<PayInstead> borrowerPayInsteadList = queryFactory
+				.selectFrom(QPayInstead.payInstead)
+				.where(QPayInstead.payInstead.borrower.eq(participant.getMember()))
+				.fetch();
+
+			for (PayInstead payInstead : borrowerPayInsteadList) {
+				basePayAmount -= payInstead.getAmount();
 			}
 
+			// PayInstead에서 해당 참여자가 lender로 나타나는 경우
+			List<PayInstead> lenderPayInsteadList = queryFactory
+				.selectFrom(QPayInstead.payInstead)
+				.where(QPayInstead.payInstead.lender.eq(participant.getMember()))
+				.fetch();
+
+			for (PayInstead payInstead : lenderPayInsteadList) {
+				basePayAmount += payInstead.getAmount();
+			}
+
+			// 계산된 PayAmount 설정
+			participant.setPayAmount(basePayAmount);
+
+			// 변경된 참여자 정보 저장
 			participantRepository.save(participant);
 		}
+		// for (Participant participant : participants) {
+		// 	if (participant.getIsDrinkAlcohol()) {
+		// 		Long totalPortionCost = nonAlcoholPortionCost + alcoholPortionCost;
+		// 		participant.setPayAmount(totalPortionCost);
+		// 	} else {
+		// 		participant.setPayAmount(nonAlcoholPortionCost);
+		// 	}
+		//
+		// 	participantRepository.save(participant);
+		// }
+		log.info("participant에 각 금액 정보 저장 완료!");
 	}
 
 	// public List<Pay> findPayByMemberId(long memberId) {

@@ -4,13 +4,9 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.Getter;
-
-@Getter
-public class TransferAccountResponse {
-
+public class OpenAccountRes {
 	@JsonProperty("Header")
 	private Header Header;
 	@JsonProperty("REC")
-	private List<Account> account;
+	private List<AccountDto> accountDto;
 }

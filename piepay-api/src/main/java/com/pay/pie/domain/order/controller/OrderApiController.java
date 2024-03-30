@@ -57,6 +57,7 @@ public class OrderApiController {
 		List<Menu> menus = menuRepository.findAllByStore(store);
 		List<NewOrderMenuResponse> orderMenus = new ArrayList<>();
 		int menuConsumed = random.nextInt(6) + 4;
+		long totalAmount = 0L; // 총액을 초기화합니다.
 
 		for (int i = 0; i < menuConsumed; i++) {
 			int menuId = random.nextInt(menus.size());
@@ -75,8 +76,14 @@ public class OrderApiController {
 
 				OrderMenu savedOrderMenu = orderMenuService.save(addOrderMenuRequest);
 				orderMenus.add(new NewOrderMenuResponse(savedOrderMenu));
+
+				long subtotal = menu.getMenuPrice() * menuAmount;
+				totalAmount += subtotal;
 			}
 		}
+
+		order.setTotalAmount(totalAmount);
+		orderService.save(payId); // 주문을 저장합니다.
 
 		return BaseResponse.success(
 			SuccessCode.INSERT_SUCCESS,

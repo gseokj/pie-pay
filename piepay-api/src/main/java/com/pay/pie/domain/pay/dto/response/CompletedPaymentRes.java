@@ -18,14 +18,14 @@ public class CompletedPaymentRes {
 
 	private final Long payId;
 	private Pay.PayStatus payStatus;
-	private final OrderDto orderDto;
+	private final OrderDto orderInfo;
 	private final List<ParticipantInfoDto> participants;
 
 	public static CompletedPaymentRes of(Pay pay, Order order, List<ParticipantInfoDto> participants) {
 		return CompletedPaymentRes.builder()
 			.payId(pay.getId())
 			.payStatus(pay.getPayStatus())
-			.orderDto(OrderDto.of(order))
+			.orderInfo(OrderDto.of(order))
 			.participants(participants)
 			.build();
 	}

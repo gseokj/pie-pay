@@ -25,7 +25,7 @@ public class OrderResponse {
 			.mapToLong(response -> response.getMenu().getMenuPrice() * response.getQuantity())
 			.sum();
 
-		this.totalAmount = order.getTotalAmount() + totalMenuPrice;
+		this.totalAmount = order.getTotalAmount();
 		this.newOrderMenusResponse = newOrderMenuResponses;
 	}
 
