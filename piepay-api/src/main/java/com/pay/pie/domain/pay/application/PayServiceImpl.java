@@ -233,25 +233,27 @@ public class PayServiceImpl implements PayService {
 			Long basePayAmount =
 				participant.getIsDrinkAlcohol() ? (nonAlcoholPortionCost + alcoholPortionCost) : nonAlcoholPortionCost;
 
-			// PayInstead에서 해당 참여자가 borrower로 나타나는 경우
-			List<PayInstead> borrowerPayInsteadList = queryFactory
-				.selectFrom(QPayInstead.payInstead)
-				.where(QPayInstead.payInstead.borrower.eq(participant.getMember()))
-				.fetch();
+			if (!payInsteadList.isEmpty()) {
+				// PayInstead에서 해당 참여자가 borrower로 나타나는 경우
+				List<PayInstead> borrowerPayInsteadList = queryFactory
+					.selectFrom(QPayInstead.payInstead)
+					.where(QPayInstead.payInstead.borrower.eq(participant.getMember()))
+					.fetch();
 
-			for (PayInstead payInstead : borrowerPayInsteadList) {
-				payInstead.setAmount(basePayAmount);
-				basePayAmount -= payInstead.getAmount();
-			}
+				for (PayInstead payInstead : borrowerPayInsteadList) {
+					payInstead.setAmount(basePayAmount);
+					basePayAmount -= payInstead.getAmount();
+				}
 
-			// PayInstead에서 해당 참여자가 lender로 나타나는 경우
-			List<PayInstead> lenderPayInsteadList = queryFactory
-				.selectFrom(QPayInstead.payInstead)
-				.where(QPayInstead.payInstead.lender.eq(participant.getMember()))
-				.fetch();
+				// PayInstead에서 해당 참여자가 lender로 나타나는 경우
+				List<PayInstead> lenderPayInsteadList = queryFactory
+					.selectFrom(QPayInstead.payInstead)
+					.where(QPayInstead.payInstead.lender.eq(participant.getMember()))
+					.fetch();
 
-			for (PayInstead payInstead : lenderPayInsteadList) {
-				basePayAmount += payInstead.getAmount();
+				for (PayInstead payInstead : lenderPayInsteadList) {
+					basePayAmount += payInstead.getAmount();
+				}
 			}
 
 			// 계산된 PayAmount 설정
