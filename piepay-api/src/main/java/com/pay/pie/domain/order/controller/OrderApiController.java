@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,10 +42,12 @@ public class OrderApiController {
 	private final OrderMenuRepository orderMenuRepository;
 	private final OrderRepository orderRepository;
 
+	@Transactional
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@PostMapping("/your-receipt/{payId}")
 	public ResponseEntity<BaseResponse<OrderResponse>> addReceipt(@PathVariable Long payId) {
 		Order order = orderService.save(payId);
+//		Order order = new Order();
 		Long orderId = order.getId();
 
 		// List<Store> stores = storeRepository.findAll();
@@ -57,6 +60,7 @@ public class OrderApiController {
 		List<Menu> menus = menuRepository.findAllByStore(store);
 		List<NewOrderMenuResponse> orderMenus = new ArrayList<>();
 		int menuConsumed = random.nextInt(6) + 4;
+		long totalAmount = 0L; // 총액을 초기화합니다.
 
 		for (int i = 0; i < menuConsumed; i++) {
 			int menuId = random.nextInt(menus.size());
@@ -75,8 +79,17 @@ public class OrderApiController {
 
 				OrderMenu savedOrderMenu = orderMenuService.save(addOrderMenuRequest);
 				orderMenus.add(new NewOrderMenuResponse(savedOrderMenu));
+
+				long subtotal = menu.getMenuPrice() * menuAmount;
+				totalAmount += subtotal;
 			}
 		}
+
+		order.setTotalAmount(totalAmount);
+//		orderService.save(payId); // 주문을 저장합니다.
+
+		// 이미 존재하는 주문을 업데이트합니다.
+//		order = orderService.update(order);
 
 		return BaseResponse.success(
 			SuccessCode.INSERT_SUCCESS,

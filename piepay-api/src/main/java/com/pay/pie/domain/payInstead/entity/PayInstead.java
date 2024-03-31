@@ -54,6 +54,6 @@ public class PayInstead extends BaseEntity {
 
 	@NotNull
 	@Builder.Default
-	@Column(name = "is_payback", nullable = false)
+	@Column(name = "payback", nullable = false)
 	private Boolean payback = false;
 }

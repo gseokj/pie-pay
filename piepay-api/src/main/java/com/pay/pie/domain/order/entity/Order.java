@@ -20,11 +20,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Getter
+@Setter
 @Table(name = "`order`")
 @Builder
 // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -46,7 +48,7 @@ public class Order extends BaseEntity {
 
 	// @NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "pay_id", nullable = false)
+	@JoinColumn(name = "pay_id", nullable = false, unique = true)
 	private Pay pay;
 
 	@Enumerated(EnumType.STRING)

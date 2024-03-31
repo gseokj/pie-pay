@@ -51,7 +51,7 @@ public class MemberMeetService {
 		} else {
 			// request.setMeet(meet);
 			// request.setMember(member);
-			return newMemberMeet;
+			return memberMeetRepository.save(newMemberMeet);
 		}
 	}
 

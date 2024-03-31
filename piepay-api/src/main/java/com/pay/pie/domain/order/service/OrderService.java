@@ -3,6 +3,7 @@ package com.pay.pie.domain.order.service;
 import java.util.List;
 import java.util.Random;
 
+import com.pay.pie.domain.orderMenu.service.OrderMenuService;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class OrderService {
 	private final OrderRepository orderRepository;
 	private final PayRepository payRepository;
 	private final StoreRepository storeRepository;
+	private final OrderMenuService orderMenuService;
 
 	public Order save(Long payId) {
 		AddOrderRequest addOrderRequest = new AddOrderRequest();
@@ -46,4 +48,7 @@ public class OrderService {
 		return orderRepository.save(addOrderRequest.toEntity());
 	}
 
+	public Order findById(Long orderId) {
+		return orderRepository.findById(orderId).orElseThrow();
+	}
 }

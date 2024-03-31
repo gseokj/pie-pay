@@ -33,7 +33,6 @@ public class PayAgreeService {
 	private final MemberRepository memberRepository;
 	private final ParticipantRepository participantRepository;
 	private final PayRepository payRepository;
-	private final RedisToDBSyncService redisToDBSyncService;
 	private final JPAQueryFactory jpaQueryFactory;
 
 	public AgreeDto respondToAgreement(AgreeReq agreeReq) {
@@ -111,7 +110,7 @@ public class PayAgreeService {
 		return AgreeDto.builder()
 			.payId(insteadAgreeReq.getPayId())
 			.participantId(participantBorrower.getId())
-			.payAgree(participantBorrower.getPayAgree())
+			.payAgree(true)
 			.payStatus(participantBorrower.getPay().getPayStatus())
 			.build();
 	}
