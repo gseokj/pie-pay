@@ -6,51 +6,54 @@ import * as fontStyles from "@/styles/fonts.css";
 import {useRouter} from "next/navigation";
 import PaymentCard from "@/app/(post-verification)/[meetId]/component/PaymentCard";
 import {useEffect, useState} from "react";
+import {getCookie} from "@/util/getCookie";
+import {useQueryClient} from "@tanstack/react-query";
+import {Payment} from "@/model/meet/payment";
+import {Meet} from "@/model/meet";
 
 
-export interface PaymentHistory {
-    paymentId: number;
-    createdAt: string;
-    storeName: string;
-    meetName: string;
-    totalMoney: number;
-    isClear: boolean;
+
+interface Props {
+    params: { meetId: string },
 }
 
+export default function PaymentLayout({ params }: Props) {
+    const { meetId } = params;
+    const router = useRouter();
+    const token = getCookie('accessToken');
+    const queryClient = useQueryClient();
 
-const paymentHistory: PaymentHistory[] = [
-    {
-        paymentId: 1,
-        createdAt: "2024-03-20T13:56:38.630921",
-        storeName: "(주) 뽕족 강남역본점",
-        meetName: "어쩌구 모임",
-        totalMoney: 95000,
-        isClear: true
-    }
-];
-
-
-interface PaymentProps {
-    meetId: string;
-}
-
-export default function PaymentLayout({ meetId }: PaymentProps) {
-    const route = useRouter();
+    const payments: Payment[]|undefined = queryClient.getQueryData(['meetPayments', meetId, token]);
+    const meetInfo: Meet|undefined = queryClient.getQueryData(['meetInfo', meetId, token]);
+    console.log(payments);
 
     const onClickPush = () => {
-        route.push(`/${meetId}/history`);
+        router.push(`/${meetId}/history`);
     }
 
-    return (
-        <section>
-            <div className={ mainStyles.categoryContainer.default }>
-                <h3 className={ fontStyles.bold }>결제 내역</h3>
-                <button
-                    className={ fontStyles.bold }
-                    onClick={ onClickPush }
-                >더보기</button>
-            </div>
-            <PaymentCard props={ paymentHistory[0] } />
-        </section>
-    );
+    if (typeof payments !== 'undefined' && payments.length > 0) {
+        return (
+            <section>
+                <div className={mainStyles.categoryContainer.default}>
+                    <h3 className={fontStyles.bold}>결제 내역</h3>
+                    <button
+                        className={fontStyles.bold}
+                        onClick={onClickPush}
+                    >더보기
+                    </button>
+                </div>
+                {typeof payments !== 'undefined' && typeof meetInfo !== 'undefined' &&
+                    <PaymentCard props={{payment: payments[0], meetInfo: meetInfo}}/>
+                }
+            </section>
+        );
+    } else {
+        return (
+            <section>
+                <div>
+                    결제 내역이 없습니다
+                </div>
+            </section>
+        );
+    }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {faker} from "@faker-js/faker";
 import BankAccount from "./component/BankAccount";
 import MeetGroup from "@/app/(post-verification)/component/meets/MeetGroup";
@@ -21,15 +21,22 @@ import {getAccount} from "@/api/account";
 
 export default function Main() {
     const token = getCookie('accessToken');
-    // const queryClient = useQueryClient();
-    // const meetData: GetMyMeetsResponse|undefined = queryClient.getQueryData(['myMeets', token]);
+    const queryClient = useQueryClient();
+    const myMeets: MeetData[]|undefined = queryClient.getQueryData(['myMeets', token]);
 
-    const { data: meetData, isLoading, error } = useQuery({queryKey: ['myMeets', token], queryFn: getMyMeets}) ;
-    if (error) console.log(error.message);
-    const myMeets = meetData?.result;
+    const [meets, setMeets] = useState<MeetData[]>([]);
+
+    // const { data: myMeets, isLoading, error } = useQuery({queryKey: ['myMeets', token], queryFn: getMyMeets}) ;
+    // if (error) console.log(error.message);
 
     const [joinModalVisibility, setJoinModalVisibility] = useState(false);
     const [createModalVisibility, setCreateModalVisibility] = useState(false);
+
+    useEffect(() => {
+        if (typeof myMeets !== 'undefined') {
+            setMeets(sortMeetData(myMeets));
+        }
+    }, [myMeets]);
 
     const joinModalOn = () => {
         console.log('clicked')
@@ -41,7 +48,25 @@ export default function Main() {
       setCreateModalVisibility(true);
     }
 
-    if (isLoading) {
+    function sortMeetData(meetDataArray: MeetData[]): MeetData[] {
+        return meetDataArray.sort((a, b) => {
+            if (a.topFixed && !b.topFixed) return -1;
+            if (!a.topFixed && b.topFixed) return 1;
+
+            if (a.topFixed === b.topFixed) {
+                if (a.updated_at && b.updated_at) {
+                    return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+                }
+                if (a.updated_at === null && b.updated_at !== null) return 1;
+                if (a.updated_at !== null && b.updated_at === null) return -1;
+
+                return new Date(b.meet.createdAt).getTime() - new Date(a.meet.createdAt).getTime();
+            }
+            return 0;
+        });
+    }
+
+    if (typeof meets === 'undefined') {
         return (<></>);
     } else {
         return (
@@ -50,21 +75,21 @@ export default function Main() {
                 <div className={styles.categoryContainer.default}>
                     <div className={styles.category}>
                         <h3 className={fontStyles.bold}>모임</h3>
-                        <p>{myMeets?.length}</p>
+                        <p>{meets?.length}</p>
                     </div>
-                    {typeof myMeets !== 'undefined' && myMeets.length !== 0 &&
+                    {typeof meets !== 'undefined' && meets.length !== 0 &&
                         <button
                             className={`${fontStyles.bold}`}
                             onClick={joinModalOn}
                         >모임 입장</button>
                     }
                 </div>
-                {typeof myMeets !== 'undefined' && myMeets.map((meet: MeetData) => {
+                {typeof meets !== 'undefined' && meets.map((meet: MeetData) => {
                     return (
                         <MeetGroup meetData={meet} key={meet.meet.meetId} />
                     )
                 })}
-                {typeof myMeets !== 'undefined' && myMeets.length === 0 ? <MeetJoinCard /> : <MeetJoinButton onClick={joinModalOn} />}
+                {typeof meets !== 'undefined' && meets.length === 0 ? <MeetJoinCard /> : <MeetJoinButton onClick={joinModalOn} />}
                 <MeetCreateButton onClick={createModalOn} />
                 <MeetJoinModal isJoinModalOn={joinModalVisibility} clickJoinModal={() => { setJoinModalVisibility(false)}} clickExitModal={()=>{setJoinModalVisibility(false)}}/>
                 <MeetCreateModal isCreateMeetModalOn={createModalVisibility} clickCreate={()=>{setCreateModalVisibility(false)}} clickExitCreate={()=>{setCreateModalVisibility(false)}} />

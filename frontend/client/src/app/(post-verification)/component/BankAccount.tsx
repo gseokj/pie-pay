@@ -13,12 +13,6 @@ import * as fontCss from "@/styles/fonts.css";
 import {Account, AccountResponse} from "@/model/account";
 import {getCookie} from "@/util/getCookie";
 
-const account = [{
-    accountId: 1,
-    bankCode: '하나은행',
-    accountNo: "01923479283157"
-}]
-
 
 export default function BankAccount() {
     const token = getCookie('accessToken');
@@ -29,6 +23,8 @@ export default function BankAccount() {
 
     const [visibility, setVisibility] = useState(true);
     const [bankName, setBankName] = useState('은행 명');
+
+    console.log(account);
 
     useEffect(() => {
         if (typeof account !== 'undefined') {

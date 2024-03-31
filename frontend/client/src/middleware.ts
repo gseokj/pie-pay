@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import {MyInfo} from "@/model/user";
 
 export function middleware(request: NextRequest) {
-    console.log(request.cookies.has('accessToken'), 'in middleware......................................');
+    // console.log(request.cookies.has('accessToken'), 'in middleware......................................');
 
     if (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/success') || request.nextUrl.pathname.startsWith('/auth')) {
         if (request.cookies.has('accessToken')) {
@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
             if (typeof userCookie?.value === 'string') {
                 const userInfo: MyInfo = JSON.parse(userCookie.value);
                 const userId = userInfo.memberId;
-                console.log('in middleware.... userId is.....,', userId);
+                // console.log('in middleware.... userId is.....,', userId);
             }
         }
     } else {

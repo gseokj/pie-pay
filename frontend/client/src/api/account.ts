@@ -2,7 +2,7 @@ import { QueryFunction } from "@tanstack/query-core";
 import {Account, AccountResponse} from "@/model/account";
 import authAxios from '@/util/authAxios';
 
-export const getAccount: QueryFunction<AccountResponse> = async ({ queryKey }) => {
+export const getAccount: QueryFunction<Account> = async ({ queryKey }) => {
     const [_,token] =queryKey;
     try {
         const res = await authAxios.get('api/member/accounts',{
@@ -11,7 +11,7 @@ export const getAccount: QueryFunction<AccountResponse> = async ({ queryKey }) =
             }
         });
         console.log(res);
-        return res.data;
+        return res.data.result;
     } catch (error) {
         console.error('Failed to fetch data', error);
         throw new Error('Failed to fetch data');

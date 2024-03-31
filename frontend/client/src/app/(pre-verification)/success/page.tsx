@@ -15,6 +15,7 @@ export default function Success({
     const router = useRouter();
     const accessToken = searchParams.accessToken;
 
+
     const setToken = async () => {
 
         if (typeof accessToken === 'string') {

@@ -23,6 +23,7 @@ export default function MeetGroup(props : {meetData: MeetData}){
     const { meetData } = props;
     const token = getCookie('accessToken');
     const [isFixed, setIsFixed] = useState(false);
+    const queryClient = useQueryClient();
 
     const { data: members, isLoading, error } = useQuery({queryKey: ['members', meetData.meet.meetId, token], queryFn: getMeetMembers}) ;
     if (error) console.log(error.message);
@@ -38,10 +39,17 @@ export default function MeetGroup(props : {meetData: MeetData}){
 
     const onClickFix = async (event: React.MouseEvent) => {
         event.stopPropagation();
-        console.log(`!!!!!!!!!!!!!!!!!!!!!!`,token);
         if (typeof token === 'string') {
             await fixMeet(`${meetData.meet.meetId}`, token);
-            console.log(`!!!!!!!!!!!!!!!!!!!!!!2222222222`,token);
+            await queryClient.setQueryData(['myMeets', token], (oldData: MeetData[]) => {
+                const newData = oldData.map(meet => {
+                    if (meet.meet.meetId === Number(meetData.meet.meetId)) {
+                        return {...meet, topFixed: !isFixed};
+                    }
+                    return meet;
+                });
+                return newData;
+            });
             setIsFixed(!isFixed);
         }
     }
@@ -82,9 +90,12 @@ export default function MeetGroup(props : {meetData: MeetData}){
                     </div>
                     <div className={styles.lineLayout.lineTwo}>
                         <div className={styles.profileImagesContainer}>
-                            {typeof members !== 'undefined' && members.result.length > 0 && members.result.slice(0, 5).map((member: Member) => {
+                            {typeof members !== 'undefined' && members.length > 0 && members.slice(0, 5).map((member: Member) => {
                                 return (
-                                    <div className={styles.profileImageContainer}>
+                                    <div
+                                        className={styles.profileImageContainer}
+                                        key={member.memberId}
+                                    >
                                         <Image
                                             className={styles.meetMemberImage}
                                             src={member.profileImage !== null ?

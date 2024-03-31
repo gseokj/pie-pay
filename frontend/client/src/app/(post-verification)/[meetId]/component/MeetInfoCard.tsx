@@ -1,4 +1,6 @@
-import {faker} from "@faker-js/faker";
+"use client";
+
+
 import Image from "next/image";
 import dayjs from "dayjs";
 import settingIcon from "@/assets/icons/setting.svg";
@@ -7,6 +9,9 @@ import * as mainStyles from "@/styles/main/main.css";
 import * as cardStyles from "@/styles/main/mainCard.css";
 import * as fontStyles from "@/styles/fonts.css";
 import {useRouter} from "next/navigation";
+import {useQueryClient} from "@tanstack/react-query";
+import {getCookie} from "@/util/getCookie";
+import {Meet} from "@/model/meet";
 
 
 type Props = {
@@ -17,16 +22,13 @@ type Props = {
 export default function MeetInfoCard({params}: Props) {
     const {meetId} = params;
     const router = useRouter();
+    const token = getCookie('accessToken');
 
-    const meetInfo = {
-        meetName: "meetName",
-        meetImage: null,
-        createdAt: "2024-03-19T15:43:57.3042142"
-    }
-    const createdDate = dayjs(meetInfo.createdAt);
+    const queryClient = useQueryClient();
+    const meetInfo: Meet|undefined = queryClient.getQueryData(['meetInfo', meetId, token]);
 
     const onClickPush = () => {
-        router.push(`/${meetId}/setting`)
+        router.push(`/${meetId}/setting`);
     };
 
     return (
@@ -38,14 +40,17 @@ export default function MeetInfoCard({params}: Props) {
                 className={ cardStyles.cardInnerLayout.defaultHorizontal }
             >
                 <div
-                    className={ mainStyles.imageLayout }
+                    className={ mainStyles.imageBox.imageBox56 }
                 >
                     <Image
                         className={ mainStyles.imageLayout }
-                        src={ meetInfo.meetImage === null ? meetDefaultImage : meetInfo.meetImage }
+                        src={typeof meetInfo !== 'undefined' && meetInfo.meetImage !== null ?
+                            meetInfo.meetImage
+                            :
+                            meetDefaultImage}
                         alt="meet Image"
-                        width={56}
-                        height={56}
+                        fill={true}
+                        sizes="(max-width: 56px)"
                     />
                 </div>
                 <div
@@ -53,8 +58,8 @@ export default function MeetInfoCard({params}: Props) {
                 >
                     <h5
                         className={ fontStyles.semibold }
-                    >{ meetInfo.meetName }</h5>
-                    <p>since { createdDate.format("YYYY.MM.DD") }</p>
+                    >{typeof meetInfo !== 'undefined' && meetInfo.meetName }</h5>
+                    <p>since {typeof meetInfo !== 'undefined' && dayjs(meetInfo.createdAt).format("YYYY.MM.DD") }</p>
                 </div>
             </div>
             <button>
