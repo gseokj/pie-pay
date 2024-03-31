@@ -5,12 +5,16 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pay.pie.domain.account.entity.Account;
+import com.pay.pie.domain.account.repository.AccountRepository;
 import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.dto.UpdateMemberRequest;
+import com.pay.pie.domain.member.dto.response.AccountResponse;
 import com.pay.pie.domain.member.dto.response.MemberDetailResponse;
 import com.pay.pie.domain.member.entity.Member;
 import com.pay.pie.domain.member.exception.MemberException;
 import com.pay.pie.domain.member.exception.MemberExceptionCode;
+import com.pay.pie.global.util.bank.BankUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
+	private final AccountRepository accountRepository;
+	private final BankUtil bankUtil;
 
 	@Override
 	@Transactional
@@ -52,6 +58,17 @@ public class MemberServiceImpl implements MemberService {
 	public Member findMemberById(Long id) {
 		return memberRepository.findById(id)
 			.orElseThrow(() -> new MemberException(MemberExceptionCode.NOT_FOUND_MEMBER));
+	}
+
+	@Override
+	public AccountResponse getMemberAccount(Long memberId, String apiKey) {
+
+		Member findMember = memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberException(MemberExceptionCode.NOT_FOUND_MEMBER));
+
+		// Account
+
+		return null;
 	}
 
 }

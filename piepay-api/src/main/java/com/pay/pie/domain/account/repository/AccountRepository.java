@@ -12,7 +12,7 @@ import com.pay.pie.domain.member.entity.Member;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
-	Optional<Account> findAccountByMember(Member member);
+	Optional<Account> findAccountByMemberId(Long memberId);
 
 	List<Account> findAllByMember(Member member);
 }
