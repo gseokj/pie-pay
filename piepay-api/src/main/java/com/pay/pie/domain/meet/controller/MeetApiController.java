@@ -1,7 +1,11 @@
 package com.pay.pie.domain.meet.controller;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
@@ -120,13 +124,13 @@ public class MeetApiController {
 				Meet meet = meetService.findById(memberMeet.getMeet().getId()).orElse(null);
 				if (meet != null) {
 					LocalDateTime latestUpdateOnMeet;
-					if ( payService.findRecentPayByMeetId(meet.getId()) != null) {
+					if (payService.findRecentPayByMeetId(meet.getId()) != null) {
 						latestUpdateOnMeet = payService.findRecentPayByMeetId(meet.getId()).getUpdatedAt();
 					} else {
 						latestUpdateOnMeet = meet.getUpdatedAt();
 					}
 					return new AllMemberMeetResponse(memberMeet, memberMeetService.findAllByMeet(meet).size(),
-							latestUpdateOnMeet);
+						latestUpdateOnMeet);
 				} else {
 					// Member가 없는 경우에 대한 처리
 					return null;
@@ -136,8 +140,8 @@ public class MeetApiController {
 			.collect(Collectors.toList());
 
 		Collections.sort(meetResponses, Comparator
-				.comparing(AllMemberMeetResponse::isTopFixed, Comparator.reverseOrder())
-				.thenComparing(AllMemberMeetResponse::getUpdated_at, Comparator.reverseOrder())
+			.comparing(AllMemberMeetResponse::isTopFixed, Comparator.reverseOrder())
+			.thenComparing(AllMemberMeetResponse::getUpdated_at, Comparator.reverseOrder())
 		);
 
 		return BaseResponse.success(
@@ -152,8 +156,9 @@ public class MeetApiController {
 			.stream()
 			.map(pay -> {
 				Order order = orderRepository.findByPayId(pay.getId());
-				return new PayResponse(pay, new OrderOfPayResponse(order));
+				return new PayResponse(pay, order != null ? new OrderOfPayResponse(order) : null);
 			})
+			.filter(payResponse -> payResponse.getOrders() != null)
 			.sorted(Comparator.comparing(PayResponse::getUpdatedAt).reversed()) // updated_at을 기준으로 내림차순으로 정렬
 			.toList();
 
