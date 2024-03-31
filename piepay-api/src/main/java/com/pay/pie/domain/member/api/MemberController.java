@@ -85,13 +85,5 @@ public class MemberController {
 		);
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@GetMapping("/member/account")
-	public ResponseEntity<BaseResponse<AccountResponse>> findMemberAccount(
-		@AuthenticationPrincipal SecurityUserDto securityUserDto
-	) {
-
-	}
-
 }
 

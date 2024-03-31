@@ -83,6 +83,7 @@ public class MemberCertificationServiceImpl implements MemberCertificationServic
 			.accountNo(accountVerificationCheckRequest.accountNo())
 			.member(memberRepository.findById(securityUserDto.getMemberId())
 				.orElseThrow(() -> new MemberException(MemberExceptionCode.NOT_FOUND_MEMBER)))
+			.isMainAccount(true)
 			.build();
 		accountRepository.save(account);
 	}

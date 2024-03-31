@@ -19,6 +19,5 @@ public interface MemberService {
 
 	Member findMemberById(Long id);
 
-	AccountResponse getMemberAccount(Long memberId, String apiKey);
 
 }
