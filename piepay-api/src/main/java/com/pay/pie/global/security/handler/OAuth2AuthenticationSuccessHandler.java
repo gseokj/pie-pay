@@ -57,7 +57,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 				.toUriString();
 			log.info("redirect 준비");
 			// 로그인 확인 페이지로 리다이렉트 시킨다.
-			response.setHeader("Set-Cookie", cookie.toString());
+			response.setHeader("Set-Cookie", cookie.toString() );
 			getRedirectStrategy().sendRedirect(request, response, redirectURI);
 
 		} else {
