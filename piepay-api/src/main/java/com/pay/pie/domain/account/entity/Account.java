@@ -37,11 +37,15 @@ public class Account extends BaseEntity {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
+	@Column(name = "is_main_account")
+	private boolean mainAccount;
+
 	@Builder
-	public Account(String bankCode, String accountNo, Member member) {
+	public Account(String bankCode, String accountNo, Member member, boolean isMainAccount) {
 		this.bankCode = bankCode;
 		this.accountNo = accountNo;
 		this.member = linkMember(member);
+		this.mainAccount = isMainAccount;
 	}
 
 	public Member linkMember(Member member) {

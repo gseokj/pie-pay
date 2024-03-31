@@ -18,6 +18,7 @@ import com.pay.pie.domain.member.application.MemberServiceImpl;
 import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.dto.MemberResponse;
 import com.pay.pie.domain.member.dto.UpdateMemberRequest;
+import com.pay.pie.domain.member.dto.response.AccountResponse;
 import com.pay.pie.domain.member.dto.response.MemberDetailResponse;
 import com.pay.pie.domain.member.entity.Member;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
@@ -36,9 +37,6 @@ public class MemberController {
 	private final MemberMeetService memberMeetService;
 	private final MemberRepository memberRepository;
 
-	// 모임내에 회원을 조회하는 api 같습니다.
-	// MemberController 는 순수하게 member 와 관련된 요청만 들어와야 해요
-	// MemberMeet 이나 Meet 으로 옮겨주세요 !!
 	@GetMapping("/meet/{meetId}/member")
 	public ResponseEntity<BaseResponse<List<MemberResponse>>> findMemberMeet(@PathVariable long meetId) {
 		List<MemberResponse> memberResponses = memberMeetService.findMemberByMeetId(meetId)
@@ -86,5 +84,6 @@ public class MemberController {
 			memberService.updateMemberDetail(securityUserDto.getMemberId(), request)
 		);
 	}
+
 }
 
