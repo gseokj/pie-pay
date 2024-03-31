@@ -1,4 +1,11 @@
-import {CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse, GetMyMeetsResponse} from "@/model/meet";
+import {
+    CreateMeetResponse,
+    CreateMeetRequest,
+    GetMeetInfoResponse,
+    GetMyMeetsResponse,
+    Member,
+    MemberResponse
+} from "@/model/meet";
 import authAxios from "@/util/authAxios";
 import {QueryFunction} from "@tanstack/query-core";
 import axios from "axios";
@@ -54,6 +61,27 @@ export const getMyMeets:QueryFunction<GetMyMeetsResponse> = async ({ queryKey })
         throw new Error('Failed to get data');
     }
 };
+
+export const getMeetMembers:QueryFunction<MemberResponse> = async ({ queryKey }) => {
+    const [_, meetId, token] = queryKey;
+    try {
+        const response = await authAxios.get(`api/meet/${meetId}/member`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Failed to get Meet Member data', error);
+        throw new Error('Failed to get Meet Member data');
+    }
+}
+
+
+
+
+
+
 
 export const refreshRequest = async (token: string) => {
     try {

@@ -24,7 +24,7 @@ interface GetMeetInfoResponse {
     status: number;
 }
 
-interface MeetInMeets {
+interface MeetData {
     meet: Meet;
     topFixed: boolean;
 }
@@ -32,7 +32,25 @@ interface MeetInMeets {
 interface GetMyMeetsResponse {
     status: number;
     message: string;
-    result: MeetInMeets[];
+    result: MeetData[];
 }
 
-export type { Meet, CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse, GetMyMeetsResponse };
+interface Member {
+    memberId: number;
+    nickname: string;
+    profileImage: string|null;
+    phoneNumber: string|null;
+    memberRole: string;
+    email: string;
+}
+
+interface MemberResponse {
+    message: string;
+    result: Member[];
+    status: number;
+}
+
+export type {
+    Meet, MeetData, CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse, GetMyMeetsResponse,
+    Member, MemberResponse
+};

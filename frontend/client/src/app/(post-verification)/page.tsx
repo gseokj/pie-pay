@@ -14,7 +14,7 @@ import * as styles from "@/styles/main/main.css";
 import * as fontStyles from "@/styles/fonts.css";
 import {getMeetInfo, getMyMeets} from "@/api/meet";
 import {QueryClient, useQueryClient} from "@tanstack/react-query";
-import {GetMyMeetsResponse} from "@/model/meet";
+import {GetMyMeetsResponse, Meet, MeetData} from "@/model/meet";
 import {getCookie} from "@/util/getCookie";
 
 
@@ -279,11 +279,13 @@ export interface Dummy {
 export default function Main() {
     const accessToken = getCookie('accessToken');
     const queryClient = useQueryClient();
-    const myMeets: GetMyMeetsResponse|undefined = queryClient.getQueryData(['myMeets', accessToken]);
-    console.log(myMeets, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    const meetData: GetMyMeetsResponse|undefined = queryClient.getQueryData(['myMeets', accessToken]);
+    console.log(meetData, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    const myMeets = meetData?.result;
+    console.log('myMeets', myMeets);
 
-    const [joinModalVisibility, setJoinModalVisibility] = useState(false)
-    const [createModalVisibility, setCreateModalVisibility] = useState(false)
+    const [joinModalVisibility, setJoinModalVisibility] = useState(false);
+    const [createModalVisibility, setCreateModalVisibility] = useState(false);
 
     const joinModalOn = () => {
         console.log('clicked')
@@ -303,19 +305,19 @@ export default function Main() {
                     <h3 className={fontStyles.bold}>모임</h3>
                     <p>{dummys.length}</p>
                 </div>
-                {dummys.length !== 0 &&
+                {typeof myMeets !== 'undefined' && myMeets.length !== 0 &&
                     <button
                         className={`${fontStyles.bold}`}
                         onClick={joinModalOn}
                     >모임 입장</button>
                 }
             </div>
-            {dummys.map((dummy: Dummy) => {
+            {typeof myMeets !== 'undefined' && myMeets.map((meet: MeetData) => {
             return (
-                <MeetGroup dummy={dummy} key={dummy.meetId} />
+                <MeetGroup meetData={meet} key={meet.meet.meetId} />
             )
             })}
-            {dummys.length == 0 ? <MeetJoinCard /> : <MeetJoinButton onClick={joinModalOn} />}
+            {typeof myMeets !== 'undefined' && myMeets.length === 0 ? <MeetJoinCard /> : <MeetJoinButton onClick={joinModalOn} />}
             <MeetCreateButton onClick={createModalOn} />
             <MeetJoinModal isJoinModalOn={joinModalVisibility} clickJoinModal={() => { setJoinModalVisibility(false)}} clickExitModal={()=>{setJoinModalVisibility(false)}}/>
             <MeetCreateModal isCreateMeetModalOn={createModalVisibility} clickCreate={()=>{setCreateModalVisibility(false)}} clickExitCreate={()=>{setCreateModalVisibility(false)}} />

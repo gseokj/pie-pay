@@ -8,6 +8,7 @@ import backIcon from "@/assets/icons/back.svg";
 import * as fontStyles from "@/styles/fonts.css";
 import {useRouter} from "next/navigation";
 import {faker} from "@faker-js/faker";
+import MemberCard from "@/app/(post-verification)/[meetId]/member/component/MemberCard";
 
 
 type Props = {
@@ -90,6 +91,7 @@ export default function Member({params}: Props) {
             <div className={mainStyles.categoryContainer.smallMargin}>
                 <h5>멤버 {memberList.length}</h5>
             </div>
+            <MemberCard />
         </section>
     );
 }

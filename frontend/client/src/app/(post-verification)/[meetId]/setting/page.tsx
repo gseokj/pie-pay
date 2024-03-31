@@ -110,7 +110,10 @@ export default function MeetSetting({params}: Props) {
                 </div>
                 <div className={mainStyles.line}></div>
             </article>
-            <article className={meetStyles.setTableAccordion}>
+            <article
+                className={meetStyles.setTableAccordion}
+                onClick={onClickAccordion}
+            >
                 <h3>고급 설정</h3>
                 <button className="dropDownButton" onClick={onClickAccordion}>
                     {isDropDown ?
