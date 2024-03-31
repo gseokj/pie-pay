@@ -61,14 +61,19 @@ public class MemberMeetApiController {
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@PatchMapping("/meet/{meetId}/favorite")
 	@Transactional
-	public ResponseEntity<BaseResponse<MemberMeet>> favoriteMemberMeet(@PathVariable Long meetId,
+	public ResponseEntity<BaseResponse<String>> favoriteMemberMeet(@PathVariable Long meetId,
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
 		Long memberId = securityUserDto.getMemberId();
-		MemberMeet memberMeet = memberMeetService.favoriteMemberMeet(memberId, meetId);
-
+		boolean favorite = memberMeetService.favoriteMemberMeet(memberId, meetId);
+		String returnData;
+		if (favorite) {
+			returnData = "즐겨찾기에 추가되었습니다.";
+		} else {
+			returnData = "즐겨찾기에서 해제되었습니다.";
+		}
 		return BaseResponse.success(
 			SuccessCode.UPDATE_SUCCESS,
-			memberMeet
+			returnData
 		);
 	}
 }
