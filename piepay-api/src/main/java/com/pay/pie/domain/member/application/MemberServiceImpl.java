@@ -1,5 +1,6 @@
 package com.pay.pie.domain.member.application;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -58,4 +59,7 @@ public class MemberServiceImpl implements MemberService {
 			.orElseThrow(() -> new MemberException(MemberExceptionCode.NOT_FOUND_MEMBER));
 	}
 
+	public List<Object[]> findPayInfoByMeetId(long meetId) {
+		return memberRepository.findPayInfoByMeetId(meetId);
+	}
 }
