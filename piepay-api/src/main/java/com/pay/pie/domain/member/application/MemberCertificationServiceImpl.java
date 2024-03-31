@@ -48,18 +48,15 @@ public class MemberCertificationServiceImpl implements MemberCertificationServic
 
 	@Override
 	@Transactional
-	public void checkCertificationNumber(
-		PhoneVerificationCheckRequest phoneVerificationCheckRequest,
-		SecurityUserDto securityUserDto
-	) {
+	public void checkCertificationNumber(PhoneVerificationCheckRequest phoneVerificationCheckRequest,
+		SecurityUserDto securityUserDto) {
 		String phoneNumber = phoneVerificationCheckRequest.phoneNumber();
 
-		if (!redisUtil.getData(phoneNumber)
-			.equals(phoneVerificationCheckRequest.verificationNumber())) {
+		if (!redisUtil.getData(phoneNumber).equals(phoneVerificationCheckRequest.verificationNumber())) {
 			throw new MemberException(MemberExceptionCode.MISMATCH_PHONE_CERTIFICATION_NUMBER);
 		}
 		Member findMember = memberRepository.findById(securityUserDto.getMemberId())
-			.orElseThrow(IllegalAccessError::new);
+			.orElseThrow(() -> new MemberException(MemberExceptionCode.NOT_FOUND_MEMBER));
 
 		findMember.registerPhoneNumber(phoneNumber);
 	}
@@ -69,18 +66,13 @@ public class MemberCertificationServiceImpl implements MemberCertificationServic
 		AccountVerificationRequest accountVerificationRequest,
 		SecurityUserDto securityUserDto
 	) {
-		bankUtil.transferAccountOneWon(
-			accountVerificationRequest.bankCode(),
-			accountVerificationRequest.accountNo(),
-			securityUserDto.getUserKey()
-		);
+		bankUtil.transferAccountOneWon(accountVerificationRequest.bankCode(), accountVerificationRequest.accountNo(),
+			securityUserDto.getUserKey());
 	}
 
 	@Override
-	public void checkCertificationWord(
-		AccountVerificationCheckRequest accountVerificationCheckRequest,
-		SecurityUserDto securityUserDto
-	) {
+	public void checkCertificationWord(AccountVerificationCheckRequest accountVerificationCheckRequest,
+		SecurityUserDto securityUserDto) {
 		String verificationWord = accountVerificationCheckRequest.verificationWord();
 		if (!verificationWord.equals("일촉즉발")) {
 			throw new MemberException(MemberExceptionCode.MISMATCH_ACCOUNT_CERTIFICATION_WORD);
@@ -89,20 +81,17 @@ public class MemberCertificationServiceImpl implements MemberCertificationServic
 		Account account = Account.builder()
 			.bankCode(accountVerificationCheckRequest.bankCode())
 			.accountNo(accountVerificationCheckRequest.accountNo())
-			.member(
-				memberRepository.findById(securityUserDto.getMemberId())
-					.orElseThrow(IllegalAccessError::new))
+			.member(memberRepository.findById(securityUserDto.getMemberId())
+				.orElseThrow(() -> new MemberException(MemberExceptionCode.NOT_FOUND_MEMBER)))
+			.isMainAccount(true)
 			.build();
 		accountRepository.save(account);
 	}
 
 	@Override
 	public void setPaymentPassword(PaymentPasswordRequest paymentPasswordRequest, SecurityUserDto securityUserDto) {
-		redisUtil.setData(
-			securityUserDto.getEmail(),
-			paymentPasswordRequest.paymentPassword(),
-			TimeUnit.MINUTES.toMillis(1)
-		);
+		redisUtil.setData(securityUserDto.getEmail(), paymentPasswordRequest.paymentPassword(),
+			TimeUnit.MINUTES.toMillis(1));
 	}
 
 	@Override
