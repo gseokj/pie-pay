@@ -76,7 +76,7 @@ public class MemberController {
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@PutMapping("/member")
-	public ResponseEntity<BaseResponse<MemberDetailResponse>> updateMember(
+	public ResponseEntity<BaseResponse<MemberDetailResponse>> updateMember (
 		@AuthenticationPrincipal SecurityUserDto securityUserDto,
 		@RequestBody UpdateMemberRequest request
 	) {
