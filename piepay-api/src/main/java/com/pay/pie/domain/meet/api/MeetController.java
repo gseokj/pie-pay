@@ -1,4 +1,4 @@
-package com.pay.pie.domain.meet.controller;
+package com.pay.pie.domain.meet.api;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.pay.pie.domain.meet.dto.AddMeetRequest;
 import com.pay.pie.domain.meet.dto.HighlightResponse;
@@ -26,10 +28,10 @@ import com.pay.pie.domain.meet.dto.MeetResponse;
 import com.pay.pie.domain.meet.dto.MeetStatusResponse;
 import com.pay.pie.domain.meet.dto.PayResponse;
 import com.pay.pie.domain.meet.dto.UpdateInvitationRequest;
-import com.pay.pie.domain.meet.dto.UpdateMeetImageRequest;
-import com.pay.pie.domain.meet.dto.UpdateMeetNameRequest;
+import com.pay.pie.domain.meet.dto.request.UpdateMeetImageRequest;
+import com.pay.pie.domain.meet.dto.request.UpdateMeetNameRequest;
+import com.pay.pie.domain.meet.dto.response.MeetDetailResponse;
 import com.pay.pie.domain.meet.entity.Meet;
-import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.meet.service.MeetService;
 import com.pay.pie.domain.memberMeet.dto.AddMemberMeetRequest;
 import com.pay.pie.domain.memberMeet.dto.AllMemberMeetResponse;
@@ -51,17 +53,56 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @RestController // HTTP Response Body에 객체 데이터를 JSON 형식으로 반환하는 컨트롤러
-public class MeetApiController {
+public class MeetController {
 
 	private final MeetService meetService;
 	private final MemberMeetService memberMeetService;
-	private final MeetRepository meetRepository;
 	private final PayServiceImpl payService;
 	private final MemberMeetRepository memberMeetRepository;
 	private final OrderRepository orderRepository;
 
+	// 모임 상세 정보 조회
+	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
+	@GetMapping("/meet/{meetId}")
+	public ResponseEntity<BaseResponse<MeetDetailResponse>> getMeet(@PathVariable long meetId) {
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			meetService.getMeetInfo(meetId)
+		);
+	}
+
+	// 모임 이름 변경
+	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
+	@PutMapping("/meet/name")
+	public ResponseEntity<BaseResponse<MeetDetailResponse>> updateMeetName(@RequestBody UpdateMeetNameRequest request) {
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			meetService.changeMeetName(request)
+		);
+	}
+
+	// 모임 이미지 등록
+	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
+	@PutMapping("/meet/image")
+	public ResponseEntity<BaseResponse<MeetDetailResponse>> updateMeetImage(
+		@RequestPart(value = "image", required = false) MultipartFile image,
+		@RequestPart(value = "request")UpdateMeetImageRequest request
+	) {
+		return BaseResponse.success(
+			SuccessCode.UPDATE_SUCCESS,
+			meetService.changeMeetImage(image, request)
+		);
+	}
+
+
+
+
+
+
+
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	// HTTP 메서드가 POST일 때 전달받은 URL과 동일하면 매서드로 매핑
 	@PostMapping("/meet")
 	// 요청 본문 값 매핑
 	public ResponseEntity<BaseResponse<MeetResponse>> addMeet(@RequestBody AddMeetRequest request,
@@ -85,28 +126,6 @@ public class MeetApiController {
 	public ResponseEntity<BaseResponse<Meet>> updateInvitation(@PathVariable long id,
 		UpdateInvitationRequest request) {
 		Meet updatedMeet = meetService.updateMeetInvitation(id, request);
-
-		return BaseResponse.success(
-			SuccessCode.UPDATE_SUCCESS,
-			updatedMeet);
-	}
-
-	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@PutMapping("/meet/{id}/image")
-	public ResponseEntity<BaseResponse<Meet>> updateMeetImage(@PathVariable long id,
-		@RequestBody UpdateMeetImageRequest request) {
-		Meet updatedMeet = meetService.updateMeetImage(id, request);
-
-		return BaseResponse.success(
-			SuccessCode.UPDATE_SUCCESS,
-			updatedMeet);
-	}
-
-	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@PutMapping("/meet/{id}/name")
-	public ResponseEntity<BaseResponse<Meet>> updateMeetName(@PathVariable long id,
-		@RequestBody UpdateMeetNameRequest request) {
-		Meet updatedMeet = meetService.updateMeetName(id, request);
 
 		return BaseResponse.success(
 			SuccessCode.UPDATE_SUCCESS,
@@ -181,16 +200,6 @@ public class MeetApiController {
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
 			meet);
-	}
-
-	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@GetMapping("/meet/{meetId}")
-	public ResponseEntity<BaseResponse<MeetResponse>> getMeet(@PathVariable long meetId) {
-		Meet meet = meetService.getMeet(meetId);
-		int memberCount = memberMeetService.findAllByMeet(meet).size();
-		return BaseResponse.success(
-			SuccessCode.SELECT_SUCCESS,
-			new MeetResponse(meet, memberCount));
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
