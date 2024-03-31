@@ -10,17 +10,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.pay.pie.domain.member.application.MemberServiceImpl;
 import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.dto.MemberResponse;
 import com.pay.pie.domain.member.dto.UpdateMemberRequest;
-import com.pay.pie.domain.member.dto.response.AccountResponse;
 import com.pay.pie.domain.member.dto.response.MemberDetailResponse;
 import com.pay.pie.domain.member.entity.Member;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
@@ -100,6 +102,18 @@ public class MemberController {
 		return BaseResponse.success(
 			SuccessCode.UPDATE_SUCCESS,
 			memberService.updateMemberDetail(securityUserDto.getMemberId(), request)
+		);
+	}
+
+	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
+	@PatchMapping("/member/profileImage")
+	public ResponseEntity<BaseResponse<MemberDetailResponse>> changeMemberProfileImage(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto,
+		@RequestPart(value = "image", required = false) MultipartFile image
+	) {
+		return BaseResponse.success(
+			SuccessCode.UPDATE_SUCCESS,
+			memberService.updateMemberProfileImage(image, securityUserDto.getMemberId())
 		);
 	}
 
