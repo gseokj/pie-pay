@@ -126,7 +126,7 @@ public class MeetApiController {
 					if ( payService.findRecentPayByMeetId(meet.getId()) != null) {
 						latestUpdateOnMeet = payService.findRecentPayByMeetId(meet.getId()).getUpdatedAt();
 					} else {
-						latestUpdateOnMeet = meet.getCreatedAt();
+						latestUpdateOnMeet = null;
 					}
 					return new AllMemberMeetResponse(memberMeet, memberMeetService.findAllByMeet(meet).size(),
 							latestUpdateOnMeet);
