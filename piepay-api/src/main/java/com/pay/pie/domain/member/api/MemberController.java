@@ -88,7 +88,7 @@ public class MemberController {
 
 		return BaseResponse.success(
 			SuccessCode.UPDATE_SUCCESS,
-			memberService.updateMemberDetail(securityUserDto.getMemberId(), request)
+			memberService.updateMemberDetail(securityUserDto.getMemberId(), request )
 		);
 	}
 
