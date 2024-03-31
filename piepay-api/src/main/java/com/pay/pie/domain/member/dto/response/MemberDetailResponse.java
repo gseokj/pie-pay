@@ -6,6 +6,7 @@ import lombok.Builder;
 
 @Builder
 public record MemberDetailResponse(
+	Long memberId,
 	String nickName,
 	String profileImage,
 	String phoneNumber,
@@ -18,6 +19,7 @@ public record MemberDetailResponse(
 			.profileImage(member.getProfileImage())
 			.phoneNumber(member.getPhoneNumber())
 			.email(member.getEmail())
+			.memberId(member.getId())
 			.build();
 	}
 }

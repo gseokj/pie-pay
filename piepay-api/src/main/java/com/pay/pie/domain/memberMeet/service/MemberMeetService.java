@@ -74,7 +74,7 @@ public class MemberMeetService {
 		memberMeetRepository.deleteById(memberMeet.getId());
 	}
 
-	public MemberMeet favoriteMemberMeet(long memberId, long meetId) {
+	public boolean favoriteMemberMeet(long memberId, long meetId) {
 		Meet meet = meetRepository.findById(meetId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 meetId을 가진 Meet을 찾을 수 없음"));
 		Member member = memberRepository.findById(memberId)
@@ -84,7 +84,8 @@ public class MemberMeetService {
 
 		memberMeet.setTopFixed(!memberMeet.isTopFixed());
 
-		return memberMeetRepository.save(memberMeet);
+//		return memberMeetRepository.save(memberMeet);
+		return memberMeet.isTopFixed();
 	}
 
 	public List<MemberMeet> findAllByMeet(Meet meet) {

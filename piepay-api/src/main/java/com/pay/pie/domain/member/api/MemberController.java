@@ -1,7 +1,9 @@
 package com.pay.pie.domain.member.api;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
@@ -41,16 +43,32 @@ public class MemberController {
 
 	@GetMapping("/meet/{meetId}/member")
 	public ResponseEntity<BaseResponse<List<MemberResponse>>> findMemberMeet(@PathVariable long meetId) {
+		AtomicInteger idx = new AtomicInteger(0); // AtomicInteger를 사용하여 idx를 선언하고 초기화
+		List<Object[]> membersPayInfo = memberService.findPayInfoByMeetId(meetId);
 		List<MemberResponse> memberResponses = memberMeetService.findMemberByMeetId(meetId)
 			.stream()
 			.map(memberMeet -> {
-				Member member = memberRepository.findById(memberMeet.getMember().getId()).orElse(null);
+				Member member;
+				Long payCount;
+				Long payTotal;
+//				Member member = memberRepository.findById(memberMeet.getMember().getId()).orElse(null);
+				if (!membersPayInfo.isEmpty()) {
+					member = memberService.findMemberById((Long)membersPayInfo.get(idx.get())[0]);
+					payCount = (Long)membersPayInfo.get(idx.get())[1];
+					payTotal = (Long) membersPayInfo.get(idx.getAndIncrement())[2];
+				} else {
+					member = memberMeet.getMember();
+					payCount = 0L;
+					payTotal = 0L;
+				}
 				if (member != null) {
-					return new MemberResponse(member);
+					return new MemberResponse(member, payCount,
+							payTotal);
 				} else {
 					// Member가 없는 경우에 대한 처리
 					return null;
 				}
+
 			})
 			.filter(Objects::nonNull) // null이 아닌 것들만 필터링
 			.collect(Collectors.toList());
