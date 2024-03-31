@@ -13,14 +13,4 @@ import com.pay.pie.domain.member.entity.Member;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 	Optional<Member> findByEmail(String email);
 
-
-	@Query(
-		"""
-			SELECT m
-			from Member m
-			Join FETCH m.accountList
-			WHERE m.id = :memberId
-		"""
-	)
-	Member findMemberAccount(@Param("memberId") Long memberId);
 }
