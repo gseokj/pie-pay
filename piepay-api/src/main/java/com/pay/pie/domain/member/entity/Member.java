@@ -93,7 +93,10 @@ public class Member extends BaseEntity {
 	}
 
 	public void updateMember(UpdateMemberRequest request) {
-		this.profileImage = request.getProfileImage();
 		this.nickname = request.getNickname();
+	}
+
+	public void updateMemberProfileImage(String imageUrl) {
+		this.profileImage = imageUrl;
 	}
 }
