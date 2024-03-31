@@ -138,3 +138,7 @@ export const visibility = styleVariants({
         display: "none"
     }]
 });
+
+export const top = style({
+    zIndex: 99
+})

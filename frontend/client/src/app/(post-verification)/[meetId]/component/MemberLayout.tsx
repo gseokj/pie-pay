@@ -8,73 +8,28 @@ import {faker} from "@faker-js/faker";
 import Image from "next/image";
 import addMemberIcon from "@/assets/icons/addMember.svg";
 import moreIcon from "@/assets/icons/moreDots.svg";
-import {useEffect, useRef, useState} from "react";
+import memberDefaultImage from "@/assets/images/member_default.svg";
+import {ReactNode, useEffect, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
+import {Member, MemberResponse} from "@/model/meet";
+import {useQueryClient} from "@tanstack/react-query";
+import {getCookie} from "@/util/getCookie";
 
 
-interface MemberProps {
-    meetId: string;
+type Props = {
+    params: { meetId: string },
 }
 
 
-const memberList: Member[] = [
-    {
-        memberId: 1,
-        memberNickname: "kim",
-        memberProfile: faker.image.avatar()
-    },
-    {
-        memberId: 2,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
-    {
-        memberId: 3,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
-    {
-        memberId: 4,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
+export default function MemberLayout({params}: Props) {
+    const { meetId } = params;
 
-    {
-        memberId: 5,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
+    const queryClient = useQueryClient();
+    const token = getCookie('accessToken');
+    const memberResponse: MemberResponse|undefined = queryClient.getQueryData(['members', meetId, token]);
+    const memberList = memberResponse?.result;
+    console.log(memberResponse, memberList);
 
-    {
-        memberId: 6,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
-    {
-        memberId: 7,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
-    {
-        memberId: 8,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
-    {
-        memberId: 9,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
-]
-
-interface Member {
-    memberId: number;
-    memberNickname: string;
-    memberProfile: string;
-}
-
-
-export default function MemberLayout({ meetId }: MemberProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [showIcon, setShowIcon] = useState<boolean>(false);
     const [visibleMembers, setVisibleMembers] = useState<Member[]>([]);
@@ -94,8 +49,10 @@ export default function MemberLayout({ meetId }: MemberProps) {
             const imageWidth = 36;
             const maxVisibleImages = Math.floor(containerWidth / imageWidth);
 
-            setVisibleMembers(memberList.slice(0, maxVisibleImages));
-            setShowIcon(memberList.length > maxVisibleImages);
+            if (typeof memberList !== 'undefined') {
+                setVisibleMembers(memberList.slice(0, maxVisibleImages));
+                setShowIcon(memberList.length > maxVisibleImages);
+            }
         }
     };
 
@@ -107,7 +64,7 @@ export default function MemberLayout({ meetId }: MemberProps) {
     return (
         <section>
             <div className={ mainStyles.categoryContainer.smallMargin }>
-                <h5>멤버 {memberList.length}</h5>
+                <h5>멤버 {typeof memberList !== 'undefined' && memberList.length}</h5>
                 <button
                     className={ fontStyles.bold }
                     onClick={onClickPush}
@@ -118,12 +75,17 @@ export default function MemberLayout({ meetId }: MemberProps) {
                     ref={containerRef}
                     className={ mainStyles.containers.imageContainer }
                 >
-                    { visibleMembers.map((member) => {
-                        return <img
+                    { visibleMembers.map((member: Member) => {
+                        return <Image
                             className={ mainStyles.imageLayout }
-                            src={member.memberProfile}
+                            src={member.profileImage !== null ?
+                                member.profileImage
+                                :
+                                memberDefaultImage
+                            }
                             alt="member image"
-                            height={36} width={36}
+                            fill={true}
+                            sizes="(max-width: 40px)"
                             key={member.memberId}
                         />
                     })}

@@ -2,7 +2,7 @@
 
 
 import {ReactNode, useEffect, useState} from "react";
-import {Meet} from "@/model/meet";
+import {Meet, MeetInfoResponse} from "@/model/meet";
 import dayjs from "dayjs";
 import * as mainStyles from "@/styles/main/main.css";
 import * as fontStyles from "@/styles/fonts.css";
@@ -17,6 +17,9 @@ import dropUpIcon from "@/assets/icons/dropup.svg";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 import {setTableAccordion} from "@/styles/meet/meetMain.css";
+import {useMutation, UseMutationResult, useQueryClient} from "@tanstack/react-query";
+import {getCookie} from "@/util/getCookie";
+import {deleteMeet, getMyMeets} from "@/api/meet";
 
 
 type Props = {
@@ -36,13 +39,23 @@ const dummy: Meet = {
 
 export default function MeetSetting({params}: Props) {
     const {meetId} = params;
+    const queryClient = useQueryClient();
     const router = useRouter();
+
+    const token = getCookie('accessToken');
+    const [ meetInfo, setMeetInfo ] = useState<MeetInfoResponse>();
     const [ meetName, setMeetName ] = useState('불러오는 중..');
     const [ isChange, setIsChange ] = useState(false);
     const [ isDropDown, setIsDropDown ] = useState(false);
 
+
+
     useEffect(() => {
-        setMeetName(dummy.meetName);
+        const meetInfo: MeetInfoResponse|undefined = queryClient.getQueryData(['meetInfo', meetId, token]);
+        if (typeof meetInfo !== 'undefined') {
+            setMeetName(meetInfo?.result.meetName);
+            setMeetInfo(meetInfo);
+        }
     }, []);
 
     const onClickBack = () => {
@@ -62,6 +75,16 @@ export default function MeetSetting({params}: Props) {
         setIsDropDown(!isDropDown);
     }
 
+    const onClickDelete = async () => {
+        if (typeof token === 'string') {
+            await deleteMeet(meetId, token);
+            // await queryClient.invalidateQueries({ queryKey: ['myMeets', token], refetchType: 'active'});
+            router.replace('/');
+        } else {
+            console.error('can not find token');
+        }
+    }
+
     return (
         <section>
             <header className={mainStyles.detailHeader}>
@@ -74,7 +97,12 @@ export default function MeetSetting({params}: Props) {
                 <div className={meetStyles.setImageContainer}>
                     <Image
                         className={mainStyles.imageLayout}
-                        src={meetDefaultImage} alt="meet default image" width={96} height={96}/>
+                        src={typeof meetInfo !== 'undefined' && meetInfo.result.meetImage !== null ?
+                            meetInfo.result.meetImage
+                            :
+                            meetDefaultImage
+                        }
+                        alt="meet image" width={96} height={96}/>
                     <button className={mainStyles.buttonContainerRound}>
                         <Image src={editWhiteIcon} alt="edit white icon" width={24} height={24}/>
                     </button>
@@ -101,12 +129,12 @@ export default function MeetSetting({params}: Props) {
                 <div className={mainStyles.line}></div>
                 <div className={meetStyles.setTableInner}>
                     <h5>시작일</h5>
-                    <p>{dayjs(dummy.createdAt).format("YYYY년 M월 DD일")}</p>
+                    <p>{typeof meetInfo !== 'undefined' && dayjs(meetInfo.result.createdAt).format("YYYY년 M월 DD일")}</p>
                 </div>
                 <div className={mainStyles.line}></div>
                 <div className={meetStyles.setTableInner}>
                     <h5>멤버 수</h5>
-                    <p>{dummy.membersCount}명</p>
+                    <p>{typeof meetInfo !== 'undefined' && meetInfo.result.membersCount}명</p>
                 </div>
                 <div className={mainStyles.line}></div>
             </article>
@@ -125,10 +153,12 @@ export default function MeetSetting({params}: Props) {
             </article>
             <div className={meetStyles.setAccordionButtonContainer}>
                 <button
-                    className={`${buttonStyles.mainButton.settingButton}
-                    ${isDropDown ? mainStyles.visibility.visible : mainStyles.visibility.none}
-                    ${isDropDown ? meetStyles.opacity.full : meetStyles.opacity.none}
+                    className={`
+                        ${buttonStyles.mainButton.settingButton}
+                        ${isDropDown ? mainStyles.visibility.visible : mainStyles.visibility.none}
+                        ${isDropDown ? meetStyles.opacity.full : meetStyles.opacity.none}
                     `}
+                    onClick={onClickDelete}
                 >모임 나가기</button>
             </div>
             <div className={mainStyles.line}></div>

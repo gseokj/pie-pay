@@ -18,7 +18,7 @@ interface Meet {
     membersCount: number;
 }
 
-interface GetMeetInfoResponse {
+interface MeetInfoResponse {
     message: string;
     result: Meet;
     status: number;
@@ -27,6 +27,7 @@ interface GetMeetInfoResponse {
 interface MeetData {
     meet: Meet;
     topFixed: boolean;
+    updated_at: string|null;
 }
 
 interface GetMyMeetsResponse {
@@ -50,7 +51,14 @@ interface MemberResponse {
     status: number;
 }
 
+interface DefaultResponse {
+    status: number;
+    message: string;
+    result: null;
+}
+
 export type {
-    Meet, MeetData, CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse, GetMyMeetsResponse,
-    Member, MemberResponse
+    Meet, MeetData, CreateMeetResponse, CreateMeetRequest, MeetInfoResponse, GetMyMeetsResponse,
+    Member, MemberResponse,
+    DefaultResponse
 };

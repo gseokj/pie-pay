@@ -5,7 +5,7 @@ import {ReactNode} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import {getCookie} from "@/util/getCookie";
 import MeetInfoCard from "@/app/(post-verification)/[meetId]/component/MeetInfoCard";
-import {GetMeetInfoResponse, Meet} from "@/model/meet";
+import {MeetInfoResponse, Meet} from "@/model/meet";
 import InviteMemberCard from "@/app/(post-verification)/[meetId]/component/InviteMemberCard";
 import SelectMeetImageCard from "@/app/(post-verification)/[meetId]/component/SelectMeetImageCard";
 import MemberLayout from "@/app/(post-verification)/[meetId]/component/MemberLayout";
@@ -35,7 +35,7 @@ export default function Meet({params}: Props) {
     const token = getCookie('accessToken');
     const {meetId} = params;
     const queryClient = useQueryClient();
-    const meetInfo: GetMeetInfoResponse | undefined = queryClient.getQueryData(['meetInfo', meetId, token]);
+    const meetInfo: MeetInfoResponse | undefined = queryClient.getQueryData(['meetInfo', meetId, token]);
     console.log(meetInfo);
 
     if (typeof dummy !== 'undefined') {
@@ -50,7 +50,7 @@ export default function Meet({params}: Props) {
                     :
                     <>
                         <MeetInfoCard params={{ meetId }} />
-                        <MemberLayout meetId={meetId} />
+                        <MemberLayout params={{ meetId }} />
                         <PaymentLayout meetId={meetId} />
                         <HighlightLayout meetId={meetId} />
                         <PaymentSelectButton meetId={meetId}/>

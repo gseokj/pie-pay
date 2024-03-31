@@ -205,13 +205,22 @@ export const meetImage = style({
 })
 
 export const meetMemberImage = style({
+    width: "auto",
+    height: "auto",
     borderRadius: "50%",
-    marginRight: "0.25rem"
+})
+
+export const profileImagesContainer = style({
+    display: "flex",
+    alignItems: "center"
 })
 
 export const profileImageContainer = style({
-    display: "flex",
-    alignItems: "center"
+    position: "relative",
+    width: "32px",
+    height: "32px",
+    borderRadius: "50%",
+    marginRight: "0.25rem"
 })
 
 export const meetMemberNumber = style({

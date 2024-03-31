@@ -27,7 +27,24 @@ const nextConfig = {
             }
         );
         return config;
-    }};
+    },
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'http',
+                hostname: 'k.kakaocdn.net',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'http',
+                hostname: 't1.kakaocdn.net',
+                port: '',
+                pathname: '/**',
+            },
+        ],
+    },
+};
 
 
 module.exports = withVanillaExtract(nextConfig);
