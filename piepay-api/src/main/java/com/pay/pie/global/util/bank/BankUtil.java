@@ -218,7 +218,7 @@ public class BankUtil {
 		body.put("apiServiceCode", "inquireAccountBalance");
 		body.put("institutionTransactionUniqueNo", createRandomNumber());
 		body.put("apiKey", API_KEY );
-		body.put("userKey", "d1830ff3-444e-4ecb-92a2-bd5a915d3600");
+		body.put("userKey", userKey);
 
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("Header", body);
