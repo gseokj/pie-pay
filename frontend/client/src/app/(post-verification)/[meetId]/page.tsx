@@ -20,44 +20,33 @@ type Props = {
 }
 
 
-const dummy: Meet = {
-    createdAt: '2012-11-26T13:51:50.417-07:00',
-    updatedAt: '2012-01-26T13:51:50.417-07:00',
-    meetId: 2,
-    meetName: '갈까마귀모임',
-    meetImage: null,
-    meetInvitation: '7AB83Y',
-    membersCount: 2,
-}
-
-
 export default function Meet({params}: Props) {
     const token = getCookie('accessToken');
     const {meetId} = params;
     const queryClient = useQueryClient();
-    const meetInfo: MeetInfoResponse | undefined = queryClient.getQueryData(['meetInfo', meetId, token]);
-    console.log(meetInfo);
+    const meetInfo: Meet | undefined = queryClient.getQueryData(['meetInfo', meetId, token]);
 
-    if (typeof dummy !== 'undefined') {
+    if (typeof meetInfo !== 'undefined') {
         return (
-          <>
-              <>
-                  {typeof dummy !== 'undefined' && dummy.membersCount === 1 ?
+            <>
+                <>
+                    {meetInfo.memberCount === 1 ?
                     <>
-                      {dummy.membersCount === 1 && <InviteMemberCard meetInvitation={ dummy.meetInvitation } />}
-                      {dummy.meetImage === null && <SelectMeetImageCard />}
+                        <MeetInfoCard params={{ meetId }} />
+                        {meetInfo.memberCount === 1 && <InviteMemberCard meetInvitation={ meetInfo.meetInvitation } />}
+                        {meetInfo.meetImage === null && <SelectMeetImageCard />}
                     </>
                     :
                     <>
                         <MeetInfoCard params={{ meetId }} />
                         <MemberLayout params={{ meetId }} />
-                        <PaymentLayout meetId={meetId} />
+                        <PaymentLayout params={{ meetId }} />
                         <HighlightLayout meetId={meetId} />
                         <PaymentSelectButton meetId={meetId}/>
                     </>
-                  }
-              </>
-          </>
+                    }
+                </>
+            </>
         );
     } else {
         return (

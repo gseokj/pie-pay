@@ -16,7 +16,9 @@ export const compareTime = (time: string): string => {
         return `${diffInHours}시간 전`;
     } else if (diffInDays < 2) {
         return '어제';
-    } else {
+    } else if (diffInDays < 30) {
         return `${diffInDays}일 전`;
+    } else {
+        return `${targetTime.format("YYYY년 M월 D일")}`
     }
 }

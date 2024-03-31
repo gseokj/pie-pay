@@ -4,12 +4,11 @@
 import * as mainStyles from "@/styles/main/main.css";
 import * as fontStyles from "@/styles/fonts.css";
 import * as buttonStyles from "@/styles/main/mainButton.css";
-import {faker} from "@faker-js/faker";
 import Image from "next/image";
 import addMemberIcon from "@/assets/icons/addMember.svg";
 import moreIcon from "@/assets/icons/moreDots.svg";
 import memberDefaultImage from "@/assets/images/member_default.svg";
-import {ReactNode, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
 import {Member, MemberResponse} from "@/model/meet";
 import {useQueryClient} from "@tanstack/react-query";
@@ -26,15 +25,14 @@ export default function MemberLayout({params}: Props) {
 
     const queryClient = useQueryClient();
     const token = getCookie('accessToken');
-    const memberResponse: MemberResponse|undefined = queryClient.getQueryData(['members', meetId, token]);
-    const memberList = memberResponse?.result;
-    console.log(memberResponse, memberList);
 
+    const [memberList, setMemberList] = useState<Member[]|undefined>(undefined);
     const containerRef = useRef<HTMLDivElement>(null);
     const [showIcon, setShowIcon] = useState<boolean>(false);
     const [visibleMembers, setVisibleMembers] = useState<Member[]>([]);
 
     useEffect(() => {
+        setMemberList(queryClient.getQueryData(['members', meetId, token]));
         calculateHiddenImages();
         window.addEventListener('resize', calculateHiddenImages);
 
@@ -76,18 +74,25 @@ export default function MemberLayout({params}: Props) {
                     className={ mainStyles.containers.imageContainer }
                 >
                     { visibleMembers.map((member: Member) => {
-                        return <Image
-                            className={ mainStyles.imageLayout }
-                            src={member.profileImage !== null ?
-                                member.profileImage
-                                :
-                                memberDefaultImage
-                            }
-                            alt="member image"
-                            fill={true}
-                            sizes="(max-width: 40px)"
-                            key={member.memberId}
-                        />
+                        return (
+                            <div
+                                className={ mainStyles.imageBox.imageBox36}
+                                key={member.memberId}
+                            >
+                                <Image
+                                    className={ mainStyles.imageLayout }
+                                    src={member.profileImage !== null ?
+                                        member.profileImage
+                                        :
+                                        memberDefaultImage
+                                    }
+                                    alt="member image"
+                                    fill={true}
+                                    sizes="(max-width: 40px)"
+                                    key={member.memberId}
+                                />
+                            </div>
+                        );
                     })}
                 </div>
                 <div className={ showIcon ? mainStyles.visibility.visible : mainStyles.visibility.invisible }>
