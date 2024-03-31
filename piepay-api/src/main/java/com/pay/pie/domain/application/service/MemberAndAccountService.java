@@ -1,5 +1,6 @@
 package com.pay.pie.domain.application.service;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class MemberAndAccountService {
 		List<Account> accounts = accountRepository.findAllByMember(findMember);
 
 		return accounts.stream()
+			.sorted(Comparator.comparing(Account::isMainAccount).reversed())
 			.map(account ->
 				new MemberAccountResponse(
 					account,
