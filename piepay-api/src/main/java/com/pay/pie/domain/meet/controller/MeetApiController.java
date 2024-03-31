@@ -1,10 +1,7 @@
 package com.pay.pie.domain.meet.controller;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
@@ -126,7 +123,7 @@ public class MeetApiController {
 					if ( payService.findRecentPayByMeetId(meet.getId()) != null) {
 						latestUpdateOnMeet = payService.findRecentPayByMeetId(meet.getId()).getUpdatedAt();
 					} else {
-						latestUpdateOnMeet = null;
+						latestUpdateOnMeet = meet.getUpdatedAt();
 					}
 					return new AllMemberMeetResponse(memberMeet, memberMeetService.findAllByMeet(meet).size(),
 							latestUpdateOnMeet);
@@ -137,6 +134,11 @@ public class MeetApiController {
 			})
 			.filter(Objects::nonNull) // null이 아닌 것들만 필터링
 			.collect(Collectors.toList());
+
+		Collections.sort(meetResponses, Comparator
+				.comparing(AllMemberMeetResponse::isTopFixed, Comparator.reverseOrder())
+				.thenComparing(AllMemberMeetResponse::getUpdated_at, Comparator.reverseOrder())
+		);
 
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,

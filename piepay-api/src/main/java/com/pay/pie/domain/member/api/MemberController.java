@@ -46,11 +46,22 @@ public class MemberController {
 		List<MemberResponse> memberResponses = memberMeetService.findMemberByMeetId(meetId)
 			.stream()
 			.map(memberMeet -> {
+				Member member;
+				Long payCount;
+				Long payTotal;
 //				Member member = memberRepository.findById(memberMeet.getMember().getId()).orElse(null);
-				Member member = memberService.findMemberById((Long)membersPayInfo.get(idx.get())[0]);
+				if (!membersPayInfo.isEmpty()) {
+					member = memberService.findMemberById((Long)membersPayInfo.get(idx.get())[0]);
+					payCount = (Long)membersPayInfo.get(idx.get())[1];
+					payTotal = (Long) membersPayInfo.get(idx.getAndIncrement())[2];
+				} else {
+					member = memberMeet.getMember();
+					payCount = 0L;
+					payTotal = 0L;
+				}
 				if (member != null) {
-					return new MemberResponse(member, (Long)membersPayInfo.get(idx.get())[1],
-							(Long) membersPayInfo.get(idx.getAndIncrement())[2]);
+					return new MemberResponse(member, payCount,
+							payTotal);
 				} else {
 					// Member가 없는 경우에 대한 처리
 					return null;
