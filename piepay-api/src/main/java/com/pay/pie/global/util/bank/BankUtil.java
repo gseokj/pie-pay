@@ -26,6 +26,7 @@ import com.pay.pie.global.util.bank.dto.AccountResponse;
 import com.pay.pie.global.util.bank.dto.ErrorResponse;
 import com.pay.pie.global.util.bank.dto.MemberResponse;
 import com.pay.pie.global.util.bank.dto.OpenAccountRes;
+import com.pay.pie.global.util.bank.dto.TransferAccountOneWonResponse;
 import com.pay.pie.global.util.bank.dto.TransferAccountResponse;
 
 import lombok.extern.slf4j.Slf4j;
@@ -269,7 +270,7 @@ public class BankUtil {
 				RECEIVE_TRANSFER_ACCOUNT_URL,
 				HttpMethod.POST,
 				entity,
-				TransferAccountResponse.class
+				TransferAccountOneWonResponse.class
 			);
 		} catch (HttpClientErrorException e) {
 			sendErrorCode(e.getResponseBodyAsString());

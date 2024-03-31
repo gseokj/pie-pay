@@ -20,11 +20,13 @@ import com.pay.pie.global.common.code.SuccessCode;
 import com.pay.pie.global.security.dto.SecurityUserDto;
 import com.pay.pie.global.security.dto.TokenDto;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/members/verify")
 @RequiredArgsConstructor
+@Tag(name = "회원 정보 인증" , description = "회원 휴대폰, 통장, 간편 비밀 번호 설정")
 public class MemberCertificationController {
 
 	private final MemberCertificationService memberCertificationService;
@@ -35,7 +37,7 @@ public class MemberCertificationController {
 		@RequestBody PhoneVerificationRequest phoneVerificationRequest
 	) {
 		memberCertificationService.sendCertificationNumber(phoneVerificationRequest);
-		return BaseResponse.success(SuccessCode.VERIFICATION_REQUEST_SUCCESS, "본인 인증이 완료되었습니다");
+		return BaseResponse.success(SuccessCode.VERIFICATION_REQUEST_SUCCESS, "본인 인증이 요청되었습니다");
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_NOT_CERTIFIED')")
