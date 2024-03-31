@@ -1,5 +1,6 @@
 package com.pay.pie.domain.meet.controller;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -121,7 +122,14 @@ public class MeetApiController {
 			.map(memberMeet -> {
 				Meet meet = meetService.findById(memberMeet.getMeet().getId()).orElse(null);
 				if (meet != null) {
-					return new AllMemberMeetResponse(memberMeet, memberMeetService.findAllByMeet(meet).size());
+					LocalDateTime latestUpdateOnMeet;
+					if ( payService.findRecentPayByMeetId(meet.getId()) != null) {
+						latestUpdateOnMeet = payService.findRecentPayByMeetId(meet.getId()).getUpdatedAt();
+					} else {
+						latestUpdateOnMeet = meet.getCreatedAt();
+					}
+					return new AllMemberMeetResponse(memberMeet, memberMeetService.findAllByMeet(meet).size(),
+							latestUpdateOnMeet);
 				} else {
 					// Member가 없는 경우에 대한 처리
 					return null;

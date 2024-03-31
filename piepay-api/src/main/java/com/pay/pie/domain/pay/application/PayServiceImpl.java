@@ -4,6 +4,7 @@ import static com.pay.pie.domain.order.entity.QOrder.*;
 import static com.pay.pie.domain.orderMenu.entity.QOrderMenu.*;
 import static com.pay.pie.domain.participant.entity.QParticipant.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -309,4 +310,8 @@ public class PayServiceImpl implements PayService {
 	// 		.orElseThrow(() -> new IllegalArgumentException("해당 memberId을 가진 Member을 찾을 수 없음"));
 	// 	return payRepository.findByMeetOrderByCreatedAtDesc(member);
 	// }
+
+//	public  findPay (Meet meet) {
+//		return payRepository.findFirstByMeetOrderByCreatedAtDesc(meet);
+//	}
 }
