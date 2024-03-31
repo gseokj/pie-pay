@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,10 +42,12 @@ public class OrderApiController {
 	private final OrderMenuRepository orderMenuRepository;
 	private final OrderRepository orderRepository;
 
+	@Transactional
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@PostMapping("/your-receipt/{payId}")
 	public ResponseEntity<BaseResponse<OrderResponse>> addReceipt(@PathVariable Long payId) {
 		Order order = orderService.save(payId);
+//		Order order = new Order();
 		Long orderId = order.getId();
 
 		// List<Store> stores = storeRepository.findAll();
@@ -83,7 +86,10 @@ public class OrderApiController {
 		}
 
 		order.setTotalAmount(totalAmount);
-		orderService.save(payId); // 주문을 저장합니다.
+//		orderService.save(payId); // 주문을 저장합니다.
+
+		// 이미 존재하는 주문을 업데이트합니다.
+//		order = orderService.update(order);
 
 		return BaseResponse.success(
 			SuccessCode.INSERT_SUCCESS,
