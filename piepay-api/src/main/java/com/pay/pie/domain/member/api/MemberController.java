@@ -44,7 +44,7 @@ public class MemberController {
 	@GetMapping("/meet/{meetId}/member")
 	public ResponseEntity<BaseResponse<List<MemberResponse>>> findMemberMeet(@PathVariable long meetId) {
 		AtomicInteger idx = new AtomicInteger(0); // AtomicInteger를 사용하여 idx를 선언하고 초기화
-		List<Object[]> membersPayInfo = memberService.findPayInfoByMeetId(meetId);
+		List<Object[]> membersPayInfo = null;
 		List<MemberResponse> memberResponses = memberMeetService.findMemberByMeetId(meetId)
 			.stream()
 			.map(memberMeet -> {
