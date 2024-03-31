@@ -20,4 +20,15 @@ public interface MeetRepository extends JpaRepository<Meet, Long> {
 						"""
 	)
 	Object[] getHighlight(@Param("meetId") Long meetId);
+
+
+	@Query(
+		"""
+  			SELECT m
+  			FROM Meet m
+  			JOIN FETCH  m.memberMeetList
+  			WHERE m.id = :meetId
+		"""
+	)
+	Meet findMeetInfo(@Param("meetId") Long meetId);
 }
