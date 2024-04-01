@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import com.pay.pie.domain.BaseEntity;
 import com.pay.pie.domain.memberMeet.entity.MemberMeet;
-import com.pay.pie.domain.pay.entity.Pay;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,9 +48,6 @@ public class Meet extends BaseEntity {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "meet")
 	private List<MemberMeet> memberMeetList = new ArrayList<>();
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "meet")
-	private List<Pay> payList = new ArrayList<>();
 
 	@Builder // 빌더 패턴으로 객체 생성
 	public Meet(String meetName, String meetImage) {
