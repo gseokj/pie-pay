@@ -12,11 +12,18 @@ import {Me} from "@/model/member"
 import * as styles from "@//styles/mypage/myInfoUpdate.css"
 import MyInfoUpdateTextField from '@/app/(post-verification)/mypage/component/MyInfoUpdateTextField';
 import MyInfoUpdateSetting from '@/app/(post-verification)/mypage/component/MyInfoUpdateSetting';
+import { getMyInfo } from '@/util/getMyInfo';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getMe } from '@/api/member';
+import { getSession } from 'next-auth/react';
+import { cookies } from 'next/headers';
+import { getCookie } from '@/util/getCookie';
 
 
 
 export default function Update() {
-    const myInfo:Me = JSON.parse(sessionStorage.getItem("myInfo")!);
+    const queryClient = useQueryClient();
+    const myInfo: Me | undefined = queryClient.getQueryData(['me', getCookie('accessToken')]);
     return (<div className={styles.container}>
         <article className={styles.header}>
             <BackButton/>
@@ -25,7 +32,7 @@ export default function Update() {
         </article>
 
         <div className={styles.imageBox}>
-            <img className={styles.image} src={myInfo.profileImage}/>
+            <img className={styles.image} src={myInfo?.profileImage}/>
             <Image className={styles.imageUpdate} src={circlePen} alt=""/>
         </div>
 
