@@ -27,7 +27,6 @@ export default async function PostVerificationLayout({children}: Props) {
     const dehydratedState = dehydrate(queryClient);
     return (
         <div className="h-screen">
-            <RQProvider>
                 <Header/>
                 <HydrationBoundary state={dehydratedState}>
                     <NotificationReceive/>
@@ -36,7 +35,6 @@ export default async function PostVerificationLayout({children}: Props) {
                         {children}
                     </div>
                 </HydrationBoundary>
-            </RQProvider>
         </div>
     );
 }

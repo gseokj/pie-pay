@@ -2,6 +2,8 @@ import type {Metadata} from "next";
 import "@/styles/globals.css";
 import * as styles from '@/styles/app.css'
 import {MSWComponent} from "@/app/component/MSWComponent";
+import React from 'react';
+import RQProvider from '@/app/(post-verification)/component/RQProvider';
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -21,11 +23,14 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
         <html lang="en">
             <body className={styles.body} >
             <MSWComponent/>
+
+            <RQProvider>
                 <div className={styles.container}>
                     <div className={styles.content}>
                         {children}
                     </div>
                 </div>
+            </RQProvider>
             </body>
         </html>
     );
