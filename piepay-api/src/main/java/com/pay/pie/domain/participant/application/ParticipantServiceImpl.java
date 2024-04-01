@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.member.dao.MemberRepository;
+import com.pay.pie.domain.notification.dto.EventMessage;
+import com.pay.pie.domain.notification.service.SseEmitterService;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
 import com.pay.pie.domain.participant.dto.ParticipantDto;
 import com.pay.pie.domain.participant.dto.reponse.SelectedPartiesRes;
@@ -32,10 +34,13 @@ public class ParticipantServiceImpl implements ParticipantService {
 	private final MemberRepository memberRepository;
 	private final PayRepository payRepository;
 	private final MeetRepository meetRepository;
+	private final SseEmitterService sseEmitterService;
 	private final BankUtil bankUtil;
 
 	@Override
-	public SelectedPartiesRes selectParticipant(Long meetId, SecurityUserDto securityUserDto,
+	public SelectedPartiesRes selectParticipant(
+		Long meetId,
+		SecurityUserDto securityUserDto,
 		List<ParticipantReq> participants) {
 
 		List<ParticipantDto> participantDtoList = new ArrayList<>();
@@ -74,6 +79,11 @@ public class ParticipantServiceImpl implements ParticipantService {
 			participantRepository.save(participant);
 			ParticipantDto participantRes = ParticipantDto.of(participant);
 			participantDtoList.add(participantRes);
+
+			// 알림
+			if (!participant.getMember().getId().equals(openerId)) {
+				sseEmitterService.sendNotification(participant.getMember().getId(), EventMessage.AGREEMENT_NOTI);
+			}
 		}
 
 		SelectedPartiesRes selectedPartiesRes = SelectedPartiesRes.of(pay, participantDtoList);
