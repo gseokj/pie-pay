@@ -7,8 +7,10 @@ import Image from "next/image";
 import backIcon from "@/assets/icons/back.svg";
 import * as fontStyles from "@/styles/fonts.css";
 import {useRouter} from "next/navigation";
-import {faker} from "@faker-js/faker";
 import MemberCard from "@/app/(post-verification)/[meetId]/member/component/MemberCard";
+import {useQueryClient} from "@tanstack/react-query";
+import {getCookie} from "@/util/getCookie";
+import {Member} from "@/model/meet";
 
 
 type Props = {
@@ -16,65 +18,14 @@ type Props = {
     params: { meetId: string },
 }
 
-const memberList: Member[] = [
-    {
-        memberId: 1,
-        memberNickname: "kim",
-        memberProfile: faker.image.avatar()
-    },
-    {
-        memberId: 2,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
-    {
-        memberId: 3,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
-    {
-        memberId: 4,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
 
-    {
-        memberId: 5,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
-
-    {
-        memberId: 6,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
-    {
-        memberId: 7,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
-    {
-        memberId: 8,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
-    {
-        memberId: 9,
-        memberNickname: "Jay",
-        memberProfile: faker.image.avatar()
-    },
-]
-
-interface Member {
-    memberId: number;
-    memberNickname: string;
-    memberProfile: string;
-}
-
-export default function Member({params}: Props) {
+export default function Members({params}: Props) {
     const {meetId} = params;
     const router = useRouter();
+    const queryClient = useQueryClient();
+    const token = getCookie('accessToken');
+
+    const memberList: Member[]|undefined  = queryClient.getQueryData(['members', meetId, token])
 
     const onClickBack = () => {
         router.back();
@@ -89,9 +40,13 @@ export default function Member({params}: Props) {
                 <h1 className={fontStyles.bold}>모임 멤버</h1>
             </header>
             <div className={mainStyles.categoryContainer.smallMargin}>
-                <h5>멤버 {memberList.length}</h5>
+                <h5>멤버 {typeof memberList !== 'undefined' && memberList.length}</h5>
             </div>
-            <MemberCard />
+            {typeof memberList !== 'undefined' && memberList.map((member: Member) => {
+                return (
+                    <MemberCard params={{ member }} key={ member.memberId } />
+                );
+            })}
         </section>
     );
 }

@@ -7,9 +7,11 @@ import * as fontCss from "@/styles/fonts.css";
 import RandomName from "@/app/(post-verification)/component/utils/RandomName";
 import {useEffect, useState} from "react";
 import {CreateMeetRequest, CreateMeetResponse} from "@/model/meet";
-import { postCreateMeet } from "@/api/meet";
+import {Meet} from "@/model/meet/meets";
+import { postCreateMeet } from "@/api/meet/meet";
 import {useRouter} from "next/navigation";
 import {getCookie} from "@/util/getCookie";
+import {useQueryClient} from "@tanstack/react-query";
 
 interface CreateMeetModalProps{
     isCreateMeetModalOn: boolean;
@@ -30,6 +32,7 @@ export default function MeetCreateModal({ isCreateMeetModalOn, clickCreate, clic
 
     const router = useRouter();
     const token = getCookie('accessToken');
+    const queryClient = useQueryClient();
 
     async function createMeetRequest(meetName: string) {
 
@@ -37,7 +40,11 @@ export default function MeetCreateModal({ isCreateMeetModalOn, clickCreate, clic
             try {
                 const response = await postCreateMeet({ meetName:meetName }, token);
                 console.log("Success Create", response);
-                router.push(`/${response.result.meetId}`);
+                queryClient.setQueryData(['meetList', token], (oldData: Meet[]) => {
+                    const newData = [...oldData, response];
+                    return newData;
+                });
+                router.push(`/${response.meetId}`);
             } catch (error) {
                 console.error("Fail Create", error);
             }

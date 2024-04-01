@@ -12,108 +12,125 @@ import theme from "@/styles/theme/theme";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 import {GetMyMeetsResponse, MeetData, Member} from "@/model/meet";
-import {fixMeet, getMeetMembers, getMyMeets} from "@/api/meet";
+import {fixMeet, getMeetMembers} from "@/api/meet";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getCookie} from "@/util/getCookie";
 import {useEffect, useState} from "react";
 import {compareTime} from "@/util/compareTime";
+import {Meet} from "@/model/meet/meets";
 
 
-export default function MeetGroup(props : {meetData: MeetData}){
-    const { meetData } = props;
+interface MeetGroupProps {
+    meet: Meet;
+    updateIsFixed: ()=>void;
+}
+
+
+export default function MeetGroup({ meet, updateIsFixed }: MeetGroupProps){
     const token = getCookie('accessToken');
     const [isFixed, setIsFixed] = useState(false);
-
-    const { data: members, isLoading, error } = useQuery({queryKey: ['members', meetData.meet.meetId, token], queryFn: getMeetMembers}) ;
-    if (error) console.log(error.message);
+    const queryClient = useQueryClient();
 
     useEffect(() => {
-        setIsFixed(meetData.topFixed);
+        setIsFixed(meet.topFixed);
     }, []);
 
     const router = useRouter();
     const enterMeetRoom = () => {
-        router.push(`/${meetData.meet.meetId}`);
+        router.push(`/${meet.meetId}`);
     }
 
     const onClickFix = async (event: React.MouseEvent) => {
         event.stopPropagation();
-        console.log(`!!!!!!!!!!!!!!!!!!!!!!`,token);
         if (typeof token === 'string') {
-            await fixMeet(`${meetData.meet.meetId}`, token);
-            console.log(`!!!!!!!!!!!!!!!!!!!!!!2222222222`,token);
+            await fixMeet(`${meet.meetId}`, token);
+            await queryClient.setQueryData(['meetList', token], (oldData: Meet[]) => {
+                const newData = oldData.map(meet => {
+                    if (meet.meetId === Number(meet.meetId)) {
+                        return {...meet, topFixed: !isFixed};
+                    }
+                    return meet;
+                });
+                return newData;
+            });
             setIsFixed(!isFixed);
+            updateIsFixed();
         }
     }
 
-    if (isLoading) {
-        return (
-            <>
-                loading...
-            </>
-        );
-    } else {
-        return (
-            <>
-                <div className={styles.cardLayout.meetGroup} onClick={enterMeetRoom}>
-                    <div className={styles.lineLayout.lineOne}>
-                        <div className={styles.meetInfo}>
-                            <div className={styles.meetImageContainer}>
-                                <Image
-                                    className={styles.meetImage}
-                                    src={meetData.meet.meetImage !== null ?
-                                        meetData.meet.meetImage
-                                        :
-                                        meetDefaultImage
-                                    }
-                                    alt="meet image" width={40} height={40}/>
-                            </div>
-                            <div className={styles.meetInfoString}>
-                                <h3 className={`${styles.meetName} ${fontCss.semibold}`}>{meetData.meet.meetName}</h3>
-                                <p className={styles.meetDate}>{meetData.updated_at !== null && compareTime(meetData.updated_at)}</p>
-                            </div>
+    const onClickPushPayment = (event: React.MouseEvent) => {
+        event.stopPropagation();
+        router.push(`/${meet.meetId}/payment/select`);
+    }
+    return (
+        <>
+            <div className={styles.cardLayout.meetGroup} onClick={enterMeetRoom}>
+                <div className={styles.lineLayout.lineOne}>
+                    <div className={styles.meetInfo}>
+                        <div className={mainStyles.imageBox.imageBox40}>
+                            <Image
+                                className={styles.meetImage}
+                                src={meet.meetImage !== null ?
+                                    meet.meetImage
+                                    :
+                                    meetDefaultImage
+                                }
+                                alt="meet image"
+                                fill={true}
+                                objectFit="cover"
+                                sizes="(max-width: 40px)"
+                            />
                         </div>
-                        <div>
-                            <StarIcon
-                                className={mainStyles.top}
-                                onClick={onClickFix}
-                                color={isFixed ? theme.yellow : theme.lightGray} />
-                        </div>
-                    </div>
-                    <div className={styles.lineLayout.lineTwo}>
-                        <div className={styles.profileImagesContainer}>
-                            {typeof members !== 'undefined' && members.result.length > 0 && members.result.slice(0, 5).map((member: Member) => {
-                                return (
-                                    <div className={styles.profileImageContainer}>
-                                        <Image
-                                            className={styles.meetMemberImage}
-                                            src={member.profileImage !== null ?
-                                                member.profileImage
-                                                :
-                                                memberDefaultImage
-                                            }
-                                            alt="member image"
-                                            fill={true}
-                                            sizes="(max-width: 40px)"
-                                            key={member.memberId}
-                                        />
-                                    </div>
-                                )
-                            })}
-                            {meetData.meet.membersCount > 5 ?
-                                <>
-                                    <Image src={moreDots} alt="dots" width={32} height={32} />
-                                    <p className={`${styles.meetMemberNumber} ${fontCss.semibold}`}>{'+' + (meetData.meet.membersCount - 5)}</p>
-                                </>
-                                : <></>
+                        <div className={styles.meetInfoString}>
+                            <h3 className={`${styles.meetName} ${fontCss.semibold}`}>{meet.meetName}</h3>
+                            {meet.lastPayDate !== null ?
+                                <p className={styles.meetDate}>{`${compareTime(meet.lastPayDate)} 결제`}</p>
+                                :
+                                <p className={styles.meetDate}>{`${meet.createdAt !== null && compareTime(meet.createdAt)} 참여`}</p>
                             }
                         </div>
-                        <button className={`${styles.cardButton.paymentButton} ${fontCss.semibold}`}>바로 결제</button>
+                    </div>
+                    <div>
+                        <StarIcon
+                            className={mainStyles.top}
+                            onClick={onClickFix}
+                            color={isFixed ? theme.yellow : theme.lightGray} />
                     </div>
                 </div>
-            </>
-        );
-    }
-
-
+                <div className={styles.lineLayout.lineTwo}>
+                    <div className={styles.profileImagesContainer}>
+                        {meet.member.length > 0 && meet.member.slice(0, 5).map((member, index) => {
+                            return (
+                                <div
+                                    className={styles.profileImageContainer}
+                                    key={index}
+                                >
+                                    <Image
+                                        className={styles.meetMemberImage}
+                                        src={member.profileImage !== null ?
+                                            member.profileImage
+                                            :
+                                            memberDefaultImage
+                                        }
+                                        alt="member image"
+                                        fill={true}
+                                        sizes="(max-width: 40px)"
+                                        key={index}
+                                    />
+                                </div>
+                            )
+                        })}
+                        {meet.membersCount > 5 ?
+                            <>
+                                <Image src={moreDots} alt="dots" width={32} height={32} />
+                                <p className={`${styles.meetMemberNumber} ${fontCss.semibold}`}>{'+' + (meet.membersCount - 5)}</p>
+                            </>
+                            : <></>
+                        }
+                    </div>
+                    <button className={`${styles.cardButton.paymentButton} ${fontCss.semibold}`} onClick={onClickPushPayment}>바로 결제</button>
+                </div>
+            </div>
+        </>
+    );
 }
