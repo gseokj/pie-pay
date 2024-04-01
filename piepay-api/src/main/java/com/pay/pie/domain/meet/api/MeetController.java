@@ -22,20 +22,17 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.pay.pie.domain.BaseEntity;
-import com.pay.pie.domain.meet.dto.AddMeetRequest;
 import com.pay.pie.domain.meet.dto.HighlightResponse;
-import com.pay.pie.domain.meet.dto.MeetResponse;
 import com.pay.pie.domain.meet.dto.MeetStatusResponse;
 import com.pay.pie.domain.meet.dto.PayResponse;
-import com.pay.pie.domain.meet.dto.UpdateInvitationRequest;
+import com.pay.pie.domain.meet.dto.request.CreateMeetRequest;
 import com.pay.pie.domain.meet.dto.request.UpdateMeetImageRequest;
 import com.pay.pie.domain.meet.dto.request.UpdateMeetNameRequest;
 import com.pay.pie.domain.meet.dto.response.MeetDetailResponse;
 import com.pay.pie.domain.meet.dto.response.MeetInfo;
+import com.pay.pie.domain.meet.dto.response.UpdateInvitationResponse;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.service.MeetService;
-import com.pay.pie.domain.memberMeet.dto.AddMemberMeetRequest;
 import com.pay.pie.domain.memberMeet.dto.AllMemberMeetResponse;
 import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
@@ -52,9 +49,9 @@ import com.pay.pie.global.security.dto.SecurityUserDto;
 
 import lombok.RequiredArgsConstructor;
 
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-@RestController // HTTP Response Body에 객체 데이터를 JSON 형식으로 반환하는 컨트롤러
 public class MeetController {
 
 	private final MeetService meetService;
@@ -99,7 +96,6 @@ public class MeetController {
 	}
 
 	// 모임 전체 조회
-
 	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
 	@GetMapping("/meets")
 	public ResponseEntity<BaseResponse<List<MeetInfo>>> getMeetList(
@@ -112,36 +108,32 @@ public class MeetController {
 
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	// 새로운 모임 생성
+	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
 	@PostMapping("/meet")
-	// 요청 본문 값 매핑
-	public ResponseEntity<BaseResponse<MeetResponse>> addMeet(@RequestBody AddMeetRequest request,
-		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
-		Meet savedMeet = meetService.save(request);
-
-		String invitation = savedMeet.getMeetInvitation();
-		Long memberId = securityUserDto.getMemberId();
-		AddMemberMeetRequest addMemberMeetRequest = new AddMemberMeetRequest();
-		addMemberMeetRequest.setMeetInvitation(invitation);
-		memberMeetService.save(addMemberMeetRequest, memberId);
-
-		// 요청한 자원이 성공적으로 생성되었으며 저장된 블로그 글 정보를 응답에 담아 전송
+	public ResponseEntity<BaseResponse<MeetInfo>> createMeet(
+		@RequestBody CreateMeetRequest request,
+		@AuthenticationPrincipal SecurityUserDto securityUserDto
+	) {
 		return BaseResponse.success(
 			SuccessCode.INSERT_SUCCESS,
-			new MeetResponse(savedMeet, memberMeetService.findAllByMeet(savedMeet).size()));
+			meetService.createMeet(securityUserDto.getMemberId(), request)
+		);
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	// 모임 초대코드 변경
+	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
 	@PatchMapping("/meet/{id}/invitation")
-	public ResponseEntity<BaseResponse<Meet>> updateInvitation(@PathVariable long id,
-		UpdateInvitationRequest request) {
-		Meet updatedMeet = meetService.updateMeetInvitation(id, request);
-
+	public ResponseEntity<BaseResponse<UpdateInvitationResponse>> updateInvitation(
+		@PathVariable long id
+	) {
 		return BaseResponse.success(
 			SuccessCode.UPDATE_SUCCESS,
-			updatedMeet);
+			meetService.updateMeetInvitation(id)
+		);
 	}
 
+	//
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@GetMapping("/member/meets")
 	public ResponseEntity<BaseResponse<List<AllMemberMeetResponse>>> getAllMeet(

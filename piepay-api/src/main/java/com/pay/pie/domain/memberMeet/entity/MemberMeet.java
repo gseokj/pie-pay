@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,14 +30,12 @@ public class MemberMeet extends BaseEntity {
 	@Column(name = "member_meet_id")
 	private Long id;
 
-	// @NotNull
-	// @Column(name = "member_id", nullable = false)
+	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	// @NotNull
-	// @Column(name = "meet_id", nullable = false)
+	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "meet_id")
 	private Meet meet;
@@ -44,9 +43,10 @@ public class MemberMeet extends BaseEntity {
 	@Column(name = "top_fixed", columnDefinition = "boolean default false")
 	private boolean topFixed;
 
-	@Builder // 빌더 패턴으로 객체 생성
+	@Builder
 	public MemberMeet(Member member, Meet meet) {
 		this.member = member;
 		this.meet = meet;
+		meet.getMemberMeetList().add(this);
 	}
 }

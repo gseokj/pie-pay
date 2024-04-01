@@ -18,10 +18,11 @@ public record MeetInfo(
 	int membersCount,
 	List<MeetMember> member,
 	LocalDateTime lastPayDate,
+	LocalDateTime createdAt,
 	boolean topFixed
 ) {
 
-	public static MeetInfo of(Meet meet, Member findMember, LocalDateTime lastPayDate) {
+	public static MeetInfo lastPayMeetInfo(Meet meet, Member findMember, LocalDateTime lastPayDate) {
 		return MeetInfo.builder()
 			.meetId(meet.getId())
 			.meetName(meet.getMeetName())
@@ -33,6 +34,21 @@ public record MeetInfo(
 			)
 			.topFixed(checkTopFixed(meet, findMember))
 			.lastPayDate(lastPayDate)
+			.build();
+	}
+
+	public static MeetInfo createMeetInfo(Meet meet, Member findMember) {
+		return MeetInfo.builder()
+			.meetId(meet.getId())
+			.meetName(meet.getMeetName())
+			.meetImage(meet.getMeetImage())
+			.membersCount(meet.getMemberMeetList().size())
+			.member(meet.getMemberMeetList().stream()
+				.map(member -> new MeetMember(member.getMember().getProfileImage()))
+				.toList()
+			)
+			.topFixed(checkTopFixed(meet, findMember))
+			.createdAt(meet.getCreatedAt())
 			.build();
 	}
 
