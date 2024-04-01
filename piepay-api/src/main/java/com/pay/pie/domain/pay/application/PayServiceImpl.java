@@ -4,7 +4,6 @@ import static com.pay.pie.domain.order.entity.QOrder.*;
 import static com.pay.pie.domain.orderMenu.entity.QOrderMenu.*;
 import static com.pay.pie.domain.participant.entity.QParticipant.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +16,8 @@ import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.member.entity.Member;
 import com.pay.pie.domain.menu.entity.Menu;
+import com.pay.pie.domain.notification.dto.EventMessage;
+import com.pay.pie.domain.notification.service.SseEmitterService;
 import com.pay.pie.domain.order.dto.OrderDto;
 import com.pay.pie.domain.order.entity.Order;
 import com.pay.pie.domain.order.entity.QOrder;
@@ -44,6 +45,7 @@ public class PayServiceImpl implements PayService {
 	private final MeetRepository meetRepository;
 	private final ParticipantRepository participantRepository;
 	private final JPAQueryFactory queryFactory;
+	private final SseEmitterService sseEmitterService;
 	private final BankUtil bankUtil;
 
 	public List<Pay> findPayByMeetId(long meetId) {
@@ -123,6 +125,9 @@ public class PayServiceImpl implements PayService {
 					account.getMember().getApiKey()
 				);
 			}
+
+			// 알림
+			sseEmitterService.sendNotification(participant.getMember().getId(), EventMessage.PAYMENT_COMPLETED_NOTI);
 		}
 
 		// for (Participant participant : participantList) {
@@ -319,7 +324,7 @@ public class PayServiceImpl implements PayService {
 	// 	return payRepository.findByMeetOrderByCreatedAtDesc(member);
 	// }
 
-//	public  findPay (Meet meet) {
-//		return payRepository.findFirstByMeetOrderByCreatedAtDesc(meet);
-//	}
+	//	public  findPay (Meet meet) {
+	//		return payRepository.findFirstByMeetOrderByCreatedAtDesc(meet);
+	//	}
 }

@@ -7,6 +7,8 @@ import com.pay.pie.domain.account.entity.Account;
 import com.pay.pie.domain.account.entity.QAccount;
 import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.entity.Member;
+import com.pay.pie.domain.notification.dto.EventMessage;
+import com.pay.pie.domain.notification.service.SseEmitterService;
 import com.pay.pie.domain.payInstead.dao.PayInsteadRepository;
 import com.pay.pie.domain.payInstead.entity.PayInstead;
 import com.pay.pie.global.security.dto.SecurityUserDto;
@@ -25,6 +27,7 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 	private final PayInsteadRepository payInsteadRepository;
 	private final MemberRepository memberRepository;
 	private final JPAQueryFactory queryFactory;
+	private final SseEmitterService sseEmitterService;
 	private final BankUtil bankUtil;
 
 	@Override
@@ -74,5 +77,9 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 		// payInstead DB update 이체완료
 		payInstead.setPayback(true);
 		payInsteadRepository.save(payInstead);
+
+		// 알림
+		sseEmitterService.sendNotification(lender.getId(), EventMessage.PAYMENT_PAYINSTEAD_LENDER_NOTI);
+		sseEmitterService.sendNotification(borrower.getId(), EventMessage.PAYMENT_PAYINSTEAD_BORROWER_NOTI);
 	}
 }
