@@ -1,7 +1,6 @@
 "use client";
 
 
-import {ReactNode} from "react";
 import {useRouter} from "next/navigation";
 import * as mainStyles from "@/styles/main/main.css";
 import Image from "next/image";
@@ -9,13 +8,7 @@ import backIcon from "@/assets/icons/back.svg";
 import * as fontStyles from "@/styles/fonts.css";
 
 
-type Props = {
-    children: ReactNode,
-    params: { meetId: string },
-}
-
-export default function Highlight({params}: Props) {
-    const {meetId} = params;
+export default function Highlight() {
     const router = useRouter();
 
     const onClickBack = () => {
