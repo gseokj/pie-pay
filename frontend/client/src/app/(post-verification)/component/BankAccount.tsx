@@ -3,32 +3,26 @@
 
 import {useEffect, useState} from "react";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {getAccount} from "@/api/account";
 import Image from "next/image";
 import logoHana from "@/assets/icons/logoHana.svg";
 import visibilityOff from "@/assets/icons/visibilityOff.svg";
 import visibilityOn from "@/assets/icons/visibilityOn.svg";
 import * as styles from "@/styles/main/bankAccount.css";
 import * as fontCss from "@/styles/fonts.css";
-import {Account, AccountResponse} from "@/model/account";
+import {Account} from "@/model/account";
 import {getCookie} from "@/util/getCookie";
-
-const account = [{
-    accountId: 1,
-    bankCode: '하나은행',
-    accountNo: "01923479283157"
-}]
 
 
 export default function BankAccount() {
     const token = getCookie('accessToken');
     const queryClient = useQueryClient();
 
-    const accountResponse: AccountResponse|undefined = queryClient.getQueryData(['account', token]);
-    const account = accountResponse?.result;
+    const account: Account[]|undefined = queryClient.getQueryData(['account', token]);
 
     const [visibility, setVisibility] = useState(true);
     const [bankName, setBankName] = useState('은행 명');
+
+    console.log(account);
 
     useEffect(() => {
         if (typeof account !== 'undefined') {

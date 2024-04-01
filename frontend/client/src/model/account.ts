@@ -4,9 +4,3 @@ export interface Account{
     accountNo: string;
     balance: string;
 }
-
-export interface AccountResponse {
-    status: number;
-    message: string;
-    result: Account[];
-}

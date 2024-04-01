@@ -82,3 +82,7 @@ export const opacity = styleVariants({
         opacity: 100
     }],
 })
+
+export const setInput = style({
+    backgroundColor: theme.skyblue,
+})

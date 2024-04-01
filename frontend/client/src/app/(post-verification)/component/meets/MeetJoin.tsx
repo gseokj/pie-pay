@@ -4,6 +4,11 @@ import * as styles from "@/styles/main/cardLayout.css";
 import * as fontCss from "@/styles/fonts.css";
 import * as buttonStyles from "@/styles/main/mainButton.css";
 import {useState, useRef} from "react";
+import {getCookie} from "@/util/getCookie";
+import {useRouter} from "next/navigation";
+import {postJoinMeet} from "@/api/meet/meet";
+import {Meet} from "@/model/meet/meets";
+import {useQueryClient} from "@tanstack/react-query";
 
 interface MeetJoinProps{
     isModal?: boolean;
@@ -12,12 +17,15 @@ interface MeetJoinProps{
 }
 
 export default function MeetJoin({ isModal = false, clickJoin, clickExit }: MeetJoinProps ) {
+    const token = getCookie('accessToken');
     const [code, setCode] = useState<string[]>(Array(6).fill(''));
     const [isWrong, setIsWrong] = useState<boolean[]>(Array(6).fill(false));
     const [isComplete, setIsComplete] = useState<boolean[]>(Array(6).fill(false));
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-    const placeholder: string = 'piepay'
+    const placeholder: string = 'piepay';
+    const router = useRouter();
+    const queryClient = useQueryClient();
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const value = e.target.value.charAt(0); // 첫 번째 글자만 취함
@@ -56,6 +64,7 @@ export default function MeetJoin({ isModal = false, clickJoin, clickExit }: Meet
     const onClick = () => {
         if (code.every(val => /^[a-zA-Z0-9]+$/.test(val))) {
             console.log(code.join('').toLowerCase());
+            join();
         }
     }
     const onSubmit = (e: React.FormEvent) => {
@@ -63,6 +72,7 @@ export default function MeetJoin({ isModal = false, clickJoin, clickExit }: Meet
         console.log(code)
         if (code.every(val => /^[a-zA-Z0-9]+$/.test(val))) {
             console.log(code.join('').toLowerCase());
+            join();
         }
     }
 
@@ -72,12 +82,31 @@ export default function MeetJoin({ isModal = false, clickJoin, clickExit }: Meet
         }
     }
 
-    const onClickJoin = () => {
+    const onClickJoin = async () => {
         if (code.every(val => /^[a-zA-Z0-9]+$/.test(val))) {
             console.log(code.join('').toLowerCase());
+            join();
             if (clickJoin) {
                 clickJoin();
             }
+        }
+    }
+
+    const join = async () => {
+        if (typeof token === 'string') {
+            try {
+                const response = await postJoinMeet(code.join('').toLowerCase(), token);
+                console.log(response);
+                queryClient.setQueryData(['meetList', token], (oldData: Meet[]) => {
+                    const newData = [...oldData, response];
+                    return newData;
+                });
+                router.push(`/${response.meetId}`);
+            } catch (error) {
+                console.error(error, 'fail to join meet');
+            }
+        } else {
+            // 토큰 재발급 필요
         }
     }
 
