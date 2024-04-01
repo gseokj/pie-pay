@@ -5,6 +5,9 @@ import * as styles from '@/styles/setpassword/setPassword.css';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useStore } from '@/store/useSetupPassword';
+import { getCookie } from '@/util/getCookie';
+import { postInitPassword } from '@/api/password';
+import { RequestSetPassword } from '@/model/password';
 
 interface Password {
   value0: string;
@@ -16,7 +19,6 @@ interface Password {
 }
 
 export default function SimplePasswordSet() {
-  const router = useRouter();
   // const index: number = 0;
   const [index, setIndex] = useState<number>(0);
   const [password, setPassword] = useState<Password>({
@@ -27,6 +29,24 @@ export default function SimplePasswordSet() {
     value4: '',
     value5: '',
   });
+
+  const token = getCookie('accessToken') as string;
+  const router = useRouter();
+  const sendRequest = async () => {
+    console.log('인증 진행');
+    {
+      const codesAsString = Object.values(password).join('');
+      try {
+        const request: RequestSetPassword = {
+          paymentPassword: codesAsString,
+        };
+        const response = await postInitPassword(request, token);
+        console.log('Verification response:', response);
+        router.push('/setup-password/check');
+      } catch (error) {}
+    }
+  };
+
   const { password: storePassword, setPassword: setStorePassword } = useStore();
   // updateState();
   useEffect(() => {
@@ -34,7 +54,7 @@ export default function SimplePasswordSet() {
     console.log(password);
     if (index === 6) {
       setStorePassword(password);
-      router.push('/setup-password/check');
+      sendRequest();
     }
   }, [password, index]);
 

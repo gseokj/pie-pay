@@ -5,10 +5,17 @@ import ProgressBar from '@/app/(pre-verification)/sign-in/_component/ProgressBar
 import * as styles from '@/styles/signin/singin.css';
 import { useRouter } from 'next/navigation';
 import Timer from '../../_component/Timer';
-
+import { getCookie } from '@/util/getCookie';
 import CodeDisplay from '../../_component/CodeDisplay';
+import { useStore } from '@/store/useAccountStore';
+import { ConfirmBankVerify } from '@/model/signin';
+import { postBankConfirm } from '@/api/signin';
 
 export default function Page() {
+  const { accountInfo, setAccountInfo } = useStore();
+  const [message, setMessage] = useState('다른 계좌로 인증하기'); // 메시지 상태 추가
+  const [messagePart1, setMessagePart1] =
+    useState('입금자명이 일치하지 않습니다');
   const [code, setCode] = useState({
     code0: '',
     code1: '',
@@ -16,40 +23,11 @@ export default function Page() {
     code3: '',
   });
 
+  const router = useRouter();
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null); // 입력 필드에 대한 참조를 생성합니다.
   const [isComposing, setIsComposing] = useState(false); // 한글 입력 중인지 확인하기 위한 상태
-
-  //   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //     if (!isComposing) {
-  //       // 한글 입력 중이 아닐 때만 처리
-  //       const newValue = event.target.value;
-  //       const lastChar = newValue[newValue.length - 1] || '';
-
-  //       if (newValue.length < inputValue.length) {
-  //         const currentFilled = Object.values(code).filter(
-  //           (val) => val !== '',
-  //         ).length;
-  //         const lastFilledIndex = currentFilled - 1;
-  //         setCode((prev) => {
-  //           const newCode = { ...prev };
-  //           if (lastFilledIndex >= 0) {
-  //             newCode[`code${lastFilledIndex}`] = '';
-  //           }
-  //           return newCode;
-  //         });
-  //       } else {
-  //         const currentFilled = Object.values(code).filter(
-  //           (val) => val !== '',
-  //         ).length;
-  //         if (currentFilled < 4) {
-  //           setCode((prev) => ({ ...prev, [`code${currentFilled}`]: lastChar }));
-  //         }
-  //       }
-  //       setInputValue(newValue);
-  //     }
-  //   };
-
+  const [isError, setIsError] = useState(false);
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -59,6 +37,30 @@ export default function Page() {
   const focusInput = () => {
     if (inputRef.current) {
       inputRef.current.focus();
+      // 값을 설정한 후에 커서를 값의 끝으로 이동
+      const length = inputRef.current.value.length;
+      inputRef.current.setSelectionRange(length, length);
+    }
+  };
+
+  const token = getCookie('accessToken') as string;
+
+  const sendRequest = async () => {
+    console.log('인증 진행');
+    {
+      const codesAsString = Object.values(code).join('');
+      try {
+        const request: ConfirmBankVerify = {
+          bankCode: accountInfo.bankCode,
+          accountNo: accountInfo.accountNo,
+          verificationWord: codesAsString,
+        };
+        const response = await postBankConfirm(request, token);
+        console.log(response);
+        router.push('/setup-password/init');
+      } catch (error) {
+        setIsError(true);
+      }
     }
   };
 
@@ -99,6 +101,14 @@ export default function Page() {
     updateCodeState(event.currentTarget.value);
   };
 
+  const handleSubmit = () => {
+    sendRequest();
+  };
+
+  const ErrorMessage = () => {
+    return <div className={styles.errorMent}>{messagePart1}</div>;
+  };
+
   return (
     <div className={styles.container}>
       <input
@@ -116,11 +126,8 @@ export default function Page() {
       </div>
       <div className={styles.contentContainer}>
         <div className={styles.title}>
-          문자로 받은 <br />
-          인증번호를 입력해주세요
-          <div className={styles.subTitle}>
-            ex)황제펭귄1234 -> 1234
-          </div>
+          계좌로 받은 <br />
+          입금자명을 입력해주세요
         </div>
         <div className={styles.timerContainer}>
           <Timer />
@@ -128,9 +135,14 @@ export default function Page() {
         <div className={styles.numberContainer} onClick={focusInput}>
           <CodeDisplay code={code} />
         </div>
-        <div className={styles.retryMent}>다른 계좌로 인증하기</div>
+        <div className={styles.retryMent}>
+          {isError && <ErrorMessage />}
+          다른 계좌로 인증하기
+        </div>
       </div>
-      <div className={styles.submitButton}>계좌 인증</div>
+      <div className={styles.submitButton} onClick={handleSubmit}>
+        계좌 인증
+      </div>
     </div>
   );
 }
