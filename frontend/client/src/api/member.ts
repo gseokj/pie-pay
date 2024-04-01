@@ -28,7 +28,7 @@ export const getMembers: QueryFunction<Member[]> = async ({ queryKey }) => {
     const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaWUiLCJleHAiOjEwNzExNjAyNjczLCJzdWIiOiJoZ29hMjAwMEBuYXZlci5jb20iLCJyb2xlcyI6IlJPTEVfQ0VSVElGSUVEIn0.8xCi66F_2cE-encJ0vSg4iTgzDTWKonjILJf0n33Hfs";
 
     try {
-        const response = await axios.get(`api/meet/${meetId}/member`, {
+        const response = await axios.get(`api/meet/${meetId}/members`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

@@ -66,8 +66,18 @@ globalStyle(`${ul.menu} > li`, {
 
 
 export const button = style({
-  width: '100%',
+  width: '96%',
+  // Default width
+  '@media': {
+    'screen and (min-width: 768px)': {
+      width: '38%',
+      left: '31.5%',
+    },
+  },
   height: '8%',
+  position: 'fixed',
+  bottom: 20,
+
   borderRadius: '8px',
   marginTop: '20px',
   color: 'white',

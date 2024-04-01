@@ -15,19 +15,19 @@ interface Meet {
     meetName: string;
     meetImage: string|null;
     meetInvitation: string;
-    membersCount: number;
-}
-
-interface MeetInfoResponse {
-    message: string;
-    result: Meet;
-    status: number;
+    memberCount: number;
 }
 
 interface MeetData {
     meet: Meet;
     topFixed: boolean;
     updated_at: string|null;
+}
+
+interface MeetInfoResponse {
+    message: string;
+    result: Meet;
+    status: number;
 }
 
 interface GetMyMeetsResponse {
@@ -43,6 +43,8 @@ interface Member {
     phoneNumber: string|null;
     memberRole: string;
     email: string;
+    payCount: number;
+    payTotal: number;
 }
 
 interface MemberResponse {

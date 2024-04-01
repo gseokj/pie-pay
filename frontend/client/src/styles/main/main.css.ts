@@ -99,6 +99,31 @@ const imageContainer = style({
     marginRight: "1rem"
 });
 
+const profileImageContainer = style({
+    position: "relative",
+    borderRadius: "12px",
+    overflow: "hidden",
+});
+
+export const imageBox = styleVariants({
+    imageBox36: [profileImageContainer, {
+        width: "36px",
+        height: "36px",
+    }],
+    imageBox40: [profileImageContainer, {
+        width: "40px",
+        height: "40px",
+    }],
+    imageBox56: [profileImageContainer, {
+        width: "56px",
+        height: "56px",
+    }],
+    imageBox96: [profileImageContainer, {
+        width: "96px",
+        height: "96px",
+    }]
+})
+
 export const imageLayout = style({
     borderRadius: "12px"
 });

@@ -13,6 +13,7 @@ import {useMemberFilter} from "@/store/useMemberFilter";
 import {Member} from "@/model/member";
 import {useEffect} from "react";
 import { getMyInfo } from '@/util/getMyInfo';
+import { getCookie } from '@/util/getCookie';
 
 type Props = {
     params: { meetId: string },
@@ -20,7 +21,7 @@ type Props = {
 export default function Page({params}:Props) {
     const {meetId} = params;
     const queryClient = useQueryClient();
-    const Members = queryClient.getQueryData(["members",meetId]) as Member[];
+    const Members = queryClient.getQueryData(["members",meetId,getCookie('accessToken')]) as Member[];
     const { setFilterMembers,filterMembers } = useMemberFilter();
 
     useEffect(() => {
