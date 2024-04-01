@@ -3,8 +3,13 @@
 import VirtualKeboard from '@/app/_component/VirtualKeboard';
 import * as styles from '@/styles/setpassword/setPassword.css';
 import { useEffect, useState } from 'react';
+import { getCookie } from '@/util/getCookie';
 import { useStore } from '@/store/useSetupPassword';
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import { postConfirmPassword } from '@/api/password';
+import { RequestSetPassword } from '@/model/password';
+import { getMyInfo } from '@/api/user';
+import { assert } from 'console';
 
 interface Password {
   value0: string;
@@ -16,7 +21,7 @@ interface Password {
 }
 
 export default function SimplePasswordCheck() {
-  // const router = useRouter();
+  const router = useRouter();
   const [index, setIndex] = useState<number>(0);
   const [result, setResult] = useState<boolean>(true);
   const [password, setPassword] = useState<Password>({
@@ -28,22 +33,42 @@ export default function SimplePasswordCheck() {
     value5: '',
   });
 
-  // const [oldPassword, setOldPassword] = useState<Password>({
-  //   value0: '',
-  //   value1: '',
-  //   value2: '',
-  //   value3: '',
-  //   value4: '',
-  //   value5: '',
-  // });
-
   const { password: storePassword }: { password: Password } = useStore();
 
-  // useEffect(() => {
-  //   setOldPassword(storePassword);
-  //   console.log('확인 페이지');
-  //   console.log(oldPassword);
-  // }, []);
+  const token = getCookie('accessToken') as string;
+
+  const sendRequest = async () => {
+    console.log('인증 진행');
+    {
+      const codesAsString = Object.values(password).join('');
+      try {
+        const request: RequestSetPassword = {
+          paymentPassword: codesAsString,
+        };
+        const response = await postConfirmPassword(request, token);
+        console.log('Verification response:', response);
+        console.log('accessToken : ' + response.result.accessToken);
+        setToken(response.result.accessToken);
+      } catch (error) {}
+    }
+  };
+
+  const setToken = async (accessToken: string) => {
+    if (typeof accessToken === 'string') {
+      document.cookie = `accessToken=${accessToken} ; path=/`;
+      setSession(accessToken);
+      console.log('accessToken : ' + accessToken);
+      // refreshRequest(accessToken);
+      router.push('/');
+    } else {
+      router.back();
+    }
+  };
+
+  const setSession = async (token: string) => {
+    const myInfo = await getMyInfo(token);
+    document.cookie = `myInfo=${JSON.stringify(myInfo.result)};`;
+  };
 
   useEffect(() => {
     console.log(index);
@@ -53,15 +78,11 @@ export default function SimplePasswordCheck() {
       // setResult(
       console.log(Object.entries(password).toString());
       console.log(Object.entries(storePassword).toString());
-      // );
-      // console.log(
-      //   Object.entries(password).toString() ==
-      //     Object.entries(storePassword).toString(),
-      // );
       setResult(
         Object.entries(password).toString() ==
           Object.entries(storePassword).toString(),
       );
+      sendRequest();
       console.log(result);
     }
   }, [password, index, result]);
