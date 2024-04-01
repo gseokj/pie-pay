@@ -1,4 +1,4 @@
-FROM node:20.4.0-alphine as builder
+FROM node:20.4.0-alpine as builder
 
 # 작업 폴더를 만들고 npm 설치
 RUN mkdir /usr/src/app
