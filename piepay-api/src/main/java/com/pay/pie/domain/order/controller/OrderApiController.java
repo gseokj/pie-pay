@@ -6,8 +6,8 @@ import java.util.Random;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,7 +36,7 @@ public class OrderApiController {
 	private final MenuService menuService;
 
 	@Transactional
-	@PostMapping("/your-receipt/{payId}")
+	@GetMapping("/your-receipt/{payId}")
 	public ResponseEntity<BaseResponse<OrderResponse>> addReceipt(@PathVariable Long payId) {
 		Order existedOrder = orderService.findByPayId(payId);
 		if (existedOrder != null) {
