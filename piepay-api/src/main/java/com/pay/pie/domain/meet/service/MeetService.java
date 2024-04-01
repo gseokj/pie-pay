@@ -84,7 +84,7 @@ public class MeetService {
 		Map<Meet, Pay> payInfoMap = latestPayInfoList.stream()
 			.collect(Collectors.toMap(Pay::getMeet, Function.identity()));
 
-		List<MeetInfo> collect = membersInMeetList.stream()
+		return membersInMeetList.stream()
 			.map(meet -> {
 				Pay pay = payInfoMap.get(meet);
 				LocalDateTime lastDate = pay.getCreatedAt();
@@ -93,18 +93,6 @@ public class MeetService {
 			.sorted(Comparator.comparing(MeetInfo::topFixed).reversed()
 				.thenComparing(MeetInfo::lastPayDate).reversed())
 			.toList();
-
-		for (MeetInfo meetInfo : collect) {
-			System.out.println(meetInfo.meetId());
-			System.out.println(meetInfo.topFixed());
-			System.out.println(meetInfo.lastPayDate());
-			for (MeetMember member : meetInfo.member()) {
-				System.out.println(member.profileImage());
-			}
-
-		}
-
-		return null;
 	}
 
 	// 모임 추가 매서드

@@ -24,6 +24,7 @@ public record MeetInfo(
 	public static MeetInfo of(Meet meet, Member findMember, LocalDateTime lastPayDate) {
 		return MeetInfo.builder()
 			.meetId(meet.getId())
+			.meetName(meet.getMeetName())
 			.meetImage(meet.getMeetImage())
 			.membersCount(meet.getMemberMeetList().size())
 			.member(meet.getMemberMeetList().stream()
