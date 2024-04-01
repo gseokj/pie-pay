@@ -3,7 +3,7 @@ import Image from "next/image";
 import XBackButton from "@/app/(post-verification)/component/XBackButton";
 
 type Props = ({
-    type: HTMLImageElement;
+    type: HTMLImageElement|"";
 });
 
 export default function Header({type}: Props) {

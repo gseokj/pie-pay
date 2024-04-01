@@ -57,7 +57,7 @@ const baseStyle = { display: 'flex', justifyContent: 'end', alignItems: 'center'
 
 export const paymentStatus = styleVariants({
     agree: [{ ...baseStyle, color: theme.blue }],
-    deny: [{ ...baseStyle, color: theme.lightred }],
+    deny: [{ ...baseStyle, color: theme.red }],
     await: [{ ...baseStyle, color: theme.gray }],
 });
 

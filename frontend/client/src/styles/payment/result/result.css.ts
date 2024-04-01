@@ -2,13 +2,7 @@ import {createVar, style, styleVariants} from '@vanilla-extract/css';
 import theme from '@/styles/theme/theme';
 
 
-export const pargraph = styleVariants({
-    title:[{marginBottom: "10px",
-        fontSize: '25px',
-        fontWeight: 'bold'}],
-    paymentMember:[{fontSize: '14px',color: theme.gray, marginBottom: '10px'}]
 
-})
 
 export const box = style({
     display: 'flex',
@@ -40,7 +34,12 @@ export const receiptButton = style({
     fontSize: '10px',
     width: '20%',
 })
+export const pargraph = styleVariants({
+    title:[{marginBottom: "10px",
+        fontSize: '25px',
+        fontWeight: 'bold'}]
 
+})
 export const submitButton = style({
     // Mobile width
     width: '93%',

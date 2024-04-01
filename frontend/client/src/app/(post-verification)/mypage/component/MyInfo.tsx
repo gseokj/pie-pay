@@ -5,13 +5,18 @@ import Image from 'next/image';
 import setting from '@/assets/icons/setting.svg';
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Me } from '@/model/member';
+import {Me, Member} from '@/model/member';
 
 export default function MyInfo(){
   const myInfo:Me = JSON.parse(sessionStorage.getItem("myInfo")!);
   const route =useRouter();
   const updateMember = () => route.push('mypage/update');
-
+  // const myInfoCookie = document.cookie.split('; ').find(row => row.startsWith('myInfo='));
+  // let myInfo:Member;
+  // if (myInfoCookie) {
+  //   const decodedCookie = decodeURIComponent(myInfoCookie.split('=')[1]);
+  //   myInfo = JSON.parse(decodedCookie);
+  // }
   return (<section className={styles.userInfoSection}>
     <div className={styles.userInfoContent}>
       <img className={styles.userImage} src={myInfo.profileImage} />

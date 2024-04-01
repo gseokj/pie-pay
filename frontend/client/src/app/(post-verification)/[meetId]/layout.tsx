@@ -23,6 +23,7 @@ export default async function PaymentModalLayout({children, params}: Props) {
     await queryClient.prefetchQuery({queryKey: ['members', meetId, token?.value], queryFn: getMembers});
     await queryClient.prefetchQuery({queryKey: ['meetInfo', meetId, token?.value], queryFn: getMeetInfo});
     console.log("hello");
+
     const dehydratedState = dehydrate(queryClient);
 
 

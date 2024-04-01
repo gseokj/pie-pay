@@ -1,16 +1,9 @@
-
-interface MenuItem {
-  menuName: string;
-  menuPrice: number;
-  quantity: number;
-}
+import {Menu, Store} from "@/model/store";
 
 export interface Receipt {
-  orderMenuId: number;
-  storeName: string;
-  address: string;
-  phone: string;
-  createdAt: string;
-  menuItems: MenuItem[];
-  totalAmount: number;
+    createdAt: string;
+    orderId: number;
+    orderMenus: Menu[];
+    storeInfo: Store;
+    totalAmount:number;
 }

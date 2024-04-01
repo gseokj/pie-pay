@@ -1,38 +1,61 @@
-'use client'
+'use client';
 
-import * as styles from '@/styles/payment/result/receiptmodal.css'
-import {getDateAndTime} from '@/util/dateFormat'
-const menuItems = [{menuName: "족발(대)",menuPrice: 62000, quantity: 1},{menuName: "계란찜",menuPrice: 8000, quantity: 1},{menuName: "참이슬",menuPrice: 5000,quantity: 3},{menuName: "카스", menuPrice: 5000, quantity: 2}]
-const paymentResult = {orderMenuId:1, storeName: "(주) 뽕족 강남역본점",address: "서울 강남구 테헤란로4길 15(역삼동)",phone:"010-2839-1132",createdAt: "2024-03-20T11:39:04.663Z",menuItems,totalAmount:95000}
+import * as styles from '@/styles/payment/result/receipt.css';
+import {useReceiptModal} from '@/store/useReceiptModal';
+import Image from "next/image";
+import back from "@/assets/icons/x.svg";
+import {getDateAndTime} from "@/util/dateFormat";
+import {useQuery} from "@tanstack/react-query";
+import {getReceipt} from "@/api/receipt";
 
-export default function ReceiptModal() {
-
-  return (<div className={styles.container}>
-    <p className={styles.paragraph}>{paymentResult.storeName}</p>
-    <ul className={styles.ul.store}>
-      <li>{paymentResult.phone}</li>
-      <li>{paymentResult.address}</li>
-      <li>{getDateAndTime(new Date(paymentResult.createdAt))}</li>
-    </ul>
-    <ul className={styles.ul.menu}>
-      <li>메뉴명</li>
-      <li>가격</li>
-      <li>수량</li>
-      <li>합계</li>
-    </ul>
-    <hr />
-    { paymentResult.menuItems.map((menuItem) => (
-      <ul className={styles.ul.menu} key={menuItem.menuName}>
-        <li>{menuItem.menuName}</li>
-        <li>{menuItem.menuPrice.toLocaleString()}</li>
-        <li>{menuItem.quantity}</li>
-        <li>{(menuItem.menuPrice * menuItem.quantity).toLocaleString()}</li>
-      </ul>
-    ))}
-    <hr/>
-    <ul className={styles.ul.menu}>
-      <li/><li/><li/>
-      <li >{paymentResult.totalAmount.toLocaleString()}</li>
-    </ul>
-  </div>);
+type Props = {
+     payId: number ,
+}
+export default function ReceiptModal({payId}: Props) {
+    const {isVisible, updateState} = useReceiptModal();
+    const { data: receipt, isLoading, error } = useQuery({ queryKey: ['receipt', payId], queryFn: getReceipt });
+    return (
+        <div className={`${isVisible ? styles.container.invisible : styles.container.visible}`}>
+            <div onClick={() => updateState()} className={`${isVisible ? styles.container.invisible : styles.container.visible}`}>
+            </div>
+            <div
+                className={`${isVisible ? styles.modal.visible : styles.modal.invisible}`}>
+                <div className={styles.header}>
+                    <div/>
+                    <div/>
+                    <button type="button" aria-label="Go Back" onClick={() => updateState()}>
+                        <Image src={back} width={32} height={32} alt='button'/>
+                    </button>
+                </div>
+                <>{ receipt &&
+                    <div className={styles.content}>
+                        <p className={styles.paragraph}>{receipt.storeInfo.storeName}</p>
+                        <ul className={styles.ul.store}>
+                            <li>{receipt.storeInfo.phone}</li>
+                            <li>{receipt.storeInfo.address}</li>
+                            <li>{getDateAndTime(new Date(receipt.createdAt))}</li>
+                        </ul>
+                        <ul className={styles.ul.menu}>
+                            <li>메뉴명</li>
+                            <li>가격</li>
+                            <li>수량</li>
+                            <li>합계</li>
+                        </ul>
+                        <hr />
+                        { receipt.orderMenus.map((menuItem) => (
+                            <ul className={styles.ul.menu} key={menuItem.menuName}>
+                                <li>{menuItem.menuName}</li>
+                                <li>{menuItem.menuPrice && menuItem.menuPrice.toLocaleString()}</li>
+                                <li>{menuItem.quantity}</li>
+                                <li>{menuItem.menuPrice &&  (menuItem.menuPrice * menuItem.quantity).toLocaleString()}</li>
+                            </ul>
+                        ))}
+                        <hr/>
+                        <ul className={styles.ul.menu}>
+                            <li/><li/><li/>
+                            <li >{receipt.totalAmount &&  receipt.totalAmount.toLocaleString()}</li>
+                        </ul>
+                    </div>}</>
+            </div>
+        </div>);
 }
