@@ -1,6 +1,7 @@
+import { Me } from '@/model/member';
 
 export const getMyInfo = (() => {
-    let instance: (() => any) | null = null;
+    let instance: (() => Me) | null = null;
 
     return () => {
         if (!instance) {

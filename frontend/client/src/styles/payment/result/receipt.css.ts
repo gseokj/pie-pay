@@ -15,7 +15,7 @@ export const baseContainer = style({
     right: 0,
     bottom: 0,
     left: 0,
-    zIndex: 50,
+    zIndex: 100,
 
 })
 export const container = styleVariants({

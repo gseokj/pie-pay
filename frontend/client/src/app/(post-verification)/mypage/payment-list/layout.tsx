@@ -8,13 +8,13 @@ export const metadata: Metadata = {
 
 type Props = { children: ReactNode, receipt:ReactNode}
 
-export default async function MyPageLayout({children,receipt}: Props) {
+export default async function MyPageLayout({children}: Props) {
 
 
 
     return (
         <div className="w-[100%] h-[100%]">
-                {receipt}
+
                 {children}
         </div>
     );
