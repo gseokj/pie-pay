@@ -54,14 +54,13 @@ public class Meet extends BaseEntity {
 	private List<Pay> payList = new ArrayList<>();
 
 	@Builder // 빌더 패턴으로 객체 생성
-	public Meet(String meetName, String meetImage) {
+	public Meet(String meetName) {
 		this.meetName = meetName;
-		this.meetImage = meetImage;
-		this.meetInvitation = UUID.randomUUID().toString().substring(0, 6);
+		this.meetInvitation = updateInvitation();
 	}
 
-	public void updateInvitation() {
-		this.meetInvitation = UUID.randomUUID().toString().substring(0, 6);
+	public String updateInvitation() {
+		return this.meetInvitation = UUID.randomUUID().toString().substring(0, 6);
 	}
 
 	public void updateMeetImage(String meetImage) {

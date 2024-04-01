@@ -11,7 +11,18 @@ import com.pay.pie.domain.meet.entity.Meet;
 import io.lettuce.core.dynamic.annotation.Param;
 
 public interface MeetRepository extends JpaRepository<Meet, Long> {
-	Optional<Meet> findByMeetInvitation(String meetInvitation);
+
+	@Query
+		(
+			"""
+					SELECT m
+					FROM Meet m
+					JOIN FETCH m.memberMeetList	 ml
+					JOIN FETCH ml.member
+					WHERE m.meetInvitation = :meetInvitation
+			"""
+		)
+	Optional<Meet> findByMeetInvitation(@Param("meetInvitation") String meetInvitation);
 
 	@Query(
 		"""
@@ -54,4 +65,5 @@ public interface MeetRepository extends JpaRepository<Meet, Long> {
 				"""
 		)
 	List<Meet> findMembersInMeetList(@Param("meets") List<Long> meets);
+
 }
