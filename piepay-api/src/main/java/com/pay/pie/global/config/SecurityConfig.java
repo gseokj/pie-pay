@@ -37,6 +37,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 	private static final String[] URL_WHITE_LIST = {
 		"/api/pub/**", "/api/sub/**", "/pay",
+		"/api/your-receipt/**",
 		"/InitialData/**",
 		"/error", "/login/**", "/favicon.ico", "/index/**",
 		"/actuator/**", "/actuator", "/api-docs/**", "/swagger-ui/**",
