@@ -1,5 +1,6 @@
 package com.pay.pie.domain.meet.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,14 +23,36 @@ public interface MeetRepository extends JpaRepository<Meet, Long> {
 	)
 	Object[] getHighlight(@Param("meetId") Long meetId);
 
-
 	@Query(
 		"""
-  			SELECT m
-  			FROM Meet m
-  			JOIN FETCH  m.memberMeetList
-  			WHERE m.id = :meetId
-		"""
+						SELECT m
+						FROM Meet m
+						JOIN FETCH  m.memberMeetList
+						WHERE m.id = :meetId
+			"""
 	)
 	Meet findMeetInfo(@Param("meetId") Long meetId);
+
+	@Query
+		(
+			"""
+						SELECT mt.id
+						FROM Meet mt
+						JOIN  mt.memberMeetList ml
+						WHERE ml.member.id = :memberId
+				"""
+		)
+	List<Long> findMeetListByMemberId(@Param("memberId") Long memberId);
+
+	@Query
+		(
+			"""
+					SELECT mt
+					FROM Meet mt
+					JOIN FETCH mt.memberMeetList ml
+					JOIN FETCH ml.member
+					WHERE mt.id IN(:meets)
+				"""
+		)
+	List<Meet> findMembersInMeetList(@Param("meets") List<Long> meets);
 }
