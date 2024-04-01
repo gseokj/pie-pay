@@ -36,7 +36,7 @@ public class OrderApiController {
 	private final MenuService menuService;
 
 	@Transactional
-	@@PostMapping("/your-receipt/{payId}")
+	@PostMapping("/your-receipt/{payId}")
 	public ResponseEntity<BaseResponse<OrderResponse>> addReceipt(@PathVariable Long payId) {
 		Order existedOrder = orderService.findByPayId(payId);
 		if (existedOrder != null) {
