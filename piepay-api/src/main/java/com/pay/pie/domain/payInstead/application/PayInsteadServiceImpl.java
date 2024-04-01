@@ -9,6 +9,8 @@ import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.entity.Member;
 import com.pay.pie.domain.notification.dto.EventMessage;
 import com.pay.pie.domain.notification.service.SseEmitterService;
+import com.pay.pie.domain.participant.dao.ParticipantRepository;
+import com.pay.pie.domain.participant.entity.Participant;
 import com.pay.pie.domain.payInstead.dao.PayInsteadRepository;
 import com.pay.pie.domain.payInstead.entity.PayInstead;
 import com.pay.pie.global.security.dto.SecurityUserDto;
@@ -26,6 +28,7 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 
 	private final PayInsteadRepository payInsteadRepository;
 	private final MemberRepository memberRepository;
+	private final ParticipantRepository participantRepository;
 	private final JPAQueryFactory queryFactory;
 	private final SseEmitterService sseEmitterService;
 	private final BankUtil bankUtil;
@@ -38,7 +41,10 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 			.orElseThrow(
 				() -> new IllegalArgumentException("Borrower는 없는 회원입니다.")
 			);
-		PayInstead payInstead = payInsteadRepository.findByBorrower(borrower);
+		PayInstead payInstead = payInsteadRepository.findById(payInsteadId).orElseThrow(
+			() -> new IllegalArgumentException("없는 대신내주기 id")
+		);
+		log.info("payInstead.getPay().getId(): {}", payInstead.getPay().getId());
 		Member lender = memberRepository.findById(payInstead.getLender().getId())
 			.orElseThrow(
 				() -> new IllegalArgumentException("lender는 없는 회원입니다.")
@@ -77,6 +83,25 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 		// payInstead DB update 이체완료
 		payInstead.setPayback(true);
 		payInsteadRepository.save(payInstead);
+		log.info("payInstead.setPayback -> true");
+
+		// participant 지불 내역 update
+		Participant lenderParticipant = participantRepository.findByMemberIdAndPayId(
+			lender.getId(),
+			payInstead.getPay().getId()
+		);
+		log.info("lenderParticipant Id: {}", lenderParticipant.getId());
+		Participant borrowerParticipant = participantRepository.findByMemberIdAndPayId(
+			borrowerId,
+			payInstead.getPay().getId()
+		);
+		log.info("borrowerParticipant Id: {}", borrowerParticipant.getId());
+
+		Long lenderAmount = lenderParticipant.getPayAmount();
+		lenderParticipant.setPayAmount(lenderAmount - payInstead.getAmount());
+
+		Long borrowerAmount = borrowerParticipant.getPayAmount();
+		borrowerParticipant.setPayAmount(borrowerAmount + payInstead.getAmount());
 
 		// 알림
 		sseEmitterService.sendNotification(lender.getId(), EventMessage.PAYMENT_PAYINSTEAD_LENDER_NOTI);
