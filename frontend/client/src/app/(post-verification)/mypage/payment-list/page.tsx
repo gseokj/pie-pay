@@ -14,6 +14,7 @@ import React from "react";
 import {Chart as ChartJS, ArcElement, Tooltip, Legend} from "chart.js";
 import {Doughnut} from "react-chartjs-2"
 import {useReceiptModal} from "@/store/useReceiptModal";
+import ReceiptModal from '@/app/(post-verification)/mypage/component/ReceiptModal';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -74,6 +75,7 @@ export default function PaymentList() {
     return (
 
         <div className="absolute top-0 right-0 bottom-0 left-0 bg-white z-50 p-4">
+            <ReceiptModal/>
             <article className="flex justify-between mb-5">
                 <BackButton/>
                 <p className="font-bold text-lg">결제내역</p>

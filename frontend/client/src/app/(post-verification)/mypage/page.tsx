@@ -7,6 +7,8 @@ import {getDate} from "@/util/dateFormat"
 import * as styles from "@/styles/mypage/myPageMain.css"
 import MyInfo from '@/app/(post-verification)/mypage/component/MyInfo';
 import MyAccount from '@/app/(post-verification)/mypage/component/MyAccount';
+import { QueryClient } from '@tanstack/react-query';
+import { getMembers } from '@/api/member';
 
 const Borrower = {
     memberId: 5,
@@ -40,6 +42,12 @@ const Payment = {
 
 export default function MyPage() {
     const route =useRouter();
+    
+    // const token = cookies().get('accessToken');
+
+    // const {meetId} = params;
+    // const queryClient = new QueryClient();
+    // await queryClient.prefetchQuery({queryKey: ['members', meetId, token?.value], queryFn: getMembers});
     return (
         <div className={styles.container}>
             <MyInfo/>

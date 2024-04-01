@@ -12,6 +12,7 @@ import { useQueryClient} from "@tanstack/react-query";
 import {useMemberFilter} from "@/store/useMemberFilter";
 import {Member} from "@/model/member";
 import {useEffect} from "react";
+import { getMyInfo } from '@/util/getMyInfo';
 
 type Props = {
     params: { meetId: string },
@@ -23,12 +24,7 @@ export default function Page({params}:Props) {
     const { setFilterMembers,filterMembers } = useMemberFilter();
 
     useEffect(() => {
-        const myInfoCookie = document.cookie.split('; ').find(row => row.startsWith('myInfo='));
-        let myInfo:Member;
-        if (myInfoCookie) {
-            const decodedCookie = decodeURIComponent(myInfoCookie.split('=')[1]);
-            myInfo = JSON.parse(decodedCookie);
-        }
+        const myInfo = getMyInfo();
         if(!Members || Members.length<=0) return;
         setFilterMembers(Members.sort((member)=>member.memberId==myInfo.memberId ? -1 : 1));
         console.log(filterMembers);

@@ -93,7 +93,8 @@ globalStyle(`${content.nickname} > p, ${content.email} > p, ${content.phoneNumbe
   width: '17%',
   marginRight: '10px',
   color: theme.gray,
-  fontSize: '0.7rem'
+  fontSize: '0.7rem',
+  marginBottom: '20px'
 });
 
 
