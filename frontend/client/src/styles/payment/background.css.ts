@@ -2,10 +2,10 @@ import { style } from '@vanilla-extract/css'
 import theme from '@/styles/theme/theme';
 
 
-export const header = style({
+export const container = style({
     // Mobile width
     width: '100%',
-    height: '10%',
+    height: '100%',
     // Default width
     '@media': {
         'screen and (min-width: 768px)': {
@@ -17,11 +17,11 @@ export const header = style({
     display: 'flex',
 
     justifyContent: 'space-between',
-    zIndex:1,
+    zIndex:-1,
     top: 0,
     left: 0,
     padding: '10px',
     marginBottom: '10px',
     paddingRight: '60px',
-    backgroundColor: theme.layout
+    backgroundColor: theme.skyblue
 })

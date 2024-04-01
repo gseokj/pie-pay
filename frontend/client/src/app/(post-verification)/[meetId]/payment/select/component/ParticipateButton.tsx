@@ -6,6 +6,8 @@ import {useMutation} from "@tanstack/react-query";
 import axios from "axios";
 import {useMemberFilter} from "@/store/useMemberFilter";
 import { usePayment } from '@/store/usePayment';
+import {getMyInfo} from "@/util/getMyInfo";
+import {Payment} from "@/model/participant";
 
 
 
@@ -26,10 +28,11 @@ export default function ParticipateButton({ meetId }: Props) {
                   'Authorization': `Bearer ${token}`
               }}),
         onSuccess: (response) => {
-            const res = response.data.result;
+            const res:Payment = response.data.result;
+            res.participants.sort((member)=>member.memberInfo.memberId==getMyInfo().memberId ? -1 : 1)
             setPayment(res);
 
-            route.replace(`approve/${res["payId"]}/proceed`);
+            route.replace(`approve/${res["payId"]}`);
         },
         onError: () => { console.error('에러 발생') },
         onSettled: () => { console.log('결과에 관계 없이 무언가 실행됨') }

@@ -13,22 +13,24 @@ import Image from 'next/image';
 type Props = {
   payId: number;
 }
+interface ParticipantSocketRes {
+  payId:number;
+  participantId:number;
+  payAgree:'wait'|'deny'|'agree';
+  payStatus: "OPEN" | "ING" | "COMPLETE" | "CLOSE";
+}
 export default function ParticipantList({ payId }: Props) {
   const { payment, isLoading, updatePayment } = usePayment();
+  const { instead ,res} = usePaymentSocket();
+  const insteadPart = async (borrowerId: number, lenderId: number) => {
 
-  const { send, res, init } = usePaymentSocket();
-
-  const insteadPart = async (participantId: number, payAgree: boolean) => {
-    console.log(participantId);
-    send(payId, participantId, payAgree);
+    instead(payId, borrowerId,lenderId );
   };
 
   useEffect(() => {
     if (!res) return;
-
-    updatePayment(res);
+    updatePayment({ ...res, payAgree: res.payAgree ? 'agree' : 'deny' });
   }, [res]);
-
   return (
 
     <div className={styles.participantContainer}>
@@ -38,34 +40,33 @@ export default function ParticipantList({ payId }: Props) {
           <PulseMember />
         </>
       }
-      <button onClick={() => init(Number(payId))}>init</button>
-      {payment && payment.participants.map(participant => (
+      {payment && payment.participants.map((participant,index) => (
 
           <div key={participant.participantId}
-               className={`${styles.container}  ${participant.payAgree && styles.backgroundSkyBlue} ${participant.payAgree == false && styles.backgroundLightRed}`}>
+               className={`${styles.container}  ${participant.payAgree==='agree' && styles.backgroundSkyBlue} ${participant.payAgree==='deny' && styles.backgroundLightRed}`}>
             <div className={styles.participantList}>
               <img className={styles.image} src={participant.memberInfo.profileImage} alt="" width={50} />
               <p>{participant.memberInfo.nickname}</p>
             </div>
             <div className={styles.boxRight}>
               {/*대기중 상태*/}
-              {participant.payAgree == undefined &&
+              {participant.payAgree === 'wait' &&
                 <div className={styles.paymentStatus.await}>
-                  <p>준비 중</p>
-                <ProgressSpiner />
+                  <p>준비 중...</p>
+                  <ProgressSpiner />
                 </div>
-                }
+              }
               {/*승인 상태*/}
-              {participant.payAgree &&
+              {participant.payAgree === 'agree' &&
                 <div className={styles.paymentStatus.agree}>
                   <p>승인</p>
                   <Image src={agree} alt="승인" />
                 </div>}
               {/*도와줘(거부) 상태*/}
-              {participant.payAgree == false &&
+              {participant.payAgree === 'deny' &&
                 <div className={styles.paymentStatus.deny}>
-                  <p>도와줘</p>
-                  <button onClick={() => insteadPart(participant.participantId, true)}><Image src={hand} alt="도와줘" />
+                  <p>도와줘!</p>
+                  <button onClick={() => insteadPart(participant.memberInfo.memberId,payment?.participants[0].memberInfo.memberId)}><Image src={hand} alt="도와줘" />
                   </button>
                 </div>}
             </div>

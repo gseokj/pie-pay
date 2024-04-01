@@ -5,7 +5,7 @@ import { Participant, Payment } from '@/model/participant';
 interface ParticipantSocketRes {
   payId:number;
   participantId:number;
-  payAgree:boolean;
+  payAgree:'wait' | 'deny' | 'agree';
   payStatus: "OPEN" | "ING" | "COMPLETE" | "CLOSE";
 }
 type Store = {
@@ -25,7 +25,7 @@ export const usePayment = create<Store>((set) => ({
           ...payment,
           participants: payment.participants.map((participant) => ({
             ...participant,
-            payAgree: participant.payAgree === false ? undefined : participant.payAgree,
+            payAgree: !participant.payAgree ? 'wait' : participant.payAgree,
           })),
         },
       });
