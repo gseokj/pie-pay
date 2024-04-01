@@ -1,12 +1,20 @@
 'use client';
 
+import { postBankVerify } from '@/api/signin';
 import { ChangeEvent, useEffect, useState } from 'react';
 import ProgressBar from '@/app/(pre-verification)/sign-in/_component/ProgressBar';
 import * as styles from '@/styles/signin/singin.css';
 import { useRouter } from 'next/navigation';
 import BankListModal from '../../_component/BankListModal';
-
+import { useStore } from '@/store/useAccountStore';
+import { getCookie } from '@/util/getCookie';
+import { RequestBankVerify } from '@/model/signin';
 export default function Page() {
+  const [isValid, setIsValid] = useState({
+    bankName: true,
+    accountNumber: true,
+  });
+  const { accountInfo, setAccountInfo } = useStore();
   const [info, setInfo] = useState({
     bankName: '',
     accountNumber: '',
@@ -36,8 +44,19 @@ export default function Page() {
   };
 
   const route = () => {
-    router.push('/sign-in/account-auth/input-code');
+    const isBankNameValid = !!info.bankName;
+    const isAccountNumberValid = !!info.accountNumber;
+    setIsValid({
+      bankName: isBankNameValid,
+      accountNumber: isAccountNumberValid,
+    });
+    if (isBankNameValid && isAccountNumberValid) {
+      setAccountInfo({ bankCode: '001', accountNo: info.accountNumber });
+      sendRequest();
+      router.push('/sign-in/account-auth/input-code');
+    }
   };
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === 'accountNumber') {
@@ -46,6 +65,22 @@ export default function Page() {
       }
     } else {
       setInfo({ ...info, [name]: value });
+    }
+  };
+
+  const token = getCookie('accessToken') as string;
+
+  const sendRequest = async () => {
+    console.log('인증 진행');
+    {
+      try {
+        const request: RequestBankVerify = {
+          bankCode: '001',
+          accountNo: info.accountNumber,
+        };
+        const response = await postBankVerify(request, token);
+        console.log(response);
+      } catch (error) {}
     }
   };
 
@@ -61,7 +96,7 @@ export default function Page() {
             <div className={styles.itemName}>은행</div>
             <input
               type="text"
-              className={styles.inputBox}
+              className={`${styles.inputBox} ${isValid.bankName ? '' : styles.inputError}`}
               name="bankName"
               value={info.bankName}
               onChange={handleChange}
@@ -72,7 +107,7 @@ export default function Page() {
             <div className={styles.itemName}>계좌번호</div>
             <input
               type="text"
-              className={styles.inputBox}
+              className={`${styles.inputBox} ${isValid.accountNumber ? '' : styles.inputError}`}
               name="accountNumber"
               value={info.accountNumber}
               onChange={handleChange}

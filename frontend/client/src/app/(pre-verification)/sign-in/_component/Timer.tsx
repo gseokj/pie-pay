@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import * as styles from '@/styles/signin/timer.css';
 
 export default function Timer() {
-  const [seconds, setSeconds] = useState(300);
+  const [seconds, setSeconds] = useState(180);
   useEffect(() => {
     // 1초마다 seconds 상태를 감소시키는 타이머를 설정
     // 시간이 0보다 크면 1초 감소, 그렇지 않으면 0 유지

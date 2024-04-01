@@ -8,7 +8,7 @@ import TelecomListModal from '../_component/TelecomListModal';
 import TermsAgreeModal from '../_component/TermsAgreeModal';
 import { useRouter } from 'next/navigation';
 import { getCookie } from '@/util/getCookie';
-import { postUserInfo } from '@/api/auth';
+import { useStore } from '@/store/usePhoneNumber';
 
 export default function Page() {
   const [info, setInfo] = useState({
@@ -20,6 +20,11 @@ export default function Page() {
     phone: '',
   });
 
+  interface PhoneNumber {
+    phoneNumber: string;
+  }
+
+  const { phoneNumber, setPhoneNumber } = useStore();
   const router = useRouter();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showTermsModal, setShowTermsModal] = useState<boolean>(false);
@@ -49,6 +54,8 @@ export default function Page() {
             console.log('Verification response:', response);
           } catch (error) {}
         }
+        const newPhoneNumber: PhoneNumber = { phoneNumber: info.phone };
+        setPhoneNumber(newPhoneNumber);
         router.push('/sign-in/personal-auth/input-number');
       }
     };

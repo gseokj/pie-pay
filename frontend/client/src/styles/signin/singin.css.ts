@@ -139,7 +139,7 @@ export const numberContainer = style({
 export const hiddenInput = style({
   opacity: 0,
   position: 'absolute',
-  width: 0,
+  // width: 0,
   height: 0,
   border: 'none',
   padding: 0,

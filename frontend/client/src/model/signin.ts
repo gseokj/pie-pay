@@ -10,11 +10,31 @@ interface VerifyPhoneNumberResponse {
 
 interface ConfirmPhoneNumber {
   phoneNumber: string;
-  verificationNumver: string;
+  verificationNumber: string;
+}
+
+interface RequestBankVerify {
+  bankCode: string;
+  accountNo: string;
+}
+
+interface ConfirmBankVerify {
+  bankCode: string;
+  accountNo: string;
+  verificationWord: string;
+}
+
+interface BasicResponse {
+  status: number;
+  statusText: string;
+  message: string;
 }
 
 export type {
   VerifyPhoneNumber,
   VerifyPhoneNumberResponse,
   ConfirmPhoneNumber,
+  RequestBankVerify,
+  ConfirmBankVerify,
+  BasicResponse,
 };
