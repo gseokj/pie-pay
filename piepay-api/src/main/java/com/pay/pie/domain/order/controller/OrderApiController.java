@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,8 +36,7 @@ public class OrderApiController {
 	private final MenuService menuService;
 
 	@Transactional
-	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@PostMapping("/your-receipt/{payId}")
+	@@PostMapping("/your-receipt/{payId}")
 	public ResponseEntity<BaseResponse<OrderResponse>> addReceipt(@PathVariable Long payId) {
 		Order existedOrder = orderService.findByPayId(payId);
 		if (existedOrder != null) {
