@@ -31,13 +31,7 @@ public class GenerateQRController {
 	@GetMapping
 	public ResponseEntity<byte[]> generateQRCode(@RequestParam Long payId) {
 		// redis -> DB
-		redisToDBSyncService.syncDataFromRedisToDB(payId);
-
-		// pay Status 변경
-		// 	Pay pay = payRepository.findById(agreeReq.getPayId())
-		// 		.orElseThrow(() -> new IllegalArgumentException("없는 PayId"));
-		// 	pay.setPayStatus(Pay.PayStatus.ING);
-		// 	payRepository.save(pay);
+		// redisToDBSyncService.syncDataFromRedisToDB(payId);
 
 		try {
 			byte[] qrCodeimage = generateQRService.generateQRCode(payId);
@@ -48,50 +42,6 @@ public class GenerateQRController {
 			log.warn("QR Code OutputStream 도중 Exception 발생, {}", e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
-
-		// String url = "https://___/your-receipt/" + payId;
-		// int width = 200;
-		// int height = 200;
-		// BitMatrix bitMatrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);
-		//
-		// try {
-		// 	ByteArrayOutputStream out = new ByteArrayOutputStream();
-		// 	MatrixToImageWriter.writeToStream(bitMatrix, "PNG", out);
-		// 	log.info("out: {}", out);
-		//
-		// 	return ResponseEntity.ok()
-		// 		.contentType(MediaType.IMAGE_PNG)
-		// 		.body(out.toByteArray());
-		// } catch (Exception e) {
-		// 	log.warn("QR Code OutputStream 도중 Exception 발생, {}", e.getMessage());
-		// }
-		// return null;
-
-		// Map<EncodeHintType, ErrorCorrectionLevel> hints = new HashMap<>();
-		// hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-		//
-		// QRCodeWriter qrCodeWriter = new QRCodeWriter();
-		// BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height, hints);
-		//
-		// BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		// image.createGraphics();
-		//
-		// Graphics2D graphics = (Graphics2D)image.getGraphics();
-		// graphics.setColor(Color.WHITE);
-		// graphics.fillRect(0, 0, width, height);
-		// graphics.setColor(Color.BLACK);
-		//
-		// for (int i = 0; i < width; i++) {
-		// 	for (int j = 0; j < height; j++) {
-		// 		if (bitMatrix.get(i, j)) {
-		// 			graphics.fillRect(i, j, 1, 1);
-		// 		}
-		// 	}
-		// }
-		//
-		// OutputStream outputStream = response.getOutputStream();
-		// ImageIO.write(image, url, outputStream);
-		// outputStream.close();
 	}
 
 }

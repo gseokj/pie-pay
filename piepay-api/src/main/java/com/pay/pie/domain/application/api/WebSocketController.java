@@ -16,11 +16,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.application.PayAgreeService;
-import com.pay.pie.domain.application.PayInsteadService;
 import com.pay.pie.domain.application.dto.AgreeDto;
 import com.pay.pie.domain.application.dto.InsteadDto;
 import com.pay.pie.domain.application.dto.request.AgreeReq;
-import com.pay.pie.domain.participant.application.ParticipantService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,13 +31,9 @@ public class WebSocketController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketController.class);
 
 	private final SimpMessageSendingOperations simpleMessageSendingOperations;
-	private final ParticipantService participantService;
 	private final RedisTemplate<String, Object> redisTemplate;
-	private final RedisTemplate<String, AgreeDto> redisTemplateAgreeData;
-	private final RedisTemplate<String, InsteadDto> redisTemplateInsteadData;
 	private final PayAgreeService payAgreeService;
 	private final SimpMessagingTemplate messagingTemplate;
-	private final PayInsteadService payInsteadService;
 
 	// 새로운 사용자가 웹 소켓을 연결할 때 실행됨
 	// @EventListener은 한개의 매개변수만 가질 수 있다.
@@ -77,54 +71,8 @@ public class WebSocketController {
 	 * @param payId
 	 * @param headerAccessor 초기 정보 리스트
 	 */
-	// @MessageMapping("/InitialData/{payId}")
 	@MessageMapping("/initialData/{payId}")
 	public void checkInitialData(@DestinationVariable String payId, SimpMessageHeaderAccessor headerAccessor) {
-		// 클라이언트가 방에 입장하여 초기 데이터를 확인할 때 호출됩니다.
-		// 해당 방의 초기 정보를 조회하여 클라이언트에게 전송합니다.
-		// String sessionId = headerAccessor.getSessionId();
-		// log.info("sessionId: {}", sessionId);
-		// Map<Object, Object> agreeTrueData = redisTemplate.opsForHash().entries("payId:" + payId + ":true");
-		// Map<Object, Object> agreeFalseData = redisTemplate.opsForHash().entries("payId:" + payId + ":false");
-		// // Map<Object, Object> insteadData = redisTemplate.opsForHash().entries("payId:" + payId + ":instead");
-		// log.info("agreeTrueData: {}", agreeTrueData);
-		// log.info("agreeFalseData: {}", agreeFalseData);
-		// // log.info("insteadData: {}", insteadData);
-		//
-		// Map<String, Object> formattedData = new HashMap<>();
-		//
-		// // agreeData 변환 후 저장
-		// List<Map<String, Object>> formattedAgreeTrueList = new ArrayList<>();
-		// if (agreeTrueData != null && !agreeTrueData.isEmpty()) {
-		// 	for (Map<String, Object> stringObjectMap : formattedAgreeTrueList) {
-		//
-		// 	}
-		// 	for (Map.Entry<Object, Object> entry : agreeTrueData.entrySet()) {
-		// 		log.info("agreeTrueData: {}", entry.getValue().toString());
-		// 		Map<String, Object> participantData = new HashMap<>();
-		// 		String participantId = entry.getValue().toString(); // participantId 추출
-		// 		participantData.put("participantId", participantId);
-		// 		formattedAgreeTrueList.add(participantData);
-		// 	}
-		// } else {
-		// 	// agreeData가 없는 경우 빈 리스트 추가
-		// 	formattedAgreeTrueList = new ArrayList<>();
-		// }
-		//
-		// List<Map<String, Object>> formattedAgreeFalseList = new ArrayList<>();
-		// if (agreeFalseData != null && !agreeFalseData.isEmpty()) {
-		// 	for (Map.Entry<Object, Object> entry : agreeFalseData.entrySet()) {
-		// 		Map<String, Object> participantData = new HashMap<>();
-		// 		String participantId = entry.getValue().toString(); // participantId 추출
-		// 		participantData.put("participantId", participantId);
-		// 		formattedAgreeFalseList.add(participantData);
-		// 	}
-		// } else {
-		// 	// agreeData가 없는 경우 빈 리스트 추가
-		// 	formattedAgreeFalseList = new ArrayList<>();
-		// }
-
-		////////////////////////////////
 		Map<Object, Object> agreeTrueData = redisTemplate.opsForHash().entries("payId:" + payId + ":true");
 		Map<Object, Object> agreeFalseData = redisTemplate.opsForHash().entries("payId:" + payId + ":false");
 
@@ -141,32 +89,9 @@ public class WebSocketController {
 
 		agreeData.put("agreeTrue", agreeTrueParticipantIds);
 		agreeData.put("agreeFalse", agreeFalseParticipantIds);
-
 		log.info("초기데이터: {}", agreeData);
-		/////////////////////////////////////////////
 
-		// formattedData.put("agreeData", formattedAgreeDataList);
-
-		// insteadData 변환 후 저장
-		// List<Map<String, Object>> formattedInsteadDataList = new ArrayList<>();
-		// if (insteadData != null && !insteadData.isEmpty()) {
-		// 	for (Map.Entry<Object, Object> entry : insteadData.entrySet()) {
-		// 		Map<Object, Object> insteadDataMap = (Map<Object, Object>)entry.getValue(); // Map으로 형변환
-		// 		Map<String, Object> insteadDataItem = new HashMap<>();
-		// 		insteadDataItem.put("borrowerId", insteadDataMap.get("borrowerId")); // borrowerId 추가
-		// 		insteadDataItem.put("lenderId", insteadDataMap.get("lenderId")); // lenderId 추가
-		// 		formattedInsteadDataList.add(insteadDataItem);
-		// 	}
-		// } else {
-		// 	// insteadData가 없는 경우 빈 리스트 추가
-		// 	formattedInsteadDataList = new ArrayList<>();
-		// }
-		// formattedData.put("insteadData", formattedInsteadDataList);
-
-		// 클라이언트에게 데이터 전송
-		// log.info("초기데이터: {}", formattedData);
 		messagingTemplate.convertAndSend("/api/sub/initialData/" + payId, agreeData);
-		// messagingTemplate.convertAndSend("/api/sub/initialData/" + payId, formattedData);
 	}
 
 	/**
@@ -183,31 +108,15 @@ public class WebSocketController {
 		log.info("동의 성공");
 	}
 
-	// /**
-	//  * 대신내주기 요청
-	//  * @param insteadReq
-	//  */
-	// @MessageMapping("/instead-req")
-	// public void requestPayInstead(
-	// 	@AuthenticationPrincipal SecurityUserDto securityUserDto, InsteadRequestReq insteadReq) {
-	// 	Long borrowerId = securityUserDto.getMemberId();
-	// 	InsteadDto insteadDto = payInsteadService.requestPayInstead(insteadReq.getPayId(), borrowerId);
-	//
-	// 	// Send message to relevant participants via WebSocket
-	// 	messagingTemplate.convertAndSend("/sub/" + insteadDto.getPayId(), insteadDto);
-	// }
-
 	/**
 	 * 대신내주기 승낙
 	 * @param insteadAgreeReq
 	 */
 	@MessageMapping("/instead-res")
 	public void respondToPayInstead(InsteadDto insteadAgreeReq) {
-		// InsteadDto insteadDto = payInsteadService.respondToPayInstead(insteadAgreeReq);
 		AgreeDto agreeDto = payAgreeService.respondToPayInstead(insteadAgreeReq);
 
 		// Send message to relevant participants via WebSocket
 		messagingTemplate.convertAndSend("/api/sub/" + insteadAgreeReq.getPayId(), agreeDto);
-
 	}
 }

@@ -1,12 +1,16 @@
 package com.pay.pie.domain.application;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.pay.pie.domain.member.dao.MemberRepository;
+import com.pay.pie.domain.member.entity.Member;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
 import com.pay.pie.domain.participant.entity.Participant;
 import com.pay.pie.domain.pay.dao.PayRepository;
@@ -14,6 +18,7 @@ import com.pay.pie.domain.pay.entity.Pay;
 import com.pay.pie.domain.payInstead.dao.PayInsteadRepository;
 import com.pay.pie.domain.payInstead.entity.PayInstead;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,78 +32,79 @@ public class RedisToDBSyncService {
 	private final ParticipantRepository participantRepository;
 	private final PayInsteadRepository payInsteadRepository;
 	private final MemberRepository memberRepository;
-
-	// Redis -> DB 저장
+	
+	/*
+	Redis -> DB 저장
+	 */
+	@Transactional
 	public void syncDataFromRedisToDB(Long payId) {
-		// Redis 에서 정보를 읽어옵니다.
-		Map<Object, Object> agreementData = redisTemplate.opsForHash().entries("payId" + payId + "true");
-		// Map<Object, Object> insteadData = redisTemplate.opsForHash().entries("payId" + payId + "instead");
+		// 1. Redis에서 모든 참가자의 동의 정보 조회
+		Map<Object, Object> agreementData = redisTemplate.opsForHash().entries("payId:" + payId + ":true");
 		log.info("agreeDataFromRedis: {}", agreementData);
-		// log.info("insteadDataFromRedis: {}", insteadData);
 
-		// Process agreement data
-		for (Map.Entry<Object, Object> entry : agreementData.entrySet()) {
-			String participantIdField = (String)entry.getKey();
-			Long participantId = Long.parseLong(participantIdField.split(":")[1]); // 필드 값을 파싱하여 participantId를 가져옵니다.
-			Participant participant = participantRepository.findById(participantId).orElse(null);
-			if (participant != null) {
-				participant.setPayAgree(true);
-				participantRepository.save(participant);
-			}
-		}
-		// for (Map.Entry<Object, Object> entry : agreementData.entrySet()) {
-		// 	Long participantId = Long.parseLong(entry.getKey().toString());
-		// 	boolean payAgree = Boolean.parseBoolean(entry.getValue().toString());
-		// 	Participant participant = participantRepository.findById(participantId).orElse(null);
-		// 	if (participant != null) {
-		// 		participant.setPayAgree(payAgree);
-		// 		participantRepository.save(participant);
-		// 	}
-		// }
+		// 2. Redis[agree Data] -> participant update
+		agreementData.entrySet().stream()
+			.map(entry -> {
+				String participantIdField = (String)entry.getKey();
+				Long participantId = Long.parseLong(participantIdField.split(":")[1]);
+				Participant participant = participantRepository.findById(participantId).orElse(null);
+				if (participant != null) {
+					participant.setPayAgree(true);
+				}
+				return participant;
+			})
+			.filter(Objects::nonNull)      // Filter out null participants
+			.forEach(participantRepository::save);
 
-		// Process payInstead data
-		Set<String> insteadKeys = redisTemplate.keys("payId:" + payId + ":instead:*");
-		if (insteadKeys != null) {
-			for (String insteadKey : insteadKeys) {
-				Map<Object, Object> insteadData = redisTemplate.opsForHash().entries(insteadKey);
+		// 3. Redis[대신내주기 Data] -> DB에 저장
+		syncPayInsteadDataFromRedisToDB(payId);
 
-				Long borrowerId = Long.parseLong((String)insteadData.get("borrowerId"));
-				Long lenderId = Long.parseLong((String)insteadData.get("lenderId"));
-
-				// redis -> DB에 저장
-				PayInstead payInstead = PayInstead.builder()
-					.pay(payRepository.findById(payId).orElse(null))
-					.borrower(memberRepository.findById(borrowerId).orElse(null))
-					.lender(memberRepository.findById(lenderId).orElse(null))
-					.build();
-
-				payInsteadRepository.save(payInstead);
-			}
-		}
-
-		// for (Map.Entry<Object, Object> entry : insteadData.entrySet()) {
-		// 	Pay pay = payRepository.findById(payId)
-		// 		.orElseThrow(
-		// 			() -> new IllegalArgumentException("없는 Pay 결제건 입니다.")
-		// 		);
-		// 	Member borrower = memberRepository.findById(Long.parseLong(entry.getValue().toString()))
-		// 		.orElseThrow(
-		// 			() -> new IllegalArgumentException("없는 회원 입니다.")
-		// 		);
-		// 	Member lender = memberRepository.findById(Long.parseLong(entry.getValue().toString()))
-		// 		.orElseThrow(
-		// 			() -> new IllegalArgumentException("없는 회원 입니다.")
-		// 		);
-
-		// Redis 에서 payId 데이터 삭제(트랜잭션 영향 안받음)
-		// redisTemplate.delete("payId" + payId + "true");
-		// redisTemplate.delete("payId" + payId + "false");
-		// redisTemplate.delete("payId" + payId + "instead");
-
-		// pay Status 변경
+		// 4. pay상태 update
 		Pay pay = payRepository.findById(payId)
 			.orElseThrow(() -> new IllegalArgumentException("없는 PayId"));
 		pay.setPayStatus(Pay.PayStatus.ING);
 		payRepository.save(pay);
 	}
+
+	/*
+	Redis[대신내주기 Data] -> payInstead update
+	 */
+	public void syncPayInsteadDataFromRedisToDB(Long payId) {
+		// Process payInstead data
+		Set<String> insteadKeys = redisTemplate.keys("payId:" + payId + ":instead:*");
+		if (insteadKeys != null) {
+			List<CompletableFuture<PayInstead>> futures = insteadKeys.stream()
+				.map(insteadKey -> CompletableFuture.supplyAsync(() -> {
+					Map<Object, Object> insteadData = redisTemplate.opsForHash().entries(insteadKey);
+
+					Long borrowerId = Long.parseLong((String)insteadData.get("borrowerId"));
+					Long lenderId = Long.parseLong((String)insteadData.get("lenderId"));
+
+					// pay, borrower, lender FETCH!
+					Pay pay = payRepository.findById(payId).orElse(null);
+					Member borrower = memberRepository.findById(borrowerId).orElse(null);
+					Member lender = memberRepository.findById(lenderId).orElse(null);
+
+					if (pay != null && borrower != null && lender != null) {
+						PayInstead payInstead = PayInstead.builder()
+							.pay(pay)
+							.borrower(borrower)
+							.lender(lender)
+							.amount(0L)
+							.build();
+
+						return payInsteadRepository.save(payInstead);
+					} else {
+						return null;
+					}
+				}))
+				.toList();
+
+			CompletableFuture<Void> allFutures = CompletableFuture
+				.allOf(futures.toArray(new CompletableFuture[futures.size()]));
+
+			allFutures.join();      // Wait for all futures to complete
+		}
+	}
+
 }
