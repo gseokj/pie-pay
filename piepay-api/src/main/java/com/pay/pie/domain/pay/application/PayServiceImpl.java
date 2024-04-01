@@ -30,6 +30,7 @@ import com.pay.pie.domain.pay.entity.Pay;
 import com.pay.pie.domain.pay.entity.QPay;
 import com.pay.pie.domain.payInstead.entity.PayInstead;
 import com.pay.pie.domain.payInstead.entity.QPayInstead;
+import com.pay.pie.global.util.PiePayUtil;
 import com.pay.pie.global.util.bank.BankUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -47,6 +48,7 @@ public class PayServiceImpl implements PayService {
 	private final JPAQueryFactory queryFactory;
 	private final SseEmitterService sseEmitterService;
 	private final BankUtil bankUtil;
+	private final PiePayUtil piePayUtil;
 
 	public List<Pay> findPayByMeetId(long meetId) {
 		Meet meet = meetRepository.findById(meetId)
@@ -130,18 +132,22 @@ public class PayServiceImpl implements PayService {
 			sseEmitterService.sendNotification(participant.getMember().getId(), EventMessage.PAYMENT_COMPLETED_NOTI);
 		}
 
-		// for (Participant participant : participantList) {
-		// 	Account account = queryFactory
-		// 		.selectFrom(QAccount.account)
-		// 		.where(QAccount.account.member.eq(participant.getMember()))
-		// 		.fetchOne();
-		// 	// 이체
-		// 	bankUtil.transferAccount(
-		// 		account.getBankCode(),
-		// 		account.getAccountNo(),
-		// 		Long.valueOf(participant.getPayAmount()).intValue(),
-		// 		StoreBankCode, StoreAccount);
-		// }
+		// 나머지 금액 PiePay가 이체
+		Long sumPayAmount = participantRepository.sumPayAmountByPayId(payId);
+		log.info("이체 총금액: {}", sumPayAmount);
+		long remainAmount = order.getTotalAmount() - sumPayAmount;
+		log.info("총금액-결제금액 차액: {}", remainAmount);
+		if (remainAmount != 0) {
+
+			bankUtil.transferAccount(
+				StoreBankCode,
+				StoreAccount,
+				(int)remainAmount,
+				piePayUtil.getPiePayBankCode(),
+				piePayUtil.getPiePayAccount(),
+				piePayUtil.getPiePayApiKey()
+			);
+		}
 
 		// payStatus -> Complete로 변환
 		pay.setPayStatus(Pay.PayStatus.COMPLETE);
