@@ -1,5 +1,5 @@
 import { QueryFunction } from "@tanstack/query-core";
-import {Account, AccountResponse} from "@/model/account";
+import {Account} from "@/model/account";
 import authAxios from '@/util/authAxios';
 
 export const getAccount: QueryFunction<Account[]> = async ({ queryKey }) => {
