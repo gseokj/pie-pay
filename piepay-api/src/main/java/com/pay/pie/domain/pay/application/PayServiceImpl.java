@@ -137,6 +137,8 @@ public class PayServiceImpl implements PayService {
 		log.info("이체 총금액: {}", sumPayAmount);
 		long remainAmount = order.getTotalAmount() - sumPayAmount;
 		log.info("총금액-결제금액 차액: {}", remainAmount);
+		log.info("piePayUtil.getPiePayBankCode(): {}", piePayUtil.getPiePayBankCode());
+		log.info("piePayUtil.getPiePayAccount(): {}", piePayUtil.getPiePayAccount());
 		if (remainAmount != 0) {
 
 			bankUtil.transferAccount(
