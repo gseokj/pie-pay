@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.pay.pie.domain.BaseEntity;
 import com.pay.pie.domain.meet.dto.AddMeetRequest;
 import com.pay.pie.domain.meet.dto.HighlightResponse;
 import com.pay.pie.domain.meet.dto.MeetResponse;
@@ -31,6 +32,7 @@ import com.pay.pie.domain.meet.dto.UpdateInvitationRequest;
 import com.pay.pie.domain.meet.dto.request.UpdateMeetImageRequest;
 import com.pay.pie.domain.meet.dto.request.UpdateMeetNameRequest;
 import com.pay.pie.domain.meet.dto.response.MeetDetailResponse;
+import com.pay.pie.domain.meet.dto.response.MeetInfo;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.service.MeetService;
 import com.pay.pie.domain.memberMeet.dto.AddMemberMeetRequest;
@@ -88,7 +90,7 @@ public class MeetController {
 	@PutMapping("/meet/image")
 	public ResponseEntity<BaseResponse<MeetDetailResponse>> updateMeetImage(
 		@RequestPart(value = "image", required = false) MultipartFile image,
-		@RequestPart(value = "request")UpdateMeetImageRequest request
+		@RequestPart(value = "request") UpdateMeetImageRequest request
 	) {
 		return BaseResponse.success(
 			SuccessCode.UPDATE_SUCCESS,
@@ -96,11 +98,19 @@ public class MeetController {
 		);
 	}
 
+	// 모임 전체 조회
 
+	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
+	@GetMapping("/meets")
+	public ResponseEntity<BaseResponse<List<MeetInfo>>> getMeetList(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto
+	) {
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			meetService.getMeetList(securityUserDto.getMemberId())
+		);
 
-
-
-
+	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@PostMapping("/meet")
