@@ -12,7 +12,6 @@ import com.pay.pie.global.common.BaseResponse;
 import com.pay.pie.global.common.code.SuccessCode;
 import com.pay.pie.global.security.dto.SecurityUserDto;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,10 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/api/pay/payback")
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class PayInsteadController {
 
-	private PayInsteadService payInsteadService;
+	private final PayInsteadService payInsteadService;
 
 	/**
 	 * 대신내주기 이체 정산 요청
