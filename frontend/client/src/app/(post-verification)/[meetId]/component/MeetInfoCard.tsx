@@ -2,6 +2,7 @@ import {faker} from "@faker-js/faker";
 import Image from "next/image";
 import dayjs from "dayjs";
 import settingIcon from "@/assets/icons/setting.svg";
+import meetDefaultImage from "@/assets/images/meet_default.svg";
 import * as mainStyles from "@/styles/main/main.css";
 import * as cardStyles from "@/styles/main/mainCard.css";
 import * as fontStyles from "@/styles/fonts.css";
@@ -22,7 +23,6 @@ export default function MeetInfoCard({params}: Props) {
         meetImage: null,
         createdAt: "2024-03-19T15:43:57.3042142"
     }
-    const defaultImage = faker.image.avatarGitHub();
     const createdDate = dayjs(meetInfo.createdAt);
 
     const onClickPush = () => {
@@ -40,9 +40,10 @@ export default function MeetInfoCard({params}: Props) {
                 <div
                     className={ mainStyles.imageLayout }
                 >
-                    <img
+                    <Image
                         className={ mainStyles.imageLayout }
-                        src={ meetInfo.meetImage == null ? defaultImage : meetInfo.meetImage }
+                        src={ meetInfo.meetImage === null ? meetDefaultImage : meetInfo.meetImage }
+                        alt="meet Image"
                         width={56}
                         height={56}
                     />

@@ -20,12 +20,18 @@ export default function Page({params}:Props) {
     const {meetId} = params;
     const queryClient = useQueryClient();
     const Members = queryClient.getQueryData(["members",meetId]) as Member[];
-    const { setFilterMembers } = useMemberFilter();
+    const { setFilterMembers,filterMembers } = useMemberFilter();
 
     useEffect(() => {
-        const myInfo:Member = JSON.parse(sessionStorage.getItem("myInfo")!);
+        const myInfoCookie = document.cookie.split('; ').find(row => row.startsWith('myInfo='));
+        let myInfo:Member;
+        if (myInfoCookie) {
+            const decodedCookie = decodeURIComponent(myInfoCookie.split('=')[1]);
+            myInfo = JSON.parse(decodedCookie);
+        }
         if(!Members || Members.length<=0) return;
         setFilterMembers(Members.sort((member)=>member.memberId==myInfo.memberId ? -1 : 1));
+        console.log(filterMembers);
     }, [Members]);
 
     return (

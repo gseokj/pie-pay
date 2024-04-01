@@ -59,6 +59,12 @@ export const mainButton = styleVariants({
         cursor: "default",
         backgroundColor: theme.lightGray,
         color: "white"
+    }],
+    settingButton: [buttonLayout, {
+        marginBottom: "0.75rem",
+        backgroundColor: theme.skyblue,
+        fontSize: "1rem",
+        color: "black",
     }]
 });
 

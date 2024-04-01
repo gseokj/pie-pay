@@ -16,9 +16,9 @@ interface PaymentSelectProps {
 export default function PaymentSelectButton(
     { meetId }: PaymentSelectProps) {
 
-    const route = useRouter();
+    const router = useRouter();
     const onClickPush = () => {
-        route.push(`/${meetId}/payment/select`);
+        router.push(`/${meetId}/payment/select`);
     }
 
     return (

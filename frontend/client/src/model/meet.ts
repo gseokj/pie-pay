@@ -2,6 +2,12 @@ interface CreateMeetRequest {
     meetName: string;
 }
 
+interface CreateMeetResponse {
+    message: string;
+    result: Meet;
+    status: number;
+}
+
 interface Meet {
     createdAt: string;
     updatedAt: string;
@@ -12,27 +18,47 @@ interface Meet {
     membersCount: number;
 }
 
-interface CreateMeetResponse {
+interface MeetInfoResponse {
     message: string;
     result: Meet;
     status: number;
 }
 
-interface GetMeetInfoResponse {
-    message: string;
-    result: Meet;
-    status: number;
-}
-
-interface MeetInMeets {
+interface MeetData {
     meet: Meet;
     topFixed: boolean;
+    updated_at: string|null;
 }
 
 interface GetMyMeetsResponse {
     status: number;
     message: string;
-    result: MeetInMeets[];
+    result: MeetData[];
 }
 
-export type { CreateMeetResponse, CreateMeetRequest, GetMeetInfoResponse, GetMyMeetsResponse };
+interface Member {
+    memberId: number;
+    nickname: string;
+    profileImage: string|null;
+    phoneNumber: string|null;
+    memberRole: string;
+    email: string;
+}
+
+interface MemberResponse {
+    message: string;
+    result: Member[];
+    status: number;
+}
+
+interface DefaultResponse {
+    status: number;
+    message: string;
+    result: null;
+}
+
+export type {
+    Meet, MeetData, CreateMeetResponse, CreateMeetRequest, MeetInfoResponse, GetMyMeetsResponse,
+    Member, MemberResponse,
+    DefaultResponse
+};

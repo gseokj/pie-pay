@@ -4,7 +4,7 @@ import * as styles from "@/styles/payment/select/payment.css"
 import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
 import {getMembers} from "@/api/member";
 import {getAccount} from "@/api/account";
-import {getPayment} from "@/api/payment";
+import {getPayment, getPaymentResult} from "@/api/payment";
 import { getReceipt } from '@/api/receipt';
 
 export const metadata: Metadata = {
@@ -15,17 +15,21 @@ export const metadata: Metadata = {
 type Props = { children: ReactNode, receipt:ReactNode, params: { payId: string }}
 
 export default async function PaymentModalLayout({children, params}: Props) {
-    const {payId} = params;
+    let {payId} = params;
+
     const queryClient = new QueryClient();
-    await queryClient.prefetchQuery({queryKey: ['payment',payId], queryFn: getPayment});
-    queryClient.getQueryData(['payment',payId]);
+    await queryClient.prefetchQuery({queryKey: ['payment',Number(payId)], queryFn: getPayment});
+    await queryClient.prefetchQuery({queryKey: ['receipt',Number(payId)], queryFn: getReceipt});
+    await queryClient.prefetchQuery({queryKey: ['result', Number(payId)], queryFn: getPaymentResult});
+
 
     const dehydratedState = dehydrate(queryClient);
 
 
     return (
-        <div className="w-[100%]">
+        <div className="w-[100%] h-[100%]">
             <HydrationBoundary state={dehydratedState}>
+                
                 {children}
             </HydrationBoundary>
         </div>

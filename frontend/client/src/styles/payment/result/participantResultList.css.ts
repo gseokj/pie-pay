@@ -1,4 +1,4 @@
-import {style} from "@vanilla-extract/css";
+import {style, styleVariants} from "@vanilla-extract/css";
 import theme from "@/styles/theme/theme";
 
 
@@ -20,6 +20,19 @@ export const container = style({
     width: '100%',
     paddingRight: '5%'
 })
+const bold = style({
+    fontWeight: 'bold'
+})
+export const pargraph = styleVariants({
+
+    balance:[{width:'18%',fontWeight: 'bold'}],
+    paymentMember:[{fontSize: '14px',color: theme.gray, marginBottom: '10px'}]
+
+})
+export const boxParagraph =styleVariants({
+    title:[bold,{fontSize: '15px',marginBottom:'10px'}],
+    balance:[bold,{fontSize: '20px'}]
+});
 export const button = style({
 
 })
@@ -40,5 +53,7 @@ export const backgroundLightRed = style({
 
 export const image = style({
     borderRadius: '15px',
+    width: '3rem',
+    height: '3rem',
     margin: '7px'
 })

@@ -1,4 +1,4 @@
-import {style, styleVariants} from "@vanilla-extract/css";
+import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 import theme from "@/styles/theme/theme";
 
 export const container = style({
@@ -11,6 +11,7 @@ export const tip = style({
 })
 export const content = style({
     width: '92%',
+
     // Default width
     '@media': {
         'screen and (min-width: 768px)': {
@@ -18,10 +19,17 @@ export const content = style({
         },
     },
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'space-between',
 
     position: 'fixed',
     bottom: '50px',
+})
+
+export const waitSection = style({
+    width: '100%',
+    display: 'flex',
+
 })
 const beforeBase = style({
     width: '48%',
@@ -43,3 +51,12 @@ export const button = styleVariants({
 
 })
 
+export const agreeSection = style({
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+})
+
+globalStyle(`${agreeSection} > p`,{marginBottom: '1.5rem'})

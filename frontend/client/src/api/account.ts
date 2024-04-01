@@ -1,11 +1,14 @@
 import { QueryFunction } from "@tanstack/query-core";
-import {Account} from "@/model/account";
+import {Account, AccountResponse} from "@/model/account";
 import authAxios from '@/util/authAxios';
 
-export const getAccount: QueryFunction<Account> = async () => {
-        const axios = await authAxios();
+export const getAccount: QueryFunction<AccountResponse> = async ({ queryKey }) => {
+    const [_,token] =queryKey;
     try {
-        const res = await axios.get('/members/accounts',{
+        const res = await authAxios.get('api/member/accounts',{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         });
         console.log(res);
         return res.data;

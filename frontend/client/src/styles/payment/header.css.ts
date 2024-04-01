@@ -15,9 +15,11 @@ export const header = style({
     },
     position: 'fixed',
     display: 'flex',
+
     justifyContent: 'space-between',
     zIndex:1,
     top: 0,
+    left: 0,
     padding: '10px',
     marginBottom: '10px',
     paddingRight: '60px',

@@ -17,23 +17,12 @@ export const metadata: Metadata = {
 
 type Props = { children: ReactNode, modal: ReactNode }
 
-// function getCookie(name: string) {
-//     let cookieArray = document.cookie.split('; ');
-//     for(let i = 0; i < cookieArray.length; i++) {
-//         let cookiePair = cookieArray[i].split('=');
-//         if(name == cookiePair[0]) {
-//             return cookiePair[1];
-//         }
-//     }
-//     return null;
-// }
-
 
 export default async function PostVerificationLayout({children}: Props) {
     const queryClient = new QueryClient();
     const token = cookies().get('accessToken')?.value;
 
-    // await queryClient.prefetchQuery({queryKey: ['account'], queryFn: getAccount});
+    await queryClient.prefetchQuery({queryKey: ['account', token], queryFn: getAccount});
     await queryClient.prefetchQuery({queryKey: ['myMeets', token], queryFn: getMyMeets});
     const dehydratedState = dehydrate(queryClient);
     return (

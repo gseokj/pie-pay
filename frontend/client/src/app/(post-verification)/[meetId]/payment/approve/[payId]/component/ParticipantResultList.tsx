@@ -8,25 +8,25 @@ import hand from "@/assets/icons/hand.svg";
 import resultbeer from "@/assets/icons/resultbeer.svg";
 import resultprofile from "@/assets/icons/resultprofile.svg";
 import Image from "next/image";
+import {getPayment, getPaymentResult} from "@/api/payment";
+import {Receipt} from "@/model/receipt";
 
-type Props= {
-    payId:string;
+type Props = {
+    payId: number;
 }
-export default function ParticipantResultList({payId}:Props) {
+export default function ParticipantResultList({payId}: Props) {
     const queryClient = useQueryClient();
-    const payment: Payment |undefined = queryClient.getQueryData(['payment',payId]) ;
-    const [participants, setParticipants] = useState<Participant[]>([]);
-    useEffect(() => {
-        if(!payment) return;
-        setParticipants(payment?.participants);
-    }, []);
+    const payment: Payment|undefined = queryClient.getQueryData(['result', payId]);
+    console.log(payment);
+
     return (
 
         <div className={styles.participantContainer}>
 
-            {participants.map(participant => (
+            <p className={styles.pargraph.paymentMember}>결제 멤버 {payment?.participants.length}</p>
+            {payment?.participants.map(participant => (
                     <div key={participant.participantId}
-                         className={`${styles.container}  ${participant.payAgree && styles.backgroundSkyBlue} ${participant.payAgree  && styles.backgroundLightRed}`}>
+                         className={`${styles.container}  ${participant.payAgree && styles.backgroundSkyBlue} ${participant.payAgree && styles.backgroundLightRed}`}>
                         <div className={styles.participantList}>
                             <img className={styles.image} src={participant.memberInfo.profileImage} alt="" width={50}/>
                             <p>{participant.memberInfo.nickname}</p>
@@ -35,8 +35,9 @@ export default function ParticipantResultList({payId}:Props) {
                             {participant.isDrinkAlcohol && <Image src={resultbeer} alt=""/>}
 
                         </div>
-                        {participant.payAmount.toLocaleString()}
-
+                        <p className={styles.pargraph.balance}>
+                            {participant.payAmount ? participant.payAmount.toLocaleString() + " 원" : "0 원"}
+                        </p>
                     </div>
 
                 )

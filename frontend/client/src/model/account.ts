@@ -1,5 +1,12 @@
 export interface Account{
-    bankName: string;
+    mainAccount: boolean;
+    bankCode: string;
     accountNo: string;
-    accountBalance: number;
+    balance: string;
+}
+
+export interface AccountResponse {
+    status: number;
+    message: string;
+    result: Account[];
 }

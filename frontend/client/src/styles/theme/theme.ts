@@ -42,6 +42,7 @@ const theme = {
     lightgray: '#EFEFEF',
     lightbrown: '#9B9B9B',
     line: '#CCDEEB',
+
         // 즐겨찾기
     yellow: '#FFE483',
     lightGray: '#D2D2D2',

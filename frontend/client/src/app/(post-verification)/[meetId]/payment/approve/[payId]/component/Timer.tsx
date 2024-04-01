@@ -19,14 +19,15 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 type Props={
-    payId:string;
+    payId:number;
 }
 export default function Page({payId}:Props){
     const { payment, isLoading, updatePayment } = usePayment();
-
-    const createdAtDate = new Date(payment?.createdAt || "1970-01-01T00:00:00.000Z").getTime();
-
+    let createdAtDate = new Date(payment?.createdAt || "1970-01-01T00:00:00.000Z");
+    createdAtDate.setHours(createdAtDate.getHours() + 9);
+    const newDate = createdAtDate.getTime();
     const [currDate, setCurrDate] = useState(new Date());
+
     const [remainingTime, setRemainingTime] = useState(90);
     const [progressBar, setProgressBar] = useState(0)
     useEffect(() => {
@@ -35,8 +36,8 @@ export default function Page({payId}:Props){
             setCurrDate(new Date());
 
         }, 100);
-        setProgressBar(100+(createdAtDate-currDate.getTime()) / 1000);
-        setRemainingTime(100+Math.floor((createdAtDate-currDate.getTime()) / 1000));
+        setProgressBar(100+(newDate-currDate.getTime()) / 1000);
+        setRemainingTime(100+Math.floor((newDate-currDate.getTime()) / 1000));
         return () => clearInterval(intervalId);
     }, [currDate]);
 
