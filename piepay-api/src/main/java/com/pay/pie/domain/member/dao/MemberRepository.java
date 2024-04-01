@@ -25,4 +25,14 @@ GROUP BY par.member.id
 """
 	)
 	List<Object[]> findPayInfoByMeetId(@Param("meetId") Long meetId);
+
+	@Query(
+		"""
+  			SELECT m
+  			FROM Member m
+  			JOIN FETCH m.memberMeetList ml
+  			WHERE ml.meet.id = :meetId
+		"""
+	)
+	List<Member> findMember(@Param("meetId")Long meetId);
 }
