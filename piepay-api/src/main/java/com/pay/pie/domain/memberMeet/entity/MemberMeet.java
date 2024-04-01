@@ -48,5 +48,6 @@ public class MemberMeet extends BaseEntity {
 		this.member = member;
 		this.meet = meet;
 		meet.getMemberMeetList().add(this);
+		member.getMemberMeetList().add(this);
 	}
 }

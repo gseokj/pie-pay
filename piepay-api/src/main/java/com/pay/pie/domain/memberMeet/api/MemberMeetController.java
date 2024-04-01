@@ -31,7 +31,6 @@ public class MemberMeetController {
 	// 모임 가입
 	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
 	@PostMapping("/meet/join")
-	@Transactional
 	public ResponseEntity<BaseResponse<MeetInfo>> addMemberMeet(
 		@RequestBody JoinMeetRequest request,
 		@AuthenticationPrincipal SecurityUserDto securityUserDto

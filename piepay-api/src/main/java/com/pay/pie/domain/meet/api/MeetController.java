@@ -1,10 +1,7 @@
 package com.pay.pie.domain.meet.api;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,10 +27,10 @@ import com.pay.pie.domain.meet.dto.request.UpdateMeetImageRequest;
 import com.pay.pie.domain.meet.dto.request.UpdateMeetNameRequest;
 import com.pay.pie.domain.meet.dto.response.MeetDetailResponse;
 import com.pay.pie.domain.meet.dto.response.MeetInfo;
+import com.pay.pie.domain.meet.dto.response.MeetMemberInfo;
 import com.pay.pie.domain.meet.dto.response.UpdateInvitationResponse;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.service.MeetService;
-import com.pay.pie.domain.memberMeet.dto.AllMemberMeetResponse;
 import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
@@ -133,41 +130,16 @@ public class MeetController {
 		);
 	}
 
-	//
-	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
-	@GetMapping("/member/meets")
-	public ResponseEntity<BaseResponse<List<AllMemberMeetResponse>>> getAllMeet(
-		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
-		Long memberId = securityUserDto.getMemberId();
-		List<AllMemberMeetResponse> meetResponses = memberMeetService.findMeetByMemberId(memberId)
-			.stream()
-			.map(memberMeet -> {
-				Meet meet = meetService.findById(memberMeet.getMeet().getId()).orElse(null);
-				if (meet != null) {
-					LocalDateTime latestUpdateOnMeet;
-					if (payService.findRecentPayByMeetId(meet.getId()) != null) {
-						latestUpdateOnMeet = payService.findRecentPayByMeetId(meet.getId()).getUpdatedAt();
-					} else {
-						latestUpdateOnMeet = meet.getUpdatedAt();
-					}
-					return new AllMemberMeetResponse(memberMeet, memberMeetService.findAllByMeet(meet).size(),
-						latestUpdateOnMeet);
-				} else {
-					// Member가 없는 경우에 대한 처리
-					return null;
-				}
-			})
-			.filter(Objects::nonNull) // null이 아닌 것들만 필터링
-			.collect(Collectors.toList());
-
-		Collections.sort(meetResponses, Comparator
-			.comparing(AllMemberMeetResponse::isTopFixed, Comparator.reverseOrder())
-			.thenComparing(AllMemberMeetResponse::getUpdated_at, Comparator.reverseOrder())
-		);
+	// 모임 회원 정보 조회
+	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
+	@GetMapping("/meet/{meetId}/members")
+	public ResponseEntity<BaseResponse<List<MeetMemberInfo>>> getMeetMemberInfo(@PathVariable long meetId) {
 
 		return BaseResponse.success(
-			SuccessCode.SELECT_SUCCESS,
-			meetResponses);
+			SuccessCode.UPDATE_SUCCESS,
+			meetService.getMeetMemberInfo(meetId)
+		);
+
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")

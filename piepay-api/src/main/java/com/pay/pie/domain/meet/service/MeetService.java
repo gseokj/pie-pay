@@ -18,6 +18,7 @@ import com.pay.pie.domain.meet.dto.request.UpdateMeetImageRequest;
 import com.pay.pie.domain.meet.dto.request.UpdateMeetNameRequest;
 import com.pay.pie.domain.meet.dto.response.MeetDetailResponse;
 import com.pay.pie.domain.meet.dto.response.MeetInfo;
+import com.pay.pie.domain.meet.dto.response.MeetMemberInfo;
 import com.pay.pie.domain.meet.dto.response.UpdateInvitationResponse;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.repository.MeetRepository;
@@ -27,6 +28,8 @@ import com.pay.pie.domain.member.exception.MemberException;
 import com.pay.pie.domain.member.exception.MemberExceptionCode;
 import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
+import com.pay.pie.domain.participant.dao.ParticipantRepository;
+import com.pay.pie.domain.participant.dto.ParticipantStatistics;
 import com.pay.pie.domain.pay.dao.PayRepository;
 import com.pay.pie.domain.pay.entity.Pay;
 import com.pay.pie.global.util.S3Util;
@@ -43,6 +46,7 @@ public class MeetService {
 	private final MeetRepository meetRepository;
 	private final PayRepository payRepository;
 	private final MemberMeetRepository memberMeetRepository;
+	private final ParticipantRepository participantRepository;
 
 	///////
 	public MeetDetailResponse getMeetInfo(long meetId) {
@@ -125,7 +129,23 @@ public class MeetService {
 	// 	return meetRepository.save(request.toEntity());
 	// }
 
+	public List<MeetMemberInfo> getMeetMemberInfo(Long meetId) {
 
+		List<Member> member = memberRepository.findMember(meetId);
+		List<ParticipantStatistics> participantStatics = participantRepository.getParticipantStatics(member, meetId);
+		Map<Long, ParticipantStatistics> participantStatisticsMap = participantStatics.stream()
+			.collect(Collectors.toMap(
+					ParticipantStatistics::getMemberId,
+					Function.identity()
+				)
+			);
+
+		return member.stream()
+			.map(m -> MeetMemberInfo.of(
+				m, participantStatisticsMap.get(m.getId())
+			))
+			.toList();
+	}
 
 	public Meet getMeet(long meetId) {
 		// Meet meet = meetRepository.findById(meetId)

@@ -6,6 +6,7 @@ import java.util.List;
 import com.pay.pie.domain.BaseEntity;
 import com.pay.pie.domain.account.entity.Account;
 import com.pay.pie.domain.member.dto.UpdateMemberRequest;
+import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -68,6 +69,10 @@ public class Member extends BaseEntity {
 
 	@OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
 	List<Account> accountList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "member" , fetch = FetchType.LAZY)
+	List<MemberMeet> memberMeetList = new ArrayList<>();
+
 
 	public void registerPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
