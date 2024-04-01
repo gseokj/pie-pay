@@ -13,6 +13,7 @@ import {useRouter} from "next/navigation";
 import {Member, MemberResponse} from "@/model/meet";
 import {useQueryClient} from "@tanstack/react-query";
 import {getCookie} from "@/util/getCookie";
+import {MeetMember} from "@/model/meet/member";
 
 
 type Props = {
@@ -26,13 +27,13 @@ export default function MemberLayout({params}: Props) {
     const queryClient = useQueryClient();
     const token = getCookie('accessToken');
 
-    const [memberList, setMemberList] = useState<Member[]|undefined>(undefined);
+    const [memberList, setMemberList] = useState<MeetMember[]|undefined>(undefined);
     const containerRef = useRef<HTMLDivElement>(null);
     const [showIcon, setShowIcon] = useState<boolean>(false);
-    const [visibleMembers, setVisibleMembers] = useState<Member[]>([]);
+    const [visibleMembers, setVisibleMembers] = useState<MeetMember[]>([]);
 
     useEffect(() => {
-        setMemberList(queryClient.getQueryData(['members', meetId, token]));
+        setMemberList(queryClient.getQueryData(['meetMembers', meetId, token]));
         calculateHiddenImages();
         window.addEventListener('resize', calculateHiddenImages);
 
@@ -73,7 +74,7 @@ export default function MemberLayout({params}: Props) {
                     ref={containerRef}
                     className={ mainStyles.containers.imageContainer }
                 >
-                    { visibleMembers.map((member: Member) => {
+                    { visibleMembers.map((member: MeetMember) => {
                         return (
                             <div
                                 className={ mainStyles.imageBox.imageBox36}

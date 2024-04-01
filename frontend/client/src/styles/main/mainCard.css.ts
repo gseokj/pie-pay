@@ -53,6 +53,10 @@ export const cardLayout = styleVariants({
         padding: "10%",
         gap: "1.2rem"
     }],
+    memberCard: [cardContainer, {
+        flexDirection: "row",
+        justifyContent: "space-between"
+    }]
 });
 
 const cardInner = style({
@@ -108,7 +112,11 @@ export const cardInnerLayout = styleVariants({
         justifyContent: "space-between"
     }],
     inviteInner: [cardContainer, cardInner, inviteInnerLayout],
-    imageInputInner: [cardInner, imageInputInnerLayout]
+    imageInputInner: [cardInner, imageInputInnerLayout],
+    memberCardInner: [cardInnerHorizontal, {
+        gap: "1rem",
+        fontSize: "1.2rem"
+    }]
 });
 
 

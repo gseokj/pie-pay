@@ -31,22 +31,6 @@ export const getMeetInfo: QueryFunction<Meet> = async ({ queryKey }) => {
     }
 }
 
-
-export const getMeetMembers:QueryFunction<Member[]> = async ({ queryKey }) => {
-    const [_, meetId, token] = queryKey;
-    try {
-        const response = await authAxios.get(`api/meet/${meetId}/member`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-        });
-        return response.data.result;
-    } catch (error) {
-        console.error('Failed to get Meet Member data', error);
-        throw new Error('Failed to get Meet Member data');
-    }
-}
-
 export const deleteMeet = async (meetId: string, token: string): Promise<DefaultResponse> => {
     try {
         const response = await authAxios.delete(`api/meet/${meetId}`, {
