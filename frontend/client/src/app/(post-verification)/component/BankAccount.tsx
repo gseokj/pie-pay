@@ -22,6 +22,8 @@ export default function BankAccount() {
     const [visibility, setVisibility] = useState(true);
     const [bankName, setBankName] = useState('은행 명');
 
+    console.log(account);
+
     useEffect(() => {
         if (typeof account !== 'undefined') {
             switch (account[0].bankCode) {
