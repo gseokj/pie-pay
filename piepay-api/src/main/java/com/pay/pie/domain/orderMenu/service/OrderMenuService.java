@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.pay.pie.domain.menu.entity.Menu;
 import com.pay.pie.domain.order.dao.OrderRepository;
+import com.pay.pie.domain.order.entity.Order;
 import com.pay.pie.domain.orderMenu.dto.AddOrderMenuRequest;
 import com.pay.pie.domain.orderMenu.entity.OrderMenu;
 import com.pay.pie.domain.orderMenu.repository.OrderMenuRepository;
@@ -26,5 +28,9 @@ public class OrderMenuService {
 	public List<OrderMenu> findByOrderId(Long orderId) {
 
 		return orderMenuRepository.findByOrderId(orderId);
+	}
+
+	public OrderMenu findByMenuAndOrder(Menu menu, Order order) {
+		return orderMenuRepository.findByMenuAndOrder(menu, order);
 	}
 }

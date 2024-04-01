@@ -14,9 +14,10 @@ public interface MeetRepository extends JpaRepository<Meet, Long> {
 
 	@Query(
 		"""
-			select m
-			from Meet m
-			where m.id = :meetId
+			select mt, mm
+			from MemberMeet mm
+			join fetch mm.meet mt
+			where mt.id = :meetId
 						"""
 	)
 	Object[] getHighlight(@Param("meetId") Long meetId);

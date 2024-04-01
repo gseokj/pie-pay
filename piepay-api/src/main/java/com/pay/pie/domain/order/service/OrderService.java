@@ -3,13 +3,13 @@ package com.pay.pie.domain.order.service;
 import java.util.List;
 import java.util.Random;
 
-import com.pay.pie.domain.orderMenu.service.OrderMenuService;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import com.pay.pie.domain.order.dao.OrderRepository;
 import com.pay.pie.domain.order.dto.AddOrderRequest;
 import com.pay.pie.domain.order.entity.Order;
+import com.pay.pie.domain.orderMenu.service.OrderMenuService;
 import com.pay.pie.domain.pay.dao.PayRepository;
 import com.pay.pie.domain.pay.entity.Pay;
 import com.pay.pie.domain.store.entity.Store;
@@ -50,5 +50,9 @@ public class OrderService {
 
 	public Order findById(Long orderId) {
 		return orderRepository.findById(orderId).orElseThrow();
+	}
+
+	public Order findByPayId(Long payId) {
+		return orderRepository.findByPayId(payId);
 	}
 }
