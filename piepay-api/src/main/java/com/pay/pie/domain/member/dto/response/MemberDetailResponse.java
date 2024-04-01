@@ -7,7 +7,7 @@ import lombok.Builder;
 @Builder
 public record MemberDetailResponse(
 	Long memberId,
-	String nickName,
+	String nickname,
 	String profileImage,
 	String phoneNumber,
 	String email
@@ -15,7 +15,7 @@ public record MemberDetailResponse(
 ) {
 	public static MemberDetailResponse of(Member member) {
 		return MemberDetailResponse.builder()
-			.nickName(member.getNickname())
+			.nickname(member.getNickname())
 			.profileImage(member.getProfileImage())
 			.phoneNumber(member.getPhoneNumber())
 			.email(member.getEmail())
