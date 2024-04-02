@@ -8,6 +8,7 @@ import {useMemberFilter} from "@/store/useMemberFilter";
 import { usePayment } from '@/store/usePayment';
 import {getMyInfo} from "@/util/getMyInfo";
 import {Payment} from "@/model/participant";
+import { LoaderComponent } from '@/app/component/Loading';
 
 
 
@@ -20,7 +21,7 @@ export default function ParticipateButton({ meetId }: Props) {
     const {filterMembers} = useMemberFilter();
     const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaWUiLCJleHAiOjEwNzExNTAwMTQzLCJzdWIiOiJoZ29hMjAwMEBuYXZlci5jb20iLCJyb2xlcyI6IlJPTEVfTk9UX0NFUlRJRklFRCJ9.hGZ4jBwzHS-qnjwhJtNA2UcxqiwAg4uVfIUhdv-RJzI";
     const {setPayment,payment} = usePayment();
-    const { mutate } = useMutation({
+    const { mutate,isPending } = useMutation({
 
         mutationFn: (id) => axios.post(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/pay/parties?meetId=${meetId}`, filterMembers.filter(member=>member.isSelected),
           {
@@ -39,8 +40,11 @@ export default function ParticipateButton({ meetId }: Props) {
     });
 
     return(
+      <>
+          {isPending&& <LoaderComponent/>}
     <button onClick={()=>mutate()} className={styles.submitButton}>
         <div>알림 보내기</div>
     </button>
+        </>
     )
 }

@@ -17,15 +17,11 @@ const spin = keyframes({
 export const loaderContainer = style({
   position: 'absolute',
   backgroundColor:theme.layout,
-
+  top:0,
+  left:0,
+  right:0,
+  bottom:0,
   width: '100%',
-  // Default width
-  '@media': {
-    'screen and (min-width: 768px)': {
-      width: '100%',
-
-    },
-  },
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',

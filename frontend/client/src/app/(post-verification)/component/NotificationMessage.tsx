@@ -23,7 +23,7 @@ export default function NotificationMessage() {
     }, [queryNotification]);
     return (
         <div className={styles.container}>
-            {notifications?.map((notifications) => (
+            {notifications?.map((notifications:Notification) => (
                 <div className={styles.box}>
                     <div className={styles.content}>
                         <div className={styles.title}>

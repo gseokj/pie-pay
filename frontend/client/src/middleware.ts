@@ -5,7 +5,7 @@ import {MyInfo} from "@/model/user";
 export function middleware(request: NextRequest) {
     // console.log(request.cookies.has('accessToken'), 'in middleware......................................');
 
-    if (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/success') || request.nextUrl.pathname.startsWith('/auth')) {
+    if (request.nextUrl.pathname.startsWith('/kakaologin') || request.nextUrl.pathname.startsWith('/success') || request.nextUrl.pathname.startsWith('/auth')) {
         if (request.cookies.has('accessToken')) {
             return NextResponse.redirect(new URL('/', request.url));
         }
@@ -22,7 +22,7 @@ export function middleware(request: NextRequest) {
         }
     } else {
         if (!request.cookies.has('accessToken')) {
-            return NextResponse.redirect(new URL('/login', request.url));
+            return NextResponse.redirect(new URL('/kakaologin', request.url));
         }
     }
 }
