@@ -20,22 +20,23 @@ type Props = { payId: number }
 
 
 export default function Open({ payId }: Props) {
+  const [token, setToken] = useState('');
+  useEffect(() => {
+    const token = getCookie('accessToken') as string;
+    setToken(token);
+  }, [token]);
+
   const queryClient = useQueryClient();
   const [stack, setStack] = useState(0);
 
   // tanstack query
-  const payment: Payment | undefined = queryClient.getQueryData(['payment', payId]);
+  const payment: Payment | undefined = queryClient.getQueryData(['payment', payId,token]);
 
   // zustand와 tanstack을 동시에 관리하는 이유 => socket을 바로 post로 보내는게 아니라 결제 동의가 이루어지지 않으면 post가 되지않음.
   const { payment: tempPayment, setPayment } = usePayment();
 
   // 소켓 초기값
   const { init, initRes, initiating, connect, setInitiating,res } = usePaymentSocket();
-  const [token, setToken] = useState('');
-  useEffect(() => {
-    const token = getCookie('accessToken') as string;
-    setToken(token);
-  }, [token]);
 
 
   useEffect(() => {

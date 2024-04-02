@@ -14,7 +14,7 @@ export const getNotification: QueryFunction<Notification[]> = async ({ queryKey 
                 'Authorization': `Bearer ${token}`
             },
         });
-        console.log('success to get data', response.data);
+
         return response.data.result;
     } catch (error) {
         console.error('Failed to get data', error);

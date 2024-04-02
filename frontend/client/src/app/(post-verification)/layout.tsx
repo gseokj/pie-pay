@@ -8,8 +8,9 @@ import * as styles from "@/styles/main/main.css"
 import {cookies} from "next/headers";
 import {getMeetList} from "@/api/meet/meetList";
 import { getNotification } from '@/api/notification';
-import { getMyInfo } from '@/api/user';
 import { getMe } from '@/api/member';
+import { EventSourcePolyfill } from 'event-source-polyfill';
+import { useSSE } from '@/store/useSSE';
 
 export const metadata: Metadata = {
     title: "piepay",
@@ -27,8 +28,9 @@ export default async function PostVerificationLayout({children}: Props) {
     await queryClient.prefetchQuery({queryKey: ['meetList', token], queryFn: getMeetList, staleTime: 1000 * 60 * 15});
     await queryClient.prefetchQuery({queryKey: ['notification', token], queryFn: getNotification});
     await queryClient.prefetchQuery({queryKey: ['userInfo', token], queryFn: getMe,staleTime: 1000* 60 * 60},);
-
     const dehydratedState = dehydrate(queryClient);
+
+
     return (
         <div className="h-screen">
                 <Header/>

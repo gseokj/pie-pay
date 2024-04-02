@@ -7,13 +7,20 @@ import back from "@/assets/icons/x.svg";
 import {getDateAndTime} from "@/util/dateFormat";
 import {useQuery} from "@tanstack/react-query";
 import {getReceipt} from "@/api/receipt";
+import { useEffect, useState } from 'react';
+import { getCookie } from '@/util/getCookie';
 
 type Props = {
      payId: number ,
 }
 export default function ReceiptModal({payId}: Props) {
+  const [token, setToken] = useState('');
+  useEffect(() => {
+    const token = getCookie('accessToken') as string;
+    setToken(token);
+  }, []);
     const {isVisible, updateState} = useReceiptModal();
-    const { data: receipt, isLoading, error } = useQuery({ queryKey: ['receipt', payId], queryFn: getReceipt });
+    const { data: receipt, isLoading, error } = useQuery({ queryKey: ['receipt', payId,token], queryFn: getReceipt });
     return (
         <div className={`${isVisible ? styles.container.invisible : styles.container.visible}`}>
             <div onClick={() => updateState()} className={`${isVisible ? styles.container.invisible : styles.container.visible}`}>

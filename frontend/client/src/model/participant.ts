@@ -16,7 +16,15 @@ export interface Payment {
     participants: Participant[];
     payStatus: "OPEN" | "ING" | "COMPLETE" | "CLOSE";
 }
-
-export interface PaymentResult extends Payment{
-    payInsteadList: [];
+interface instead {
+    amount: number;
+    borrowerId: number;
+    lenderId: number;
+    payback: number;
 }
+export interface PaymentResult extends Payment{
+    participants: Participant[],
+    payInsteadList: instead[];
+}
+
+

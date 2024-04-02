@@ -17,12 +17,13 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Notification } from '@/model/notification';
 
 export default function Header() {
+
+    const [token, setToken] = useState('');
     useEffect(() => {
         const token = getCookie('accessToken') as string;
         setToken(token);
     }, []);
     const path = usePathname();
-    const [token, setToken] = useState('');
     const queryClient = useQueryClient();
     const notifications = queryClient.getQueryData<Notification[]>(["notification",token]);
 

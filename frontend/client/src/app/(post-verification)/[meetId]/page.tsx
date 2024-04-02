@@ -1,7 +1,7 @@
 "use client";
 
 
-import {useQueryClient} from "@tanstack/react-query";
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {getCookie} from "@/util/getCookie";
 import MeetInfoCard from "@/app/(post-verification)/[meetId]/component/MeetInfoCard";
 import {MeetInfoResponse, Meet} from "@/model/meet";
@@ -12,6 +12,8 @@ import PaymentLayout from "@/app/(post-verification)/[meetId]/component/PaymentL
 import HighlightLayout from "@/app/(post-verification)/[meetId]/component/HighlightLayout";
 import PaymentSelectButton from "@/app/(post-verification)/[meetId]/component/PaymentSelectButton";
 
+import { useSSE } from '@/store/useSSE';
+
 
 type Props = {
     params: { meetId: string },
@@ -19,10 +21,12 @@ type Props = {
 
 
 export default function Meet({params}: Props) {
+    const {eventSource} = useSSE();
     const token = getCookie('accessToken');
     const {meetId} = params;
     const queryClient = useQueryClient();
     const meetInfo: Meet | undefined = queryClient.getQueryData(['meetInfo', meetId, token]);
+
 
     if (typeof meetInfo !== 'undefined') {
         return (

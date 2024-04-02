@@ -3,35 +3,41 @@
 import * as styles from "@/styles/payment/result/participantResultList.css";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useEffect, useState} from "react";
-import {Participant, Payment} from "@/model/participant";
+import { Participant, Payment, PaymentResult } from '@/model/participant';
 import hand from "@/assets/icons/hand.svg";
 import resultbeer from "@/assets/icons/resultbeer.svg";
 import resultprofile from "@/assets/icons/resultprofile.svg";
 import Image from "next/image";
 import {getPayment, getPaymentResult} from "@/api/payment";
 import {Receipt} from "@/model/receipt";
+import { getCookie } from '@/util/getCookie';
 
 type Props = {
     payId: number;
 }
 export default function ParticipantResultList({payId}: Props) {
+
+    const [token, setToken] = useState('');
+    useEffect(() => {
+        const token = getCookie('accessToken') as string;
+        setToken(token);
+    }, []);
     const queryClient = useQueryClient();
-    const payment: Payment|undefined = queryClient.getQueryData(['result', payId]);
-    console.log(payment);
+    const paymentResult: PaymentResult|undefined = queryClient.getQueryData(['result', payId, token]);
 
     return (
 
         <div className={styles.participantContainer}>
 
-            <p className={styles.pargraph.paymentMember}>결제 멤버 {payment?.participants.length}</p>
-            {payment?.participants.map(participant => (
+            <p className={styles.pargraph.paymentMember}>결제 멤버 {paymentResult?.participants.length}</p>
+            {paymentResult?.participants.map((participant) => (
                     <div key={participant.participantId}
-                         className={`${styles.container}  ${participant.payAgree && styles.backgroundSkyBlue} ${participant.payAgree && styles.backgroundLightRed}`}>
+                         className={`${styles.container}  ${paymentResult?.payInsteadList.map(instead=>instead.lenderId).includes(participant.memberInfo.memberId) && styles.backgroundSkyBlue} ${paymentResult?.payInsteadList.map(instead=>instead.borrowerId).includes(participant.memberInfo.memberId)  && styles.backgroundLightRed}`}>
                         <div className={styles.participantList}>
                             <img className={styles.image} src={participant.memberInfo.profileImage} alt="" width={50}/>
                             <p>{participant.memberInfo.nickname}</p>
-                            {participant.payAgree && <Image src={resultprofile} alt=""/>}
-                            {participant.payAgree && <Image src={hand} alt=""/>}
+                            {paymentResult?.payInsteadList.map(instead=>instead.lenderId).includes(participant.memberInfo.memberId) && <Image src={resultprofile} alt=""/>}
+                            {paymentResult?.payInsteadList.map(instead=>instead.borrowerId).includes(participant.memberInfo.memberId) && <Image src={hand} alt=""/>}
                             {participant.isDrinkAlcohol && <Image src={resultbeer} alt=""/>}
 
                         </div>
