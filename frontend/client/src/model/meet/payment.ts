@@ -23,6 +23,12 @@ interface Store {
     storeCategory: string;
 }
 
+interface Category {
+    name: string;
+    amount: number;
+}
+
 export type {
-    Payment, Order, Store
+    Payment, Order, Store,
+    Category
 }
