@@ -37,7 +37,10 @@ public class NotificationApiController {
 		List<NotificationResponse> notifications = notificationService.findAllByMember(member)
 			.stream()
 			.peek(notification -> System.out.println("Notification ID: " + notification.getMessage()))
-			.map(NotificationResponse::new)
+			.map(notification -> {
+				notification.setReadOrNot(true);
+				return new NotificationResponse(notification);
+			})
 			.toList();
 
 		return BaseResponse.success(
