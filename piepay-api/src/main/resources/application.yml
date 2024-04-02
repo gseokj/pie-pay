@@ -8,6 +8,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
+        open-in-view: false # 영속성 컨텍스트를 요청 단위로만 열도록 설정
         #show_sql: true
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect

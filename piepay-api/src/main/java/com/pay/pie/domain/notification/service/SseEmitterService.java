@@ -31,6 +31,7 @@ public class SseEmitterService {
 
 	public SseEmitter subscribe(Long memberId) {
 		SseEmitter emitter = createEmitter();
+		log.info("emitter: {}", emitter);
 		//연결 세션 timeout 이벤트 핸들러 등록 -연결이 끊어질 때 알림
 		emitter.onTimeout(() -> {
 			log.info("server sent event timed out : id={}", memberId);
@@ -47,6 +48,7 @@ public class SseEmitterService {
 
 		//SSE complete 핸들러 등록 -연결이 완료될 때 후속 작업
 		emitter.onCompletion(() -> {
+			log.info("memberId: {}", memberId);
 			if (emitterMap.remove(memberId) != null) {
 				log.info("server sent event removed in emitter cache: id={}", memberId);
 			}
@@ -76,19 +78,24 @@ public class SseEmitterService {
 
 	public void broadcast(EventPayload eventPayload) {
 		String message = eventPayload.message().toString();
+		Long targetMemberId = eventPayload.memberId();
+		log.info("targetMemberId: {}", targetMemberId);
 		emitterMap.forEach((id, emitter) -> {
-			log.info("sse broadcast 시작!");
-			try {
-				SseEmitter.SseEventBuilder event = SseEmitter.event()
-					.name("[알림]")
-					.id(String.valueOf(System.currentTimeMillis()))
-					.data(message, MediaType.TEXT_PLAIN)
-					.reconnectTime(RECONNECTION_TIMEOUT);
-				emitter.send(event);
-				log.info("sended notification, id={}, payload={}", id, eventPayload);
-			} catch (IOException e) {
-				//SSE 세션이 이미 해제된 경우
-				log.error("fail to send emitter id={}, {}", id, e.getMessage());
+			// 특정 멤버 ID에 해당하는 사용자에게만 알림을 보냄
+			if (id.equals(targetMemberId)) {
+				log.info("sse broadcast 시작!");
+				try {
+					SseEmitter.SseEventBuilder event = SseEmitter.event()
+						.name("[알림]")
+						.id(String.valueOf(System.currentTimeMillis()))
+						.data(message, MediaType.TEXT_PLAIN)
+						.reconnectTime(RECONNECTION_TIMEOUT);
+					emitter.send(event);
+					log.info("sended notification, id={}, payload={}", id, eventPayload);
+				} catch (IOException e) {
+					// SSE 세션이 이미 해제된 경우
+					log.error("fail to send emitter id={}, {}", id, e.getMessage());
+				}
 			}
 		});
 	}
