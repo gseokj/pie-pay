@@ -29,7 +29,8 @@ export default function StateButton({ payId }: Props) {
           {payment && payment.participants.length>0 && payment?.participants[0].payAgree === 'wait' &&
             <button onClick={() => handleClick(true)} className={styles.button.beforeAgree}>승인하기</button>}
           {payment && payment.participants.length>0 && payment?.participants[0].payAgree === 'deny' &&
-            <button className={styles.button.afterinstead}>도움 요청하기👋</button>}
+            <button onClick={() => handleClick(false)} className={styles.button.afterinstead}>도움 요청하기
+              <p  className={styles.hand}>👋</p></button>}
         </div>
         <div className={styles.agreeSection}>
           {payment && payment.participants.length>0 && payment?.participants[0].payAgree === 'agree' &&

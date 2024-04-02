@@ -65,6 +65,8 @@ export const submitButton = style({
     width: '90%',
     height: '10%',
     left: '5%',
+    color: 'white',
+    transitionDuration: '300ms',
     // Default width
     '@media': {
         'screen and (min-width: 768px)': {
@@ -79,6 +81,33 @@ export const submitButton = style({
     display: 'flex',
     justifyContent: 'center',
     bottom: '30px',
-    color: 'white',
-    fontWeight: 'bold'
+
+    fontWeight: 'bold',
+    ':hover': {
+        transform: 'translateY(-3px)',
+        boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
+    },
+    ':active': {
+        transform: 'translateY(-1px)',
+        boxShadow: '0 5px 10px rgba(0, 0, 0, 0.2)',
+    },
+    selectors: {
+        '&::after': {
+            content: '""',
+
+            height: '100%',
+            width: '100%',
+            borderRadius: '10px',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: -1,
+            transition: 'all .4s',
+            backgroundColor: theme.blue,
+        },
+        '&:hover::after': {
+            transform: 'scaleX(1.4) scaleY(1.6)',
+            opacity: 0,
+        },
+    },
 })
