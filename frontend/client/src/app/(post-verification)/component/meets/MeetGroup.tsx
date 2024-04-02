@@ -60,7 +60,7 @@ export default function MeetGroup({ meet, updateIsFixed }: MeetGroupProps){
 
     const onClickPushPayment = (event: React.MouseEvent) => {
         event.stopPropagation();
-        router.push(`/${meet.meetId}/payment/select`);
+        router.push(`/${meet.meetId}/select`);
     }
     return (
         <>

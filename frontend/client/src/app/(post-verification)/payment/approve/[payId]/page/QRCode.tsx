@@ -3,11 +3,10 @@
 import React, {useEffect, useState} from "react";
 import logo from "@/assets/icons/piepaylogo.svg";
 import Image from "next/image";
-import refresh from "@/assets/icons/refresh.svg"
 import {useQuery} from "@tanstack/react-query";
-import Refresh from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/Refresh";
+import Refresh from "@/app/(post-verification)/payment/approve/[payId]/component/Refresh";
 import {getQRCode} from "@/api/QRcode";
-import QRBackground from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/QRBackground";
+import QRBackground from "@/app/(post-verification)/payment/approve/[payId]/component/QRBackground";
 import { getCookie } from '@/util/getCookie';
 
 type Props = { payId: number }

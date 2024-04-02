@@ -1,13 +1,13 @@
 'use client'
 
-import Header from "@/app/(post-verification)/[meetId]/payment/component/Header";
+import Header from "@/app/(post-verification)/payment/component/Header";
 import three from "@/assets/icons/payment3.svg";
 import * as styles from "@/styles/payment/result/result.css";
-import ParticipantResultList from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/ParticipantResultList";
-import ReceiptBox from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/ReceiptBox";
+import ParticipantResultList from "@/app/(post-verification)/payment/approve/[payId]/component/ParticipantResultList";
+import ReceiptBox from "@/app/(post-verification)/payment/approve/[payId]/component/ReceiptBox";
 import {useQuery} from "@tanstack/react-query";
 import {getPaymentResult} from "@/api/payment";
-import ReceiptModal from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/ReceiptModal";
+import ReceiptModal from "@/app/(post-verification)/payment/approve/[payId]/component/ReceiptModal";
 import { useRouter } from 'next/navigation';
 
 type Props={ payId: number }

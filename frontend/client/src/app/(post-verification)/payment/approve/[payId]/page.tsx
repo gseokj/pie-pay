@@ -2,9 +2,9 @@
 
 import {Payment} from "@/model/participant";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import Open from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/page/Open";
-import Complete from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/page/Complete";
-import QRCode from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/page/QRCode";
+import Open from "@/app/(post-verification)/payment/approve/[payId]/page/Open";
+import Complete from "@/app/(post-verification)/payment/approve/[payId]/page/Complete";
+import QRCode from "@/app/(post-verification)/payment/approve/[payId]/page/QRCode";
 import { useEffect, useState } from 'react';
 import {usePayment} from "@/store/usePayment";
 import { getCookie } from '@/util/getCookie';
