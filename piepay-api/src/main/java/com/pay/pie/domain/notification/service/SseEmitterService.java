@@ -25,36 +25,36 @@ public class SseEmitterService {
 	private final MemberRepository memberRepository;
 	private final NotificationRepository notificationRepository;
 	// thread-safe 한 컬렉션 객체로 sse emitter 객체를 관리해야 한다.
-	private final Map<String, SseEmitter> emitterMap = new ConcurrentHashMap<>();
+	private final Map<Long, SseEmitter> emitterMap = new ConcurrentHashMap<>();
 	private static final long TIMEOUT = 3600000L;
 	private static final long RECONNECTION_TIMEOUT = 1000L;
 
-	public SseEmitter subscribe(String sseId) {
+	public SseEmitter subscribe(Long memberId) {
 		SseEmitter emitter = createEmitter();
-		//연결 세션 timeout 이벤트 핸들러 등록
+		//연결 세션 timeout 이벤트 핸들러 등록 -연결이 끊어질 때 알림
 		emitter.onTimeout(() -> {
-			log.info("server sent event timed out : id={}", sseId);
+			log.info("server sent event timed out : id={}", memberId);
 			//onCompletion 핸들러 호출
 			emitter.complete();
 		});
 
-		//에러 핸들러 등록
+		//에러 핸들러 등록 -연결이 끊어질 때 알림
 		emitter.onError(e -> {
-			log.info("server sent event error occurred : id={}, message={}", sseId, e.getMessage());
+			log.info("server sent event error occurred : id={}, message={}", memberId, e.getMessage());
 			//onCompletion 핸들러 호출
 			emitter.complete();
 		});
 
-		//SSE complete 핸들러 등록
+		//SSE complete 핸들러 등록 -연결이 완료될 때 후속 작업
 		emitter.onCompletion(() -> {
-			if (emitterMap.remove(sseId) != null) {
-				log.info("server sent event removed in emitter cache: id={}", sseId);
+			if (emitterMap.remove(memberId) != null) {
+				log.info("server sent event removed in emitter cache: id={}", memberId);
 			}
 
-			log.info("disconnected by completed server sent event: id={}", sseId);
+			log.info("disconnected by completed server sent event: id={}", memberId);
 		});
 
-		emitterMap.put(sseId, emitter);
+		emitterMap.put(memberId, emitter);
 
 		//초기 연결시에 응답 데이터를 전송할 수도 있다.
 		try {
@@ -63,13 +63,13 @@ public class SseEmitterService {
 				.name("connected")
 				//event id (id: id-1) - 재연결시 클라이언트에서 `Last-Event-ID` 헤더에 마지막 event id 를 설정
 				.id(String.valueOf("id-" + System.currentTimeMillis()))
-				//event data payload (data: SSE connected)
+				//event data payload (data: SSE connected) -503에러 방지 더미데이터
 				.data("SSE connected")
 				//SSE 연결이 끊어진 경우 재접속 하기까지 대기 시간 (retry: <RECONNECTION_TIMEOUT>)
 				.reconnectTime(RECONNECTION_TIMEOUT);
 			emitter.send(event);
 		} catch (IOException e) {
-			log.error("failure send media position data, id={}, {}", sseId, e.getMessage());
+			log.error("failure send media position data, id={}, {}", memberId, e.getMessage());
 		}
 		return emitter;
 	}
