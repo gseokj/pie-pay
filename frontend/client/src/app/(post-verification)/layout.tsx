@@ -9,6 +9,7 @@ import NotificationReceive from "@/app/(post-verification)/component/Notificatio
 import * as styles from "@/styles/main/main.css"
 import {getMyMeets} from "@/api/meet";
 import {cookies} from "next/headers";
+import { getNotification } from '@/api/notification';
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -24,6 +25,7 @@ export default async function PostVerificationLayout({children}: Props) {
 
     await queryClient.prefetchQuery({queryKey: ['account', token], queryFn: getAccount});
     await queryClient.prefetchQuery({queryKey: ['myMeets', token], queryFn: getMyMeets});
+    await queryClient.prefetchQuery({queryKey: ['notification', token], queryFn: getNotification});
     const dehydratedState = dehydrate(queryClient);
     return (
         <div className="h-screen">

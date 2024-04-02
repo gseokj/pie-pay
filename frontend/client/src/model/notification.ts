@@ -1,7 +1,7 @@
 export interface Notification{
     notificationId: number;
-    message: number;
-    type: string;
+    message: string;
+    referenceId: number;
     createdAt: string;
     readOrNot: boolean;
 }

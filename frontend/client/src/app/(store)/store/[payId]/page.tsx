@@ -7,6 +7,7 @@ import { getStoreReceipt } from '@/api/store';
 import { getCookie } from '@/util/getCookie';
 import CheckModal from '@/app/(store)/component/CheckModal';
 import { useCheckModal } from '@/store/useCheckModal';
+import { LoaderComponent } from '@/app/component/Loading';
 type Props=
 {
   params: {
@@ -22,7 +23,6 @@ console.log(receipt);
 
   return (
     <>
-
       {!isLoading && receipt ?
       <div className="flex flex-col h-[100%] m-3">
 
@@ -65,7 +65,7 @@ console.log(receipt);
 
       </div>
 
-      : <>Hello</>}
+      : <LoaderComponent/>}
 
     </>
 
