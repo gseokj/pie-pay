@@ -5,7 +5,8 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
-COPY package.json tsconfig.json next.config.js tailwind.config.ts postcss.config.js  /usr/src/app/
+COPY package.json tsconfig.json next.config.js tailwind.config.ts postcss.config.js .env /usr/src/app/
+COPY . /usr/src/app
 RUN npm install
 
 # 소스를 작업폴더로 복사하고 빌드
