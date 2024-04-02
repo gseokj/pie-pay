@@ -3,7 +3,6 @@
 import {Payment} from "@/model/participant";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Open from "@/app/(post-verification)/payment/approve/[payId]/page/Open";
-import Complete from "@/app/(post-verification)/payment/approve/[payId]/page/Complete";
 import QRCode from "@/app/(post-verification)/payment/approve/[payId]/page/QRCode";
 import { useEffect, useState } from 'react';
 import {usePayment} from "@/store/usePayment";
@@ -43,7 +42,7 @@ export default function Page({ params}: Props) {
     useEffect(() => {
         if(!SSEnotification||!payment) return;
         if(SSEnotification?.referenceId===1 && SSEnotification?.destinationId===Number(payId)){
-            router.replace(`${payId}`);
+            router.replace(`/approve/${payId}/complete`);
             console.log("결제발생")
         }
     }, [SSEnotification]);
@@ -51,6 +50,5 @@ export default function Page({ params}: Props) {
     return(<>
         { payment?.payStatus ==='OPEN' &&<Open payId={Number(payId)}/>}
         { payment?.payStatus ==='ING' && <QRCode payId={Number(payId)}/>}
-        { (payment?.payStatus ==='CLOSE' || payment?.payStatus ==='COMPLETE') && <Complete payId={Number(payId)}/>}
     </>)
 }
