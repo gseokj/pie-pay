@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.pay.pie.domain.member.dao.MemberRepository;
-import com.pay.pie.domain.notification.dto.EventMessage;
 import com.pay.pie.domain.notification.dto.EventPayload;
 import com.pay.pie.domain.notification.entity.Notification;
 import com.pay.pie.domain.notification.repository.NotificationRepository;
@@ -77,9 +76,20 @@ public class SseEmitterService {
 	}
 
 	public void broadcast(EventPayload eventPayload) {
-		String message = eventPayload.message().toString();
 		Long targetMemberId = eventPayload.memberId();
 		log.info("targetMemberId: {}", targetMemberId);
+		Long referenceId = eventPayload.referenceId();
+		String message = eventPayload.message();
+		String noti;
+
+		// referenceId에 따라 다른 알림
+		noti = switch (referenceId.intValue()) {
+			case 1 -> "결제 : " + message;
+			case 2 -> "결제 동의 : " + message;
+			case 3 -> "대신 내주기 : " + message;
+			case 4 -> "대신 내주기 정산: " + message;
+			default -> "기타 메시지: " + message;
+		};
 		emitterMap.forEach((id, emitter) -> {
 			// 특정 멤버 ID에 해당하는 사용자에게만 알림을 보냄
 			if (id.equals(targetMemberId)) {
@@ -88,7 +98,7 @@ public class SseEmitterService {
 					SseEmitter.SseEventBuilder event = SseEmitter.event()
 						.name("[알림]")
 						.id(String.valueOf(System.currentTimeMillis()))
-						.data(message, MediaType.TEXT_PLAIN)
+						.data(noti, MediaType.TEXT_PLAIN)
 						.reconnectTime(RECONNECTION_TIMEOUT);
 					emitter.send(event);
 					log.info("sended notification, id={}, payload={}", id, eventPayload);
@@ -100,29 +110,30 @@ public class SseEmitterService {
 		});
 	}
 
-	public void sendNotification(Long memberId, EventMessage message) {
+	public void sendNotification(Long memberId, Long referenceId, String message) {
 		// 동의 알람 이벤트 생성
-		EventPayload eventPayload = new EventPayload(memberId, message);
+		EventPayload eventPayload = new EventPayload(memberId, referenceId, message);
 		log.info("eventPayload.memberId(): {}", eventPayload.memberId());
+		log.info("eventPayload.referenceId(): {}", eventPayload.referenceId());
 		log.info("eventPayload.message(): {}", eventPayload.message());
 		// 동의 알람을 받는 구독자에게 SSE 알림 전송
 		broadcast(eventPayload);
 		log.info("broadcast 완료!");
 		// Notification 저장
-		saveNotification(memberId, message);
+		saveNotification(memberId, referenceId, message);
 		log.info("notification 저장완료!");
 	}
 
-	private void saveNotification(Long memberId, EventMessage message) {
+	private void saveNotification(Long memberId, Long referenceId, String message) {
 		// Notification 엔터티에 알림 저장
 		Notification notification = new Notification();
 		notification.setMember(memberRepository.findById(memberId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 멤버가 존재하지 않습니다.")));
-		notification.setMessage(message.toString());
+		notification.setMessage(message);
 		notification.setReadOrNot(false); // 읽지 않은 상태로
-		notification.setReferenceId(0L); // 참조 ID
+		notification.setReferenceId(referenceId); // 참조 ID
 		notificationRepository.save(notification);
-		log.info("Notification saved for memberId={}, message={}", memberId, message);
+		log.info("Notification saved for memberId={}, referenceId={} ,message={}", memberId, referenceId, message);
 	}
 
 	private SseEmitter createEmitter() {

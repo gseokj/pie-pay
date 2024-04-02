@@ -39,4 +39,9 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long>,
 
 	List<Participant> getAllByMemberIdOrderByUpdatedAtDesc(Long memberId);
 
+	@Query("SELECT p FROM Participant p "
+		+ "JOIN FETCH p.member "
+		+ "WHERE p.pay.id = :payId")
+	List<Participant> findParticipantsByPayIdWithMember(Long payId);
+
 }
