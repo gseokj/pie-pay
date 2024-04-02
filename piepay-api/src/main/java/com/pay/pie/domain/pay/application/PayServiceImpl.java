@@ -172,7 +172,7 @@ public class PayServiceImpl implements PayService {
 			sseEmitterService.sendNotification(
 				payInstead.getLender().getId(),
 				3L,
-				order.getStore().getStoreName() + "에서 " + payInstead.getBorrower() + "님 대신 "
+				order.getStore().getStoreName() + "에서 " + payInstead.getBorrower().getNickname() + "님 대신 "
 					+ String.format("%,d", payInstead.getAmount()) + "원을 지불했습니다.",
 				payId);
 		}
@@ -284,16 +284,16 @@ public class PayServiceImpl implements PayService {
 				}
 
 				// PayInstead에서 해당 참여자가 lender로 나타나는 경우
-				List<PayInstead> lenderPayInsteadList = queryFactory
-					.selectFrom(QPayInstead.payInstead)
-					.where(QPayInstead.payInstead.lender.eq(participant.getMember())
-						.and(QPayInstead.payInstead.pay.id.eq(payId))
-					)
-					.fetch();
-
-				for (PayInstead payInstead : lenderPayInsteadList) {
-					payInstead.setAmount(basePayAmount);
-				}
+				// List<PayInstead> lenderPayInsteadList = queryFactory
+				// 	.selectFrom(QPayInstead.payInstead)
+				// 	.where(QPayInstead.payInstead.lender.eq(participant.getMember())
+				// 		.and(QPayInstead.payInstead.pay.id.eq(payId))
+				// 	)
+				// 	.fetch();
+				//
+				// for (PayInstead payInstead : lenderPayInsteadList) {
+				// 	payInstead.setAmount(basePayAmount);
+				// }
 			}
 		}
 
