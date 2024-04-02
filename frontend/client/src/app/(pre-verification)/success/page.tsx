@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { getMyInfo } from '@/api/user';
 import authAxios from '@/util/authAxios';
 import { refreshRequest } from '@/api/meet';
+import { useEffect } from 'react';
 
 export default function Success({
   searchParams,
@@ -29,7 +30,9 @@ export default function Success({
     document.cookie = `myInfo=${JSON.stringify(myInfo.result)};`;
   };
 
-  setToken();
+  useEffect(() => {
+    setToken();
+  }, []);
 
   return <div>로그인 완료!</div>;
 }

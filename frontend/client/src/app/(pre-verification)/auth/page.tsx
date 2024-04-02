@@ -2,6 +2,7 @@
 
 
 import {useRouter} from "next/navigation";
+import { useEffect } from 'react';
 
 
 export default function Success({
@@ -23,7 +24,9 @@ export default function Success({
         }
     }
 
+  useEffect(() => {
     setToken();
+  }, []);
 
     return (
       <div>
