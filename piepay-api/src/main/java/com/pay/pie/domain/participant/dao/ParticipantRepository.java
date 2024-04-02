@@ -17,8 +17,8 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long>,
 	Participant findByMember(Member member);
 
 	@Query("SELECT SUM(p.payAmount) "
-		   + "FROM Participant p "
-		   + "WHERE p.pay.id = :payId")
+		+ "FROM Participant p "
+		+ "WHERE p.pay.id = :payId")
 	Long sumPayAmountByPayId(@Param("payId") Long payId);
 
 	// 참여 횟수와 총 사용 금액 통계
@@ -36,5 +36,7 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long>,
 		@Param("members") List<Member> members,
 		@Param("meetId") Long meetId
 	);
+
+	List<Participant> getAllByMemberId(Long memberId);
 
 }
