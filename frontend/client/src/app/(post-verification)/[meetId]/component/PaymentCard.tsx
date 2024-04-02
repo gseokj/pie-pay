@@ -4,6 +4,7 @@ import * as buttonStyles from "@/styles/main/mainButton.css";
 import dayjs from "dayjs";
 import {Payment} from "@/model/meet/payment";
 import {Meet} from "@/model/meet";
+import {paymentCardButton} from "@/styles/main/mainButton.css";
 
 
 interface PaymentProps {
@@ -36,7 +37,7 @@ export default function PaymentCard({ props }: PaymentProps) {
                     :
                     '미정산'
                 }</h3>
-                <button className={ `${ buttonStyles.cardButton } ${ fontStyles.semibold }` }>영수증 확인</button>
+                <button className={ `${ buttonStyles.paymentCardButton } ${ fontStyles.semibold }` }>영수증 확인</button>
             </div>
         </section>
     );

@@ -1,12 +1,16 @@
 import {Category} from "@/model/meet/payment";
 import * as fontStyles from "@/styles/fonts.css";
+import * as paymentStyles from "@/styles/meet/meetPayments.css";
+import LeisureIcon from "@/app/(post-verification)/[meetId]/history/component/icons/CategoryLeisure";
+import FoodIcon from "@/app/(post-verification)/[meetId]/history/component/icons/CategoryFood";
+import TransportIcon from "@/app/(post-verification)/[meetId]/history/component/icons/CategoryTransport";
 
 interface LegendProps {
-    props: { category: Category, totalAmount: number },
+    props: { category: Category, totalAmount: number, index: number },
 }
 
 export default function LegendCategory({ props }: LegendProps) {
-    const { category, totalAmount } = props;
+    const { category, totalAmount, index } = props;
     const legendColors = ["rgb(250,157,91)", "rgb(105,238,117)", "rgb(125,161,231)"];
     const percentage = (category.amount / totalAmount) * 100;
 
@@ -25,12 +29,12 @@ export default function LegendCategory({ props }: LegendProps) {
     const name = getName(category.name);
 
     return (
-        <div>
-
-            <div>
-                <p>{name}</p>
-                <span className={fontStyles.semibold}>{Math.round(percentage * 10) / 10}%</span>
-            </div>
+        <div className={paymentStyles.legend}>
+            {name === '여가' && <LeisureIcon color={legendColors[index]} />}
+            {name === '식비' && <FoodIcon color={legendColors[index]} />}
+            {name === '교통' && <TransportIcon color={legendColors[index]} />}
+            <p>{name}</p>
+            <p className={fontStyles.semibold}>{Math.round(percentage * 10) / 10}%</p>
         </div>
     );
 }

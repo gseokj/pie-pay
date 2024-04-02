@@ -23,8 +23,8 @@ export default async function PostVerificationLayout({children}: Props) {
     const queryClient = new QueryClient();
     const token = cookies().get('accessToken')?.value;
 
-    await queryClient.prefetchQuery({queryKey: ['account', token], queryFn: getAccount});
-    await queryClient.prefetchQuery({queryKey: ['meetList', token], queryFn: getMeetList});
+    await queryClient.prefetchQuery({queryKey: ['account', token], queryFn: getAccount, staleTime: 1000 * 60 * 60});
+    await queryClient.prefetchQuery({queryKey: ['meetList', token], queryFn: getMeetList, staleTime: 1000 * 60 * 15});
     await queryClient.prefetchQuery({queryKey: ['notification', token], queryFn: getNotification});
     await queryClient.prefetchQuery({queryKey: ['userInfo', token], queryFn: getMe,staleTime: 1000* 60 * 60},);
 
