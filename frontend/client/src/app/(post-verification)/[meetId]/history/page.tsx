@@ -1,11 +1,16 @@
 "use client";
 
 
-import {ReactNode, useEffect, useState} from "react";
+import React, {ReactNode, useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {getCookie} from "@/util/getCookie";
 import {useQueryClient} from "@tanstack/react-query";
-import {filterPayments, filterTotalAmount, findStandardTime} from "@/util/filterPayments";
+import {
+    calculateCategoryAmountsAndPercentages, filterCategory,
+    filterPayments,
+    filterTotalAmount,
+    findStandardTime
+} from "@/util/filterPayments";
 import PaymentCard from "@/app/(post-verification)/[meetId]/component/PaymentCard";
 import * as mainStyles from "@/styles/main/main.css";
 import * as fontStyles from "@/styles/fonts.css";
@@ -17,6 +22,11 @@ import prevDisabledIcon from "@/assets/icons/previousDisabled.svg";
 import Image from "next/image";
 import {Payment} from "@/model/meet/payment";
 import {Meet} from "@/model/meet";
+import {Doughnut} from "react-chartjs-2";
+import {ArcElement, Chart as ChartJS, Legend, Tooltip} from "chart.js";
+
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 
 type Props = {
@@ -28,6 +38,17 @@ interface StandardTime {
     newestYear: number|null;
     oldestMonth: number|null;
     oldestYear: number|null;
+}
+
+interface DoughnutData {
+    labels: string[];
+    datasets: Dataset[];
+}
+
+interface Dataset {
+    data: number[];
+    backgroundColor: string[];
+    borderWidth: number;
 }
 
 export default function History({params}: Props) {
@@ -55,6 +76,57 @@ export default function History({params}: Props) {
     const [isExistPrevious, setIsExistPrevious] = useState<boolean>(false);
     const [isExistNext, setIsExistNext] = useState<boolean>(false);
 
+    const [data, setData] = useState<DoughnutData>({
+        labels: [],
+        datasets: [
+            {
+                data: [],
+                backgroundColor: [],
+                borderWidth: 8,
+            }
+        ]
+    });
+
+    // const data = {
+    //     labels: ["갈까마귀모임", "SSAFY특화프로젝트", "고향 친구들"],
+    //     datasets: [
+    //         {
+    //             data: [12, 19, 3],
+    //             backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 206, 86, 0.2)"],
+    //             borderWidth: 8,
+    //         },
+    //     ],
+    // };
+
+    const options = {
+        cutoutPercentage: 30,
+        legend: {
+            display: false
+        }
+    };
+
+    const doughnutData: DoughnutData = {
+        labels: [],
+        datasets: [
+            {
+                data: [],
+                backgroundColor: [],
+                borderWidth: 8,
+            }
+        ]
+    };
+
+    const doughnutColors = ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 206, 86, 0.2)"];
+
+    const setDoughnut = (payments: Payment[]) => {
+        const categoryData = filterCategory(payments);
+        categoryData.forEach((category, index) => {
+            doughnutData.labels.push(category.name);
+            doughnutData.datasets[0].data.push(category.amount);
+            doughnutData.datasets[0].backgroundColor.push(doughnutColors[index]);
+        });
+    }
+
     useEffect(() => {
         const currentYear = new Date().getFullYear();
         const currentMonth = new Date().getMonth() + 1;
@@ -63,6 +135,7 @@ export default function History({params}: Props) {
 
         if (typeof payments !== 'undefined') {
             setFilteredPayments(filterPayments(currentYear, currentMonth, payments));
+            console.log(filterCategory(filterPayments(currentYear, currentMonth, payments)));
             const {newestMonth, newestYear, oldestYear, oldestMonth} = findStandardTime(payments);
             if (newestMonth !== null && typeof newestYear !== 'undefined') {
                 setStandardTime(oldData => ({
@@ -79,6 +152,8 @@ export default function History({params}: Props) {
                 }));
             }
             setIsExistPreviousOrNext();
+            setDoughnut(payments);
+            setData(doughnutData);
         }
         console.log(standardTime, targetYear, targetMonth);
         setIsExistPreviousOrNext();
@@ -88,6 +163,10 @@ export default function History({params}: Props) {
         setIsExistPreviousOrNext();
         if (typeof filteredPayments !== 'undefined') {
             setTotalAmount(filterTotalAmount(filteredPayments));
+            setDoughnut(filteredPayments);
+            console.log(doughnutData);
+            setData(doughnutData);
+            console.log(data);
         }
     }, [standardTime, targetMonth, targetYear]);
 
@@ -177,10 +256,22 @@ export default function History({params}: Props) {
             </div>
             <div>{totalAmount !== 0 && totalAmount}</div>
 
+            <div className="h-[80%] flex flex-col items-center p-1 bg-white shadow-xl rounded-xl">
+                <div>
+                    <Doughnut data={data}/>
+                </div>
+                <div className="flex justify-around w-[40%]">
+                    <p>총 금액</p>
+                    <p className="font-bold">180000원</p>
+                    <p>원</p>
+                </div>
+
+            </div>
+
             {typeof filteredPayments !== 'undefined' && typeof meetInfo !== 'undefined' && filteredPayments.length > 0 &&
                 filteredPayments.map((payment) => {
                     return (
-                        <PaymentCard props={{ payment: payment, meetInfo: meetInfo }} key={payment.orders.orderId} />
+                        <PaymentCard props={{payment: payment, meetInfo: meetInfo}} key={payment.orders.orderId}/>
                     );
                 })
             }
