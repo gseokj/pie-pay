@@ -261,7 +261,7 @@ export default function History({params}: Props) {
                     <div className={paymentStyles.indexCard}>
                         <div className={paymentStyles.doughnutInner}>
                             <div className={paymentStyles.doughnutBox}>
-                                <Doughnut data={data} options={options}/>
+                                <Doughnut data={data}/>
                             </div>
                             <div>
                                 {categories.map((category, index) => {
