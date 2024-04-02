@@ -81,6 +81,7 @@ export default function Open({payId}:Props) {
 
     // Init 소켓 초기값 설정
     useEffect(() => {
+        console.log(initiating);
         if (!initiating) return;
         init(Number(payId));
     }, [initiating]);
