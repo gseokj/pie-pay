@@ -144,8 +144,13 @@ public class PayServiceImpl implements PayService {
 			);
 		}
 
-		// payStatus -> Complete로 변환
-		pay.setPayStatus(Pay.PayStatus.COMPLETE);
+		// payStatus -> Complete/Close 로 변환
+		boolean payInsteadInPay = payRepository.areAllPaybackTrueForPayId(payId);
+		if (payInsteadInPay) {
+			pay.setPayStatus(Pay.PayStatus.CLOSE);
+		} else {
+			pay.setPayStatus(Pay.PayStatus.COMPLETE);
+		}
 		order.setPaymentStatus(Order.PaymentStatus.PAID);
 
 		// 알림
