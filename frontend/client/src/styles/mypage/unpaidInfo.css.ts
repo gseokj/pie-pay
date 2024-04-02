@@ -63,3 +63,7 @@ export const text = style({
   display: 'flex',
   flexDirection: 'row',
 });
+
+export const title = style({
+  fontWeight: 'bold',
+});
