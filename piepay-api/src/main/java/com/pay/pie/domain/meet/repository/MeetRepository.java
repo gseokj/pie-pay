@@ -66,4 +66,15 @@ public interface MeetRepository extends JpaRepository<Meet, Long> {
 		)
 	List<Meet> findMembersInMeetList(@Param("meets") List<Long> meets);
 
+	// 모임의 결제 리스트
+	@Query(
+		"""
+  		SELECT m
+  		FROM Meet m
+  		JOIN FETCH m.payList
+  		WHERE m.id = :meetId
+		"""
+	)
+	Meet getMeetPayInfo(@Param("meetId") Long meetId);
+
 }

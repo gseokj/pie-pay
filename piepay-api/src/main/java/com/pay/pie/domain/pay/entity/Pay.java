@@ -1,5 +1,7 @@
 package com.pay.pie.domain.pay.entity;
 
+import java.time.Month;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pay.pie.domain.BaseEntity;
 import com.pay.pie.domain.meet.entity.Meet;
@@ -58,5 +60,9 @@ public class Pay extends BaseEntity {
 
 	@Column(name = "total_pay_amount")
 	private Long totalPayAmount;
+
+	public int getMonth() {
+		return this.getCreatedAt().getMonth().getValue();
+	}
 
 }
