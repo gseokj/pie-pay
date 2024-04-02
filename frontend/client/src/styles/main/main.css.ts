@@ -3,7 +3,7 @@ import theme from '@/styles/theme/theme';
 import { setTableContainer } from '@/styles/meet/meetMain.css';
 
 export const accountContainer = style({
-  height: '15%',
+  height: '12%',
 });
 
 export const detailHeader = style({
