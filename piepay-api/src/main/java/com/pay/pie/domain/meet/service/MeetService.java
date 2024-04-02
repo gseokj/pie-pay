@@ -1,6 +1,7 @@
 package com.pay.pie.domain.meet.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -11,16 +12,18 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.pay.pie.domain.meet.dto.HighlightResponse;
-import com.pay.pie.domain.meet.dto.MeetResponse;
+import com.pay.pie.domain.meet.dto.MeetPaymentInfo;
+import com.pay.pie.domain.meet.dto.MonthInfo;
 import com.pay.pie.domain.meet.dto.request.CreateMeetRequest;
 import com.pay.pie.domain.meet.dto.request.UpdateMeetImageRequest;
 import com.pay.pie.domain.meet.dto.request.UpdateMeetNameRequest;
 import com.pay.pie.domain.meet.dto.response.MeetDetailResponse;
+import com.pay.pie.domain.meet.dto.response.MeetHighlightResponse;
 import com.pay.pie.domain.meet.dto.response.MeetInfo;
 import com.pay.pie.domain.meet.dto.response.MeetMemberInfo;
 import com.pay.pie.domain.meet.dto.response.UpdateInvitationResponse;
 import com.pay.pie.domain.meet.entity.Meet;
+import com.pay.pie.domain.meet.repository.MeetQueryRepository;
 import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.entity.Member;
@@ -28,7 +31,9 @@ import com.pay.pie.domain.member.exception.MemberException;
 import com.pay.pie.domain.member.exception.MemberExceptionCode;
 import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
+import com.pay.pie.domain.orderMenu.repository.OrderMenuRepository;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
+import com.pay.pie.domain.participant.dto.MemberParticipationCount;
 import com.pay.pie.domain.participant.dto.ParticipantStatistics;
 import com.pay.pie.domain.pay.dao.PayRepository;
 import com.pay.pie.domain.pay.entity.Pay;
@@ -42,13 +47,14 @@ import lombok.RequiredArgsConstructor;
 public class MeetService {
 
 	private final S3Util s3Util;
-	private final MemberRepository memberRepository;
-	private final MeetRepository meetRepository;
 	private final PayRepository payRepository;
+	private final MeetRepository meetRepository;
+	private final MemberRepository memberRepository;
+	private final OrderMenuRepository orderMenuRepository;
+	private final MeetQueryRepository meetQueryRepository;
 	private final MemberMeetRepository memberMeetRepository;
 	private final ParticipantRepository participantRepository;
 
-	///////
 	public MeetDetailResponse getMeetInfo(long meetId) {
 
 		Meet findMeet = meetRepository.findMeetInfo(meetId);
@@ -56,7 +62,6 @@ public class MeetService {
 		return MeetDetailResponse.of(findMeet, findMeet.getMemberMeetList().size());
 	}
 
-	/////////
 	@Transactional
 	public MeetDetailResponse changeMeetName(UpdateMeetNameRequest request) {
 
@@ -124,11 +129,6 @@ public class MeetService {
 		return new UpdateInvitationResponse(meet.updateInvitation());
 	}
 
-	// 모임 추가 매서드
-	// public Meet save(AddMeetRequest request) {
-	// 	return meetRepository.save(request.toEntity());
-	// }
-
 	public List<MeetMemberInfo> getMeetMemberInfo(Long meetId) {
 
 		List<Member> member = memberRepository.findMember(meetId);
@@ -158,10 +158,35 @@ public class MeetService {
 		return meetRepository.findById(meetId);
 	}
 
-	public HighlightResponse getHighlight(long meetId) {
-		Object[] queryResult = meetRepository.getHighlight(meetId);
-		MeetResponse meetResponse = new MeetResponse((Meet)queryResult[0], 960401);
-		return new HighlightResponse(meetResponse);
+	public MeetHighlightResponse getHighlight(Long meetId) {
+
+		// 모임 총 결제 금액과 총 만남 횟수
+		MeetPaymentInfo meetPaymentInfo = meetQueryRepository.getTotalMountAndMeetCount(meetId);
+
+		// 모임에서 발생한 결제 리스트
+		List<Pay> payList = payRepository.findPayList(meetId);
+
+		// 모임에 멤버가 각 참여한 횟수 정보
+		List<MemberParticipationCount> maxParticipationMember = participantRepository.getMaxParticipationMember(
+			payList);
+
+		MemberParticipationCount memberParticipationCount = null;
+		if (!maxParticipationMember.isEmpty()) {
+			memberParticipationCount = maxParticipationMember.get(0);
+		}
+
+		Long alcoholCount = orderMenuRepository.getAlcoholCount(payList);
+
+		Map<Integer, Long> monthPayDate = payList.stream()
+			.collect(Collectors.groupingBy((Pay::getMonth), Collectors.counting()));
+
+		List<MonthInfo> monthInfos = new ArrayList<>();
+
+		for (Integer key : monthPayDate.keySet()) {
+			monthInfos.add(new MonthInfo(key, monthPayDate.get(key)));
+		}
+
+		return MeetHighlightResponse.of(meetPaymentInfo, alcoholCount, memberParticipationCount, monthInfos);
 	}
 
 }
