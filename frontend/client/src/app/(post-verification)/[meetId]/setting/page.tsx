@@ -25,7 +25,6 @@ import authAxios from "@/util/authAxios";
 
 
 type Props = {
-    children: ReactNode,
     params: { meetId: string },
 }
 
