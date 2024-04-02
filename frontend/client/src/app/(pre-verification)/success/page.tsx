@@ -15,7 +15,6 @@ export default function Success({
   const setToken = async () => {
     if (typeof accessToken === 'string') {
       document.cookie = `accessToken=${accessToken}`;
-      setSession(accessToken);
       // refreshRequest(accessToken);
       router.push('/');
     } else {
@@ -23,10 +22,6 @@ export default function Success({
     }
   };
 
-  const setSession = async (token: string) => {
-    const myInfo = await getMyInfo(token);
-    document.cookie = `myInfo=${JSON.stringify(myInfo.result)};`;
-  };
 
   useEffect(() => {
     setToken();
