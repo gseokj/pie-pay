@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import hand from '@/assets/icons/hand.svg';
 import agree from '@/assets/icons/agree.svg';
 import Image from 'next/image';
+import { getMyInfo } from '@/util/getMyInfo';
 
 type Props = {
   payId: number;
@@ -20,6 +21,7 @@ interface ParticipantSocketRes {
   payStatus: "OPEN" | "ING" | "COMPLETE" | "CLOSE";
 }
 export default function ParticipantList({ payId }: Props) {
+  const myInfo = getMyInfo();
   const { payment, isLoading, updatePayment } = usePayment();
   const { instead ,res} = usePaymentSocket();
   const insteadPart = async (borrowerId: number, lenderId: number) => {
@@ -46,7 +48,8 @@ export default function ParticipantList({ payId }: Props) {
                className={`${styles.container}  ${participant.payAgree==='agree' && styles.backgroundSkyBlue} ${participant.payAgree==='deny' && styles.backgroundLightRed}`}>
             <div className={styles.participantList}>
               <img className={styles.image} src={participant.memberInfo.profileImage} alt="" width={50} />
-              <p>{participant.memberInfo.nickname}</p>
+              {participant.memberInfo.memberId === myInfo.memberId ? <p>{`나 (${participant.memberInfo.nickname})`}</p> :
+                <p>{participant.memberInfo.nickname}</p>}
             </div>
             <div className={styles.boxRight}>
               {/*대기중 상태*/}

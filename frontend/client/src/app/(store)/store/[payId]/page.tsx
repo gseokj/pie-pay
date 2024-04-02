@@ -7,6 +7,9 @@ import { getStoreReceipt } from '@/api/store';
 import { getCookie } from '@/util/getCookie';
 import CheckModal from '@/app/(store)/component/CheckModal';
 import { useCheckModal } from '@/store/useCheckModal';
+import { useEffect, useState } from 'react';
+import { LoaderComponent } from '@/app/component/Loading';
+
 type Props=
 {
   params: {
@@ -15,14 +18,18 @@ type Props=
 }
 export default function Page({params}: Props) {
   const {payId} = params;
-  const cookie = getCookie('accessToken');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    const token = getCookie('accessToken') as string;
+    setToken(token);
+  }, []);
   const {isVisible,updateState}  = useCheckModal();
-  const { data: receipt, isLoading, error } = useQuery({queryKey: ['store',payId,cookie], queryFn: getStoreReceipt})
+  const { data: receipt, isLoading, error } = useQuery({queryKey: ['store',payId,token], queryFn: getStoreReceipt})
 console.log(receipt);
 
   return (
     <>
-
       {!isLoading && receipt ?
       <div className="flex flex-col h-[100%] m-3">
 
@@ -65,7 +72,7 @@ console.log(receipt);
 
       </div>
 
-      : <>Hello</>}
+      : <LoaderComponent/>}
 
     </>
 

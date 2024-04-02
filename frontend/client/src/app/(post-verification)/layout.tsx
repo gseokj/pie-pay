@@ -1,14 +1,13 @@
 import type {Metadata} from "next";
 import Header from "./component/Header"
 import {ReactNode} from "react";
-import RQProvider from "@/app/(post-verification)/component/RQProvider";
 import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
-import {getMembers} from "@/api/member";
 import {getAccount} from "@/api/account";
 import NotificationReceive from "@/app/(post-verification)/component/NotificationReceive";
 import * as styles from "@/styles/main/main.css"
 import {cookies} from "next/headers";
 import {getMeetList} from "@/api/meet/meetList";
+import { getNotification } from '@/api/notification';
 
 export const metadata: Metadata = {
     title: "piepay",
@@ -24,6 +23,8 @@ export default async function PostVerificationLayout({children}: Props) {
 
     await queryClient.prefetchQuery({queryKey: ['account', token], queryFn: getAccount});
     await queryClient.prefetchQuery({queryKey: ['meetList', token], queryFn: getMeetList});
+    await queryClient.prefetchQuery({queryKey: ['notification', token], queryFn: getNotification});
+
     const dehydratedState = dehydrate(queryClient);
     return (
         <div className="h-screen">

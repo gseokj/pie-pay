@@ -39,9 +39,11 @@ export const headerLogo = style({
     textAlign: "start"
 });
 
+
 export const buttonContainer = style({
     height: "100%",
     display: "flex",
+
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -54,3 +56,28 @@ export const buttonContainer = style({
         },
     },
 });
+export const topProperty = style({
+    position:'relative',
+    top:'-5%'
+})
+export const unreadAlarm = style({
+    height: '10px',
+    width: '10px',
+    borderRadius: '10px',
+    backgroundColor: 'red',
+    position: 'relative',
+    top: '10%',
+
+    left: '30%',
+
+    // Default width
+    '@media': {
+        'screen and (min-width: 768px)': {
+
+            left: '30%',
+
+        },
+    },
+
+})
+

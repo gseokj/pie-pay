@@ -27,8 +27,9 @@ export const content = style({
 })
 
 export const waitSection = style({
-    width: '100%',
+    width: '95%',
     display: 'flex',
+    justifyContent: 'space-between'
 
 })
 const beforeBase = style({
@@ -44,8 +45,12 @@ const afterBase = style({
     fontWeight: 'bold',
 });
 export const button = styleVariants({
-    beforeinstead: [beforeBase, {background: theme.skyblue, color:theme.blue}],
-    beforeAgree: [beforeBase, {background: theme.blue, color:"white"} ],
+    beforeinstead: [beforeBase, {
+        background: theme.skyblue, color:theme.blue, ':hover':{ transform: 'translatey(-5px)',
+            backgroundColor: theme.blue, color:'white', transitionDuration: '400ms', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px'
+        }}],
+    beforeAgree: [beforeBase, {background: theme.blue, color:"white",':hover':{transform: 'translatey(-5px)',
+            backgroundColor: 'white', color: theme.blue, transitionDuration: '400ms',boxShadow: 'rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px'}} ],
     afterinstead: [afterBase, {background: theme.skyblue, color:theme.blue} ],
     afterAgree: [afterBase, {background: theme.lightgray, color:theme.lightbrown} ],
 

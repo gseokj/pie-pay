@@ -1,10 +1,9 @@
 import {
     CreateMeetResponse,
     CreateMeetRequest,
-    GetMeetInfoResponse,
     GetMyMeetsResponse,
     Member,
-    MemberResponse, MeetInfoResponse, MeetDeleteResponse, DefaultResponse, Meet, MeetData
+    MemberResponse, MeetInfoResponse, DefaultResponse, Meet, MeetData
 } from "@/model/meet";
 import authAxios from "@/util/authAxios";
 import {QueryFunction} from "@tanstack/query-core";

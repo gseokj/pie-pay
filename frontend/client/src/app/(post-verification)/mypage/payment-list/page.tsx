@@ -1,5 +1,4 @@
 'use client';
-
 import BackButton from '@/app/(post-verification)/component/BackButton';
 import vailedRightButton from '@/assets/icons/vailedRightButton.svg';
 import unvailedRightButton from '@/assets/icons/unvailedRightButton.svg';

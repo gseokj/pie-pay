@@ -12,7 +12,7 @@ import theme from "@/styles/theme/theme";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 import {GetMyMeetsResponse, MeetData, Member} from "@/model/meet";
-import {fixMeet, getMeetMembers} from "@/api/meet";
+import {fixMeet} from "@/api/meet";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getCookie} from "@/util/getCookie";
 import {useEffect, useState} from "react";

@@ -54,6 +54,7 @@ export const mainButton = styleVariants({
             },
         },
     }],
+
     modalButton: [buttonLayout, blueActive],
     modalButtonDisabled: [buttonLayout, {
         cursor: "default",

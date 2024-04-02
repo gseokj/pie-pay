@@ -35,7 +35,13 @@ export default function SimplePasswordCheck() {
 
   const { password: storePassword }: { password: Password } = useStore();
 
-  const token = getCookie('accessToken') as string;
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    const token = getCookie('accessToken') as string;
+    setToken(token);
+  }, []);
+
 
   const sendRequest = async () => {
     console.log('인증 진행');
@@ -48,12 +54,12 @@ export default function SimplePasswordCheck() {
         const response = await postConfirmPassword(request, token);
         console.log('Verification response:', response);
         console.log('accessToken : ' + response.result.accessToken);
-        setToken(response.result.accessToken);
+        settingToken(response.result.accessToken);
       } catch (error) {}
     }
   };
 
-  const setToken = async (accessToken: string) => {
+  const settingToken = async (accessToken: string) => {
     if (typeof accessToken === 'string') {
       document.cookie = `accessToken=${accessToken} ; path=/`;
       setSession(accessToken);

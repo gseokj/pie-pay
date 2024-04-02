@@ -3,6 +3,7 @@ const {
     createVanillaExtractPlugin
 } = require('@vanilla-extract/next-plugin');
 const withVanillaExtract = createVanillaExtractPlugin();
+const path = require('path');
 
 
 
@@ -12,6 +13,11 @@ const nextConfig = {
     // SVG 사용 관련 모듈
     webpack: (config) => {
         const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'));
+
+        config.resolve.alias = {
+            ...(config.resolve.alias || {}),
+            '@': path.resolve(__dirname, 'src/')
+        };
 
         config.module.rules.push(
             {
