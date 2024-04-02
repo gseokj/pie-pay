@@ -10,13 +10,13 @@ import lombok.Getter;
 @Getter
 @Builder
 public class MyPayInsteadResponse {
-	private List<PayInsteadDto> lent; // 사용자가 받아야할 돈
-	private List<PayInsteadDto> borrowed; // 사용자가 갚아야할 돈
+	private List<MyPayInsteadDto> myLent; // 사용자가 받아야할 돈
+	private List<MyPayInsteadDto> myBorrowed; // 사용자가 갚아야할 돈
 
-	public static MyPayInsteadResponse of(List<PayInsteadDto> lent, List<PayInsteadDto> borrowed) {
+	public static MyPayInsteadResponse of(List<MyPayInsteadDto> myLent, List<MyPayInsteadDto> myBorrowed) {
 		return MyPayInsteadResponse.builder()
-			.lent(lent)
-			.borrowed(borrowed)
+			.myLent(myLent)
+			.myBorrowed(myBorrowed)
 			.build();
 	}
 }
