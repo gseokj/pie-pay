@@ -20,10 +20,8 @@ import {Meet} from "@/model/meet";
 
 
 type Props = {
-    children: ReactNode,
     params: { meetId: string },
 }
-
 
 interface StandardTime {
     newestMonth: number|null;
@@ -31,7 +29,6 @@ interface StandardTime {
     oldestMonth: number|null;
     oldestYear: number|null;
 }
-
 
 export default function History({params}: Props) {
     const { meetId } = params;

@@ -10,7 +10,6 @@ import * as fontStyles from "@/styles/fonts.css";
 
 
 type Props = {
-    children: ReactNode,
     params: { meetId: string },
 }
 
