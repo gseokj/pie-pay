@@ -13,10 +13,10 @@ import {useQueryClient} from "@tanstack/react-query";
 import {getCookie} from "@/util/getCookie";
 import {MeetMember} from "@/model/meet/member";
 import {Payment} from "@/model/meet/payment";
+import {memberList} from "@/styles/payment/select/memberList.css";
 
 
 type Props = {
-    children: ReactNode,
     params: { meetId: string },
 }
 
@@ -25,21 +25,26 @@ export default function Members({params}: Props) {
     const {meetId} = params;
     const router = useRouter();
     const queryClient = useQueryClient();
-    const token = getCookie('accessToken');
 
+    const token = getCookie('accessToken');
     const memberList: MeetMember[]|undefined  = queryClient.getQueryData(['meetMembers', meetId, token]);
-    const paymentList: Payment[]|undefined = queryClient.getQueryData(['payments', meetId, token]);
-    const [members, setMembers] = useState<MeetMember[]>();
+    const [members, setMembers] = useState<MeetMember[]>([]);
     const [categoryStatus, setCategoryStatus] = useState<number>(0);
+    const [totalPayCount, setTotalPayCount] = useState<number>(0);
 
     useEffect(() => {
+        const paymentList: Payment[]|undefined = queryClient.getQueryData(['meetPayments', meetId, token]);
         if (typeof memberList !== 'undefined') {
             setMembers(sortByName(memberList));
+        }
+
+        if (typeof paymentList !== 'undefined') {
+            setTotalPayCount(paymentList.length);
         }
     }, []);
 
     useEffect(() => {
-        if (typeof members !== 'undefined') {
+        if (members.length > 0) {
             let sortedMembers;
             switch (categoryStatus) {
                 case 0:
@@ -52,37 +57,38 @@ export default function Members({params}: Props) {
                     sortedMembers = sortByPaycount([...members]);
                     break;
                 default:
+                    sortedMembers = sortByName([...members]);
                     break;
             }
             setMembers(sortedMembers);
         }
     }, [categoryStatus]);
 
-    const sortByName = (memberData: MeetMember[]) => {
+    const sortByName = (memberData: MeetMember[]):MeetMember[] => {
         return [...memberData].sort((a, b) => a.nickname.localeCompare(b.nickname));
-    }
+    };
 
-    const sortByPaytotal = (memberData: MeetMember[]) => {
+    const sortByPaytotal = (memberData: MeetMember[]):MeetMember[] => {
         return [...memberData].sort((a, b) => {
             if (a.payTotal > b.payTotal) return -1;
             if (a.payTotal < b.payTotal) return 1;
 
             return 0;
         });
-    }
+    };
 
-    const sortByPaycount = (memberData: MeetMember[]) => {
+    const sortByPaycount = (memberData: MeetMember[]):MeetMember[] => {
         return [...memberData].sort((a, b) => {
             if (a.payCount > b.payCount) return -1;
             if (a.payCount < b.payCount) return 1;
 
             return 0;
         });
-    }
+    };
 
     const onClickBack = () => {
         router.back();
-    }
+    };
 
     return (
         <section>
@@ -93,11 +99,11 @@ export default function Members({params}: Props) {
                 <h1 className={fontStyles.bold}>모임 멤버</h1>
             </header>
             <div className={mainStyles.categoryContainer.smallMargin}>
-                <h5>멤버 {typeof memberList !== 'undefined' && memberList.length}</h5>
+                <h5>멤버 {typeof members !== 'undefined' && members.length}</h5>
             </div>
-            {typeof members !== 'undefined' && members.map((member: MeetMember) => {
+            {typeof memberList !== 'undefined' && members.map((member: MeetMember, index) => {
                 return (
-                    <MemberCard params={{ member, category: categoryStatus, totalPayCount: paymentList?.length }} key={ member.memberId } />
+                    <MemberCard params={{ member, category: categoryStatus, totalPayCount: totalPayCount, index }} key={ member.memberId } />
                 );
             })}
             <footer className={meetMemberStyles.categoryLayout}>

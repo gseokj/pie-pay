@@ -55,7 +55,9 @@ export const cardLayout = styleVariants({
     }],
     memberCard: [cardContainer, {
         flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        padding: "2.5%",
+        alignItems: "center",
     }]
 });
 
@@ -113,8 +115,12 @@ export const cardInnerLayout = styleVariants({
     }],
     inviteInner: [cardContainer, cardInner, inviteInnerLayout],
     imageInputInner: [cardInner, imageInputInnerLayout],
-    memberCardInner: [cardInnerHorizontal, {
-        gap: "1rem",
+    memberCardLeftInner: [cardInnerHorizontal, {
+        gap: "0.8rem",
+        fontSize: "1.2rem"
+    }],
+    memberCardRightInner: [cardInnerHorizontal, {
+        marginRight: "2%",
         fontSize: "1.2rem"
     }]
 });

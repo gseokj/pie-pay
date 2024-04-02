@@ -1,7 +1,6 @@
 "use client";
 
 
-import {ReactNode} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import {getCookie} from "@/util/getCookie";
 import MeetInfoCard from "@/app/(post-verification)/[meetId]/component/MeetInfoCard";
@@ -15,7 +14,6 @@ import PaymentSelectButton from "@/app/(post-verification)/[meetId]/component/Pa
 
 
 type Props = {
-    children: ReactNode,
     params: { meetId: string },
 }
 
