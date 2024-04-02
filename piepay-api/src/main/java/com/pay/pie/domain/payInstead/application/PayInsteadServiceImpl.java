@@ -9,8 +9,9 @@ import com.pay.pie.domain.account.entity.Account;
 import com.pay.pie.domain.account.entity.QAccount;
 import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.member.entity.Member;
-import com.pay.pie.domain.notification.dto.EventMessage;
 import com.pay.pie.domain.notification.service.SseEmitterService;
+import com.pay.pie.domain.order.dao.OrderRepository;
+import com.pay.pie.domain.order.entity.Order;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
 import com.pay.pie.domain.participant.entity.Participant;
 import com.pay.pie.domain.payInstead.dao.PayInsteadRepository;
@@ -32,6 +33,7 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 
 	private final PayInsteadRepository payInsteadRepository;
 	private final MemberRepository memberRepository;
+	private final OrderRepository orderRepository;
 	private final ParticipantRepository participantRepository;
 	private final JPAQueryFactory queryFactory;
 	private final SseEmitterService sseEmitterService;
@@ -48,6 +50,8 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 		PayInstead payInstead = payInsteadRepository.findById(payInsteadId).orElseThrow(
 			() -> new IllegalArgumentException("없는 대신내주기 id")
 		);
+		Order order = orderRepository.findByPayId(payInstead.getPay().getId());
+
 		log.info("payInstead.getPay().getId(): {}", payInstead.getPay().getId());
 		Member lender = memberRepository.findById(payInstead.getLender().getId())
 			.orElseThrow(
@@ -108,8 +112,16 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 		borrowerParticipant.setPayAmount(borrowerAmount + payInstead.getAmount());
 
 		// 알림
-		sseEmitterService.sendNotification(lender.getId(), EventMessage.PAYMENT_PAYINSTEAD_LENDER_NOTI);
-		sseEmitterService.sendNotification(borrower.getId(), EventMessage.PAYMENT_PAYINSTEAD_BORROWER_NOTI);
+		sseEmitterService.sendNotification(
+			lender.getId(),
+			4L,
+			payInstead.getAmount() + "원 입금 | " + borrower.getNickname() + "님이 " + order.getStore().getStoreName()
+				+ "의 [대신내주기]를 정산하였습니다.");
+		sseEmitterService.sendNotification(
+			borrower.getId(),
+			4L,
+			payInstead.getAmount() + "원 출금 | " + lender.getNickname() + "님에게" + order.getStore().getStoreName()
+				+ "의 [대신내주기]를 정산하였습니다.");
 	}
 
 	public MyPayInsteadResponse myPayInstead(Long memberId) {

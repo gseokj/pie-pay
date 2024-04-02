@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.member.dao.MemberRepository;
-import com.pay.pie.domain.notification.dto.EventMessage;
 import com.pay.pie.domain.notification.service.SseEmitterService;
 import com.pay.pie.domain.order.dao.OrderRepository;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
@@ -53,18 +53,18 @@ public class ParticipantServiceImpl implements ParticipantService {
 		 */
 		//
 		Long openerId = securityUserDto.getMemberId();
-		String openerUserKey = securityUserDto.getUserKey();
 		// 국민은행 가상계좌 생성
+		// String openerUserKey = securityUserDto.getUserKey();
 		// OpenAccountRes virtualAccount = bankUtil.openAccount(
 		// 	openerUserKey, "004-1-74fe2deafd3277").getBody();
 
 		// Pay 테이블 생성
+		Meet meet = meetRepository.findById(meetId).orElseThrow(
+			() -> new IllegalArgumentException("없는 meetId")
+		);
 		Pay pay = payRepository.save(Pay.builder()
 			.payStatus(Pay.PayStatus.OPEN)
-			.meet(meetRepository.findById(meetId)
-				.orElseThrow(
-					() -> new IllegalArgumentException("없는 meetId")
-				))
+			.meet(meet)
 			.openerId(openerId)
 			.build());
 
@@ -85,7 +85,10 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 			// 알림
 			if (!participant.getMember().getId().equals(openerId)) {
-				sseEmitterService.sendNotification(participant.getMember().getId(), EventMessage.AGREEMENT_NOTI);
+				sseEmitterService.sendNotification(
+					participant.getMember().getId(),
+					2L,
+					meet.getMeetName() + "의 결제에 참여해주세요!");
 			}
 		}
 
