@@ -5,6 +5,26 @@ import {MyInfo} from "@/model/user";
 export function middleware(request: NextRequest) {
     // console.log(request.cookies.has('accessToken'), 'in middleware......................................');
 
+    if (request.nextUrl.pathname.startsWith('/kakao') || request.nextUrl.pathname.startsWith('/success') || request.nextUrl.pathname.startsWith('/auth')) {
+        if (request.cookies.has('accessToken')) {
+            return NextResponse.redirect(new URL('/', request.url));
+        }
+    } else if (request.nextUrl.pathname.startsWith('/mypage')) {
+        if (!request.cookies.has('accessToken')) {
+            return NextResponse.redirect(new URL('/', request.url));
+        } else {
+            const userCookie = request.cookies.get('myInfo');
+            if (typeof userCookie?.value === 'string') {
+                const userInfo: MyInfo = JSON.parse(userCookie.value);
+                const userId = userInfo.memberId;
+                // console.log('in middleware.... userId is.....,', userId);
+            }
+        }
+    } else {
+        if (!request.cookies.has('accessToken')) {
+            return NextResponse.redirect(new URL('/kakao', request.url));
+        }
+    }
 }
 
 export const config = {
