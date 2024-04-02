@@ -175,7 +175,8 @@ globalStyle(`${cardLayout.joinMeetGroup} > p`, {
 });
 
 export const meetInfo = style({
-    display: "flex"
+    display: "flex",
+    alignItems: "center"
 })
 
 export const meetInfoString = style({
