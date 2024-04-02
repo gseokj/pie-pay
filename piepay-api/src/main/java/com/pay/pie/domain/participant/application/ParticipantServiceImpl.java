@@ -88,7 +88,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 				sseEmitterService.sendNotification(
 					participant.getMember().getId(),
 					2L,
-					meet.getMeetName() + "의 결제에 참여해주세요!",
+					"[" + meet.getMeetName() + "]의 결제에 참여해주세요!",
 					pay.getId());
 			}
 		}

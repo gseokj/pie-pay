@@ -168,13 +168,13 @@ public class PayServiceImpl implements PayService {
 				3L,
 				payInstead.getLender().getNickname() + "님이 " + order.getStore().getStoreName() + "에서 "
 					+ String.format("%,d", payInstead.getAmount()) + "원을 대신 지불했습니다.",
-				payId);
+				payInstead.getId());
 			sseEmitterService.sendNotification(
 				payInstead.getLender().getId(),
 				3L,
 				order.getStore().getStoreName() + "에서 " + payInstead.getBorrower().getNickname() + "님 대신 "
 					+ String.format("%,d", payInstead.getAmount()) + "원을 지불했습니다.",
-				payId);
+				payInstead.getId());
 		}
 
 		return CompletedPaymentRes.builder()
