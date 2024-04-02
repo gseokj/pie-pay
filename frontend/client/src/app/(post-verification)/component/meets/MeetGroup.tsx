@@ -99,7 +99,7 @@ export default function MeetGroup({ meet, updateIsFixed }: MeetGroupProps){
                 </div>
                 <div className={styles.lineLayout.lineTwo}>
                     <div className={styles.profileImagesContainer}>
-                        {meet.member.length > 0 && meet.member.slice(0, 5).map((member, index) => {
+                        {meet.member.length > 0 && meet.member.slice(0, 4).map((member, index) => {
                             return (
                                 <div
                                     className={styles.profileImageContainer}
@@ -120,10 +120,10 @@ export default function MeetGroup({ meet, updateIsFixed }: MeetGroupProps){
                                 </div>
                             )
                         })}
-                        {meet.membersCount > 5 ?
+                        {meet.membersCount > 4 ?
                             <>
                                 <Image src={moreDots} alt="dots" width={32} height={32} />
-                                <p className={`${styles.meetMemberNumber} ${fontCss.semibold}`}>{'+' + (meet.membersCount - 5)}</p>
+                                <p className={`${styles.meetMemberNumber} ${fontCss.semibold}`}>{'+' + (meet.membersCount - 4)}</p>
                             </>
                             : <></>
                         }

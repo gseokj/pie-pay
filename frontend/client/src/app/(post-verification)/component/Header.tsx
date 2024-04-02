@@ -36,7 +36,7 @@ export default function Header() {
                     모임
                 </Link>
 
-                <Link href="/notification" className={`${styles.buttonContainer} ${styles.topProperty} ${fontCss.semibold}`}
+                <Link href="/notification" className={`${styles.buttonContainer} ${notifications && notifications.length >0 && styles.topProperty} ${fontCss.semibold}`}
                       style={path.includes('notification') ? { color: theme.blue } : { color: theme.blueGray }}>
 
                     {notifications && notifications.length >0 &&<span className={styles.unreadAlarm}></span>}

@@ -9,7 +9,7 @@ export const container = style({
     justifyContent: 'space-between',
     paddingLeft: '7%',
     paddingRight: '7%',
-    height: '9%',
+    height: '5rem',
     backgroundColor: theme.header,
     position: "fixed",
     width: "100%",
@@ -25,6 +25,7 @@ export const container = style({
 
 export const navigation = style({
     display: 'flex',
+    height: "5rem",
     justifyContent: 'space-around',
 });
 
@@ -43,6 +44,7 @@ export const headerLogo = style({
 export const buttonContainer = style({
     height: "100%",
     display: "flex",
+    width: "36.5px",
 
     flexDirection: "column",
     justifyContent: "center",
