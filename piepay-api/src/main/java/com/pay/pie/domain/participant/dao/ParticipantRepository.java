@@ -37,6 +37,6 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long>,
 		@Param("meetId") Long meetId
 	);
 
-	List<Participant> getAllByMemberId(Long memberId);
+	List<Participant> getAllByMemberIdOrderByUpdatedAtDesc(Long memberId);
 
 }

@@ -12,4 +12,6 @@ public interface PayInsteadRepository extends JpaRepository<PayInstead, Long> {
 
 	List<PayInstead> findByPayId(Long payId);
 
+	List<PayInstead> getAllByLenderId(Long memberId);
+
 }

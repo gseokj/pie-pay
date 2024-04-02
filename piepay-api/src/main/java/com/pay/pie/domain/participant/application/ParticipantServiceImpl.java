@@ -112,7 +112,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	public List<MyParticipantResponse> myParticipant(Long memberId) {
 
-		return participantRepository.getAllByMemberId(memberId)
+		return participantRepository.getAllByMemberIdOrderByUpdatedAtDesc(memberId)
 			.stream()
 			// 데이터 제대로 들어가면 필터 필요없음
 			.filter(participant -> orderRepository.findByPayId(participant.getPay().getId()) != null)

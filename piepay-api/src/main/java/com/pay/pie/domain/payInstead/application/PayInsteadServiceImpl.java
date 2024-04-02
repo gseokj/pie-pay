@@ -107,4 +107,9 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 		sseEmitterService.sendNotification(lender.getId(), EventMessage.PAYMENT_PAYINSTEAD_LENDER_NOTI);
 		sseEmitterService.sendNotification(borrower.getId(), EventMessage.PAYMENT_PAYINSTEAD_BORROWER_NOTI);
 	}
+
+	// public List<PayInsteadDto> myPayInstead(Long memberId) {
+	//
+	// 	return
+	// }
 }
