@@ -10,10 +10,9 @@ export const getAccount: QueryFunction<Account[]> = async ({ queryKey }) => {
                 'Authorization': `Bearer ${token}`
             }
         });
-        console.log(res);
         return res.data.result;
     } catch (error) {
-        console.error('Failed to fetch data', error);
+         // console.error('Failed to fetch data', error);
         throw new Error('Failed to fetch data');
     }
 }

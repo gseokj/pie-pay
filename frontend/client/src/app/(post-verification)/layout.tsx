@@ -8,6 +8,8 @@ import * as styles from "@/styles/main/main.css"
 import {cookies} from "next/headers";
 import {getMeetList} from "@/api/meet/meetList";
 import { getNotification } from '@/api/notification';
+import { getMyInfo } from '@/api/user';
+import { getMe } from '@/api/member';
 
 export const metadata: Metadata = {
     title: "piepay",
@@ -24,6 +26,7 @@ export default async function PostVerificationLayout({children}: Props) {
     await queryClient.prefetchQuery({queryKey: ['account', token], queryFn: getAccount});
     await queryClient.prefetchQuery({queryKey: ['meetList', token], queryFn: getMeetList});
     await queryClient.prefetchQuery({queryKey: ['notification', token], queryFn: getNotification});
+    await queryClient.prefetchQuery({queryKey: ['userInfo', token], queryFn: getMe,staleTime: 1000* 60 * 60},);
 
     const dehydratedState = dehydrate(queryClient);
     return (
