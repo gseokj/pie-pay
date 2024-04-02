@@ -1,7 +1,6 @@
 "use client";
 
 
-import {ReactNode} from "react";
 import {useRouter} from "next/navigation";
 import * as mainStyles from "@/styles/main/main.css";
 import Image from "next/image";

@@ -1,7 +1,6 @@
 import type {Metadata} from "next";
 import "@/styles/globals.css";
 import * as styles from '@/styles/app.css'
-import {MSWComponent} from "@/app/component/MSWComponent";
 import React from 'react';
 import RQProvider from '@/app/(post-verification)/component/RQProvider';
 
@@ -11,18 +10,10 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({children,}: Readonly<{ children: React.ReactNode; }>) {
-    const getToken = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/api/auth`, {
-            method: 'GET'
-        })
-        const token = await response.json();
-        console.log(token);
-    }
-    getToken();
+
     return (
         <html lang="en">
             <body className={styles.body} >
-            <MSWComponent/>
 
             <RQProvider>
                 <div className={styles.container}>

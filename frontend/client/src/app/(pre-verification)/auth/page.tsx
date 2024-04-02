@@ -5,6 +5,7 @@ import {useRouter} from "next/navigation";
 import {useEffect} from "react";
 
 
+
 export default function Success({
                                     searchParams
                                 }: {
@@ -24,9 +25,9 @@ export default function Success({
         }
     }
 
-    useEffect(() => {
-        setToken();
-    }, []);
+  useEffect(() => {
+    setToken();
+  }, []);
 
     return (
       <div>

@@ -14,7 +14,7 @@ export default function CheckModal({payId}:Props){
   const route = useRouter();
   const { mutate } = useMutation({
 
-    mutationFn: (id) => axios.post(`https://j10a402.p.ssafy.io/api/pay/payment/${payId}`,{},
+    mutationFn: (id) => axios.post(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/pay/payment/${payId}`,{},
       {
         headers: {
           'Authorization': `Bearer ${getCookie('accessToken')}`

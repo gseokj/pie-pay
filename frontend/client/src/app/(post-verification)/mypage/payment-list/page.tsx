@@ -6,7 +6,7 @@ import unvailedRightButton from "@/assets/icons/unvailedRightButton.svg"
 import vailedLeftButton from "@/assets/icons/vailedLeftButton.svg"
 import unvailedLeftButton from "@/assets/icons/unvailedLeftButton.svg"
 import dropUp from "@/assets/icons/dropup.svg"
-import dropDown from "@/assets/icons/dropDown.svg"
+import dropDown from "@/assets/icons/dropdown.svg"
 import Image from "next/image";
 import {faker} from "@faker-js/faker";
 import {getDate} from "@/util/dateFormat"

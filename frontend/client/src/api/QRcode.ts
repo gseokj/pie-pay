@@ -1,6 +1,4 @@
 import {QueryFunction} from "@tanstack/query-core";
-import {PaymentResult} from "@/model/participant";
-import {GetMeetInfoResponse} from "@/model/meet";
 import authAxios from "@/util/authAxios";
 import localAxios from "@/util/localAxios";
 

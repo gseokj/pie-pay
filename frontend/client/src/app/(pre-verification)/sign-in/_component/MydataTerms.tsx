@@ -63,6 +63,8 @@ export default function MydataTerms({ index, setAgree }: Props) {
         <ul>
           {termsList.map((term) => (
             <TermItem
+              isChecked={true}
+              onCheckChange={(id, isChecked) => true}
               key={term.id}
               term={term}
               isOpen={openItemIds.includes(term.id)}

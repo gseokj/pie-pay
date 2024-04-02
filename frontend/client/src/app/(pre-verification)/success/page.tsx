@@ -2,9 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { getMyInfo } from '@/api/user';
-import authAxios from '@/util/authAxios';
-import { refreshRequest } from '@/api/meet';
-import {useEffect} from "react";
+import { useEffect } from 'react';
 
 export default function Success({
   searchParams,
