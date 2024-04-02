@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 public class PayResponse {
 	// private final Meet meet;
+	private final Long payId;
 	private final Pay.PayStatus payStatus;
 	private final Long openerId;
 	private final Long totalPayAmount;
@@ -18,6 +19,7 @@ public class PayResponse {
 
 	public PayResponse(Pay pay, OrderOfPayResponse order) {
 		// this.meet = pay.getMeet();
+		this.payId = pay.getId();
 		this.payStatus = pay.getPayStatus();
 		this.openerId = pay.getOpenerId();
 		this.totalPayAmount = pay.getTotalPayAmount();
