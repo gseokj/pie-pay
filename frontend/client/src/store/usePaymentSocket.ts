@@ -25,6 +25,7 @@ type SocketState = {
   init : (payId:number) => void;
   initRes: InitType | null;
   initiating: boolean;
+  setInitiating: ()=>void;
   res: ParticipantSocketResProps | null;
 
 };
@@ -67,6 +68,9 @@ export const usePaymentSocket = create<SocketState>((set) => ({
 
     clientdata.activate();
     set((state) => ({ ...state, client: clientdata }));
+  },
+  setInitiating: () => {
+    set({ initiating: false });
   },
   send: (payId:number, participantId:number, payAgree:boolean) => {
     console.log(payId+" "+participantId+" " +payAgree)
