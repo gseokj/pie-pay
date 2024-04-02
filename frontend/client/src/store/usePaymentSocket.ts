@@ -51,6 +51,7 @@ export const usePaymentSocket = create<SocketState>((set) => ({
       set((state) => ({ ...state, initiating: true }));
       clientdata.subscribe(`/api/sub/${payId}`, (message: any) => {
         const res = JSON.parse(message.body);
+
         // console.log(res);
         set((state) => ({ ...state, res }));
       });
@@ -59,6 +60,9 @@ export const usePaymentSocket = create<SocketState>((set) => ({
         const initRes = JSON.parse(message.body);
         set((state) => ({ ...state, initRes }));
       });
+    };
+    clientdata.onDisconnect = function () {
+      set((state) => ({ ...state, initiating: false }));
     };
 
     clientdata.activate();
