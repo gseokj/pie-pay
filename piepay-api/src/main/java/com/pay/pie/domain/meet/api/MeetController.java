@@ -1,6 +1,5 @@
 package com.pay.pie.domain.meet.api;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,8 +34,6 @@ import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
 import com.pay.pie.domain.memberMeet.service.MemberMeetService;
 import com.pay.pie.domain.order.dao.OrderRepository;
-import com.pay.pie.domain.order.dto.response.OrderOfPayResponse;
-import com.pay.pie.domain.order.entity.Order;
 import com.pay.pie.domain.pay.application.PayServiceImpl;
 import com.pay.pie.domain.pay.dto.response.PayStatusIngResponse;
 import com.pay.pie.domain.pay.entity.Pay;
@@ -142,22 +139,30 @@ public class MeetController {
 
 	}
 
+	// @PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	// @GetMapping("/meet/{meetId}/payment")
+	// public ResponseEntity<BaseResponse<List<PayResponse>>> getPayByMeetId(@PathVariable long meetId) {
+	// 	List<PayResponse> payResponses = payService.findPayByMeetId(meetId)
+	// 		.stream()
+	// 		.map(pay -> {
+	// 			Order order = orderRepository.findByPayId(pay.getId());
+	// 			return new PayResponse(pay, order != null ? new OrderOfPayResponse(order) : null);
+	// 		})
+	// 		.filter(payResponse -> payResponse.getOrders() != null)
+	// 		.sorted(Comparator.comparing(PayResponse::getUpdatedAt).reversed()) // updated_at을 기준으로 내림차순으로 정렬
+	// 		.toList();
+	//
+	// 	return BaseResponse.success(
+	// 		SuccessCode.SELECT_SUCCESS,
+	// 		payResponses);
+	// }
+
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@GetMapping("/meet/{meetId}/payment")
-	public ResponseEntity<BaseResponse<List<PayResponse>>> getPayByMeetId(@PathVariable long meetId) {
-		List<PayResponse> payResponses = payService.findPayByMeetId(meetId)
-			.stream()
-			.map(pay -> {
-				Order order = orderRepository.findByPayId(pay.getId());
-				return new PayResponse(pay, order != null ? new OrderOfPayResponse(order) : null);
-			})
-			.filter(payResponse -> payResponse.getOrders() != null)
-			.sorted(Comparator.comparing(PayResponse::getUpdatedAt).reversed()) // updated_at을 기준으로 내림차순으로 정렬
-			.toList();
-
+	public ResponseEntity<BaseResponse<List<PayResponse>>> getPayByMeetId2(@PathVariable long meetId) {
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
-			payResponses);
+			payService.getPayByMeetId2(meetId));
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
