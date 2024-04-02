@@ -15,7 +15,6 @@ import PaymentSelectButton from "@/app/(post-verification)/[meetId]/component/Pa
 
 
 type Props = {
-    children: ReactNode,
     params: { meetId: string },
 }
 

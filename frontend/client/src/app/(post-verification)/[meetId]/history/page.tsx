@@ -20,7 +20,6 @@ import {Meet} from "@/model/meet";
 
 
 type Props = {
-    children: ReactNode,
     params: { meetId: string },
 }
 

@@ -1,7 +1,6 @@
 "use client";
 
 
-import {ReactNode} from "react";
 import * as mainStyles from "@/styles/main/main.css";
 import Image from "next/image";
 import backIcon from "@/assets/icons/back.svg";
@@ -14,7 +13,6 @@ import {Member} from "@/model/meet";
 
 
 type Props = {
-    children: ReactNode,
     params: { meetId: string },
 }
 

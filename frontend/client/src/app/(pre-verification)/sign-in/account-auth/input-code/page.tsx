@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import { useEffect, useState, useRef } from 'react';
 import ProgressBar from '@/app/(pre-verification)/sign-in/_component/ProgressBar';
@@ -11,12 +11,18 @@ import { useStore } from '@/store/useAccountStore';
 import { ConfirmBankVerify } from '@/model/signin';
 import { postBankConfirm } from '@/api/signin';
 
+type CodeState = {
+  code0: string;
+  code1: string;
+  code2: string;
+  code3: string;
+};
+
 export default function Page() {
   const { accountInfo, setAccountInfo } = useStore();
-  const [message, setMessage] = useState('다른 계좌로 인증하기'); // 메시지 상태 추가
-  const [messagePart1, setMessagePart1] =
-    useState('입금자명이 일치하지 않습니다');
-  const [code, setCode] = useState({
+  const [message, setMessage] = useState('다른 계좌로 인증하기');
+  const [messagePart1, setMessagePart1] = useState('입금자명이 일치하지 않습니다');
+  const [code, setCode] = useState<CodeState>({
     code0: '',
     code1: '',
     code2: '',
@@ -25,9 +31,10 @@ export default function Page() {
 
   const router = useRouter();
   const [inputValue, setInputValue] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null); // 입력 필드에 대한 참조를 생성합니다.
-  const [isComposing, setIsComposing] = useState(false); // 한글 입력 중인지 확인하기 위한 상태
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isComposing, setIsComposing] = useState(false);
   const [isError, setIsError] = useState(false);
+
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -37,7 +44,6 @@ export default function Page() {
   const focusInput = () => {
     if (inputRef.current) {
       inputRef.current.focus();
-      // 값을 설정한 후에 커서를 값의 끝으로 이동
       const length = inputRef.current.value.length;
       inputRef.current.setSelectionRange(length, length);
     }
@@ -47,31 +53,28 @@ export default function Page() {
 
   const sendRequest = async () => {
     console.log('인증 진행');
-    {
-      const codesAsString = Object.values(code).join('');
-      try {
-        const request: ConfirmBankVerify = {
-          bankCode: accountInfo.bankCode,
-          accountNo: accountInfo.accountNo,
-          verificationWord: codesAsString,
-        };
-        const response = await postBankConfirm(request, token);
-        console.log(response);
-        router.push('/setup-password/init');
-      } catch (error) {
-        setIsError(true);
-      }
+    const codesAsString = Object.values(code).join('');
+    try {
+      const request: ConfirmBankVerify = {
+        bankCode: accountInfo.bankCode,
+        accountNo: accountInfo.accountNo,
+        verificationWord: codesAsString,
+      };
+      const response = await postBankConfirm(request, token);
+      console.log(response);
+      router.push('/setup-password/init');
+    } catch (error) {
+      setIsError(true);
     }
   };
 
   const updateCodeState = (value: string) => {
-    // 전체 입력값을 바탕으로 코드 상태를 업데이트하는 로직
     const newValues = value.split('');
-    const newCode = { code0: '', code1: '', code2: '', code3: '' };
+    const newCode: CodeState = { code0: '', code1: '', code2: '', code3: '' };
 
     newValues.forEach((char, index) => {
       if (index < 4) {
-        newCode[`code${index}`] = char;
+        newCode[`code${index}` as keyof CodeState] = char;
       }
     });
 
@@ -81,10 +84,9 @@ export default function Page() {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
 
-    setInputValue(newValue); // 현재 입력값 상태 업데이트
+    setInputValue(newValue);
 
     if (!isComposing && newValue.length <= 4) {
-      // 한글 입력 중이 아니고, 입력값 길이가 4 이하일 때만 코드 상태 업데이트
       updateCodeState(newValue);
     }
   };
@@ -97,7 +99,6 @@ export default function Page() {
     event: React.CompositionEvent<HTMLInputElement>,
   ) => {
     setIsComposing(false);
-    // 한글 입력 완료 후에 코드 상태 업데이트
     updateCodeState(event.currentTarget.value);
   };
 
@@ -117,8 +118,8 @@ export default function Page() {
         type="text"
         value={inputValue}
         onChange={handleInputChange}
-        onCompositionStart={handleCompositionStart} // 한글 입력 시작 이벤트 추가
-        onCompositionEnd={handleCompositionEnd} // 한글 입력 완료 이벤트 추가
+        onCompositionStart={handleCompositionStart}
+        onCompositionEnd={handleCompositionEnd}
         maxLength={4}
       />
       <div className={styles.barContainer}>

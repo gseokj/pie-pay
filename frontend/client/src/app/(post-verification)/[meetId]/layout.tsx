@@ -2,7 +2,7 @@ import type {Metadata} from "next";
 import {ReactNode} from "react";
 import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
 import {getMembers} from "@/api/member";
-import {getMeetInfo, getMeetMembers, getMeetPayments, getMyMeets} from "@/api/meet";
+import {getMeetInfo, getMeetMembers, getMeetPayments} from "@/api/meet";
 import {cookies} from "next/headers";
 
 export const metadata: Metadata = {
