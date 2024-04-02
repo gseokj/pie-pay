@@ -122,7 +122,7 @@ export default function MeetJoin({ isModal = false, clickJoin, clickExit }: Meet
                     {code.map((val, index) => (
                         <div className={styles.codeBox} key={index}>
                             <input
-                                ref={el => inputRefs.current[index] = el}
+                              ref={el => { inputRefs.current[index] = el; }}
                                 value={code[index]}
                                 className={styles.codeInput}
                                 onChange={(e) => onChange(e, index)}
