@@ -89,6 +89,7 @@ export default function MemberLayout({params}: Props) {
                                     }
                                     alt="member image"
                                     fill={true}
+                                    objectFit="cover"
                                     sizes="(max-width: 40px)"
                                     key={member.memberId}
                                 />

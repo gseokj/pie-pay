@@ -9,7 +9,7 @@ export const container = style({
     justifyContent: 'space-between',
     paddingLeft: '7%',
     paddingRight: '7%',
-    height: '9%',
+    height: '5rem',
     backgroundColor: theme.header,
     position: "fixed",
     width: "100%",
