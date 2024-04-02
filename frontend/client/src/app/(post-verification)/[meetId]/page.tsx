@@ -11,6 +11,7 @@ import MemberLayout from "@/app/(post-verification)/[meetId]/component/MemberLay
 import PaymentLayout from "@/app/(post-verification)/[meetId]/component/PaymentLayout";
 import HighlightLayout from "@/app/(post-verification)/[meetId]/component/HighlightLayout";
 import PaymentSelectButton from "@/app/(post-verification)/[meetId]/component/PaymentSelectButton";
+import MeetInviteModal from "@/app/(post-verification)/[meetId]/component/MeetInviteModal";
 
 
 type Props = {
@@ -27,6 +28,7 @@ export default function Meet({params}: Props) {
     if (typeof meetInfo !== 'undefined') {
         return (
             <>
+                <MeetInviteModal/>
                 <>
                     {meetInfo.memberCount === 1 ?
                     <>
@@ -49,7 +51,8 @@ export default function Meet({params}: Props) {
     } else {
         return (
           <>
-              모임 데이터를 불러올 수 없습니다
+              모임 데이터를 불러오지 못했어요<br/>
+              새로고침 해주세요
           </>
         );
     }
