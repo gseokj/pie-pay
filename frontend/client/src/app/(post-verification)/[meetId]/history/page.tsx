@@ -14,16 +14,20 @@ import {
 import PaymentCard from "@/app/(post-verification)/[meetId]/component/PaymentCard";
 import * as mainStyles from "@/styles/main/main.css";
 import * as fontStyles from "@/styles/fonts.css";
+import * as cardStyles from "@/styles/main/mainCard.css";
+import * as paymentStyles from "@/styles/meet/meetPayments.css";
 import backIcon from "@/assets/icons/back.svg";
 import nextActiveIcon from "@/assets/icons/nextActive.svg";
 import nextDisabledIcon from "@/assets/icons/nextDisabled.svg";
 import prevActiveIcon from "@/assets/icons/previousActive.svg";
 import prevDisabledIcon from "@/assets/icons/previousDisabled.svg";
 import Image from "next/image";
-import {Payment} from "@/model/meet/payment";
+import {Category, Payment} from "@/model/meet/payment";
 import {Meet} from "@/model/meet";
 import {Doughnut} from "react-chartjs-2";
 import {ArcElement, Chart as ChartJS, Legend, Tooltip} from "chart.js";
+import * as styles from "@/styles/main/main.css";
+import LegendCategory from "@/app/(post-verification)/[meetId]/history/component/LegendCategory";
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -76,6 +80,8 @@ export default function History({params}: Props) {
     const [isExistPrevious, setIsExistPrevious] = useState<boolean>(false);
     const [isExistNext, setIsExistNext] = useState<boolean>(false);
 
+    const [categories, setCategories] = useState<Category[]>([]);
+
     const [data, setData] = useState<DoughnutData>({
         labels: [],
         datasets: [
@@ -87,21 +93,16 @@ export default function History({params}: Props) {
         ]
     });
 
-    // const data = {
-    //     labels: ["갈까마귀모임", "SSAFY특화프로젝트", "고향 친구들"],
-    //     datasets: [
-    //         {
-    //             data: [12, 19, 3],
-    //             backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 206, 86, 0.2)"],
-    //             borderWidth: 8,
-    //         },
-    //     ],
-    // };
-
     const options = {
-        cutoutPercentage: 30,
-        legend: {
-            display: false
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        datasets: {
+            doughnut: {
+                cutout: "35%"
+            }
         }
     };
 
@@ -111,15 +112,16 @@ export default function History({params}: Props) {
             {
                 data: [],
                 backgroundColor: [],
-                borderWidth: 8,
+                borderWidth: 4,
             }
         ]
     };
 
-    const doughnutColors = ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 206, 86, 0.2)"];
+    const doughnutColors = ["rgb(250,157,91)", "rgb(105,238,117)", "rgb(125,161,231)"];
 
     const setDoughnut = (payments: Payment[]) => {
         const categoryData = filterCategory(payments);
+        setCategories(categoryData);
         categoryData.forEach((category, index) => {
             doughnutData.labels.push(category.name);
             doughnutData.datasets[0].data.push(category.amount);
@@ -243,7 +245,7 @@ export default function History({params}: Props) {
                 </button>
                 <h1 className={fontStyles.bold}>결제 내역</h1>
             </header>
-            <div>
+            <div className={paymentStyles.timeStandardLayout}>
                 <button onClick={onClickPrevious}>
                     <Image src={isExistPrevious ? prevActiveIcon : prevDisabledIcon} alt="previous icon" width={32}
                            height={32}/>
@@ -254,26 +256,46 @@ export default function History({params}: Props) {
                            height={32}/>
                 </button>
             </div>
-            <div>{totalAmount !== 0 && totalAmount}</div>
+            {typeof filteredPayments !== 'undefined' && typeof meetInfo !== 'undefined' && filteredPayments.length > 0 ?
+                <section>
+                    <div className={paymentStyles.indexCard}>
+                        <div className={paymentStyles.doughnutInner}>
+                            <div className={paymentStyles.doughnutBox}>
+                                <Doughnut data={data} options={options}/>
+                            </div>
+                            <div>
+                                {categories.map((category, index) => {
+                                    return (
+                                        <LegendCategory props={{ category, totalAmount }} key={index} />
+                                    );
+                                })}
+                            </div>
+                        </div>
+                        <div className={`${fontStyles.semibold} ${paymentStyles.amountBox}`}>
+                            <p>총 금액 <span
+                                className={`${fontStyles.bold} ${paymentStyles.amountFontSet}`}> {totalAmount.toLocaleString('ko-kr')} 원</span>
+                            </p>
+                        </div>
+                    </div>
 
-            <div className="h-[80%] flex flex-col items-center p-1 bg-white shadow-xl rounded-xl">
-                <div>
-                    <Doughnut data={data}/>
-                </div>
-                <div className="flex justify-around w-[40%]">
-                    <p>총 금액</p>
-                    <p className="font-bold">180000원</p>
-                    <p>원</p>
-                </div>
+                    <div className={styles.categoryContainer.default}>
+                        <div className={styles.category}>
+                            <h3 className={fontStyles.bold}>결제 건수</h3>
+                            <p>{typeof filteredPayments !== 'undefined' && filteredPayments.length}</p>
+                        </div>
+                    </div>
 
-            </div>
-
-            {typeof filteredPayments !== 'undefined' && typeof meetInfo !== 'undefined' && filteredPayments.length > 0 &&
-                filteredPayments.map((payment) => {
-                    return (
-                        <PaymentCard props={{payment: payment, meetInfo: meetInfo}} key={payment.orders.orderId}/>
-                    );
-                })
+                    {typeof filteredPayments !== 'undefined' && typeof meetInfo !== 'undefined' && filteredPayments.length > 0 &&
+                        filteredPayments.map((payment) => {
+                            return (
+                                <PaymentCard props={{payment: payment, meetInfo: meetInfo}}
+                                             key={payment.orders.orderId}/>
+                            );
+                        })
+                    }
+                </section>
+                :
+                <section>결제 내역이 없습니다</section>
             }
         </section>
     );
