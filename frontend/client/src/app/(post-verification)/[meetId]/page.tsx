@@ -39,7 +39,7 @@ export default function Meet({params}: Props) {
                         <MeetInfoCard params={{ meetId }} />
                         <MemberLayout params={{ meetId }} />
                         <PaymentLayout params={{ meetId }} />
-                        <HighlightLayout meetId={meetId} />
+                        <HighlightLayout params={{ meetId }} />
                         <PaymentSelectButton meetId={meetId}/>
                     </>
                     }

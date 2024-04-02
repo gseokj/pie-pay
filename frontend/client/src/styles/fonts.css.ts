@@ -25,3 +25,29 @@ globalFontFace(pretendardBold, {
 export const bold = style({
     fontFamily: pretendardBold
 });
+
+const pretendardMedium = 'Pretendard-Medium';
+
+globalFontFace(pretendardMedium, {
+    src: "url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff') format('woff')",
+    fontWeight: 500,
+    fontStyle: 'normal',
+    fontDisplay: 'swap'
+});
+
+export const medium = style({
+    fontFamily: pretendardMedium
+});
+
+const pretendardRegular = 'Pretendard-Regular';
+
+globalFontFace(pretendardRegular, {
+    src: "url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff')",
+    fontWeight: 400,
+    fontStyle: 'normal',
+    fontDisplay: 'swap'
+});
+
+export const reqular = style({
+    fontFamily: pretendardRegular
+});

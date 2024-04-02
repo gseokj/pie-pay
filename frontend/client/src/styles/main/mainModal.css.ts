@@ -24,10 +24,10 @@ export const defaultModalLayout = style({
 
 export const modalLayout = styleVariants({
     joinMeetModal: [defaultModalLayout, {
-        bottom: "-70%",
+        bottom: "-80%",
     }],
     createMeetModal: [defaultModalLayout, {
-        bottom: "-70%",
+        bottom: "-80%",
 
     }]
 })

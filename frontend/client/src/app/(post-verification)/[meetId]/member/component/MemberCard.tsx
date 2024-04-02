@@ -40,7 +40,7 @@ export default function MemberCard({ params }: Props) {
                 className={cardStyles.cardInnerLayout.memberCardRightInner}
             >
                 {category === 1 && <h3 className={fontStyles.semibold}>{member.payTotal.toLocaleString('ko-kr')} 원</h3>}
-                {category === 2 && <h3 className={fontStyles.semibold}>{member.payCount}{typeof totalPayCount !== 'undefined' && <span>/{totalPayCount} 번</span>}</h3>}
+                {category === 2 && <h3 className={fontStyles.semibold}>{member.payCount}{typeof totalPayCount !== 'undefined' && <span> / {totalPayCount} 번</span>}</h3>}
             </div>
         </section>
     );

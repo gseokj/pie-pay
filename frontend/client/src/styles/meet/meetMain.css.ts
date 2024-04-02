@@ -84,5 +84,14 @@ export const opacity = styleVariants({
 })
 
 export const setInput = style({
-    backgroundColor: theme.skyblue,
+    padding: "0",
+    outline: "none",
+    border: "none",
+    selectors: {
+        "&:focus": {
+            outline: "none",
+            border: "none",
+            backgroundColor: theme.skyblue,
+        }
+    }
 })

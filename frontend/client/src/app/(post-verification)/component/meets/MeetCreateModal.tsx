@@ -28,7 +28,7 @@ export default function MeetCreateModal({ isCreateMeetModalOn, clickCreate, clic
     const [startY, setStartY] = useState(0);
     const [currentY, setCurrentY] = useState(0);
     const [dragging, setDragging] = useState(false);
-    const [modalY, setModalY] = useState(-70);
+    const [modalY, setModalY] = useState(-80);
 
     const router = useRouter();
     const token = getCookie('accessToken');
@@ -75,7 +75,7 @@ export default function MeetCreateModal({ isCreateMeetModalOn, clickCreate, clic
     }
 
     const closeModal = () => {
-        setModalY(-70);
+        setModalY(-80);
         setModalOn(false);
         clickExitCreate();
     }
@@ -90,7 +90,7 @@ export default function MeetCreateModal({ isCreateMeetModalOn, clickCreate, clic
         }
         setMeetName('');
         setModalOn(false);
-        setModalY(-70);
+        setModalY(-80);
         clickCreate();
     }
 
@@ -147,7 +147,7 @@ export default function MeetCreateModal({ isCreateMeetModalOn, clickCreate, clic
                 onMouseUp={handleDragEnd}
                 onTouchEnd={handleDragEnd}
                 onTouchMove={handleDraggingTouch}
-                style={modalY>=-71 ? {bottom: `${modalY}%`} : {bottom: 0}}
+                style={modalY>=-81 ? {bottom: `${modalY}%`} : {bottom: 0}}
             >
                 <div
                     className={modalStyles.modalHandleArea}

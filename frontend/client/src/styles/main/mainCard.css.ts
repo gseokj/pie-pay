@@ -19,7 +19,7 @@ export const highlightCardContainer = style({
     left: 0,
     padding: "0 5%",
     paddingBottom: "5%",
-    overflowX: "auto",
+    overflowX: "scroll",
     whiteSpace: "nowrap",
     '::-webkit-scrollbar': {
         display: "none"
@@ -121,7 +121,7 @@ export const cardInnerLayout = styleVariants({
     }],
     memberCardRightInner: [cardInnerHorizontal, {
         marginRight: "2%",
-        fontSize: "1.2rem"
+        fontSize: "1.1rem"
     }]
 });
 
