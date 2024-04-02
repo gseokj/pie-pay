@@ -16,6 +16,7 @@ import lombok.Getter;
 public class MyParticipantResponse {
 	Long participantId;
 	Long payId;
+	String meetName;
 	boolean isDrinkAlcohol;
 	Long payAmount;
 	LocalDateTime updatedAt;
@@ -25,6 +26,7 @@ public class MyParticipantResponse {
 		return MyParticipantResponse.builder()
 			.participantId(participant.getId())
 			.payId(participant.getPay().getId())
+			.meetName(participant.getPay().getMeet().getMeetName())
 			.isDrinkAlcohol(participant.getIsDrinkAlcohol())
 			.payAmount(participant.getPayAmount())
 			.updatedAt(participant.getUpdatedAt())
