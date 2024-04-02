@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pay.pie.domain.meet.dto.HighlightResponse;
+import com.pay.pie.domain.meet.dto.MeetDto;
 import com.pay.pie.domain.meet.dto.MeetStatusResponse;
 import com.pay.pie.domain.meet.dto.PayResponse;
 import com.pay.pie.domain.meet.dto.request.CreateMeetRequest;
@@ -29,7 +30,7 @@ import com.pay.pie.domain.meet.dto.response.MeetDetailResponse;
 import com.pay.pie.domain.meet.dto.response.MeetInfo;
 import com.pay.pie.domain.meet.dto.response.MeetMemberInfo;
 import com.pay.pie.domain.meet.dto.response.UpdateInvitationResponse;
-import com.pay.pie.domain.meet.entity.Meet;
+import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.meet.service.MeetService;
 import com.pay.pie.domain.memberMeet.entity.MemberMeet;
 import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
@@ -38,6 +39,8 @@ import com.pay.pie.domain.order.dao.OrderRepository;
 import com.pay.pie.domain.order.dto.response.OrderOfPayResponse;
 import com.pay.pie.domain.order.entity.Order;
 import com.pay.pie.domain.pay.application.PayServiceImpl;
+import com.pay.pie.domain.pay.dao.PayRepository;
+import com.pay.pie.domain.pay.dto.LatestPayRes;
 import com.pay.pie.domain.pay.dto.response.PayStatusIngResponse;
 import com.pay.pie.domain.pay.entity.Pay;
 import com.pay.pie.global.common.BaseResponse;
@@ -45,8 +48,10 @@ import com.pay.pie.global.common.code.SuccessCode;
 import com.pay.pie.global.security.dto.SecurityUserDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class MeetController {
@@ -56,6 +61,8 @@ public class MeetController {
 	private final PayServiceImpl payService;
 	private final MemberMeetRepository memberMeetRepository;
 	private final OrderRepository orderRepository;
+	private final PayRepository payRepository;
+	private final MeetRepository meetRepository;
 
 	// 모임 상세 정보 조회
 	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
@@ -178,19 +185,39 @@ public class MeetController {
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@GetMapping("/meet/{meetId}/payment/latest")
-	public ResponseEntity<BaseResponse<Pay>> getLatestPayment(@PathVariable long meetId) {
-		Meet meet = meetService.getMeet(meetId);
-		List<Pay> pays = payService.findPayByMeetId(meetId);
+	public ResponseEntity<BaseResponse<LatestPayRes>> getLatestPayment(@PathVariable long meetId) {
+		List<Pay> pays = payRepository.findAllByMeetId(meetId);
 		Pay latestPay = null;
 		for (Pay pay : pays) {
-			if (pay.getPayStatus() == Pay.PayStatus.COMPLETE) {
+			log.info("pay:{}", pay);
+			Order latestOrder = orderRepository.findTopByPayOrderByUpdatedAtDesc(pay);
+			log.info("latestOrder: {}", latestOrder);
+			if (latestOrder != null && latestOrder.getPaymentStatus()
+				== Order.PaymentStatus.PAID) {
+				log.info("PAID_order: {}", latestOrder.getPaymentStatus());
 				latestPay = pay;
+				log.info("latestPay: {}", latestPay);
 				break;
 			}
 		}
+
+		LatestPayRes latestPayRes = null;
+		// Pay latestPay = payRepository.findById(latestPay.getId()).orElse(null);
+		if (latestPay != null) {
+			latestPayRes = LatestPayRes.builder()
+				.createdAt(latestPay.getCreatedAt())
+				.updateAt(latestPay.getUpdatedAt())
+				.id(latestPay.getId())
+				.meet(MeetDto.of(meetRepository.findById(meetId).orElseThrow(
+					() -> new IllegalArgumentException("없는 meetId")
+				)))
+				.payStatus(latestPay.getPayStatus())
+				.openerId(latestPay.getOpenerId())
+				.totalPayAmount(latestPay.getTotalPayAmount())
+				.build();
+		}
 		return BaseResponse.success(
-			SuccessCode.SELECT_SUCCESS,
-			latestPay);
+			SuccessCode.SELECT_SUCCESS, latestPayRes);
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")

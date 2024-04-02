@@ -32,4 +32,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 		+ "WHERE om.order.id = :orderId "
 		+ "AND m.menuCategory = 'ALCOHOL'")
 	Long getTotalAlcoholPrice(Long orderId);
+
+	Order findTopByPayOrderByUpdatedAtDesc(Pay pay);
 }

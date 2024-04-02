@@ -24,15 +24,23 @@ public interface PayRepository extends JpaRepository<Pay, Long>, PayRepositoryCu
 	@Query
 		(
 			"""
-   				SELECT p
-   				FROM Pay p
-   				WHERE p.meet.id IN :meets AND p.createdAt = (
-   					SELECT MAX(p2.createdAt)
-   					FROM Pay p2
-   					WHERE p2.meet.id = p.meet.id
-   				)
-			"""
+								SELECT p
+								FROM Pay p
+								WHERE p.meet.id IN :meets AND p.createdAt = (
+									SELECT MAX(p2.createdAt)
+									FROM Pay p2
+									WHERE p2.meet.id = p.meet.id
+								)
+				"""
 		)
 	List<Pay> findLatestPayInfo(@Param("meets") List<Long> meets);
+
+	// 정산 완료되었는지 확인
+	@Query("SELECT COUNT(pi) = COUNT(CASE WHEN pi.payback = true THEN 1 ELSE NULL END) " +
+		"FROM PayInstead pi WHERE pi.pay.id = :payId")
+	boolean areAllPaybackTrueForPayId(@Param("payId") Long payId);
+
+	@Query("SELECT p FROM Pay p WHERE p.meet.id = :meetId")
+	List<Pay> findAllByMeetId(@Param("meetId") Long meetId);
 
 }
