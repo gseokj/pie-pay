@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { getDate } from '@/util/dateFormat';
 import { faker } from '@faker-js/faker';
-
+import * as style from '@/styles/mypage/unpaidInfo.css'; // 스타일 임포트
 const Borrower = {
   memberId: 5,
   profileImage: faker.image.avatar(),
@@ -32,26 +32,26 @@ export default function UnpaidInfo() {
   const route = useRouter();
 
   return (
-    <section>
-      <div className="flex justify-between">
-        <p className="font-bold mb-2 text-lg">미정산 내역</p>
+    <section className={style.sectionStyle}>
+      <div className={style.headerStyle}>
+        <p className={style.textStyle}>미정산 내역</p>
         <button
           onClick={() => route.push('mypage/unsettled')}
-          className="text-gray-500 text-xs"
+          className={style.buttonStyle}
         >
           더 보기
         </button>
       </div>
-      <div className="flex flex-col  h-[80%] justify-between p-4 bg-white rounded-xl shadow-xl">
-        <div className="flex">
-          <p className="mr-3 text-sm text-gray-500">
+      <div className={style.sectionContent}>
+        <div className={style.text}>
+          <p className={style.textStyle}>
             {getDate(new Date(UnsettledBox.createAt))}
           </p>
           <p className="text-red-600 text-sm">정산 미완료</p>
         </div>
-        <div className="flex items-center">
+        <div className={style.detailStyle}>
           <img
-            className="w-[10%] rounded-full mr-3"
+            className={style.imageStyle}
             src={UnsettledBox.Borrower.profileImage}
           />
           <p className="font-bold">
@@ -59,9 +59,7 @@ export default function UnpaidInfo() {
           </p>
         </div>
         <div className="flex justify-end w-[100%]">
-          <button className="bg-sky-300 rounded-2xl w-[30%] p-1">
-            현금 정산
-          </button>
+          <button className={style.actionButtonStyle}>현금 정산</button>
         </div>
       </div>
     </section>

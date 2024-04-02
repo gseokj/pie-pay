@@ -2,7 +2,7 @@ import { globalStyle, style } from '@vanilla-extract/css';
 import theme from '@/styles/theme/theme';
 
 export const accountSection = style({
-  height: '25%',
+  height: '30%',
 });
 
 export const title = style({

@@ -10,6 +10,7 @@ import MyAccount from '@/app/(post-verification)/mypage/component/MyAccount';
 import { QueryClient } from '@tanstack/react-query';
 import { getMembers } from '@/api/member';
 import UnpaidInfo from './component/UnpaidInfo';
+import PayHistory from './component/PayHistory';
 
 const Borrower = {
   memberId: 5,
@@ -50,34 +51,7 @@ export default function MyPage() {
       <MyInfo />
       <MyAccount />
       <UnpaidInfo />
-      <section>
-        <div className="flex justify-between mb-2">
-          <p className="font-bold text-lg">결제 내역</p>
-          <button
-            onClick={() => route.push('mypage/payment-list')}
-            className="text-gray-500 text-xs"
-          >
-            더 보기
-          </button>
-        </div>
-        <div className="flex flex-col h-[100%] justify-between p-4 bg-white rounded-xl shadow-xl">
-          <div className="flex">
-            <p className="mr-3 text-sm text-gray-500">
-              {getDate(new Date(Payment.createAt))}
-            </p>
-            <p className="text-green-600 text-sm">정산 완료</p>
-          </div>
-          <div className="flex flex-col">
-            <p className="font-bold text-sm">{Payment.meet.meetName}</p>
-            <p className="font-bold text-lg">{Payment.receipt.storeName}</p>
-          </div>
-          <div className="flex justify-end w-[100%]">
-            <p className="text-lg font-bold">
-              {Payment.receipt.totalAmount.toLocaleString()} 원
-            </p>
-          </div>
-        </div>
-      </section>
+      <PayHistory />
     </div>
   );
 }
