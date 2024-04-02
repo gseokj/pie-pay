@@ -71,7 +71,7 @@ public class MemberController {
 
 	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
 	@GetMapping("/member/payments")
-	public ResponseEntity<BaseResponse<List<MyParticipantResponse>>> MyParticipant(
+	public ResponseEntity<BaseResponse<List<MyParticipantResponse>>> myParticipant(
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
