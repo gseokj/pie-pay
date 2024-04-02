@@ -32,4 +32,5 @@ export const image = style({
 export const memberName = style({
     fontSize: '10px',
     fontWeight: 'bold'
+
 })

@@ -77,7 +77,7 @@ export default function ParticipantList({ payId }: Props) {
               {participant.payAgree === 'deny' &&
                 <div className={styles.paymentStatus.deny}>
                   <p>도와줘!</p>
-                  <button onClick={() => insteadPart(participant.memberInfo.memberId,payment?.participants[0].memberInfo.memberId)}><Image src={hand} alt="도와줘" />
+                  <button  onClick={() => insteadPart(participant.memberInfo.memberId,payment?.participants[0].memberInfo.memberId)}><Image className={styles.helpImage} src={hand} alt="도와줘" />
                   </button>
                 </div>}
             </div>
