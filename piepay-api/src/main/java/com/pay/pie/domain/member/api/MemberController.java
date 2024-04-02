@@ -1,5 +1,7 @@
 package com.pay.pie.domain.member.api;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.pay.pie.domain.member.application.MemberServiceImpl;
 import com.pay.pie.domain.member.dto.UpdateMemberRequest;
 import com.pay.pie.domain.member.dto.response.MemberDetailResponse;
+import com.pay.pie.domain.participant.application.ParticipantServiceImpl;
+import com.pay.pie.domain.participant.dto.reponse.MyParticipantResponse;
 import com.pay.pie.global.common.BaseResponse;
 import com.pay.pie.global.common.code.SuccessCode;
 import com.pay.pie.global.security.dto.SecurityUserDto;
@@ -27,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 
 	private final MemberServiceImpl memberService;
+	private final ParticipantServiceImpl participantService;
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@GetMapping("/member")
@@ -64,5 +69,14 @@ public class MemberController {
 		);
 	}
 
+	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
+	@GetMapping("/member/payments")
+	public ResponseEntity<BaseResponse<List<MyParticipantResponse>>> myParticipant(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			participantService.myParticipant(securityUserDto.getMemberId())
+		);
+	}
 }
 

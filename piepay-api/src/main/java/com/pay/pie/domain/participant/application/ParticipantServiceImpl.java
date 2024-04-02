@@ -11,8 +11,10 @@ import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.member.dao.MemberRepository;
 import com.pay.pie.domain.notification.dto.EventMessage;
 import com.pay.pie.domain.notification.service.SseEmitterService;
+import com.pay.pie.domain.order.dao.OrderRepository;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
 import com.pay.pie.domain.participant.dto.ParticipantDto;
+import com.pay.pie.domain.participant.dto.reponse.MyParticipantResponse;
 import com.pay.pie.domain.participant.dto.reponse.SelectedPartiesRes;
 import com.pay.pie.domain.participant.dto.request.ParticipantReq;
 import com.pay.pie.domain.participant.entity.Participant;
@@ -36,6 +38,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 	private final MeetRepository meetRepository;
 	private final SseEmitterService sseEmitterService;
 	private final BankUtil bankUtil;
+	private final OrderRepository orderRepository;
 
 	@Override
 	public SelectedPartiesRes selectParticipant(
@@ -105,5 +108,16 @@ public class ParticipantServiceImpl implements ParticipantService {
 		SelectedPartiesRes selectedPartiesRes = SelectedPartiesRes.of(pay, participantDtoList);
 
 		return selectedPartiesRes;
+	}
+
+	public List<MyParticipantResponse> myParticipant(Long memberId) {
+
+		return participantRepository.getAllByMemberId(memberId)
+			.stream()
+			// 데이터 제대로 들어가면 필터 필요없음
+			.filter(participant -> orderRepository.findByPayId(participant.getPay().getId()) != null)
+			.map(participant -> MyParticipantResponse.of(
+				participant, orderRepository.findByPayId(participant.getPay().getId()).getStore()))
+			.toList();
 	}
 }
