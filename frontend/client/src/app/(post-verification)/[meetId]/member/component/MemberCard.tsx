@@ -7,12 +7,12 @@ import Image from "next/image";
 import {MeetMember} from "@/model/meet/member";
 
 type Props = {
-    params: { member: MeetMember, category: number, totalPayCount: number, index: number },
+    params: { member: MeetMember, category: number, totalPayCount: number, index: number, myId: number|undefined },
 }
 
 
 export default function MemberCard({ params }: Props) {
-    const { member, category, totalPayCount, index } = params;
+    const { member, category, totalPayCount, index, myId } = params;
 
     return (
         <section className={cardStyles.cardLayout.memberCard}>
@@ -32,7 +32,7 @@ export default function MemberCard({ params }: Props) {
                         sizes="(max-width: 40px)"
                     />
                 </div>
-                <h5>{member.nickname}</h5>
+                <h5>{myId === member.memberId ? `나 (${member.nickname})` : member.nickname}</h5>
                 {category === 1 && member.payTotal !== 0 && index === 0 && <Image src={starIcon} alt="starIcon" width={24} height={24} /> }
                 {category === 2 && member.payCount !== 0 && index === 0 && <Image src={starIcon} alt="starIcon" width={24} height={24} /> }
             </div>

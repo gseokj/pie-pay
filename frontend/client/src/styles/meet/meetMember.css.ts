@@ -10,7 +10,7 @@ export const categoryLayout = style({
     fontSize: "1rem",
     boxShadow: "0 8px 12px" + theme.shadow,
     position: "fixed",
-    bottom: "3rem",
+    bottom: "1.5rem",
     left: "2%",
     width: "96%",
     '@media': {

@@ -117,7 +117,7 @@ export const cardInnerLayout = styleVariants({
     imageInputInner: [cardInner, imageInputInnerLayout],
     memberCardLeftInner: [cardInnerHorizontal, {
         gap: "0.8rem",
-        fontSize: "1.2rem"
+        fontSize: "1.1rem"
     }],
     memberCardRightInner: [cardInnerHorizontal, {
         marginRight: "2%",
