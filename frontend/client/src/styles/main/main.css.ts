@@ -8,7 +8,7 @@ export const accountContainer = style({
 
 export const detailHeader = style({
   width: '100%',
-  height: '10%',
+  height: '5rem',
   '@media': {
     'screen and (min-width: 768px)': {
       width: '40%',

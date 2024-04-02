@@ -14,6 +14,7 @@ import {getCookie} from "@/util/getCookie";
 import {MeetMember} from "@/model/meet/member";
 import {Payment} from "@/model/meet/payment";
 import {memberList} from "@/styles/payment/select/memberList.css";
+import {Me} from "@/model/member";
 
 
 type Props = {
@@ -28,6 +29,7 @@ export default function Members({params}: Props) {
 
     const token = getCookie('accessToken');
     const memberList: MeetMember[]|undefined  = queryClient.getQueryData(['meetMembers', meetId, token]);
+    const userInfo: Me|undefined  = queryClient.getQueryData(['userInfo', token]);
     const [members, setMembers] = useState<MeetMember[]>([]);
     const [categoryStatus, setCategoryStatus] = useState<number>(0);
     const [totalPayCount, setTotalPayCount] = useState<number>(0);
@@ -103,7 +105,7 @@ export default function Members({params}: Props) {
             </div>
             {typeof memberList !== 'undefined' && members.map((member: MeetMember, index) => {
                 return (
-                    <MemberCard params={{ member, category: categoryStatus, totalPayCount: totalPayCount, index }} key={ member.memberId } />
+                    <MemberCard params={{ member, category: categoryStatus, totalPayCount: totalPayCount, index, myId: userInfo?.memberId }} key={ member.memberId } />
                 );
             })}
             <footer className={meetMemberStyles.categoryLayout}>
