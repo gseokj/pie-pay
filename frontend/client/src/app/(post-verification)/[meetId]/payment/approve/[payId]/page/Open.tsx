@@ -14,21 +14,23 @@ import { usePayment } from '@/store/usePayment';
 import { Payment } from '@/model/participant';
 import { getCookie } from '@/util/getCookie';
 import { Me } from '@/model/member';
+import { hands, moveDownAnimation } from '@/app/component/DownAnimation';
 
 type Props = { payId: number }
 
 
 export default function Open({ payId }: Props) {
   const queryClient = useQueryClient();
+  const [stack, setStack] = useState(0);
 
   // tanstack query
   const payment: Payment | undefined = queryClient.getQueryData(['payment', payId]);
-  
+
   // zustand와 tanstack을 동시에 관리하는 이유 => socket을 바로 post로 보내는게 아니라 결제 동의가 이루어지지 않으면 post가 되지않음.
   const { payment: tempPayment, setPayment } = usePayment();
 
   // 소켓 초기값
-  const { init, initRes, initiating, connect, setInitiating } = usePaymentSocket();
+  const { init, initRes, initiating, connect, setInitiating,res } = usePaymentSocket();
   const [token, setToken] = useState('');
   useEffect(() => {
     const token = getCookie('accessToken') as string;
@@ -81,7 +83,15 @@ export default function Open({ payId }: Props) {
     if (!initiating) return;
     init(Number(payId));
   }, [initiating]);
-
+  useEffect(() => {
+    if (!res) return;
+    if(res.payAgree===false){
+      setStack(prevState => prevState+1);
+    }
+    console.log(res.payAgree);
+    console.log(res);
+    console.log(stack);
+  }, [res]);
   return (<div>
 
     <Header type={two} />
@@ -89,7 +99,12 @@ export default function Open({ payId }: Props) {
     <Timer payId={payId} />
     <BankAccount />
     <p className={styles.paragraph.total}>결제 멤버 {payment?.participants.length}</p>
-
+    {Array.from({ length: stack }).map((_, index) => (
+      <div key={index}>
+        <style>{moveDownAnimation}</style>
+        {hands}
+      </div>
+    ))}
     <ParticipantList payId={Number(payId)} />
 
     <StateButton payId={Number(payId)} />

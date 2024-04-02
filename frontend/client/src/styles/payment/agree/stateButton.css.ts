@@ -1,4 +1,4 @@
-import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
+import { globalStyle, keyframes, style, styleVariants } from '@vanilla-extract/css';
 import theme from "@/styles/theme/theme";
 
 export const container = style({
@@ -46,13 +46,36 @@ const afterBase = style({
 });
 export const button = styleVariants({
     beforeinstead: [beforeBase, {
-        background: theme.skyblue, color:theme.blue, ':hover':{ transform: 'translatey(-5px)',
-            backgroundColor: theme.blue, color:'white', transitionDuration: '400ms', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px'
+        background: theme.skyblue, color:theme.blue, ':hover':{ transform: 'translatey(-8px)',
+            backgroundColor: theme.red, color:'white', transitionDuration: '400ms', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px'
         }}],
-    beforeAgree: [beforeBase, {background: theme.blue, color:"white",':hover':{transform: 'translatey(-5px)',
+    beforeAgree: [beforeBase, {background: theme.blue, color:"white",':hover':{transform: 'translatey(-8px)',
             backgroundColor: 'white', color: theme.blue, transitionDuration: '400ms',boxShadow: 'rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px'}} ],
-    afterinstead: [afterBase, {background: theme.skyblue, color:theme.blue} ],
+    afterinstead: [afterBase, {background: theme.skyblue, color:theme.blue,display:'flex' , justifyContent:'center',alignItems:'center',':hover':{transform: 'translatey(-5px)',
+            backgroundColor: theme.blue, color: 'white', transitionDuration: '400ms',boxShadow: 'rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px'},    ':active': {
+            transform: 'translateY(-1px)',
+            boxShadow: '0 5px 10px rgba(0, 0, 0, 0.2)',
+        },} ],
     afterAgree: [afterBase, {background: theme.lightgray, color:theme.lightbrown} ],
+
+})
+
+
+const waveAnimation = keyframes({
+    '0%, 100%': { transform: 'rotate(0deg)' },
+    '10%': { transform: 'rotate(-10deg)' },
+    '20%, 40%, 60%': { transform: 'rotate(10deg)' },
+    '30%, 50%, 70%': { transform: 'rotate(-10deg)' },
+    '80%': { transform: 'rotate(8deg)' },
+    '90%': { transform: 'rotate(-8deg)' },
+});
+
+
+
+export const hand = style({
+    animation: `${waveAnimation} 4s ease-in-out infinite`,
+    fontSize:'20px',
+
 
 })
 
