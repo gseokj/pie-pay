@@ -13,13 +13,18 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
 
-logging.level:
-  org.hibernate.SQL: debug
-
 logging:
   level:
-    root: INFO
-    org.springframework.messaging.simp: DEBUG
+    org:
+      springframework:
+        web: DEBUG
+      hibernate:
+        SQL: DEBUG
+
+#logging:
+#  level:
+#    root: INFO
+#    org.springframework.messaging.simp: DEBUG
 
 springfox:
   documentation:
