@@ -46,7 +46,7 @@ export default function ParticipantList({ payId }: Props) {
     if (!myInfo) return;
     if (memberId === myInfo.memberId) {
       alert("나를 대신낼 순 없음.");
-      return;
+      return; 
     }
     insteadPart(memberId, myInfo.memberId);
   };
