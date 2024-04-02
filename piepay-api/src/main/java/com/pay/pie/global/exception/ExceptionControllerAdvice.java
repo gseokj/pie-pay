@@ -10,7 +10,7 @@ import com.pay.pie.global.common.ErrorResponse;
 import com.pay.pie.global.common.code.ErrorCode;
 import com.pay.pie.global.common.code.GlobalErrorCode;
 
-@RestControllerAdvice
+// @RestControllerAdvice
 public class ExceptionControllerAdvice {
 
 	@ExceptionHandler
