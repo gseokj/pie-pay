@@ -20,6 +20,7 @@ import com.pay.pie.domain.member.dto.response.MemberDetailResponse;
 import com.pay.pie.domain.participant.application.ParticipantServiceImpl;
 import com.pay.pie.domain.participant.dto.reponse.MyParticipantResponse;
 import com.pay.pie.domain.payInstead.application.PayInsteadServiceImpl;
+import com.pay.pie.domain.payInstead.dto.MyPayInsteadResponse;
 import com.pay.pie.global.common.BaseResponse;
 import com.pay.pie.global.common.code.SuccessCode;
 import com.pay.pie.global.security.dto.SecurityUserDto;
@@ -81,14 +82,14 @@ public class MemberController {
 		);
 	}
 
-	// @PreAuthorize("hasRole('ROLE_CERTIFIED')")
-	// @GetMapping("/member/payments")
-	// public ResponseEntity<BaseResponse<List<PayInsteadDto>>> myPayInstead(
-	// 	@AuthenticationPrincipal SecurityUserDto securityUserDto) {
-	// 	return BaseResponse.success(
-	// 		SuccessCode.SELECT_SUCCESS,
-	// 		payInsteadService.myPayInstead(securityUserDto.getMemberId())
-	// 	);
-	// }
+	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
+	@GetMapping("/member/debts")
+	public ResponseEntity<BaseResponse<MyPayInsteadResponse>> myPayInstead(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			payInsteadService.myPayInstead(securityUserDto.getMemberId())
+		);
+	}
 }
 

@@ -1,5 +1,7 @@
 package com.pay.pie.domain.payInstead.application;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,8 @@ import com.pay.pie.domain.notification.service.SseEmitterService;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
 import com.pay.pie.domain.participant.entity.Participant;
 import com.pay.pie.domain.payInstead.dao.PayInsteadRepository;
+import com.pay.pie.domain.payInstead.dto.MyPayInsteadDto;
+import com.pay.pie.domain.payInstead.dto.MyPayInsteadResponse;
 import com.pay.pie.domain.payInstead.entity.PayInstead;
 import com.pay.pie.global.security.dto.SecurityUserDto;
 import com.pay.pie.global.util.bank.BankUtil;
@@ -108,8 +112,16 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 		sseEmitterService.sendNotification(borrower.getId(), EventMessage.PAYMENT_PAYINSTEAD_BORROWER_NOTI);
 	}
 
-	// public List<PayInsteadDto> myPayInstead(Long memberId) {
-	//
-	// 	return
-	// }
+	public MyPayInsteadResponse myPayInstead(Long memberId) {
+		List<MyPayInsteadDto> MyLent = payInsteadRepository.getAllByLenderIdOrderByCreatedAtDesc(memberId)
+			.stream()
+			.map(MyPayInsteadDto::of)
+			.toList();
+		List<MyPayInsteadDto> MyBorrowed = payInsteadRepository.getAllByBorrowerIdOrderByCreatedAtDesc(memberId)
+			.stream()
+			.map(MyPayInsteadDto::of)
+			.toList();
+
+		return MyPayInsteadResponse.of(MyLent, MyBorrowed);
+	}
 }
