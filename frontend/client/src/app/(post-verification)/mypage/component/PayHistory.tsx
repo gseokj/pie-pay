@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation';
 import { faker } from '@faker-js/faker';
 import { getDate } from '@/util/dateFormat';
 import * as style from '@/styles/mypage/payHistory.css';
+import { getPayHistory } from '@/api/pay';
 
 const Borrower = {
   memberId: 5,
@@ -28,6 +29,10 @@ const Payment = {
   meet: Meet,
   receipt: Receipt,
 };
+
+// const getDate = () => {
+//   getPayHistory();
+// };
 
 export default function PayHistory() {
   const route = useRouter();
