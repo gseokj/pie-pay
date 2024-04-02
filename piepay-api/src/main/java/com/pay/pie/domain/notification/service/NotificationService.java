@@ -19,7 +19,7 @@ public class NotificationService {
 	private final NotificationRepository notificationRepository;
 
 	public List<Notification> findAllByMember(Member member) {
-		return notificationRepository.findAllByMember(member);
+		return notificationRepository.findAllByMemberOrderByCreatedAtDesc(member);
 	}
 
 	public Notification findById(Long notificationId) {
