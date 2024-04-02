@@ -6,7 +6,6 @@ import setting from '@/assets/icons/setting.svg';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Me, Member } from '@/model/member';
-import { getMyInfo } from '@/util/getMyInfo';
 import { useQueryClient } from '@tanstack/react-query';
 import { getCookie } from '@/util/getCookie';
 import PulseMember from '@/app/(post-verification)/mypage/component/PulseMember';

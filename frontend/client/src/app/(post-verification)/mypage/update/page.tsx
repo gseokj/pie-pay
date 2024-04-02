@@ -12,11 +12,7 @@ import { Me } from '@/model/member';
 import * as styles from '@//styles/mypage/myInfoUpdate.css';
 import MyInfoUpdateTextField from '@/app/(post-verification)/mypage/component/MyInfoUpdateTextField';
 import MyInfoUpdateSetting from '@/app/(post-verification)/mypage/component/MyInfoUpdateSetting';
-import { getMyInfo } from '@/util/getMyInfo';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getMe } from '@/api/member';
-import { getSession } from 'next-auth/react';
-import { cookies } from 'next/headers';
+import { useQueryClient } from '@tanstack/react-query';
 import { getCookie } from '@/util/getCookie';
 
 export default function Update() {

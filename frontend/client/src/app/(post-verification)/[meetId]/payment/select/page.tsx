@@ -10,32 +10,32 @@ import Header from '@/app/(post-verification)/[meetId]/payment/component/Header'
 import ParticipateButton from '@/app/(post-verification)/[meetId]/payment/select/component/ParticipateButton';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMemberFilter } from '@/store/useMemberFilter';
-import { Member } from '@/model/member';
+import { Me, Member } from '@/model/member';
 import { useEffect, useState } from 'react';
-import { getMyInfo } from '@/util/getMyInfo';
 import { getCookie } from '@/util/getCookie';
 
 type Props = {
   params: { meetId: string },
 }
 export default function Page({ params }: Props) {
+  const [token, setToken] = useState('');
   useEffect(() => {
     const token = getCookie('accessToken') as string;
     setToken(token);
   }, []);
+  const queryClient = useQueryClient();
+  const myInfo: Me | undefined = queryClient.getQueryData(["userInfo",token]);
+
 
   const { meetId } = params;
-  const queryClient = useQueryClient();
-  const [token, setToken] = useState('');
   const Members = queryClient.getQueryData(['meetMembers',meetId, token]) as Member[];
   const { setFilterMembers, filterMembers } = useMemberFilter();
 
   useEffect(() => {
-    const myInfo = getMyInfo();
-    if (!Members || Members.length <= 0) return;
+    if (!Members || Members.length <= 0 || !myInfo) return;
     setFilterMembers(Members.sort((member) => member.memberId == myInfo.memberId ? -1 : 1));
     console.log(filterMembers);
-  }, [Members]);
+  }, [Members,myInfo]);
 
   return (
     <div className={styles.container}>

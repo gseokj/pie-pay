@@ -2,13 +2,11 @@ import * as styles from '@/styles/mypage/myInfoUpdate.css';
 import Image from 'next/image';
 import pen from '@/assets/icons/pen.svg';
 import { Me } from '@/model/member';
-import { getMyInfo } from '@/util/getMyInfo';
 import { useQueryClient } from '@tanstack/react-query';
 import { getCookie } from '@/util/getCookie';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { RequestMemberModify, ResponseMemberModify } from '@/model/myPage';
 import { putMemberModify } from '@/api/memberModify';
-import { send } from 'process';
 export default function MyInfoUpdateTextField() {
   const queryClient = useQueryClient();
   const myInfo: Me | undefined = queryClient.getQueryData([
