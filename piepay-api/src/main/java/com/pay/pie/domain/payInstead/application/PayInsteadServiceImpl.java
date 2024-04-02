@@ -14,6 +14,8 @@ import com.pay.pie.domain.order.dao.OrderRepository;
 import com.pay.pie.domain.order.entity.Order;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
 import com.pay.pie.domain.participant.entity.Participant;
+import com.pay.pie.domain.pay.dao.PayRepository;
+import com.pay.pie.domain.pay.entity.Pay;
 import com.pay.pie.domain.payInstead.dao.PayInsteadRepository;
 import com.pay.pie.domain.payInstead.dto.MyPayInsteadDto;
 import com.pay.pie.domain.payInstead.dto.MyPayInsteadResponse;
@@ -31,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class PayInsteadServiceImpl implements PayInsteadService {
 
+	private final PayRepository payRepository;
 	private final PayInsteadRepository payInsteadRepository;
 	private final MemberRepository memberRepository;
 	private final OrderRepository orderRepository;
@@ -126,6 +129,13 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 				.getStoreName()
 				+ "의 [대신내주기]를 정산하였습니다.",
 			payInsteadId);
+
+		// 전체 정산이 완료되었다면 PayStatus -> Close
+		Pay pay = payInstead.getPay();
+		boolean payInsteadInPay = payRepository.areAllPaybackTrueForPayId(pay.getId());
+		if (payInsteadInPay) {
+			pay.setPayStatus(Pay.PayStatus.CLOSE);
+		}
 	}
 
 	public MyPayInsteadResponse myPayInstead(Long memberId) {

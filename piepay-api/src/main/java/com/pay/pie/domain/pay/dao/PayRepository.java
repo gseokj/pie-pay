@@ -38,4 +38,13 @@ public interface PayRepository extends JpaRepository<Pay, Long>, PayRepositoryCu
 			"""
 	)
 	List<Pay> findPayList(@Param("meetId") Long meetId);
+
+	@Query("SELECT p FROM Pay p WHERE p.meet.id = :meetId")
+	List<Pay> findAllByMeetId(@Param("meetId") Long meetId);
+
+	// 정산 완료되었는지 확인
+	@Query("SELECT COUNT(pi) = COUNT(CASE WHEN pi.payback = true THEN 1 ELSE NULL END) " +
+		"FROM PayInstead pi WHERE pi.pay.id = :payId")
+	boolean areAllPaybackTrueForPayId(@Param("payId") Long payId);
+
 }
