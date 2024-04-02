@@ -9,10 +9,6 @@ export function middleware(request: NextRequest) {
         if (request.cookies.has('accessToken')) {
             return NextResponse.redirect(new URL('/', request.url));
         }
-    } else if (request.nextUrl.pathname.startsWith('/mypage')) {
-        if (!request.cookies.has('accessToken')) {
-            return NextResponse.redirect(new URL('/', request.url));
-        }
     } else {
         if (!request.cookies.has('accessToken')) {
             return NextResponse.redirect(new URL('/kakaologin', request.url));
