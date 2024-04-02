@@ -25,7 +25,7 @@ export default function PaymentCard({ props }: PaymentProps) {
         >
             <div className={ cardStyles.cardInnerLayout.paymentHorizontalInner }>
                 <p>{ paymentDate }</p>
-                <h5 className={ `${fontStyles.semibold} ${payment.payStatus === "COMPLETE" ? cardStyles.completed : cardStyles.unpaid}` }>{payment.payStatus === "COMPLETE" ? "정산 완료" : "정산 미완료"}</h5>
+                <h5 className={ `${fontStyles.semibold} ${payment.payStatus === "COMPLETE" ? cardStyles.completed : cardStyles.unpaid}` }>{payment.payStatus === "COMPLETE" ? "결제 완료" : "정산 미완료"}</h5>
             </div>
             <div className={ cardStyles.cardInnerLayout.paymentVerticalInner }>
                 <h5 className={ fontStyles.semibold }>{ meetInfo.meetName }</h5>
