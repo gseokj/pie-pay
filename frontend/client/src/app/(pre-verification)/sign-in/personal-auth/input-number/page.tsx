@@ -60,7 +60,12 @@ export default function Page() {
     }
   }, []);
 
-  const token = getCookie('accessToken') as string;
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    const token = getCookie('accessToken') as string;
+    setToken(token);
+  }, []);
 
   const sendVerificationRequest = async () => {
     console.log('인증 진행');

@@ -30,7 +30,12 @@ export default function SimplePasswordSet() {
     value5: '',
   });
 
-  const token = getCookie('accessToken') as string;
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    const token = getCookie('accessToken') as string;
+    setToken(token);
+  }, []);
   const router = useRouter();
   const sendRequest = async () => {
     console.log('인증 진행');

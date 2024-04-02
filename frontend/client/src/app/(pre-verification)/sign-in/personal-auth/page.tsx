@@ -38,7 +38,12 @@ export default function Page() {
     telecom: false,
     phone: false,
   });
-  const token = getCookie('accessToken') as string;
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    const token = getCookie('accessToken') as string;
+    setToken(token);
+  }, []);
   // postUserInfo(token);
 
   useEffect(() => {
