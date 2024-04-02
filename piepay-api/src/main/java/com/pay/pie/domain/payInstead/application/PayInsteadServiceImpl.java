@@ -115,13 +115,17 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 		sseEmitterService.sendNotification(
 			lender.getId(),
 			4L,
-			payInstead.getAmount() + "원 입금 | " + borrower.getNickname() + "님이 " + order.getStore().getStoreName()
-				+ "의 [대신내주기]를 정산하였습니다.");
+			String.format("%,d", payInstead.getAmount()) + "원 입금 | " + borrower.getNickname() + "님이 " + order.getStore()
+				.getStoreName()
+				+ "의 [대신내주기]를 정산하였습니다.",
+			payInsteadId);
 		sseEmitterService.sendNotification(
 			borrower.getId(),
 			4L,
-			payInstead.getAmount() + "원 출금 | " + lender.getNickname() + "님에게" + order.getStore().getStoreName()
-				+ "의 [대신내주기]를 정산하였습니다.");
+			String.format("%,d", payInstead.getAmount()) + "원 출금 | " + lender.getNickname() + "님에게" + order.getStore()
+				.getStoreName()
+				+ "의 [대신내주기]를 정산하였습니다.",
+			payInsteadId);
 	}
 
 	public MyPayInsteadResponse myPayInstead(Long memberId) {
