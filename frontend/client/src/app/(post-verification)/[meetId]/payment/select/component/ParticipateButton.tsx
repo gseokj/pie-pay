@@ -2,13 +2,15 @@
 
 import {useRouter} from "next/navigation";
 import * as styles from "@/styles/payment/select/selectMember.css";
-import {useMutation} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from "axios";
 import {useMemberFilter} from "@/store/useMemberFilter";
 import { usePayment } from '@/store/usePayment';
-import {getMyInfo} from "@/util/getMyInfo";
 import {Payment} from "@/model/participant";
 import { LoaderComponent } from '@/app/component/Loading';
+import { useEffect, useState } from 'react';
+import { getCookie } from '@/util/getCookie';
+import { Me } from '@/model/member';
 
 
 
@@ -19,8 +21,15 @@ type Props={
 export default function ParticipateButton({ meetId }: Props) {
     const route = useRouter();
     const {filterMembers} = useMemberFilter();
-    const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaWUiLCJleHAiOjEwNzExNTAwMTQzLCJzdWIiOiJoZ29hMjAwMEBuYXZlci5jb20iLCJyb2xlcyI6IlJPTEVfTk9UX0NFUlRJRklFRCJ9.hGZ4jBwzHS-qnjwhJtNA2UcxqiwAg4uVfIUhdv-RJzI";
     const {setPayment,payment} = usePayment();
+    const [token, setToken] = useState('');
+    useEffect(() => {
+        const token = getCookie('accessToken') as string;
+        setToken(token);
+    }, []);
+    const queryClient = useQueryClient();
+    const myInfo: Me | undefined = queryClient.getQueryData(["userInfo",token]);
+
     const { mutate,isPending } = useMutation({
 
         mutationFn: (id) => axios.post(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/pay/parties?meetId=${meetId}`, filterMembers.filter(member=>member.isSelected),
@@ -30,7 +39,7 @@ export default function ParticipateButton({ meetId }: Props) {
               }}),
         onSuccess: (response) => {
             const res:Payment = response.data.result;
-            res.participants.sort((member)=>member.memberInfo.memberId==getMyInfo().memberId ? -1 : 1)
+            res.participants.sort((member)=>member.memberInfo.memberId==myInfo?.memberId ? -1 : 1)
             setPayment(res);
 
             route.replace(`approve/${res["payId"]}`);

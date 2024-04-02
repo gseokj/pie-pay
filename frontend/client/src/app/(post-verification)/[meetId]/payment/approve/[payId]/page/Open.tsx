@@ -5,15 +5,15 @@ import two from "@/assets/icons/payment2.svg";
 import Header from "@/app/(post-verification)/[meetId]/payment/component/Header";
 import ParticipantList from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/ParticipantList";
 import Timer from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/Timer"
-import React, {useEffect} from "react";
+import React, { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import StateButton from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/StateButton";
 import * as styles from "@/styles/payment/proceed/proceedmain.css"
 import { usePaymentSocket } from '@/store/usePaymentSocket';
 import { usePayment } from '@/store/usePayment';
 import { Payment } from '@/model/participant';
-import {getMyInfo} from "@/util/getMyInfo";
-import { useRouter } from 'next/navigation';
+import { getCookie } from '@/util/getCookie';
+import { Me } from '@/model/member';
 
 type Props = { payId: number }
 
@@ -32,10 +32,15 @@ export default function Open({payId}:Props) {
 
     // 소켓 초기값
     const { init, initRes, initiating } = usePaymentSocket();
+    const [token, setToken] = useState('');
+    useEffect(() => {
+        const token = getCookie('accessToken') as string;
+        setToken(token);
+    }, [token]);
+
 
     useEffect(() => {
-        const myInfo =getMyInfo();
-
+        const myInfo: Me | undefined = queryClient. getQueryData(['userInfo',token]);
         let res: Payment | null;
         // 만약 방 개설자 아니다 || 방 개설자지만 나갔다가 들어왔다면  => 서버에서 불러온 payment를 넣어주는 과정
         // 이 과정은 POST를 보낸 유저는 바로 화면에 띄어주는 차별성을 위한 코드임.
