@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.pay.pie.domain.meet.dto.HighlightResponse;
 import com.pay.pie.domain.meet.dto.MeetStatusResponse;
 import com.pay.pie.domain.meet.dto.PayResponse;
 import com.pay.pie.domain.meet.dto.request.CreateMeetRequest;
 import com.pay.pie.domain.meet.dto.request.UpdateMeetImageRequest;
 import com.pay.pie.domain.meet.dto.request.UpdateMeetNameRequest;
 import com.pay.pie.domain.meet.dto.response.MeetDetailResponse;
+import com.pay.pie.domain.meet.dto.response.MeetHighlightResponse;
 import com.pay.pie.domain.meet.dto.response.MeetInfo;
 import com.pay.pie.domain.meet.dto.response.MeetMemberInfo;
 import com.pay.pie.domain.meet.dto.response.UpdateInvitationResponse;
@@ -221,12 +221,11 @@ public class MeetController {
 
 	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
 	@GetMapping("/meet/{meetId}/highlight")
-	public ResponseEntity<BaseResponse<HighlightResponse>> getHighlight(@PathVariable long meetId,
-		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
-		HighlightResponse highlightResponse = meetService.getHighlight(meetId);
+	public ResponseEntity<BaseResponse<MeetHighlightResponse>> getHighlight(@PathVariable Long meetId) {
 
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
-			highlightResponse);
+			meetService.getHighlight(meetId)
+		);
 	}
 }

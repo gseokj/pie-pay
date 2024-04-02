@@ -17,22 +17,25 @@ public interface PayRepository extends JpaRepository<Pay, Long>, PayRepositoryCu
 
 	Pay findFirstByMeetOrderByCreatedAtDesc(Meet meet);
 
-	List<Pay> findAllByMeetOrderByCreatedAtDesc(Meet meet);
-
-	//	Pay findFirstByMeetOrderByUpdatedAtDesc(Meet meet);
-
-	@Query
-		(
+	@Query(
+		"""
+			   		SELECT p
+			   		FROM Pay p
+			   		WHERE p.meet.id IN :meets AND p.createdAt = (
+						SELECT MAX(p2.createdAt)
+						FROM Pay p2
+			   			WHERE p2.meet.id = p.meet.id
+			   		)
 			"""
-   				SELECT p
-   				FROM Pay p
-   				WHERE p.meet.id IN :meets AND p.createdAt = (
-   					SELECT MAX(p2.createdAt)
-   					FROM Pay p2
-   					WHERE p2.meet.id = p.meet.id
-   				)
-			"""
-		)
+	)
 	List<Pay> findLatestPayInfo(@Param("meets") List<Long> meets);
 
+	@Query(
+		"""
+				SELECT p
+				FROM Pay p
+				WHERE p.meet.id = :meetId AND p.payStatus = "COMPLETE"
+			"""
+	)
+	List<Pay> findPayList(@Param("meetId") Long meetId);
 }
