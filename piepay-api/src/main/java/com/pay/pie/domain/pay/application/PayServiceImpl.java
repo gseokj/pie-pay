@@ -153,7 +153,8 @@ public class PayServiceImpl implements PayService {
 			sseEmitterService.sendNotification(
 				participant.getMember().getId(),
 				1L,
-				participant.getPayAmount() + "원 결제완료 | " + order.getStore().getStoreName());
+				String.format("%,d", participant.getPayAmount()) + "원 결제완료 | " + order.getStore().getStoreName(),
+				payId);
 		}
 
 		List<PayInstead> payInsteadList = queryFactory
@@ -166,14 +167,14 @@ public class PayServiceImpl implements PayService {
 				payInstead.getBorrower().getId(),
 				3L,
 				payInstead.getLender().getNickname() + "님이 " + order.getStore().getStoreName() + "에서 "
-					+ payInstead.getAmount() + "원을 대신 지불했습니다."
-			);
+					+ String.format("%,d", payInstead.getAmount()) + "원을 대신 지불했습니다.",
+				payId);
 			sseEmitterService.sendNotification(
 				payInstead.getLender().getId(),
 				3L,
 				order.getStore().getStoreName() + "에서 " + payInstead.getBorrower() + "님 대신 "
-					+ payInstead.getAmount() + "원을 지불했습니다."
-			);
+					+ String.format("%,d", payInstead.getAmount()) + "원을 지불했습니다.",
+				payId);
 		}
 
 		return CompletedPaymentRes.builder()
