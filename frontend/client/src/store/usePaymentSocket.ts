@@ -37,7 +37,7 @@ export const usePaymentSocket = create<SocketState>((set) => ({
   initiating: false,
   connect: (payId: number) => {
     const clientdata = new Stomp.Client({
-      brokerURL: `wss://j10a402.p.ssafy.io/pay`,
+      brokerURL: `${process.env.NEXT_PUBLIC_SOCKET_URL}/pay`,
       connectHeaders: {},
       debug: function (str) {
         console.log(str);
