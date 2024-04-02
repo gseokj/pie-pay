@@ -1,4 +1,4 @@
-import {Payment} from "@/model/meet/payment";
+import {Category, Payment} from "@/model/meet/payment";
 
 export const filterPayments = (targetYear: number, targetMonth: number, payments: Payment[]) => {
     const filteredPayments = payments.filter(payment => {
@@ -64,4 +64,21 @@ export const calculateCategoryAmountsAndPercentages = (payments: Payment[]) => {
     }, {} as Record<string, number>);
 
     return { categoryAmounts, categoryPercentages };
+}
+
+export const filterCategory = (payments: Payment[]): Category[] => {
+    return payments.reduce<Category[]>((acc, payment) => {
+        const { storeCategory } = payment.orders.store;
+        const { totalPayAmount } = payment;
+
+        const existingItem = acc.find(item => item.name === storeCategory);
+
+        if (existingItem) {
+            existingItem.amount += totalPayAmount;
+        } else {
+            acc.push({ name: storeCategory, amount: totalPayAmount });
+        }
+
+        return acc;
+    }, []);
 }

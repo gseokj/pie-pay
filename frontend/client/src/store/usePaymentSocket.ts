@@ -39,9 +39,9 @@ export const usePaymentSocket = create<SocketState>((set) => ({
     const clientdata = new Stomp.Client({
       brokerURL: `${process.env.NEXT_PUBLIC_SOCKET_URL}/pay`,
       connectHeaders: {},
-      debug: function (str) {
-        console.log(str);
-      },
+      // debug: function (str) {
+      //   console.log(str);
+      // },
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
@@ -51,7 +51,7 @@ export const usePaymentSocket = create<SocketState>((set) => ({
       set((state) => ({ ...state, initiating: true }));
       clientdata.subscribe(`/api/sub/${payId}`, (message: any) => {
         const res = JSON.parse(message.body);
-        console.log(res);
+        // console.log(res);
         set((state) => ({ ...state, res }));
       });
 
