@@ -160,3 +160,8 @@ export const menu = style({
   borderRadius: '10px',
   backgroundColor: theme.lightGray,
 });
+
+export const inputStyle = style({
+  border: 'none', // 테두리 제거
+  outline: 'none', // 포커스 시 나타나는 아웃라인 제거
+});

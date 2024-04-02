@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation';
 import { getDate } from '@/util/dateFormat';
 import { faker } from '@faker-js/faker';
 import * as style from '@/styles/mypage/unpaidInfo.css'; // 스타일 임포트
+
 const Borrower = {
   memberId: 5,
   profileImage: faker.image.avatar(),
@@ -34,7 +35,7 @@ export default function UnpaidInfo() {
   return (
     <section className={style.sectionStyle}>
       <div className={style.headerStyle}>
-        <p className={style.textStyle}>미정산 내역</p>
+        <p className={style.title}>미정산 내역</p>
         <button
           onClick={() => route.push('mypage/unsettled')}
           className={style.buttonStyle}
