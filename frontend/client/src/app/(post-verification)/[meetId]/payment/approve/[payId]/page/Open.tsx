@@ -66,7 +66,12 @@ export default function Open({ payId }: Props) {
         }
       }),
     };
-    setPayment(res);
+    const sortedParticipants = res.participants.sort((member) => member.memberInfo.memberId === myInfo?.memberId ? -1 : 1);
+    const payRes: Payment = {
+      ...res,
+      participants: sortedParticipants,
+    };
+    setPayment(payRes);
   }, [payment, initRes]);
 
   // 소켓 연결
@@ -89,8 +94,6 @@ export default function Open({ payId }: Props) {
       setStack(prevState => prevState+1);
     }
     console.log(res.payAgree);
-    console.log(res);
-    console.log(stack);
   }, [res]);
   return (<div>
 
