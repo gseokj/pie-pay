@@ -50,7 +50,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		if (role.equals(MemberRole.ROLE_CERTIFIED_MEMBER.getValue())) {
 
 			// accessToken을 쿼리스트링에 담는 url을 만들어준다.
-			String redirectURI = UriComponentsBuilder.fromUriString("http://localhost:3000/success")
+			String redirectURI = UriComponentsBuilder.fromUriString("https://j10a402.p.ssafy.io/success")
 				.queryParam("accessToken", accessToken)
 				.build()
 				.encode(StandardCharsets.UTF_8)
@@ -63,7 +63,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		} else {
 
 			// 인증 절차가 끝나지 않은 회원
-			String redirectURI = UriComponentsBuilder.fromUriString("http://localhost:3000/auth")
+			String redirectURI = UriComponentsBuilder.fromUriString("https://j10a402.p.ssafy.io/auth")
 				.queryParam("accessToken", accessToken)
 				.build()
 				.encode(StandardCharsets.UTF_8)
