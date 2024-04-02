@@ -16,7 +16,6 @@ import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.member.entity.Member;
 import com.pay.pie.domain.menu.entity.Menu;
-import com.pay.pie.domain.notification.dto.EventMessage;
 import com.pay.pie.domain.notification.service.SseEmitterService;
 import com.pay.pie.domain.order.dto.OrderDto;
 import com.pay.pie.domain.order.entity.Order;
@@ -67,7 +66,7 @@ public class PayServiceImpl implements PayService {
 	@Transactional
 	public CompletedPaymentRes processPayment(Long payId) {
 		//참여자 정보
-		List<Participant> participantList = payRepository.findParticipantsByPayId(payId);
+		List<Participant> participantList = participantRepository.findParticipantsByPayIdWithMember(payId);
 		log.info("참여자들: {}", participantList);
 
 		// 결제 테이블에 가게정보, 영수증 정보 저장
@@ -85,10 +84,6 @@ public class PayServiceImpl implements PayService {
 		pay.setTotalPayAmount(order.getTotalAmount());
 		payRepository.save(pay);
 		log.info("pay 정보 저장!");
-		// List<OrderMenu> orderMenus = orderRepository.getOrderMenuById(order.getId());
-
-		// Long totalNonAlcoholPrice = orderRepository.getTotalNonAlcoholPrice(order != null ? order.getId() : null);
-		// Long totalAlcoholPrice = orderRepository.getTotalAlcoholPrice(order != null ? order.getId() : null);
 
 		// 가맹점 계좌
 		String StoreBankCode = "001";
@@ -128,8 +123,6 @@ public class PayServiceImpl implements PayService {
 				);
 			}
 
-			// 알림
-			sseEmitterService.sendNotification(participant.getMember().getId(), EventMessage.PAYMENT_COMPLETED_NOTI);
 		}
 
 		// 나머지 금액 PiePay가 이체
@@ -154,6 +147,34 @@ public class PayServiceImpl implements PayService {
 		// payStatus -> Complete로 변환
 		pay.setPayStatus(Pay.PayStatus.COMPLETE);
 		order.setPaymentStatus(Order.PaymentStatus.PAID);
+
+		// 알림
+		for (Participant participant : participantList) {
+			sseEmitterService.sendNotification(
+				participant.getMember().getId(),
+				1L,
+				participant.getPayAmount() + "원 결제완료 | " + order.getStore().getStoreName());
+		}
+
+		List<PayInstead> payInsteadList = queryFactory
+			.selectFrom(QPayInstead.payInstead)
+			.where(QPayInstead.payInstead.pay.in(pay))
+			.fetch();
+
+		for (PayInstead payInstead : payInsteadList) {
+			sseEmitterService.sendNotification(
+				payInstead.getBorrower().getId(),
+				3L,
+				payInstead.getLender().getNickname() + "님이 " + order.getStore().getStoreName() + "에서 "
+					+ payInstead.getAmount() + "원을 대신 지불했습니다."
+			);
+			sseEmitterService.sendNotification(
+				payInstead.getLender().getId(),
+				3L,
+				order.getStore().getStoreName() + "에서 " + payInstead.getBorrower() + "님 대신 "
+					+ payInstead.getAmount() + "원을 지불했습니다."
+			);
+		}
 
 		return CompletedPaymentRes.builder()
 			.payId(payId)
