@@ -113,7 +113,7 @@ export default function MeetJoin({ isModal = false, clickJoin, clickExit }: Meet
     return(
         <>
             <h3 className={fontCss.bold}>초대 코드로<br/>모임에 참여해보세요</h3>
-            <p>초대 코드는 알파벳과 숫자 6자리에요</p>
+            <p>초대 코드는 알파벳과 숫자 6자리예요</p>
             <form
                 className={styles.lineLayoutJoin.lineTwo}
                 onSubmit={(e) => onSubmit(e)}

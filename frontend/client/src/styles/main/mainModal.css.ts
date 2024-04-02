@@ -24,12 +24,11 @@ export const defaultModalLayout = style({
 
 export const modalLayout = styleVariants({
     joinMeetModal: [defaultModalLayout, {
-        bottom: "-60%",
-        height: "52.5%",
+        bottom: "-80%",
     }],
     createMeetModal: [defaultModalLayout, {
-        bottom: "-56%",
-        height: "45%",
+        bottom: "-80%",
+
     }]
 })
 
@@ -38,7 +37,7 @@ export const modalOn = style({
 })
 
 export const modalContentLayout = style({
-    padding: "15% 6%",
+    padding: "15% 6% 1.5rem 6%",
     height: "100%",
     display: "flex",
     flexDirection: "column",

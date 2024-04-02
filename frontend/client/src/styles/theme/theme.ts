@@ -29,7 +29,7 @@ const theme = {
     modalShadow: '#b4b4b4',
 
     // 정산 완료/미완료
-    completed: '#4FD65D',
+    completed: '#67c952',
     unpaid: '#E86E6E',
 
 

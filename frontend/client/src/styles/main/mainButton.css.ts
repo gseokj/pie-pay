@@ -96,6 +96,7 @@ export const cardButton = style({
 })
 
 export const paymentCardButton = style({
+    fontSize: "0.9rem",
     padding: "0.6rem 1.5rem",
     borderRadius: "30px",
     backgroundColor: theme.skyblue,
