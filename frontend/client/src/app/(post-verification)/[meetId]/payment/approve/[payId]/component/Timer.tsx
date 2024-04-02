@@ -42,9 +42,9 @@ export default function Page({payId}:Props){
     }, [currDate]);
 
 
-    return(<>{remainingTime>0 && <p>{remainingTime}초 이내에 선택해 주세요!</p>}
+    return(<div className="mb-5">{remainingTime>0 && <p>{remainingTime}초 이내에 선택해 주세요!</p>}
         {remainingTime>0 && <BorderLinearProgress variant="determinate" value={progressBar} />}
         {remainingTime<=0 && <p>만료된 페이지입니다. 결제를 다시 진행해주세요!</p>}
-    </>);
+    </div>);
 
 }

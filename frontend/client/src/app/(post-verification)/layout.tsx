@@ -7,6 +7,7 @@ import NotificationReceive from "@/app/(post-verification)/component/Notificatio
 import * as styles from "@/styles/main/main.css"
 import {cookies} from "next/headers";
 import {getMeetList} from "@/api/meet/meetList";
+import { getNotification } from '@/api/notification';
 
 export const metadata: Metadata = {
     title: "piepay",
@@ -22,6 +23,8 @@ export default async function PostVerificationLayout({children}: Props) {
 
     await queryClient.prefetchQuery({queryKey: ['account', token], queryFn: getAccount});
     await queryClient.prefetchQuery({queryKey: ['meetList', token], queryFn: getMeetList});
+    await queryClient.prefetchQuery({queryKey: ['notification', token], queryFn: getNotification});
+
     const dehydratedState = dehydrate(queryClient);
     return (
         <div className="h-screen">

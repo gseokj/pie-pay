@@ -2,26 +2,30 @@ import { createVar, globalStyle, style, styleVariants } from '@vanilla-extract/c
 import theme from '@/styles/theme/theme';
 
 export const background = style({
-  position: 'absolute',
+  position: "absolute",
+  width: '100%',
+  height: '100%',
   top: 0,
-  bottom: 0,
   left: 0,
-  right: 0,
-  backgroundColor:'black',
-  opacity: 0.3
-});
+  backgroundColor: 'black',
+  opacity: 0.3,
 
+});
 export const container = style({
-  position: 'absolute',
-  top: '40%',
-  left: '25%',
-  width: '50%',
+// Mobile width
+  position: "absolute",
+  width: '60%',
+  top: '30%',
+  left: '18%',
+
+
   // Default width
   '@media': {
     'screen and (min-width: 768px)': {
-      width: '40%',
-      left: '30%',
+      width: '80%',
+      left: '10%'
     },
   },
-})
 
+
+});

@@ -6,13 +6,15 @@ import axios from 'axios';
 import { getCookie } from '@/util/getCookie';
 import { useRouter } from 'next/navigation';
 import * as styles from '@/styles/store/storeModal.css'
+import { LoaderComponent } from '@/app/component/Loading';
+
 type Props={
   payId: number;
 }
 
 export default function CheckModal({payId}:Props){
   const route = useRouter();
-  const { mutate } = useMutation({
+  const {isPending, mutate } = useMutation({
 
     mutationFn: (id) => axios.post(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/pay/payment/${payId}`,{},
       {
@@ -29,6 +31,8 @@ export default function CheckModal({payId}:Props){
   const {updateState}  = useCheckModal();
   return(
     <div>
+
+      {!isPending ?<>
       <div onClick={updateState} className={styles.background}></div>
     <div className={styles.container}>
     <div
@@ -62,6 +66,6 @@ export default function CheckModal({payId}:Props){
       </div>
     </div>
 
-    </div>
+    </div></> : <LoaderComponent/> }
     </div>);
 }
