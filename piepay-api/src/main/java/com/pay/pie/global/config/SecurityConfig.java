@@ -87,7 +87,8 @@ public class SecurityConfig {
 			"http://localhost:8080",
 			"http://localhost:3000",
 			"https://jxy.me/",
-			"https://j10a402.p.ssafy.io"
+			"https://j10a402.p.ssafy.io",
+			"https://j10a402.p.ssafy.io:3000"
 		);
 		return request -> {
 			CorsConfiguration config = new CorsConfiguration();
