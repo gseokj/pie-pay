@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pay.pie.domain.account.entity.Account;
 import com.pay.pie.domain.account.entity.QAccount;
+import com.pay.pie.domain.meet.dto.PayResponse;
 import com.pay.pie.domain.meet.entity.Meet;
 import com.pay.pie.domain.meet.repository.MeetRepository;
 import com.pay.pie.domain.member.entity.Member;
@@ -19,6 +20,7 @@ import com.pay.pie.domain.menu.entity.Menu;
 import com.pay.pie.domain.notification.dto.EventMessage;
 import com.pay.pie.domain.notification.service.SseEmitterService;
 import com.pay.pie.domain.order.dto.OrderDto;
+import com.pay.pie.domain.order.dto.response.OrderOfPayResponse;
 import com.pay.pie.domain.order.entity.Order;
 import com.pay.pie.domain.order.entity.QOrder;
 import com.pay.pie.domain.participant.dao.ParticipantRepository;
@@ -335,4 +337,11 @@ public class PayServiceImpl implements PayService {
 	//	public  findPay (Meet meet) {
 	//		return payRepository.findFirstByMeetOrderByCreatedAtDesc(meet);
 	//	}
+
+	public List<PayResponse> getPayByMeetId2(long meetId) {
+		return payRepository.getPayAndOrderByMeetId(meetId)
+			.stream()
+			.map(payOrderDto -> new PayResponse(payOrderDto.getPay(), new OrderOfPayResponse(payOrderDto.getOrder())))
+			.toList();
+	}
 }
