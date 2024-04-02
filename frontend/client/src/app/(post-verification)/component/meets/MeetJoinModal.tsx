@@ -15,7 +15,7 @@ export default function MeetJoinModal({ isJoinModalOn, clickJoinModal, clickExit
     const [startY, setStartY] = useState(0);
     const [currentY, setCurrentY] = useState(0);
     const [dragging, setDragging] = useState(false);
-    const [modalY, setModalY] = useState(-60);
+    const [modalY, setModalY] = useState(-70);
 
     useEffect(() => {
         setModalOn(isJoinModalOn);
@@ -24,7 +24,7 @@ export default function MeetJoinModal({ isJoinModalOn, clickJoinModal, clickExit
 
     const closeModal = () => {
         console.log('closeModal');
-        setModalY(-60);
+        setModalY(-70);
         setModalOn(false);
         clickExitModal();
     };
@@ -87,7 +87,7 @@ export default function MeetJoinModal({ isJoinModalOn, clickJoinModal, clickExit
                 onMouseUp={handleDragEnd}
                 onTouchEnd={handleDragEnd}
                 onTouchMove={handleDraggingTouch}
-                style={modalY>=-60 ? {bottom: `${modalY}%`} : {bottom: 0}}
+                style={modalY>=-71 ? {bottom: `${modalY}%`} : {bottom: 0}}
             >
                 <div className={styles.modalHandleArea} onMouseDown={handleDragStart} onTouchStart={handleDragStartTouch}>
                     <div className={`${styles.modalHandle} ${dragging && styles.modalHandleActive}`}></div>

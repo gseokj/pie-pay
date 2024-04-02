@@ -4,7 +4,7 @@ import theme from "@/styles/theme/theme";
 
 export const container = style({
     zIndex: "5",
-    backdropFilter: "blur(8px)",
+    backdropFilter: "blur(6px)",
     display: 'flex',
     justifyContent: 'space-between',
     paddingLeft: '7%',
@@ -31,7 +31,8 @@ export const navigation = style({
 
 export const logoContainer = style({
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "flex-start"
 });
 
 export const headerLogo = style({
