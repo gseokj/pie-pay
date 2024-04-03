@@ -36,7 +36,7 @@ export default function Open({ payId }: Props) {
   const { payment: tempPayment, setPayment } = usePayment();
 
   // 소켓 초기값
-  const { init, initRes, initiating, connect, setInitiating,res } = usePaymentSocket();
+  const { init, initRes, initiating, connect, setInitiating,res,client,disconnect } = usePaymentSocket();
 
 
   useEffect(() => {
@@ -80,6 +80,7 @@ export default function Open({ payId }: Props) {
     connect(Number(payId));
     return () => {
       setInitiating();
+      if(client) disconnect(client);
     };
   }, []);
 
@@ -88,13 +89,15 @@ export default function Open({ payId }: Props) {
     console.log(initiating);
     if (!initiating) return;
     init(Number(payId));
+    return () => {
+      setInitiating();
+    };
   }, [initiating]);
   useEffect(() => {
     if (!res) return;
     if(res.payAgree===false){
       setStack(prevState => prevState+1);
     }
-    console.log(res.payAgree);
   }, [res]);
   return (<div>
 

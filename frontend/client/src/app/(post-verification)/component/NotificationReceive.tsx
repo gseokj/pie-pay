@@ -13,20 +13,21 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCookie } from '@/util/getCookie';
 import { useSSE } from '@/store/useSSE';
+import { usePaymentSocket } from '@/store/usePaymentSocket';
 
 
 dayjs.extend(relativeTime);
 dayjs.locale('ko');
 export default function NotificationReceive() {
   const route = useRouter();
-  const [isVisible, setIsVisible] = useState<boolean>(true);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   const [token, setToken] = useState('');
-  const { setEventSource,  SSEnotification } = useSSE();
-
+  const { setEventSource,  SSEnotification, eventSource} = useSSE();
+  const {setInitiating} =  usePaymentSocket();
   useEffect(() => {
     if(!SSEnotification) return;
     setIsVisible(prevState => !prevState);
-    setTimeout(() => setIsVisible(prevState => !prevState), 2000);
+    setTimeout(() => setIsVisible(false), 3000);
     console.log(SSEnotification);
   }, [SSEnotification]);
 
@@ -34,10 +35,27 @@ export default function NotificationReceive() {
     const token = getCookie('accessToken') as string;
     setEventSource(token);
     setToken(token);
+    return ()=>{
+      if(eventSource) eventSource.close();
+    }
   }, [token]);
+  const handleReplace = () =>{
+      if(!SSEnotification) return;
+      if(SSEnotification.referenceId===1){
 
+      }else if(SSEnotification.referenceId===2){
+        setInitiating();
+        route.replace(`/${5}/payment/approve/${SSEnotification.destinationId}`);
+        setIsVisible(false);
+      }else if(SSEnotification.referenceId===3){
 
-  return (<div onClick={()=>route.push('/notification')} className={`${styles.container}  ${isVisible && styles.visible}`}>
+      }else if(SSEnotification.referenceId===4){
+
+      }
+
+  }
+
+  return (<div onClick={handleReplace} className={`${styles.container}  ${isVisible && styles.visible}`}>
 
     <div className={styles.content}>
       <div className={styles.title}>

@@ -12,15 +12,16 @@ export const container = style({
     padding: '1.5rem',
     top: 0,
     cursor:'pointer',
-
+    transform: 'translateY(-150%)',
     zIndex: '99',
     margin: '10px',
     backgroundColor: 'white',
-    borderRadius: '20px'
+    borderRadius: '20px',
+    transitionDuration: '300ms'
 })
 
 export const visible = style({
-    transform: 'translateY(-150%)',
+    transform: 'translateY(0%)',
     transitionDuration: '300ms'
 })
 

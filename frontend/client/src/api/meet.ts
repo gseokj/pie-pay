@@ -60,7 +60,7 @@ export const fixMeet = async (meetId: string, token: string): Promise<DefaultRes
     }
 }
 
-export const getMeetPayments:QueryFunction<Payment[]> = async ({ queryKey }) => {
+export const  getMeetPayments:QueryFunction<Payment[]> = async ({ queryKey }) => {
     const [_, meetId, token] = queryKey;
     try {
         const response = await authAxios.get(`api/meet/${meetId}/payment`, {

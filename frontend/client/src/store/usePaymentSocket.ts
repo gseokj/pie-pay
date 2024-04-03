@@ -27,6 +27,7 @@ type SocketState = {
   initiating: boolean;
   setInitiating: ()=>void;
   res: ParticipantSocketResProps | null;
+  disconnect: (client:Stomp.Client)=>void;
 
 };
 
@@ -36,6 +37,12 @@ export const usePaymentSocket = create<SocketState>((set) => ({
   res: null,
   initRes: null,
   initiating: false,
+  disconnect: (client) => {
+    if (client) {
+      client.deactivate();
+      set((state) => ({ ...state, client: null }));
+    }
+  },
   connect: (payId: number) => {
     const clientdata = new Stomp.Client({
       brokerURL: `${process.env.NEXT_PUBLIC_SOCKET_URL}/pay`,

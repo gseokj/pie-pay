@@ -14,6 +14,7 @@ import {Member, MemberResponse} from "@/model/meet";
 import {useQueryClient} from "@tanstack/react-query";
 import {getCookie} from "@/util/getCookie";
 import {MeetMember} from "@/model/meet/member";
+import {useStore} from "@/store/useMeetModalStore";
 
 
 type Props = {
@@ -23,6 +24,7 @@ type Props = {
 
 export default function MemberLayout({params}: Props) {
     const { meetId } = params;
+    const {changeInviteModalStatus, isInviteModalOn} = useStore((state) => state);
 
     const queryClient = useQueryClient();
     const token = getCookie('accessToken');
@@ -102,6 +104,7 @@ export default function MemberLayout({params}: Props) {
                 </div>
                 <button
                     className={ buttonStyles.smallButton }
+                    onClick={changeInviteModalStatus}
                 >
                     <Image src={addMemberIcon} alt="add member" height={24} width={24} />
                 </button>

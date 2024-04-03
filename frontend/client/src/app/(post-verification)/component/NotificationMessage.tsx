@@ -9,7 +9,7 @@ import { getCookie } from '@/util/getCookie';
 import { useEffect, useState } from 'react';
 import {Notification} from "@/model/notification"
 import withdraw from '@/assets/icons/withdraw.svg';
-import deposit from '@/assets/icons/deposit.svg';
+import inroom from '@/assets/icons/inRoom.svg';
 import instead from '@/assets/icons/instead.svg';
 import noti from '@/assets/icons/notification.svg';
 import Image from 'next/image';
@@ -29,9 +29,6 @@ export default function NotificationMessage() {
     const queryNotification= queryClient.getQueryData<Notification[]>(["notification",token]);
 
 
-    useEffect(() => {
-
-    }, []);
 
     return (
         <div className={styles.container}>
@@ -40,11 +37,11 @@ export default function NotificationMessage() {
                     <div className={styles.content}>
                         <div className={styles.title}>
                             {queryNotification.referenceId === 1 && <><Image src={withdraw} alt="결제"/><p>결제</p></>}
-                            {queryNotification.referenceId === 2 && <><Image src={deposit} alt="입금"/><p>입금</p></>}
+                            {queryNotification.referenceId === 2 && <><Image width={22} height={22} src={inroom} alt="참여"/><p>참여</p></>}
                             {queryNotification.referenceId === 3 && <><Image src={instead} alt="대신"/><p>대신 내주기</p></>}
                             {queryNotification.referenceId === 4 && <><Image src={noti} alt=""/><p>결제 알림</p></>}
                         </div>
-                        {/*<p className={styles.paragraph}>{dayjs(queryNotification.createdAt).add(0.5, 'hour').fromNow()}</p>*/}
+                        <p className={styles.paragraph}>{dayjs(queryNotification.createdAt).add(9, 'hour').fromNow()}</p>
                     </div>
                     <p>{queryNotification.message}</p>
 
