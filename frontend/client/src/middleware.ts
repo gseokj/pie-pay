@@ -9,6 +9,17 @@ export function middleware(request: NextRequest) {
         if (request.cookies.has('accessToken')) {
             return NextResponse.redirect(new URL('/', request.url));
         }
+    } else if (request.nextUrl.pathname.startsWith('/mypage')) {
+        if (!request.cookies.has('accessToken')) {
+            return NextResponse.redirect(new URL('/', request.url));
+        } else {
+            const userCookie = request.cookies.get('myInfo');
+            if (typeof userCookie?.value === 'string') {
+                const userInfo: MyInfo = JSON.parse(userCookie.value);
+                const userId = userInfo.memberId;
+                // console.log('in middleware.... userId is.....,', userId);
+            }
+        }
     } else {
         if (!request.cookies.has('accessToken')) {
             return NextResponse.redirect(new URL('/kakaologin', request.url));
