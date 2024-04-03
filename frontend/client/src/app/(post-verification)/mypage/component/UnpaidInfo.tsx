@@ -61,7 +61,7 @@ export default function UnpaidInfo() {
     };
 
     // myLent에서 payback이 false인 요소 찾기
-    const unpaidLentItem = response.result.myLent.find((item) => !item.payback);
+    const unpaidLentItem = response?.result?.myLent?.find((item) => !item.payback);
 
     if (unpaidLentItem) {
       dataToSave = {
@@ -73,7 +73,7 @@ export default function UnpaidInfo() {
       };
     } else {
       // myLent에 payback이 false인 요소가 없으면 myBorrowed 확인
-      const unpaidBorrowedItem = response.result.myBorrowed.find(
+      const unpaidBorrowedItem = response?.result?.myBorrowed?.find(
         (item) => !item.payback,
       );
       if (unpaidBorrowedItem) {
