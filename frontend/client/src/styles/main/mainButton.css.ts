@@ -44,7 +44,7 @@ export const mainButton = styleVariants({
     }],
     fixedButton: [buttonLayout, buttonShadow, blueActive, {
         position: "fixed",
-        bottom: "3rem",
+        bottom: "1.5rem",
         left: "2%",
         width: "96%",
         '@media': {
@@ -86,6 +86,18 @@ export const smallButton = style({
 
 export const cardButton = style({
     padding: "0.75rem 1.8rem",
+    borderRadius: "30px",
+    backgroundColor: theme.skyblue,
+    selectors: {
+        "&:active": {
+            backgroundColor: theme.skyblueActive
+        }
+    }
+})
+
+export const paymentCardButton = style({
+    fontSize: "0.9rem",
+    padding: "0.6rem 1.5rem",
     borderRadius: "30px",
     backgroundColor: theme.skyblue,
     selectors: {

@@ -4,12 +4,12 @@ import theme from "@/styles/theme/theme";
 
 export const container = style({
     zIndex: "5",
-    backdropFilter: "blur(8px)",
+    backdropFilter: "blur(6px)",
     display: 'flex',
     justifyContent: 'space-between',
     paddingLeft: '7%',
     paddingRight: '7%',
-    height: '9%',
+    height: '5rem',
     backgroundColor: theme.header,
     position: "fixed",
     width: "100%",
@@ -25,12 +25,14 @@ export const container = style({
 
 export const navigation = style({
     display: 'flex',
+    height: "5rem",
     justifyContent: 'space-around',
 });
 
 export const logoContainer = style({
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "flex-start"
 });
 
 export const headerLogo = style({
@@ -43,6 +45,7 @@ export const headerLogo = style({
 export const buttonContainer = style({
     height: "100%",
     display: "flex",
+    width: "36.5px",
 
     flexDirection: "column",
     justifyContent: "center",

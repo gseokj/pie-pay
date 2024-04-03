@@ -5,36 +5,48 @@ import dayjs from 'dayjs';
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
 import * as styles from "@/styles/notification/notificationMessage.css"
-import { useNotification } from '@/store/useNotification';
 import { getCookie } from '@/util/getCookie';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {Notification} from "@/model/notification"
-
+import withdraw from '@/assets/icons/withdraw.svg';
+import deposit from '@/assets/icons/deposit.svg';
+import instead from '@/assets/icons/instead.svg';
+import noti from '@/assets/icons/notification.svg';
+import Image from 'next/image';
 dayjs.extend(relativeTime);
 dayjs.locale('ko')
 
 export default function NotificationMessage() {
-    const queryClient = useQueryClient();
-    const queryNotification= queryClient.getQueryData<Notification[]>(["notification",getCookie('accessToken')]);
-    const {notifications,setNotification,initNotification}= useNotification();
+    // 쿠키
+    const [token, setToken] = useState('');
     useEffect(() => {
-        if(!queryNotification) return;
-        initNotification(queryNotification);
-    }, [queryNotification]);
+        const token = getCookie('accessToken') as string;
+        setToken(token);
+    }, [token]);
+
+
+    const queryClient = useQueryClient();
+    const queryNotification= queryClient.getQueryData<Notification[]>(["notification",token]);
+
+
+    useEffect(() => {
+
+    }, []);
+
     return (
         <div className={styles.container}>
-            {notifications?.map((notifications:Notification) => (
+            {queryNotification?.map((queryNotification:Notification) => (
                 <div className={styles.box}>
                     <div className={styles.content}>
                         <div className={styles.title}>
-                            {/*{notifications.type === "withdraw" && <><Image className="" src={withdraw} alt="결제"/><p>결제</p></>}*/}
-                            {/*{notifications.type === "deposit" && <><Image src={deposit} alt="입금"/><p>입금</p></>}*/}
-                            {/*{notifications.type === "instead" && <><Image src={instead} alt="대신"/><p>대신 내주기</p></>}*/}
-                            {/*{notifications.type === "notifications" && <><Image src={noti} alt=""/><p>결제 알림</p></>}*/}
+                            {queryNotification.referenceId === 1 && <><Image src={withdraw} alt="결제"/><p>결제</p></>}
+                            {queryNotification.referenceId === 2 && <><Image src={deposit} alt="입금"/><p>입금</p></>}
+                            {queryNotification.referenceId === 3 && <><Image src={instead} alt="대신"/><p>대신 내주기</p></>}
+                            {queryNotification.referenceId === 4 && <><Image src={noti} alt=""/><p>결제 알림</p></>}
                         </div>
-                        <p className={styles.paragraph}>{dayjs(notifications.createdAt).fromNow()}</p>
+                        {/*<p className={styles.paragraph}>{dayjs(queryNotification.createdAt).add(0.5, 'hour').fromNow()}</p>*/}
                     </div>
-                    <p>{notifications.message}</p>
+                    <p>{queryNotification.message}</p>
 
                 </div>))}
         </div>

@@ -88,7 +88,7 @@ export default function History({params}: Props) {
             {
                 data: [],
                 backgroundColor: [],
-                borderWidth: 8,
+                borderWidth: 4,
             }
         ]
     });
@@ -99,11 +99,7 @@ export default function History({params}: Props) {
                 display: false
             }
         },
-        datasets: {
-            doughnut: {
-                cutout: "35%"
-            }
-        }
+        cutout: '35%'
     };
 
     const doughnutData: DoughnutData = {
@@ -263,10 +259,10 @@ export default function History({params}: Props) {
                             <div className={paymentStyles.doughnutBox}>
                                 <Doughnut data={data} options={options}/>
                             </div>
-                            <div>
+                            <div className={paymentStyles.legendLayout}>
                                 {categories.map((category, index) => {
                                     return (
-                                        <LegendCategory props={{ category, totalAmount }} key={index} />
+                                        <LegendCategory props={{ category, totalAmount, index }} key={index} />
                                     );
                                 })}
                             </div>
@@ -285,14 +281,19 @@ export default function History({params}: Props) {
                         </div>
                     </div>
 
-                    {typeof filteredPayments !== 'undefined' && typeof meetInfo !== 'undefined' && filteredPayments.length > 0 &&
-                        filteredPayments.map((payment) => {
-                            return (
-                                <PaymentCard props={{payment: payment, meetInfo: meetInfo}}
-                                             key={payment.orders.orderId}/>
-                            );
-                        })
-                    }
+                    <div className={paymentStyles.paymentsLayout}>
+                        {typeof filteredPayments !== 'undefined' && typeof meetInfo !== 'undefined' && filteredPayments.length > 0 &&
+                            filteredPayments.map((payment) => {
+                                if (payment.orders.paymentStatus !== 'UNPAID') {
+                                    return (
+                                        <PaymentCard props={{payment: payment, meetInfo: meetInfo}}
+                                                     key={payment.orders.orderId}/>
+                                    );
+                                }
+                            })
+                        }
+                    </div>
+
                 </section>
                 :
                 <section>결제 내역이 없습니다</section>

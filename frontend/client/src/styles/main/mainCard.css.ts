@@ -19,7 +19,7 @@ export const highlightCardContainer = style({
     left: 0,
     padding: "0 5%",
     paddingBottom: "5%",
-    overflowX: "auto",
+    overflowX: "scroll",
     whiteSpace: "nowrap",
     '::-webkit-scrollbar': {
         display: "none"
@@ -117,11 +117,11 @@ export const cardInnerLayout = styleVariants({
     imageInputInner: [cardInner, imageInputInnerLayout],
     memberCardLeftInner: [cardInnerHorizontal, {
         gap: "0.8rem",
-        fontSize: "1.2rem"
+        fontSize: "1.1rem"
     }],
     memberCardRightInner: [cardInnerHorizontal, {
         marginRight: "2%",
-        fontSize: "1.2rem"
+        fontSize: "1.1rem"
     }]
 });
 
@@ -183,16 +183,16 @@ globalStyle(`${cardInnerLayout.paymentHorizontalInner} > h5`, {
 
 globalStyle(`${cardInnerLayout.paymentVerticalInner} > h5`, {
     marginBottom: "0.1rem",
-    fontSize: "1rem",
+    fontSize: "0.9rem",
     color: theme.gray
 })
 
 globalStyle(`${cardInnerLayout.paymentVerticalInner} > h3`, {
-    fontSize: "1.25rem"
+    fontSize: "1.15rem"
 })
 
 globalStyle(`${cardInnerLayout.paymentSpaceBetweenInner} > h3`, {
-    fontSize: "1.5rem"
+    fontSize: "1.35rem"
 })
 
 globalStyle(`${cardInnerLayout.iconHeader} > h3`, {

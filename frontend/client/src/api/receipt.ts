@@ -2,13 +2,16 @@ import { QueryFunction } from "@tanstack/query-core";
 import { Member } from "@/model/member";
 import localAxios from "@/util/localAxios";
 import { Receipt } from '@/model/receipt';
-
-const axios = localAxios();
+import authAxios from '@/util/authAxios';
 
 export const getReceipt: QueryFunction<Receipt> = async ({ queryKey }) => {
-  const [_,payId] = queryKey;
+  const [_,payId,token] = queryKey;
   try {
-    const res = await axios.get(`/api/pay/info/receipt/${payId}`);
+    const res = await authAxios.get(`/api/pay/info/receipt/${payId}`,{
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+    });
     console.log(res.data.result);
     return res.data.result;
 

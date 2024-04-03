@@ -8,10 +8,11 @@ import ReceiptBox from "@/app/(post-verification)/[meetId]/payment/approve/[payI
 import {useQuery} from "@tanstack/react-query";
 import {getPaymentResult} from "@/api/payment";
 import ReceiptModal from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/ReceiptModal";
+import { useRouter } from 'next/navigation';
 
 type Props={ payId: number }
 export default function Complete({payId}: Props) {
-
+    const router = useRouter();
     return (<>
         <ReceiptModal payId={Number(payId)}/>
         <Header type={three}/>
@@ -20,7 +21,7 @@ export default function Complete({payId}: Props) {
 
         <ParticipantResultList payId={Number(payId)}/>
 
-        <button className={styles.submitButton}>확인</button>
+        <button onClick={()=>router.replace("/")} className={styles.submitButton}>확인</button>
 
     </>);
 }

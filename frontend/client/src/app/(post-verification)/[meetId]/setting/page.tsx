@@ -227,7 +227,7 @@ export default function MeetSetting({params}: Props) {
                                 className={meetStyles.setInput}
                                 value={meetName}
                                 onChange={(e) => onChange(e)}
-                                onBlur={onCancelEdit}
+                                // onBlur={onCancelEdit}
                                 onKeyDown={(e) => e.key === 'Enter' && onSubmit()}
                             />
                             :

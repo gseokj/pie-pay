@@ -17,9 +17,18 @@ import { getCookie } from '@/util/getCookie';
 import { getAccount } from '@/api/account';
 import { Meet } from '@/model/meet/meets';
 
+
+
 export default function Main() {
   const token = getCookie('accessToken');
   const queryClient = useQueryClient();
+  const [count, setCount] = useState();
+  useEffect(() => {
+    console.log(1);
+    // const { data: , isLoading, error } = useQuery({queryKey: ['tt','eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaWUiLCJleHAiOjEwNzEyMDQwMjkwLCJzdWIiOiJoZ29hMjAwMEBuYXZlci5jb20iLCJyb2xlcyI6IlJPTEVfQ0VSVElGSUVEIn0.JNJLVteOJ8Vh84uxpxcKPQLEUl8fimjsKWF7dI6CBb8'], queryFn: connectSSE}) ;    console.log(1);
+    // console.log(a);a
+  }, []);
+
   const meetList: Meet[] | undefined = queryClient.getQueryData([
     'meetList',
     token,
@@ -29,12 +38,15 @@ export default function Main() {
   const [joinModalVisibility, setJoinModalVisibility] = useState(false);
   const [createModalVisibility, setCreateModalVisibility] = useState(false);
 
+
+
+
   useEffect(() => {
     if (typeof meetList !== 'undefined') {
       const sortedList = sortMeetData(meetList);
       setMeets(sortedList);
     }
-  }, []);
+  }, [token]);
 
   const joinModalOn = () => {
     console.log('clicked');
@@ -98,9 +110,11 @@ export default function Main() {
   } else {
     return (
       <>
+
         <div className={styles.accountContainer}>
           <BankAccount />
         </div>
+        {count}
         <div className={styles.categoryContainer.default}>
           <div className={styles.category}>
             <h3 className={fontStyles.bold}>모임</h3>

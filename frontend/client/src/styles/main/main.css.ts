@@ -8,7 +8,7 @@ export const accountContainer = style({
 
 export const detailHeader = style({
   width: '100%',
-  height: '10%',
+  height: '5rem',
   '@media': {
     'screen and (min-width: 768px)': {
       width: '40%',
@@ -134,6 +134,13 @@ export const imageBox = styleVariants({
     {
       width: '40px',
       height: '40px',
+    },
+  ],
+  imageBox44: [
+    profileImageContainer,
+    {
+      width: '44px',
+      height: '44px',
     },
   ],
   imageBox56: [

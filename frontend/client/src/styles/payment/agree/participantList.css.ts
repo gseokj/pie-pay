@@ -64,3 +64,12 @@ export const paymentStatus = styleVariants({
 globalStyle(`${paymentStatus.agree} > p, ${paymentStatus.deny} > p, ${paymentStatus.await} > p`, {
     marginRight: '0.4rem',
 });
+
+export const helpImage = style({
+    transitionDuration: '300ms',
+    ':hover':{
+        scale:'125%'
+    }
+})
+
+

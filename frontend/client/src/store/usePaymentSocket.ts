@@ -25,6 +25,7 @@ type SocketState = {
   init : (payId:number) => void;
   initRes: InitType | null;
   initiating: boolean;
+  setInitiating: ()=>void;
   res: ParticipantSocketResProps | null;
 
 };
@@ -51,6 +52,7 @@ export const usePaymentSocket = create<SocketState>((set) => ({
       set((state) => ({ ...state, initiating: true }));
       clientdata.subscribe(`/api/sub/${payId}`, (message: any) => {
         const res = JSON.parse(message.body);
+
         // console.log(res);
         set((state) => ({ ...state, res }));
       });
@@ -60,9 +62,15 @@ export const usePaymentSocket = create<SocketState>((set) => ({
         set((state) => ({ ...state, initRes }));
       });
     };
+    clientdata.onDisconnect = function () {
+      set((state) => ({ ...state, initiating: false }));
+    };
 
     clientdata.activate();
     set((state) => ({ ...state, client: clientdata }));
+  },
+  setInitiating: () => {
+    set({ initiating: false });
   },
   send: (payId:number, participantId:number, payAgree:boolean) => {
     console.log(payId+" "+participantId+" " +payAgree)

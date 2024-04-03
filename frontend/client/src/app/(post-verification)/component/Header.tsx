@@ -17,12 +17,13 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Notification } from '@/model/notification';
 
 export default function Header() {
+
+    const [token, setToken] = useState('');
     useEffect(() => {
         const token = getCookie('accessToken') as string;
         setToken(token);
     }, []);
     const path = usePathname();
-    const [token, setToken] = useState('');
     const queryClient = useQueryClient();
     const notifications = queryClient.getQueryData<Notification[]>(["notification",token]);
 
@@ -36,7 +37,7 @@ export default function Header() {
                     모임
                 </Link>
 
-                <Link href="/notification" className={`${styles.buttonContainer} ${styles.topProperty} ${fontCss.semibold}`}
+                <Link href="/notification" className={`${styles.buttonContainer} ${notifications && notifications.length >0 && styles.topProperty} ${fontCss.semibold}`}
                       style={path.includes('notification') ? { color: theme.blue } : { color: theme.blueGray }}>
 
                     {notifications && notifications.length >0 &&<span className={styles.unreadAlarm}></span>}

@@ -4,6 +4,7 @@ import * as buttonStyles from "@/styles/main/mainButton.css";
 import dayjs from "dayjs";
 import {Payment} from "@/model/meet/payment";
 import {Meet} from "@/model/meet";
+import {paymentCardButton} from "@/styles/main/mainButton.css";
 
 
 interface PaymentProps {
@@ -24,7 +25,7 @@ export default function PaymentCard({ props }: PaymentProps) {
         >
             <div className={ cardStyles.cardInnerLayout.paymentHorizontalInner }>
                 <p>{ paymentDate }</p>
-                <h5 className={ `${fontStyles.semibold} ${payment.payStatus === "COMPLETE" ? cardStyles.completed : cardStyles.unpaid}` }>{payment.payStatus === "COMPLETE" ? "정산 완료" : "정산 미완료"}</h5>
+                <h5 className={ `${fontStyles.semibold} ${payment.payStatus === "CLOSE" ? cardStyles.completed : cardStyles.unpaid}` }>{payment.payStatus === "CLOSE" ? "정산 완료" : "정산 미완료"}</h5>
             </div>
             <div className={ cardStyles.cardInnerLayout.paymentVerticalInner }>
                 <h5 className={ fontStyles.semibold }>{ meetInfo.meetName }</h5>
@@ -36,7 +37,7 @@ export default function PaymentCard({ props }: PaymentProps) {
                     :
                     '미정산'
                 }</h3>
-                <button className={ `${ buttonStyles.cardButton } ${ fontStyles.semibold }` }>영수증 확인</button>
+                <button className={ `${ buttonStyles.paymentCardButton } ${ fontStyles.semibold }` }>영수증 확인</button>
             </div>
         </section>
     );

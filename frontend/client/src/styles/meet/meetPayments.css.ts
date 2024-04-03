@@ -47,3 +47,18 @@ globalStyle(`${amountBox} > p`, {
 export const amountFontSet = style({
     color: "black"
 })
+
+export const legend = style({
+    display: "flex",
+    gap: "0.3rem"
+})
+
+export const legendLayout = style({
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.8rem"
+})
+
+export const paymentsLayout = style({
+    marginBottom: "5rem"
+})

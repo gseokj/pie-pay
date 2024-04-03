@@ -2,37 +2,35 @@ import { QueryFunction } from "@tanstack/query-core";
 import { Member } from "@/model/member";
 import localAxios from "@/util/localAxios";
 import {Payment, PaymentResult} from "@/model/participant";
-const axios = localAxios();
+import authAxios from '@/util/authAxios';
 
-const token: string = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaWUiLCJleHAiOjEwNzExNTAwMTQzLCJzdWIiOiJoZ29hMjAwMEBuYXZlci5jb20iLCJyb2xlcyI6IlJPTEVfTk9UX0NFUlRJRklFRCJ9.hGZ4jBwzHS-qnjwhJtNA2UcxqiwAg4uVfIUhdv-RJzI";
 
-export const getPayment: QueryFunction<Payment> = async ({ queryKey }) => {
-    const [_,payId] = queryKey;
+export const getPayment:QueryFunction<Payment> = async ({ queryKey }) => {
+    const [_,payId,token] = queryKey;
+    console.log("토큰",token);
     try {
-        const response = await axios.get(`/api/pay/parties/${payId}`, {
+        const response = await authAxios.get(`/api/pay/parties/${payId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
-            }
+            },
         });
-        console.log(response.data.result);
         return response.data.result;
     } catch (error) {
-        console.error('Failed to fetch data', error);
-        throw new Error('Failed to fetch data');
+        console.error('Failed to get Meet Payment data', error);
+        throw new Error('Failed to get Meet Payment data');
     }
 }
 
+
 export const getPaymentResult: QueryFunction<PaymentResult> = async ({ queryKey }) => {
-    const [_,payId] = queryKey;
-    console.log(payId)
+    const [_,payId,token] = queryKey;
     try {
-        const response = await axios.get(`/api/pay/info/${payId}`, {
+        const response = await authAxios.get(`/api/pay/info/${payId}`, {
 
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
-        console.log(response.data);
         return response.data.result;
     } catch (error) {
         console.error('Failed to fetch data', error);
