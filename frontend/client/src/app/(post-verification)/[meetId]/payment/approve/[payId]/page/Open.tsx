@@ -89,13 +89,15 @@ export default function Open({ payId }: Props) {
     console.log(initiating);
     if (!initiating) return;
     init(Number(payId));
+    return () => {
+      setInitiating();
+    };
   }, [initiating]);
   useEffect(() => {
     if (!res) return;
     if(res.payAgree===false){
       setStack(prevState => prevState+1);
     }
-    console.log(res.payAgree);
   }, [res]);
   return (<div>
 

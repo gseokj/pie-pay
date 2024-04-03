@@ -7,7 +7,7 @@ import Image from 'next/image';
 export default function XBackButton() {
     const router = useRouter();
     const onClickBack = () => {
-        router.back();
+        router.replace('/');
     }
     return (
         <button type="button" aria-label="Go Back" onClick={onClickBack}>

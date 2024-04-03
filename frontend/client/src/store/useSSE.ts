@@ -32,7 +32,11 @@ export const useSSE = create<Store>((set) => {
       set((state) => ({ SSEnotification: notificationData }));
     });
 
-
+    source.onerror = () => {
+      console.error('Connection error, reconnecting in 2 seconds...');
+      source!.close();
+      connect(token);
+    };
   };
 
   return {
@@ -46,4 +50,3 @@ export const useSSE = create<Store>((set) => {
     },
   };
 });
-
