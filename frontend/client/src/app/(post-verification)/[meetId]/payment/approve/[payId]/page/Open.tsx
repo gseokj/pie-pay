@@ -15,6 +15,7 @@ import { Payment } from '@/model/participant';
 import { getCookie } from '@/util/getCookie';
 import { Me } from '@/model/member';
 import { hands, moveDownAnimation } from '@/app/component/DownAnimation';
+import useProgressbar from '@/hooks/useProgressbar';
 
 type Props = { payId: number }
 
@@ -40,6 +41,7 @@ export default function Open({ payId }: Props) {
 
 
   useEffect(() => {
+
     const myInfo: Me | undefined = queryClient.getQueryData(['userInfo', token]);
     let res: Payment | null;
     // 만약 방 개설자 아니다 || 방 개설자지만 나갔다가 들어왔다면  => 서버에서 불러온 payment를 넣어주는 과정
@@ -99,11 +101,18 @@ export default function Open({ payId }: Props) {
       setStack(prevState => prevState+1);
     }
   }, [res]);
+
+
+  const [remainingTime, progressBarComponent] = useProgressbar(payment?.createdAt);
   return (<div>
 
     <Header type={two} />
     <p className={styles.paragraph.title}>결제 동의를 해 주세요</p>
-    <Timer payId={payId} />
+    {/*<Timer createdAt={payment?.createdAt} />*/}
+
+    {Number(remainingTime) > 0 && <div>
+    {remainingTime}초 이내에 선택해 주세요!{progressBarComponent}
+    </div>}
     <BankAccount />
     <p className={styles.paragraph.total}>결제 멤버 {payment?.participants.length}</p>
     {Array.from({ length: stack }).map((_, index) => (
@@ -113,7 +122,6 @@ export default function Open({ payId }: Props) {
       </div>
     ))}
     <ParticipantList payId={Number(payId)} />
-
     <StateButton payId={Number(payId)} />
   </div>);
 }

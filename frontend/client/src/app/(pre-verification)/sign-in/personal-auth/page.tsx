@@ -140,9 +140,7 @@ export default function Page() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.barContainer}>
-        <ProgressBar />
-      </div>
+      <div className={styles.barContainer}>{/* <ProgressBar /> */}</div>
       <div className={styles.contentContainer}>
         <div className={styles.title}>본인인증</div>
         <form className={styles.formContainer}>

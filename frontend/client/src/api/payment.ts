@@ -1,7 +1,7 @@
 import { QueryFunction } from "@tanstack/query-core";
 import { Member } from "@/model/member";
 import localAxios from "@/util/localAxios";
-import {Payment, PaymentResult} from "@/model/participant";
+import { CurrPayment, Payment, PaymentResult } from '@/model/participant';
 import authAxios from '@/util/authAxios';
 
 
@@ -34,6 +34,23 @@ export const getPaymentResult: QueryFunction<PaymentResult> = async ({ queryKey 
         return response.data.result;
     } catch (error) {
         console.error('Failed to fetch data', error);
+        throw new Error('Failed to fetch data');
+    }
+}
+
+export const getCurrPayment: QueryFunction<CurrPayment[]> = async ({ queryKey }) => {
+    const [_,token] = queryKey;
+
+    try {
+        const response = await authAxios.get(`/api/meet/paystatus`, {
+
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return response.data.result;
+    } catch (error) {
+        console.error('Failed to fetch data seokju', error);
         throw new Error('Failed to fetch data');
     }
 }

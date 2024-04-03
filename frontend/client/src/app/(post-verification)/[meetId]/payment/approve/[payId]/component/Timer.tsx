@@ -19,15 +19,12 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 type Props={
-    payId:number;
+    createdAt:string|undefined;
 }
-export default function Page({payId}:Props){
-    const { payment, isLoading, updatePayment } = usePayment();
-    let createdAtDate = new Date(payment?.createdAt || "1970-01-01T00:00:00.000Z");
-    createdAtDate.setHours(createdAtDate.getHours() + 9);
+export default function Page({createdAt}:Props){
+    let createdAtDate = new Date(createdAt || "1970-01-01T00:00:00.000Z");
     const newDate = createdAtDate.getTime();
     const [currDate, setCurrDate] = useState(new Date());
-
     const [remainingTime, setRemainingTime] = useState(90);
     const [progressBar, setProgressBar] = useState(0)
     useEffect(() => {
@@ -44,7 +41,6 @@ export default function Page({payId}:Props){
 
     return(<div className="mb-5">{remainingTime>0 && <p>{remainingTime}초 이내에 선택해 주세요!</p>}
         {remainingTime>0 && <BorderLinearProgress variant="determinate" value={progressBar} />}
-        {remainingTime<=0 && <p>만료된 페이지입니다. 결제를 다시 진행해주세요!</p>}
     </div>);
 
 }

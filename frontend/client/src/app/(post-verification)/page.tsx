@@ -16,18 +16,23 @@ import { MeetData } from '@/model/meet';
 import { getCookie } from '@/util/getCookie';
 import { getAccount } from '@/api/account';
 import { Meet } from '@/model/meet/meets';
-
-
+import CurrentParticipation from '@/app/(post-verification)/component/CurrenPayment';
+import CurrentPayment from '@/app/(post-verification)/component/CurrenPayment';
+import { CurrPayment } from '@/model/participant';
+import { useSSE } from '@/store/useSSE';
+import { useRouter } from 'next/navigation';
+import { extractBracketedString } from '@/util/extractBracketedString'
 
 export default function Main() {
   const token = getCookie('accessToken');
   const queryClient = useQueryClient();
   const [count, setCount] = useState();
+  const router = useRouter();
   useEffect(() => {
-    console.log(1);
     // const { data: , isLoading, error } = useQuery({queryKey: ['tt','eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwaWUiLCJleHAiOjEwNzEyMDQwMjkwLCJzdWIiOiJoZ29hMjAwMEBuYXZlci5jb20iLCJyb2xlcyI6IlJPTEVfQ0VSVElGSUVEIn0.JNJLVteOJ8Vh84uxpxcKPQLEUl8fimjsKWF7dI6CBb8'], queryFn: connectSSE}) ;    console.log(1);
     // console.log(a);a
   }, []);
+
 
   const meetList: Meet[] | undefined = queryClient.getQueryData([
     'meetList',
@@ -37,9 +42,7 @@ export default function Main() {
   const [meets, setMeets] = useState<Meet[]>([]);
   const [joinModalVisibility, setJoinModalVisibility] = useState(false);
   const [createModalVisibility, setCreateModalVisibility] = useState(false);
-
-
-
+  const [SSEPayment, setSSEPayment] = useState<CurrPayment[]>([]);
 
   useEffect(() => {
     if (typeof meetList !== 'undefined') {
@@ -52,7 +55,6 @@ export default function Main() {
     console.log('clicked');
     setJoinModalVisibility(true);
   };
-
   const createModalOn = () => {
     console.log('create clicked');
     setCreateModalVisibility(true);
@@ -104,14 +106,38 @@ export default function Main() {
       return 0;
     });
   }
+  const {SSEnotification} =useSSE();
 
+  const currPayments = queryClient.getQueryData<CurrPayment[]>(['currPayment', token]);
+  const handleReplace = (payId:number) => {
+      router.push(`/5/payment/approve/${payId}`)
+  };
+
+  useEffect(() => {
+    if(!SSEnotification || !SSEnotification.message) return;
+    const payId = SSEnotification.destinationId;
+    const meetName = extractBracketedString(SSEnotification.message);
+    setSSEPayment(prevState => [ ...prevState, {meetName:meetName,payId:payId,updatedAt:new Date().toISOString()} as CurrPayment ]);
+
+
+  }, [SSEnotification]);
   if (typeof meets === 'undefined') {
     return <></>;
   } else {
     return (
       <>
-
+        {SSEPayment
+          ?.filter(currPayment => ((new Date()).valueOf() - (new Date(currPayment.updatedAt)).valueOf()) / 1000 <= 100)
+          .map(currPayment => (
+            <CurrentPayment key={currPayment.payId} {...currPayment} handleReplace={handleReplace} />
+          ))}
+        {currPayments
+          ?.filter(currPayment => ((new Date()).valueOf() - (new Date(currPayment.updatedAt)).valueOf()) / 1000 <= 100)
+          .map(currPayment => (
+            <CurrentPayment key={currPayment.payId} {...currPayment} handleReplace={handleReplace} />
+          ))}
         <div className={styles.accountContainer}>
+
           <BankAccount />
         </div>
         {count}

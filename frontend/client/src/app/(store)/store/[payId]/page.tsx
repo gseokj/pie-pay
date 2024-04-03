@@ -2,13 +2,13 @@
 
 import * as styles from '@/styles/store/store.css';
 import XBackButton from '@/app/(store)/component/XBackButton';
-import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getStoreReceipt } from '@/api/store';
+import {  useQuery } from '@tanstack/react-query';
+import { getStoreReceipt, postStoreReceipt } from '@/api/store';
 import { getCookie } from '@/util/getCookie';
 import CheckModal from '@/app/(store)/component/CheckModal';
 import { useCheckModal } from '@/store/useCheckModal';
 import { useEffect, useState } from 'react';
-import { LoaderComponent } from '@/app/component/Loading';
+import { useRouter } from 'next/navigation';
 
 type Props=
 {
@@ -19,21 +19,27 @@ type Props=
 export default function Page({params}: Props) {
   const {payId} = params;
   const [token, setToken] = useState('');
-
+  const router = useRouter();
   useEffect(() => {
     const token = getCookie('accessToken') as string;
     setToken(token);
   }, []);
   const {isVisible,updateState}  = useCheckModal();
-  const { data: receipt, isLoading, error } = useQuery({queryKey: ['store',payId,token], queryFn: getStoreReceipt})
-console.log(receipt);
+  const { data: receipt} = useQuery({queryKey: ['store',payId,token], queryFn: getStoreReceipt})
 
+  const handleReplace = ()=>{
+    postStoreReceipt(payId,token).then(response=>{
+      router.replace('/');
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
   return (
     <>
-      {!isLoading && receipt ?
+      {receipt &&
       <div className="flex flex-col h-[100%] m-3">
 
-        {isVisible && <CheckModal payId={Number(payId)}/>}
+        {isVisible && <CheckModal handleReplace={handleReplace}/>}
         <div>
           <XBackButton />
         </div>
@@ -70,9 +76,7 @@ console.log(receipt);
         </div>
         <button onClick={updateState} className={styles.button}>결제하기</button>
 
-      </div>
-
-      : <LoaderComponent/>}
+      </div>}
 
     </>
 

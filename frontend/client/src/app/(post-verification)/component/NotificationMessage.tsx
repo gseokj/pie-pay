@@ -41,7 +41,7 @@ export default function NotificationMessage() {
                             {queryNotification.referenceId === 3 && <><Image src={instead} alt="대신"/><p>대신 내주기</p></>}
                             {queryNotification.referenceId === 4 && <><Image src={noti} alt=""/><p>결제 알림</p></>}
                         </div>
-                        <p className={styles.paragraph}>{dayjs(queryNotification.createdAt).add(9, 'hour').fromNow()}</p>
+                        <p className={styles.paragraph}>{dayjs(queryNotification.createdAt).fromNow()}</p>
                     </div>
                     <p>{queryNotification.message}</p>
 

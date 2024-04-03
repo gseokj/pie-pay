@@ -11,6 +11,7 @@ import { getNotification } from '@/api/notification';
 import { getMe } from '@/api/member';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useSSE } from '@/store/useSSE';
+import { getCurrPayment } from '@/api/payment';
 
 export const metadata: Metadata = {
     title: "piepay",
@@ -28,6 +29,7 @@ export default async function PostVerificationLayout({children}: Props) {
     await queryClient.prefetchQuery({queryKey: ['meetList', token], queryFn: getMeetList, staleTime: 1000 * 60 * 15});
     await queryClient.prefetchQuery({queryKey: ['notification', token], queryFn: getNotification});
     await queryClient.prefetchQuery({queryKey: ['userInfo', token], queryFn: getMe,staleTime: 1000* 60 * 60},);
+    await queryClient.prefetchQuery({queryKey: ['currPayment', token], queryFn: getCurrPayment, staleTime: 1000 * 60 * 100});
     const dehydratedState = dehydrate(queryClient);
 
 
