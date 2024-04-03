@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useState, useRef } from 'react';
 import ProgressBar from '@/app/(pre-verification)/sign-in/_component/ProgressBar';
@@ -21,7 +21,8 @@ type CodeState = {
 export default function Page() {
   const { accountInfo, setAccountInfo } = useStore();
   const [message, setMessage] = useState('다른 계좌로 인증하기');
-  const [messagePart1, setMessagePart1] = useState('입금자명이 일치하지 않습니다');
+  const [messagePart1, setMessagePart1] =
+    useState('입금자명이 일치하지 않습니다');
   const [code, setCode] = useState<CodeState>({
     code0: '',
     code1: '',
@@ -127,9 +128,7 @@ export default function Page() {
         onCompositionEnd={handleCompositionEnd}
         maxLength={4}
       />
-      <div className={styles.barContainer}>
-        <ProgressBar />
-      </div>
+      <div className={styles.barContainer}>{/* <ProgressBar /> */}</div>
       <div className={styles.contentContainer}>
         <div className={styles.title}>
           계좌로 받은 <br />
