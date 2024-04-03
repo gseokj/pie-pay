@@ -39,7 +39,7 @@ export const modalContainer = style({
   bottom: 0,
   left: 0,
   width: '100%',
-  height: '50%',
+  height: '80%',
   backgroundColor: 'white', // 배경색은 필요에 따라 조정
   borderTopLeftRadius: '16px', // 모달의 상단 모서리를 둥글게
   borderTopRightRadius: '16px', // 모달의 상단 모서리를 둥글게

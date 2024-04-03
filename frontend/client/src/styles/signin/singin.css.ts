@@ -25,7 +25,7 @@ export const title = style({
   height: '20%',
 
   fontWeight: 'bold',
-  fontSize: '1.7rem',
+  fontSize: '1.3rem',
 });
 export const subTitle = style({
   paddingLeft: '15px',
