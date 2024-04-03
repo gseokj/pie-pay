@@ -1,8 +1,15 @@
-# 목차
+<div style="text-align:center;">
+  <img src="README.assets/piepaylogo.svg" width="80%"/>
+</div>
+
+# :page_facing_up:목차
 1. [서비스 소개](#서비스-소개)
 2. [기획 배경](#기획-배경)
-3. 
-4. [프로젝트 설명](#프로젝트-설명)
+3. [화면소개](#-화면-소개)
+4. [기술 스택](#-기술-스택)
+5. [서비스 아키텍처](#-서비스-아키텍처)
+6. [시퀸스 다이어그램](#-시퀸스-다이어그램)
+7. [프로젝트 산출물](#-프로젝트-산출물)
 <br/><br/>
 
 # :dollar:서비스 소개
@@ -20,36 +27,39 @@
 
 **↓ 클릭 후 UCC 페이지로 이동**
 
-[![Video Label](https://img.youtube.com/vi/vU_FLS3CoHo/mqdefault.jpg)](https://youtu.be/vU_FLS3CoHo)
+[![Video Label](썸네일)](링크)
 
 <br/>
 [Top](#목차)
 <br/><br/>
 
-<!-- # 기획 배경
+# :yen:기획 배경
 ## 배경
+친구들과 즐거운 시간을 보내고 나면 반드시 해야하는 귀찮은 과정이 있습니다. 바로 정산!
+
+하지만 카카오톡 정산을 활용하면 상대가 돈을 보내줄 때까지 눈치보며 기다려야 했습니다. :cry:
+
+이를 위해 정산 과정에서 기다릴 필요도, 눈치볼 필요도 없도록 **파이페이**가 탄생했습니다!
+
 ## 목적
+
+**정산을 위해 일일이 찾아다니지 말고, 결제하면서 정산하자!**
+
 ## 의의
+- 정산 과정 간소화
+- 개별 계산 or 개별 이체의 과정을 생략
+- 결제 내역을 통한 모임의 추억 저장
 [Top](#목차)
 <br/><br/>
 
-# 화면?
+# :iphone:화면 소개
+화면1
+화면2...
+
 [Top](#목차)
-<br/><br/> -->
+<br/><br/>
 
-# 프로젝트 설명
-## 팀원
-<div align="center">
-
-|                                                                                 **류지수-팀장**<br>                                                                                      |                                                                                        **고석주-팀원**<br>                                                                                         |                                                                                      **김준수-팀원**<br>                                                                                        |                                                                                        **이성목-팀원**<br>                                                                                         |                                                                                           **함승찬-팀원**<br>|          **황재언-팀원**<br>|
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| [<img src="https://secure.gravatar.com/avatar/30796a5ca36f86621d9e7abe1ad15221?s=192&d=identicon" height=150 width=150> <br/> @onassis793](https://lab.ssafy.com/onassis793) | [<img src="https://secure.gravatar.com/avatar/8ab49b21f8cec24b47e248ce9c82a98d?s=192&d=identicon" height=150 width=150> <br/> @hgoa2000](https://lab.ssafy.com/hgoa2000) | [<img src="https://secure.gravatar.com/avatar/c5adcea95c51bc60dc7f36b183716250?s=192&d=identicon" height=150 width=150> <br/> @pittuarez](https://lab.ssafy.com/pittuarez) | [<img src="README.assets/leeseongmok_profile.jpeg" height=150 width=150> <br/> @CocoisCat](https://lab.ssafy.com/CocoisCat) | [<img src="https://secure.gravatar.com/avatar/8f209ad61e9e72afa3c4dc5a3e5634e9?s=192&d=identicon" height=150 width=150> <br/> @head0618](https://lab.ssafy.com/head0618) | [<img src="https://secure.gravatar.com/avatar/1b8d41d61dbe17bdf60b770edc8c8124?s=192&d=identicon" height=150 width=150> <br/> @hju753](https://lab.ssafy.com/hju753) |
-
-</div>
-
-
-
-<!-- ## 기술스택 -->
+# :floppy_disk:기술 스택
 ## 코드 컨벤션
 <details>
 <summary>BE</summary>
@@ -185,7 +195,67 @@ export default Button;
 [Top](#목차)
 <br/><br/>
 
-## 기능 정의서
-<img src="README.assets/기능정의서(미완).PNG" width="80%" height="20%"/>
-<br/>
+
+# :open_file_folder:서비스 아키텍처
+
+사진 & 설명 추가
+
+# :chart_with_upwards_trend:시퀀스 다이어그램
+### 회원가입 시퀀스
+![signup](README.assets/signup_sequence.png)
+
+
+### 휴대폰 본인인증 시퀀스
+<img src="/README.assets/phone_certification_sequence.png" width="80%"/>
+
+### 계좌 본인인증 시퀀스
+<img src="/README.assets/account_certification_sequence.png" width="80%"/>
+
+### 로그인 시퀀스
+<img src="/README.assets/login_sequence.png" width="80%"/>
+
+### 모임 생성 및 참여 시퀀스
+<img src="/README.assets/meet_sequence.png" width="80%"/>
+
+### 결제 참여자 선택 시퀀스
+<img src="/README.assets/participant_sequence.png" width="80%"/>
+
+### 결제 및 정산 시퀀스
+<img src="/README.assets/pay_sequence.png" width="80%"/>
+
+[Top](#목차)
+<br/><br/>
+
+# :scroll:프로젝트 산출물
+
+**↓ 사진 클릭 시 페이지로 이동**
+
+### 기능 정의서
+[<img src="README.assets/기능정의서(미완).PNG" width="80%"/>](https://www.notion.so/14f4366db68f41fca4fad994acb845a5?v=92284a01b0424bccb9cb7c541f36e75b)
+
+### 요구사항 명세서
+[<img src="README.assets/요구사항명세서.PNG" width="80%"/>)](https://www.notion.so/c75d4b66f4304098822f0dfa1fcffc2e)
+
+### 기능 명세서
+[<img src="README.assets/기능명세서.PNG" width="80%"/>](https://www.notion.so/dd29f25471bf4ee3878a19eb92e355aa)
+
+### API 명세서
+[<img src="README.assets/API명세서.PNG" width="80%"/>](https://www.notion.so/API-e4dc78cf4bb24312b34de0a942938512)
+
+###  Figma
+<img src="README.assets/피그마.PNG" width="80%"/>
+
+### ERD
+<img src="README.assets/erd.PNG" width="80%"/>
+
+
+# :raising_hand:팀원
+<div align="center">
+
+|**류지수(팀장)**<br>|**고석주**<br>|**김준수**<br>|**이성목**<br>|**함승찬**<br>|**황재언**<br>|
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| [<img src="https://secure.gravatar.com/avatar/30796a5ca36f86621d9e7abe1ad15221?s=192&d=identicon" height=150 width=150> <br/> @onassis793](https://lab.ssafy.com/onassis793) | [<img src="https://secure.gravatar.com/avatar/8ab49b21f8cec24b47e248ce9c82a98d?s=192&d=identicon" height=150 width=150> <br/> @hgoa2000](https://lab.ssafy.com/hgoa2000) | [<img src="https://secure.gravatar.com/avatar/c5adcea95c51bc60dc7f36b183716250?s=192&d=identicon" height=150 width=150> <br/> @pittuarez](https://lab.ssafy.com/pittuarez) | [<img src="README.assets/leeseongmok_profile.jpeg" height=150 width=150> <br/> @CocoisCat](https://lab.ssafy.com/CocoisCat) | [<img src="https://secure.gravatar.com/avatar/8f209ad61e9e72afa3c4dc5a3e5634e9?s=192&d=identicon" height=150 width=150> <br/> @head0618](https://lab.ssafy.com/head0618) | [<img src="https://secure.gravatar.com/avatar/1b8d41d61dbe17bdf60b770edc8c8124?s=192&d=identicon" height=150 width=150> <br/> @hju753](https://lab.ssafy.com/hju753) |
+
+</div>
+
 [Top](#목차)
