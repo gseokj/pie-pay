@@ -2,12 +2,12 @@
 
 import * as styles from '@/styles/payment/select/selectMember.css';
 import one from '@/assets/icons/payment1.svg';
-import SearchNickname from '@/app/(post-verification)/[meetId]/payment/select/component/SearchNickname';
-import SelectedMember from '@/app/(post-verification)/[meetId]/payment/select/component/SelectedMember';
-import MemberList from '@/app/(post-verification)/[meetId]/payment/select/component/MemberList';
-import ListHeader from '@/app/(post-verification)/[meetId]/payment/select/component/ListHeader';
-import Header from '@/app/(post-verification)/[meetId]/payment/component/Header';
-import ParticipateButton from '@/app/(post-verification)/[meetId]/payment/select/component/ParticipateButton';
+import SearchNickname from '@/app/(post-verification)/[meetId]/select/component/SearchNickname';
+import SelectedMember from '@/app/(post-verification)/[meetId]/select/component/SelectedMember';
+import MemberList from '@/app/(post-verification)/[meetId]/select/component/MemberList';
+import ListHeader from '@/app/(post-verification)/[meetId]/select/component/ListHeader';
+import Header from "@/app/(post-verification)/payment/component/Header";
+import ParticipateButton from '@/app/(post-verification)/[meetId]/select/component/ParticipateButton';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMemberFilter } from '@/store/useMemberFilter';
 import { Me, Member } from '@/model/member';

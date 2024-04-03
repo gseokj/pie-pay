@@ -42,7 +42,7 @@ export default function ParticipateButton({ meetId }: Props) {
             res.participants.sort((member)=>member.memberInfo.memberId==myInfo?.memberId ? -1 : 1)
             setPayment(res);
 
-            route.replace(`approve/${res["payId"]}`);
+            route.replace(`/payment/approve/${res["payId"]}`);
         },
         onError: () => { console.error('에러 발생') },
         onSettled: () => { console.log('결과에 관계 없이 무언가 실행됨') }

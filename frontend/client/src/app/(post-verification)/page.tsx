@@ -16,8 +16,8 @@ import { MeetData } from '@/model/meet';
 import { getCookie } from '@/util/getCookie';
 import { getAccount } from '@/api/account';
 import { Meet } from '@/model/meet/meets';
-import { useSSE } from '@/store/useSSE';
-import { connectSSE } from '@/api/sse';
+
+
 
 export default function Main() {
   const token = getCookie('accessToken');
@@ -38,12 +38,15 @@ export default function Main() {
   const [joinModalVisibility, setJoinModalVisibility] = useState(false);
   const [createModalVisibility, setCreateModalVisibility] = useState(false);
 
+
+
+
   useEffect(() => {
     if (typeof meetList !== 'undefined') {
       const sortedList = sortMeetData(meetList);
       setMeets(sortedList);
     }
-  }, []);
+  }, [token]);
 
   const joinModalOn = () => {
     console.log('clicked');

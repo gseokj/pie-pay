@@ -3,18 +3,21 @@
 import React, {useEffect, useState} from "react";
 import logo from "@/assets/icons/piepaylogo.svg";
 import Image from "next/image";
-import refresh from "@/assets/icons/refresh.svg"
 import {useQuery} from "@tanstack/react-query";
-import Refresh from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/Refresh";
+import Refresh from "@/app/(post-verification)/payment/approve/[payId]/component/Refresh";
 import {getQRCode} from "@/api/QRcode";
-import QRBackground from "@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/QRBackground";
+import QRBackground from "@/app/(post-verification)/payment/approve/[payId]/component/QRBackground";
+import { getCookie } from '@/util/getCookie';
 
 type Props = { payId: number }
 export default function QRCode({payId}:Props) {
-
-
+    const [token, setToken] = useState('');
+    useEffect(() => {
+        const token = getCookie('accessToken') as string;
+        setToken(token);
+    }, []);
     const [imageUrl, setImageUrl] = useState("");
-    const { data: qr, isLoading, error } = useQuery({queryKey: ['QR',payId], queryFn: getQRCode}) ;
+    const { data: qr, isLoading, error } = useQuery({queryKey: ['QR',payId,token], queryFn: getQRCode}) ;
     useEffect(() => {
         if(!qr) return;
         const url = window.URL.createObjectURL(qr);
@@ -32,13 +35,13 @@ export default function QRCode({payId}:Props) {
             <img src={imageUrl}/>
 
             <div>
-                <p className="font-bold mb-3 ml-3"><Refresh payId={payId}/></p>
-                <div className="flex text-gray-500">
+                <p className="font-bold mb-3 ml-3">
+                    점원에게 바코드를 보여주세요!
+                    {/*<Refresh payId={payId}/>*/}
+                </p>
+            {/*    <div className="flex text-gray-500">*/}
 
-                    <p>새로고침</p>
-
-                    <Image src={refresh} alt=""/>
-                </div>
+            {/*    </div>*/}
             </div>
         </div>
     </div>)

@@ -1,11 +1,9 @@
 import type {Metadata} from "next";
 import {ReactNode} from "react";
-import * as styles from "@/styles/payment/select/payment.css"
 import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
-import {getMembers} from "@/api/member";
-import {getAccount} from "@/api/account";
 import {getPayment, getPaymentResult} from "@/api/payment";
 import { getReceipt } from '@/api/receipt';
+import { cookies } from 'next/headers';
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -15,12 +13,13 @@ export const metadata: Metadata = {
 type Props = { children: ReactNode,  params: { payId: string }}
 
 export default async function PaymentModalLayout({children, params}: Props) {
+    const token = cookies().get('accessToken');
     let {payId} = params;
-
+    console.log(token);
     const queryClient = new QueryClient();
-    await queryClient.prefetchQuery({queryKey: ['payment',Number(payId)], queryFn: getPayment});
-    await queryClient.prefetchQuery({queryKey: ['receipt',Number(payId)], queryFn: getReceipt});
-    await queryClient.prefetchQuery({queryKey: ['result', Number(payId)], queryFn: getPaymentResult});
+    await queryClient.prefetchQuery({queryKey: ['payment',Number(payId),token?.value], queryFn: getPayment});
+    await queryClient.prefetchQuery({queryKey: ['receipt',Number(payId),token?.value], queryFn: getReceipt});
+    await queryClient.prefetchQuery({queryKey: ['result', Number(payId),token?.value], queryFn: getPaymentResult});
 
 
     const dehydratedState = dehydrate(queryClient);

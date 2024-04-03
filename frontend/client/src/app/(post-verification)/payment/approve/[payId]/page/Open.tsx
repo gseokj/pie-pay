@@ -2,12 +2,12 @@
 
 import BankAccount from '@/app/(post-verification)/component/BankAccount';
 import two from '@/assets/icons/payment2.svg';
-import Header from '@/app/(post-verification)/[meetId]/payment/component/Header';
-import ParticipantList from '@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/ParticipantList';
-import Timer from '@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/Timer';
+import Header from '@/app/(post-verification)/payment/component/Header';
+import ParticipantList from '@/app/(post-verification)/payment/approve/[payId]/component/ParticipantList';
+import Timer from '@/app/(post-verification)/payment/approve/[payId]/component/Timer';
 import React, { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import StateButton from '@/app/(post-verification)/[meetId]/payment/approve/[payId]/component/StateButton';
+import StateButton from '@/app/(post-verification)/payment/approve/[payId]/component/StateButton';
 import * as styles from '@/styles/payment/proceed/proceedmain.css';
 import { usePaymentSocket } from '@/store/usePaymentSocket';
 import { usePayment } from '@/store/usePayment';
@@ -20,22 +20,23 @@ type Props = { payId: number }
 
 
 export default function Open({ payId }: Props) {
+  const [token, setToken] = useState('');
+  useEffect(() => {
+    const token = getCookie('accessToken') as string;
+    setToken(token);
+  }, [token]);
+
   const queryClient = useQueryClient();
   const [stack, setStack] = useState(0);
 
   // tanstack query
-  const payment: Payment | undefined = queryClient.getQueryData(['payment', payId]);
+  const payment: Payment | undefined = queryClient.getQueryData(['payment', payId,token]);
 
   // zustand와 tanstack을 동시에 관리하는 이유 => socket을 바로 post로 보내는게 아니라 결제 동의가 이루어지지 않으면 post가 되지않음.
   const { payment: tempPayment, setPayment } = usePayment();
 
   // 소켓 초기값
   const { init, initRes, initiating, connect, setInitiating,res } = usePaymentSocket();
-  const [token, setToken] = useState('');
-  useEffect(() => {
-    const token = getCookie('accessToken') as string;
-    setToken(token);
-  }, [token]);
 
 
   useEffect(() => {
