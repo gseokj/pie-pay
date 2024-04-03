@@ -5,13 +5,23 @@
 4. [프로젝트 설명](#프로젝트-설명)
 <br/><br/>
 
-# 서비스 소개
+# :dollar:서비스 소개
 ## 서비스 설명
 ### 개요
 - 빠른 N분배 정산 가능한 Pay
-### 대상
-- 꾸준히 정기적으로 모이는 모임 or 팀
+### 대상:family:
+- 정기적으로 모이는 모임이 있는 사람들
+- 모임 후 정산 요청을 보내기 귀찮은 사람들
+- 모임 후 정산해야 한다는 사실을 잘 잊는 사람들
+- 모임에서 어떤 활동을 했는지 추억을 남기고 싶은 사람들
 <img src="README.assets/페르소나.jpg" width="80%" height="20%"/>
+
+## UCC🎞️
+
+**↓ 클릭 후 UCC 페이지로 이동**
+
+[![Video Label](https://img.youtube.com/vi/vU_FLS3CoHo/mqdefault.jpg)](https://youtu.be/vU_FLS3CoHo)
+
 <br/>
 [Top](#목차)
 <br/><br/>
@@ -28,14 +38,14 @@
 <br/><br/> -->
 
 # 프로젝트 설명
-<!-- ## 팀원 -->
-<!-- <div align="center">
+## 팀원
+<div align="center">
 
 |                                                                                 **류지수-팀장**<br>                                                                                      |                                                                                        **고석주-팀원**<br>                                                                                         |                                                                                      **김준수-팀원**<br>                                                                                        |                                                                                        **이성목-팀원**<br>                                                                                         |                                                                                           **함승찬-팀원**<br>|          **황재언-팀원**<br>|
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| [<img src="" height=150 width=150> <br/> @onassis793](https://lab.ssafy.com/onassis793) | [<img src="" height=150 width=150> <br/> @hgoa2000](https://lab.ssafy.com/hgoa2000) | [<img src="" height=150 width=150> <br/> @pittuarez](https://lab.ssafy.com/pittuarez) | [<img src="https://lab.ssafy.com/s10-fintech-finance-sub1/S10P21A402/-/raw/master/README.assets/leeseongmok_profile.jpeg" height=150 width=150> <br/> @CocoisCat](https://lab.ssafy.com/CocoisCat) | [<img src="" height=150 width=150> <br/> @head0618](https://lab.ssafy.com/head0618) | [<img src="" height=150 width=150> <br/> @hju753](https://lab.ssafy.com/hju753) |
+| [<img src="https://secure.gravatar.com/avatar/30796a5ca36f86621d9e7abe1ad15221?s=192&d=identicon" height=150 width=150> <br/> @onassis793](https://lab.ssafy.com/onassis793) | [<img src="https://secure.gravatar.com/avatar/8ab49b21f8cec24b47e248ce9c82a98d?s=192&d=identicon" height=150 width=150> <br/> @hgoa2000](https://lab.ssafy.com/hgoa2000) | [<img src="https://secure.gravatar.com/avatar/c5adcea95c51bc60dc7f36b183716250?s=192&d=identicon" height=150 width=150> <br/> @pittuarez](https://lab.ssafy.com/pittuarez) | [<img src="README.assets/leeseongmok_profile.jpeg" height=150 width=150> <br/> @CocoisCat](https://lab.ssafy.com/CocoisCat) | [<img src="https://secure.gravatar.com/avatar/8f209ad61e9e72afa3c4dc5a3e5634e9?s=192&d=identicon" height=150 width=150> <br/> @head0618](https://lab.ssafy.com/head0618) | [<img src="https://secure.gravatar.com/avatar/1b8d41d61dbe17bdf60b770edc8c8124?s=192&d=identicon" height=150 width=150> <br/> @hju753](https://lab.ssafy.com/hju753) |
 
-</div> -->
+</div>
 
 
 
