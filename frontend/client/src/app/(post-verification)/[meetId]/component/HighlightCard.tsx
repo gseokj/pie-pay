@@ -180,17 +180,17 @@ export default function HighlightCard({ props }: HighlightProps) {
                     <h3 className={fontStyles.semibold}>최다 참석자</h3>
                 </div>
                 <div className={highlightStyles.listBody}>
-                    <div className={mainStyles.imageBox.imageBox44}>
+                    <div className={mainStyles.imageBox.imageBox40}>
                         <Image
                             src={highlight.mostAttendingMember.profileImage}
                             alt="member profile"
                             fill={true}
                             objectFit="cover"
-                            sizes="(max-width: 44px)"
+                            sizes="(max-width: 40px)"
                         />
                     </div>
-                    <div className={highlightStyles.listInfo}>
-                        <p className={fontStyles.medium}>{highlight.mostAttendingMember.nickname}</p>
+                    <div className={highlightStyles.cardListInfo}>
+                        <p className={fontStyles.semibold}>{highlight.mostAttendingMember.nickname}</p>
                         <h2 className={fontStyles.semibold}>{highlight.memberAttendingCount}
                             <span className={`${highlightStyles.listInfoAdd} ${fontStyles.reqular}`}>회 참여</span>
                         </h2>
@@ -265,12 +265,15 @@ export default function HighlightCard({ props }: HighlightProps) {
                     <Image src={liquorIcon} alt="icon" width={24} height={24}/>
                     <h3 className={fontStyles.semibold}>마신 술</h3>
                 </div>
-                <div className={highlightStyles.alcoholBox}>
-                    {Array.from({length: currentCount}, (_, i) => (
-                        <div key={i}>
-                            <Image src={beerIcon} alt="alcohol" width={24} height={24}/>
-                        </div>
-                    ))} <p className={`${fontStyles.semibold}`} style={{ marginLeft : "0.4rem"}}>총 {currentCount}병</p>
+                <div className={highlightStyles.centerInner2}>
+                    <div className={highlightStyles.alcoholBox}>
+                        {Array.from({length: currentCount}, (_, i) => (
+                            <div key={i}>
+                                <Image src={beerIcon} alt="alcohol" width={24} height={24}/>
+                            </div>
+                        ))}
+                    </div>
+                    <p className={`${fontStyles.semibold}`} style={{marginLeft: "0.4rem"}}>총 {currentCount}병</p>
                 </div>
             </div>
         );

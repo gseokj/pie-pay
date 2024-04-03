@@ -71,6 +71,22 @@ globalStyle(`${listInfo} > h2`, {
 
 // ------------------ 카드 타입 ----------------------
 
+export const cardListInfo = style({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start"
+});
+
+globalStyle(`${cardListInfo} > p`, {
+    fontSize: "1rem",
+    lineHeight: "1.6rem"
+});
+
+globalStyle(`${cardListInfo} > h2`, {
+    fontSize: "1rem",
+    lineHeight: "1rem"
+});
+
 export const cardLayout = style({
     flexDirection: "column",
     marginBottom: "2.2%",
@@ -121,7 +137,8 @@ export const spaceBetween = style({
 
 export const alcoholBox = style({
     display: "flex",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    width: "100%"
 })
 
 export const lastCard = style({
@@ -140,6 +157,14 @@ export const centerInner = style({
     flexDirection: "column",
     alignItems: "center",
     gap: "0.8rem"
+})
+
+export const centerInner2 = style({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    width: "100%",
+    gap: "0.4rem"
 })
 
 export const avgPayLayout = style({
