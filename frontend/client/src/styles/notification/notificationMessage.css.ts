@@ -16,6 +16,7 @@ export const box = style({
     ':hover':{
         scale: '105%'
     },
+
     transitionDuration: '300ms'
 })
 
