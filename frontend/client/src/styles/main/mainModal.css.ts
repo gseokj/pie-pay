@@ -29,6 +29,9 @@ export const modalLayout = styleVariants({
     createMeetModal: [defaultModalLayout, {
         bottom: "-80%",
 
+    }],
+    paymentModal: [defaultModalLayout, {
+        bottom: "-120%",
     }]
 })
 
@@ -39,9 +42,29 @@ export const modalOn = style({
 export const modalContentLayout = style({
     padding: "15% 6% 1.5rem 6%",
     height: "100%",
+    width: "100%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between"
+});
+
+export const inviteModalContentLayout = style({
+    padding: "15% 6% 1.5rem 6%",
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    gap: "1.2rem"
+});
+
+export const paymentModalContentLayout = style({
+    padding: "15% 6% 1.5rem 6%",
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
 });
 
 globalStyle(`${modalContentLayout} > h3`, {
@@ -97,4 +120,28 @@ export const modalBackground = style({
 export const modalBackgroundOn = style({
     backgroundColor: "rgba(0,0,0,0.25)",
     visibility: "visible"
+})
+
+export const modalExitButton = style({
+    textDecoration: "underline",
+    textUnderlineOffset: "0.3rem",
+    color: theme.blueGray,
+    fontSize: "1.4rem",
+    marginBottom: "6%"
+});
+
+export const inviteModalButtons = style({
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center"
+})
+
+export const timeLayout = style({
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+    color: theme.gray,
+    fontSize: "1rem",
+    lineHeight: "1.4rem",
+    marginBottom: "1rem"
 })

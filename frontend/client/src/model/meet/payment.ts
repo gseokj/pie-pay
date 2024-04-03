@@ -4,6 +4,7 @@ interface Payment {
     totalPayAmount: number;
     orders: Order;
     updatedAt: string;
+    payId: number;
 }
 
 interface Order {
@@ -28,7 +29,56 @@ interface Category {
     amount: number;
 }
 
+interface Receipt {
+    orderId: number;
+    storeInfo: StoreInfo;
+    orderMenus: OrderMenu[];
+    totalAmount: number;
+    createdAt: string;
+}
+
+interface StoreInfo {
+    storeName: string;
+    address: string;
+    phone: string;
+}
+
+interface OrderMenu {
+    menuName: string;
+    menuPrice: number;
+    quantity: number;
+    total: number;
+}
+
+interface PayMember {
+    participants: Participant[];
+    payInsteadList: PayInstead[];
+}
+
+interface Participant {
+    participantId: number;
+    memberInfo: MemberInfo;
+    isDrinkAlcohol: boolean;
+    payAgree: boolean;
+    payAmount: number;
+}
+
+interface MemberInfo {
+    memberId: number;
+    nickname: string;
+    profileImage: string;
+}
+
+interface PayInstead {
+    borrowerId: number;
+    lenderId: number;
+    amount: number;
+    payback: boolean;
+}
+
 export type {
     Payment, Order, Store,
-    Category
+    Category,
+    Receipt, StoreInfo, OrderMenu,
+    PayMember, Participant, MemberInfo, PayInstead,
 }

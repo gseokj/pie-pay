@@ -1,4 +1,4 @@
-import {globalStyle, style} from "@vanilla-extract/css";
+import {globalStyle, style, styleVariants} from "@vanilla-extract/css";
 import theme from "@/styles/theme/theme";
 
 export const timeStandardLayout = style({
@@ -61,4 +61,64 @@ export const legendLayout = style({
 
 export const paymentsLayout = style({
     marginBottom: "5rem"
+})
+
+
+// ------------------ modal --------------------
+export const dropDownHeader = style({
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    margin: "0.5rem 0"
+});
+
+globalStyle(`${dropDownHeader} > h3`, {
+    fontSize: "1.1rem",
+})
+
+export const paymentModalMain = style({
+    position: "relative",
+    maxHeight: "18rem",
+    overflowY: "auto",
+});
+
+export const marginBottomLine = style({
+    marginBottom: "2rem"
+})
+
+export const paymentTable = styleVariants({
+    table: [{
+        width: "100%",
+        overflow: "scroll",
+        tableLayout: "auto",
+    }],
+    left: [{textAlign: "left"}],
+    right: [{textAlign: "right"}],
+    leftHeader: [{
+        textAlign: "left",
+        fontSize: "1rem",
+        color: theme.blueGray,
+        marginBottom: "0.4rem"
+    }],
+    rightHeader: [{
+        textAlign: "right",
+        fontSize: "1rem",
+        color: theme.blueGray,
+        marginBottom: "0.4rem"
+    }],
+});
+
+export const tableColumns = style({
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: "1rem"
+})
+
+export const tableItems = style({
+    marginBottom: "0.5rem"
+})
+
+export const scrollInner = style({
+    maxHeight: "8rem",
+    overflowY: "auto",
 })
