@@ -278,7 +278,7 @@ public class BankUtil {
 	}
 
 	// 이체
-	@Async
+	@Async("customExecutor")
 	public void transferAccount(
 		String depositBankCode,
 		String depositAccountNo,
