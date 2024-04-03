@@ -122,6 +122,13 @@ const profileImageContainer = style({
 });
 
 export const imageBox = styleVariants({
+  imageBox28: [
+    profileImageContainer,
+    {
+      width: '28px',
+      height: '28px',
+    },
+  ],
   imageBox36: [
     profileImageContainer,
     {

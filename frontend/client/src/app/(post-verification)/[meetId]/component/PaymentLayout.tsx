@@ -26,13 +26,30 @@ export default function PaymentLayout({ params }: Props) {
 
     const payments: Payment[]|undefined = queryClient.getQueryData(['meetPayments', meetId, token]);
     const meetInfo: Meet|undefined = queryClient.getQueryData(['meetInfo', meetId, token]);
-    console.log(payments);
+
+    const [firstItem, setFirstItem] = useState<Payment|undefined>();
+
+    const setRecentOne = () => {
+        if (typeof payments !== 'undefined') {
+            const recentOne = payments.find((payment, index) => {
+                if (payment.payStatus === 'CLOSE') {
+                    return payment
+                }
+            })
+            setFirstItem(recentOne);
+        }
+    }
 
     const onClickPush = () => {
+
         router.push(`/${meetId}/history`);
     }
 
-    if (typeof payments !== 'undefined' && payments.length > 0) {
+    useEffect(() => {
+        setRecentOne();
+    }, []);
+
+    if (typeof firstItem !== 'undefined' && typeof payments !== 'undefined' && payments.length > 0) {
         return (
             <>
                 <section>
@@ -45,10 +62,10 @@ export default function PaymentLayout({ params }: Props) {
                         </button>
                     </div>
                     {typeof payments !== 'undefined' && typeof meetInfo !== 'undefined' &&
-                        <PaymentCard props={{payment: payments[0], meetInfo: meetInfo}}/>
+                        <PaymentCard props={{payment: firstItem, meetInfo: meetInfo}}/>
                     }
                 </section>
-                <PaymentReceiptModal payId={payments[0].payId} />
+                <PaymentReceiptModal payId={firstItem.payId} />
             </>
         );
     } else {

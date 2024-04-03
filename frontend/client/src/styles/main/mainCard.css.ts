@@ -97,6 +97,7 @@ const imageInputInnerLayout = style({
 
 export const cardInnerLayout = styleVariants({
     defaultHeader: [cardInner],
+    defaultHeader2: [cardInner],
     marginTopHeader: [cardInner, {
         marginTop: "8rem"
     }],
@@ -105,6 +106,10 @@ export const cardInnerLayout = styleVariants({
     }],
     defaultHorizontal: [cardInnerHorizontal],
     iconHeader: [cardInnerHorizontal],
+    iconHeader2: [cardInnerHorizontal, {
+        marginTop: "0.8rem",
+        gap: "0.4rem"
+    }],
     paymentHorizontalInner: [cardInnerHorizontal],
     paymentVerticalInner: [cardInner, {
         marginTop: "0.8rem"
@@ -141,6 +146,19 @@ globalStyle(`${cardInnerLayout.defaultHeader} > p, ${cardInnerLayout.marginTopHe
     color: theme.gray,
     fontSize: "1rem",
     lineHeight: "1.4rem"
+});
+
+globalStyle(`${cardInnerLayout.defaultHeader2} > h3`, {
+    color: theme.gray,
+    fontSize: "1.2rem",
+    lineHeight: "1.8rem",
+    marginBottom: "1rem"
+});
+
+globalStyle(`${cardInnerLayout.defaultHeader2} > p`, {
+    fontSize: "1.2rem",
+    lineHeight: "2.4rem",
+    marginBottom: "1.8rem",
 });
 
 
