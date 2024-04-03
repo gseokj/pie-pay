@@ -15,7 +15,9 @@ export default function MyInfoUpdateTextField() {
   ]);
   const [isDisabled, setIsDisabled] = useState(true);
   const [nickName, setNickName] = useState<string | undefined>('');
-  const [token, setToken] = useState('');
+  // const [token, setToken] = useState('');
+  // setToken(getCookie('accessToken'));
+  const token = getCookie('accessToken') as string;
   useEffect(() => {
     setNickName(myInfo?.nickname);
   });
