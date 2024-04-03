@@ -14,6 +14,8 @@ import PaymentSelectButton from "@/app/(post-verification)/[meetId]/component/Pa
 import MeetInviteModal from "@/app/(post-verification)/[meetId]/component/MeetInviteModal";
 
 import { useSSE } from '@/store/useSSE';
+import {useStore} from "@/store/useMeetModalStore";
+import {useEffect} from "react";
 
 
 type Props = {
@@ -27,12 +29,18 @@ export default function Meet({params}: Props) {
     const {meetId} = params;
     const queryClient = useQueryClient();
     const meetInfo: Meet | undefined = queryClient.getQueryData(['meetInfo', meetId, token]);
+    const {isInviteModalOn, setInviteModalStatus, setReceiptModalStatus, isReceiptModalOn} = useStore((state) => state);
+
+    useEffect(()=>{
+        setInviteModalStatus(false);
+        setReceiptModalStatus(false);
+    }, []);
 
 
     if (typeof meetInfo !== 'undefined') {
         return (
-            <>
-                <MeetInviteModal/>
+            <section>
+                <MeetInviteModal meetInvitation={ meetInfo.meetInvitation }/>
                 <>
                     {meetInfo.memberCount === 1 ?
                     <>
@@ -50,7 +58,7 @@ export default function Meet({params}: Props) {
                     </>
                     }
                 </>
-            </>
+            </section>
         );
     } else {
         return (

@@ -114,6 +114,9 @@ export const cardInnerLayout = styleVariants({
         justifyContent: "space-between"
     }],
     inviteInner: [cardContainer, cardInner, inviteInnerLayout],
+    inviteModalInner: [cardContainer, cardInner, inviteInnerLayout, {
+        width: "100%"
+    }],
     imageInputInner: [cardInner, imageInputInnerLayout],
     memberCardLeftInner: [cardInnerHorizontal, {
         gap: "0.8rem",
@@ -208,4 +211,27 @@ export const completed = style({
 
 export const unpaid = style({
     color: theme.unpaid
+})
+
+
+
+//---------------------------payment-----------------------
+
+export const paymentMemberLayout = style({
+    position: "relative",
+    display: "flex",
+    marginBottom: "2.2%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+});
+
+export const paymentTagLayout = style({
+    display: "flex",
+    gap: "0.2rem"
+});
+
+export const participantInfoLayout = style({
+    display: "flex",
+    gap: "0.4rem"
 })

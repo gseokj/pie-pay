@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import {Payment} from "@/model/meet/payment";
 import {Meet} from "@/model/meet";
 import {paymentCardButton} from "@/styles/main/mainButton.css";
+import {useStore} from "@/store/useMeetModalStore";
 
 
 interface PaymentProps {
@@ -16,8 +17,14 @@ interface PaymentProps {
 
 
 export default function PaymentCard({ props }: PaymentProps) {
+    const {isReceiptModalOn, changeReceiptModalStatus, setPayId} = useStore((state) => state);
     const { payment, meetInfo } = props;
-    const paymentDate = dayjs(payment.updatedAt).format("YYYY.MM.DD")
+    const paymentDate = dayjs(payment.updatedAt).format("YYYY.MM.DD");
+
+    const setModal = () => {
+        setPayId(payment.payId);
+        changeReceiptModalStatus();
+    }
 
     return (
         <section
@@ -37,7 +44,10 @@ export default function PaymentCard({ props }: PaymentProps) {
                     :
                     '미정산'
                 }</h3>
-                <button className={ `${ buttonStyles.paymentCardButton } ${ fontStyles.semibold }` }>영수증 확인</button>
+                <button
+                    className={ `${ buttonStyles.paymentCardButton } ${ fontStyles.semibold }` }
+                    onClick={setModal}
+                >영수증 확인</button>
             </div>
         </section>
     );
