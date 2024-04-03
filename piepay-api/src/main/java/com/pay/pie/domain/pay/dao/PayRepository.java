@@ -34,7 +34,7 @@ public interface PayRepository extends JpaRepository<Pay, Long>, PayRepositoryCu
 		"""
 				SELECT p
 				FROM Pay p
-				WHERE p.meet.id = :meetId AND p.payStatus = "COMPLETE"
+				WHERE p.meet.id = :meetId AND (p.payStatus = "COMPLETE" OR  p.payStatus = "CLOSE")
 			"""
 	)
 	List<Pay> findPayList(@Param("meetId") Long meetId);

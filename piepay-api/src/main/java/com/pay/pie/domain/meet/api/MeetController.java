@@ -144,7 +144,7 @@ public class MeetController {
 	public ResponseEntity<BaseResponse<List<MeetMemberInfo>>> getMeetMemberInfo(@PathVariable long meetId) {
 
 		return BaseResponse.success(
-			SuccessCode.UPDATE_SUCCESS,
+			SuccessCode.SELECT_SUCCESS,
 			meetService.getMeetMemberInfo(meetId)
 		);
 

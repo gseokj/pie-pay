@@ -170,6 +170,11 @@ public class MeetService {
 		List<MemberParticipationCount> maxParticipationMember = participantRepository.getMaxParticipationMember(
 			payList);
 
+		for (MemberParticipationCount memberParticipationCount : maxParticipationMember) {
+			System.out.println(memberParticipationCount.getMember());
+			System.out.println(memberParticipationCount.getParticipantCount());
+		}
+
 		MemberParticipationCount memberParticipationCount = null;
 		if (!maxParticipationMember.isEmpty()) {
 			memberParticipationCount = maxParticipationMember.get(0);

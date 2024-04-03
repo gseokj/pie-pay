@@ -30,7 +30,7 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long>,
 					ParticipantStatistics(pa.member.id,  COUNT(pa.id) , SUM(pa.payAmount))
 					FROM Participant pa
 					JOIN pa.pay p 
-					WHERE pa.member in :members AND p.meet.id = :meetId
+					WHERE pa.member in :members AND p.meet.id = :meetId AND (p.payStatus = "COMPLETE" or p.payStatus =  "CLOSE")
 					Group BY pa.member
 			"""
 	)
