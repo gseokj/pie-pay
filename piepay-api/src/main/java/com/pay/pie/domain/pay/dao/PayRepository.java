@@ -13,7 +13,16 @@ import io.lettuce.core.dynamic.annotation.Param;
 
 @Repository
 public interface PayRepository extends JpaRepository<Pay, Long>, PayRepositoryCustom {
-	List<Pay> findByMeetOrderByCreatedAtDesc(Meet meet);
+
+
+	@Query(
+		"""
+  			SELECT p
+  			FROM Pay p
+  			WHERE p.meet.id = :meetId AND (p.payStatus = "COMPLETE" OR p.payStatus = "CLOSE")
+		"""
+	)
+	List<Pay> findMeetPayInfo(@Param("meetId") Long meetId);
 
 	Pay findFirstByMeetOrderByCreatedAtDesc(Meet meet);
 

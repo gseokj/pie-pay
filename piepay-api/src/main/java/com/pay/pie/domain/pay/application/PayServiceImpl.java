@@ -49,10 +49,10 @@ public class PayServiceImpl implements PayService {
 	private final BankUtil bankUtil;
 	private final PiePayUtil piePayUtil;
 
-	public List<Pay> findPayByMeetId(long meetId) {
-		Meet meet = meetRepository.findById(meetId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 meetId을 가진 Meet을 찾을 수 없음"));
-		return payRepository.findByMeetOrderByCreatedAtDesc(meet);
+	public List<Pay> findPayByMeetId(Long meetId) {
+		// Meet meet = meetRepository.findById(meetId)
+		// 	.orElseThrow(() -> new IllegalArgumentException("해당 meetId을 가진 Meet을 찾을 수 없음"));
+		return payRepository.findMeetPayInfo(meetId);
 	}
 
 	public Pay findRecentPayByMeetId(long meetId) {
