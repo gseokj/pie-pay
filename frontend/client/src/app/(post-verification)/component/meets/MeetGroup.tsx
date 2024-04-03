@@ -60,14 +60,14 @@ export default function MeetGroup({ meet, updateIsFixed }: MeetGroupProps){
 
     const onClickPushPayment = (event: React.MouseEvent) => {
         event.stopPropagation();
-        router.push(`/${meet.meetId}/select`);
+        router.push(`/${meet.meetId}/payment/select`);
     }
     return (
         <>
             <div className={styles.cardLayout.meetGroup} onClick={enterMeetRoom}>
                 <div className={styles.lineLayout.lineOne}>
                     <div className={styles.meetInfo}>
-                        <div className={mainStyles.imageBox.imageBox44}>
+                        <div className={mainStyles.imageBox.imageBox40}>
                             <Image
                                 className={styles.meetImage}
                                 src={meet.meetImage !== null ?
@@ -78,7 +78,7 @@ export default function MeetGroup({ meet, updateIsFixed }: MeetGroupProps){
                                 alt="meet image"
                                 fill={true}
                                 objectFit="cover"
-                                sizes="(max-width: 44px)"
+                                sizes="(max-width: 40px)"
                             />
                         </div>
                         <div className={styles.meetInfoString}>

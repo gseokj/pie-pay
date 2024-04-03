@@ -1,6 +1,6 @@
 'use client'
 
-import SelectButton from "@/app/(post-verification)/[meetId]/game/component/SelectButton";
+import SelectButton from "@/app/(post-verification)/[meetId]/payment/component/SelectButton";
 import Header from "@/app/(post-verification)/[meetId]/game/component/Header";
 import Image from "next/image";
 import * as styles from "@/styles/game/gameList.css"
