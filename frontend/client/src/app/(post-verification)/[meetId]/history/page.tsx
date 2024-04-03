@@ -293,7 +293,7 @@ export default function History({params}: Props) {
                     <div className={paymentStyles.paymentsLayout}>
                         {typeof filteredPayments !== 'undefined' && typeof meetInfo !== 'undefined' && filteredPayments.length > 0 &&
                             filteredPayments.map((payment) => {
-                                if (payment.orders.paymentStatus !== 'UNPAID') {
+                                if (payment.orders.paymentStatus !== 'UNPAID' || payment.payStatus !== 'ING') {
                                     return (
                                         <PaymentCard props={{payment: payment, meetInfo: meetInfo}}
                                                      key={payment.orders.orderId}/>
