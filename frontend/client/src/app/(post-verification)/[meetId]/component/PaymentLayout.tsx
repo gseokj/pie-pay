@@ -10,6 +10,7 @@ import {getCookie} from "@/util/getCookie";
 import {useQueryClient} from "@tanstack/react-query";
 import {Payment} from "@/model/meet/payment";
 import {Meet} from "@/model/meet";
+import PaymentReceiptModal from "@/app/(post-verification)/[meetId]/component/PaymentReceiptModal";
 
 
 
@@ -33,19 +34,22 @@ export default function PaymentLayout({ params }: Props) {
 
     if (typeof payments !== 'undefined' && payments.length > 0) {
         return (
-            <section>
-                <div className={mainStyles.categoryContainer.default}>
-                    <h3 className={fontStyles.bold}>결제 내역</h3>
-                    <button
-                        className={fontStyles.bold}
-                        onClick={onClickPush}
-                    >더보기
-                    </button>
-                </div>
-                {typeof payments !== 'undefined' && typeof meetInfo !== 'undefined' &&
-                    <PaymentCard props={{payment: payments[0], meetInfo: meetInfo}}/>
-                }
-            </section>
+            <>
+                <section>
+                    <div className={mainStyles.categoryContainer.default}>
+                        <h3 className={fontStyles.bold}>결제 내역</h3>
+                        <button
+                            className={fontStyles.bold}
+                            onClick={onClickPush}
+                        >더보기
+                        </button>
+                    </div>
+                    {typeof payments !== 'undefined' && typeof meetInfo !== 'undefined' &&
+                        <PaymentCard props={{payment: payments[0], meetInfo: meetInfo}}/>
+                    }
+                </section>
+                <PaymentReceiptModal payId={payments[0].payId} />
+            </>
         );
     } else {
         return (

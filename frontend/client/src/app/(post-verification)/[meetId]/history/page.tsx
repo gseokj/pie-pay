@@ -28,6 +28,8 @@ import {Doughnut} from "react-chartjs-2";
 import {ArcElement, Chart as ChartJS, Legend, Tooltip} from "chart.js";
 import * as styles from "@/styles/main/main.css";
 import LegendCategory from "@/app/(post-verification)/[meetId]/history/component/LegendCategory";
+import PaymentReceiptModal from "@/app/(post-verification)/[meetId]/component/PaymentReceiptModal";
+import {useStore} from "@/store/useMeetModalStore";
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -60,6 +62,12 @@ export default function History({params}: Props) {
     const router = useRouter();
     const token = getCookie('accessToken');
     const queryClient = useQueryClient();
+
+    const {setReceiptModalStatus, payId} = useStore((state) => state);
+
+    useEffect(()=>{
+        setReceiptModalStatus(false);
+    }, []);
 
     const payments: Payment[]|undefined = queryClient.getQueryData(['meetPayments', meetId, token]);
     const meetInfo: Meet|undefined = queryClient.getQueryData(['meetInfo', meetId, token]);
@@ -234,6 +242,7 @@ export default function History({params}: Props) {
     }
 
     return (
+    <>
         <section>
             <header className={mainStyles.detailHeader}>
                 <button onClick={onClickBack}>
@@ -299,5 +308,9 @@ export default function History({params}: Props) {
                 <section>결제 내역이 없습니다</section>
             }
         </section>
+        {typeof payId !== 'undefined' &&
+            <PaymentReceiptModal payId={payId} />
+        }
+    </>
     );
 }
