@@ -35,7 +35,7 @@ export const useSSE = create<Store>((set) => {
     source.onerror = () => {
       console.error('Connection error, reconnecting in 2 seconds...');
       source!.close();
-      connect(token);
+      setTimeout(() => connect(token), 2000);
     };
   };
 
