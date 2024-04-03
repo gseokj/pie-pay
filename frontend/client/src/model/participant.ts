@@ -28,3 +28,9 @@ export interface PaymentResult extends Payment{
 }
 
 
+
+export interface CurrPayment {
+    payId: number;
+    meetName: string;
+    updatedAt: string;
+}

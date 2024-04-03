@@ -8,6 +8,7 @@ import bankMagnetic from "@/assets/icons/bankmagnetic.svg"
 import {Member} from "@/model/member";
 import {useQueryClient} from "@tanstack/react-query";
 import GameBackground from "@/app/(post-verification)/[meetId]/game/component/GameBackground";
+import { getCookie } from '@/util/getCookie';
 
 type Props = {
     params: { meetId: string },
@@ -16,9 +17,14 @@ export default function SelectCard({params}:Props) {
     const {meetId} = params;
     const [isOpen, setIsOpen] = useState(false);
     const [selected, setSelected] = useState(99)
+    const [token, setToken] = useState('');
 
+    useEffect(() => {
+        const token = getCookie('accessToken') as string;
+        setToken(token);
+    }, []);
     const queryClient = useQueryClient();
-    const Members = queryClient.getQueryData(["members",meetId]) as Member[];
+    const Members = queryClient.getQueryData(["meetMembers",Number(meetId),token]) as Member[];
     const randomPerson = Math.floor(Math.random() * Members.length);
     useEffect(() => {
 

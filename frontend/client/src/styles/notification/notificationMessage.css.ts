@@ -7,11 +7,11 @@ export const container = style({
 })
 
 export const box = style({
-    height: '10%',
+    height: '15%',
     display: 'flex',
     flexDirection: 'column',
     marginTop: '5%',
-    marginBottom: '5%',
+    marginBottom: '1.5rem',
     justifyContent: 'space-around',
     ':hover':{
         scale: '105%'
@@ -22,12 +22,13 @@ export const box = style({
 
 export const content = style({
   display: 'flex',
-  justifyContent: 'space-between'
+  justifyContent: 'space-between',
+
 })
 
 export const title = style({
     display:'flex',
-    marginBottom: '0.8rem'
+    marginBottom: '1.0rem'
 })
 
 export const paragraph = style({
