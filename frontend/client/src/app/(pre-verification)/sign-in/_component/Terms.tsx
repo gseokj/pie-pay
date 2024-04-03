@@ -11,10 +11,11 @@ type Term = {
 };
 
 type Props = {
+  title: string;
   termsList: Term[];
   onAgreeChange: (isAgreed: boolean) => void;
 };
-export default function BankTerms({ termsList, onAgreeChange }: Props) {
+export default function BankTerms({ title, termsList, onAgreeChange }: Props) {
   const [openItemIds, setOpenItemIds] = useState<number[]>([]);
   const [checkedIds, setCheckedIds] = useState<{ [key: number]: boolean }>({});
 
@@ -66,7 +67,11 @@ export default function BankTerms({ termsList, onAgreeChange }: Props) {
 
   return (
     <div className={styles.termContent}>
-      <div className={styles.termTitle}>은행 계좌 연결 동의</div>
+      {title == 'bank' ? (
+        <div className={styles.termTitle}>은행 계좌 연결 동의</div>
+      ) : (
+        <div className={styles.termTitle}>마이데이터 연결 동의</div>
+      )}
       <div className={styles.allTitleBox}>
         <label className={styles.customCheckbox}>
           <input
