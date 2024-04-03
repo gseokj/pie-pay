@@ -38,7 +38,7 @@ export default function QRCode({payId}:Props) {
             <div>
                 <p className="font-bold mb-3 ml-3">
                     점원에게 바코드를 보여주세요!
-                    <Refresh payId={payId}/>
+                    {/*<Refresh payId={payId}/>*/}
                 </p>
             {/*    <div className="flex text-gray-500">*/}
 

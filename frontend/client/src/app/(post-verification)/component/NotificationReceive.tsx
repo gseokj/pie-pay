@@ -21,7 +21,7 @@ export default function NotificationReceive() {
   const route = useRouter();
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const [token, setToken] = useState('');
-  const { setEventSource,  SSEnotification } = useSSE();
+  const { setEventSource,  SSEnotification, eventSource} = useSSE();
 
   useEffect(() => {
     if(!SSEnotification) return;
@@ -34,6 +34,9 @@ export default function NotificationReceive() {
     const token = getCookie('accessToken') as string;
     setEventSource(token);
     setToken(token);
+    return ()=>{
+      if(eventSource) eventSource.close();
+    }
   }, [token]);
 
 
