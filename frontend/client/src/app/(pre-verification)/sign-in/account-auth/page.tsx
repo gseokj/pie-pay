@@ -78,12 +78,14 @@ export default function Page() {
         </div>
         <div className={styles.termsBox}>
           <Terms
+            title={'bank'}
             termsList={bankTermsList}
             onAgreeChange={(isAgreed) => handleAgreeChange(0, isAgreed)}
           />
         </div>
         <div className={styles.termsBox}>
           <Terms
+            title={'my'}
             termsList={myuDataTermsList}
             onAgreeChange={(isAgreed) => handleAgreeChange(1, isAgreed)}
           />

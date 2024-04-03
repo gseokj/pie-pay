@@ -211,17 +211,17 @@ export default function Page() {
         <div className={styles.submitButton} onClick={handleSubmit}>
           본인 인증
         </div>
+        {showModal && (
+          <TelecomListModal onClose={closeModal} onSelect={setTelecom} />
+        )}
+        {showTermsModal && (
+          <TermsAgreeModal
+            setAgree={setAgree}
+            onClose={closeTermsModal}
+            setMoveFlag={setMoveFlag}
+          />
+        )}
       </div>
-      {showModal && (
-        <TelecomListModal onClose={closeModal} onSelect={setTelecom} />
-      )}
-      {showTermsModal && (
-        <TermsAgreeModal
-          setAgree={setAgree}
-          onClose={closeTermsModal}
-          setMoveFlag={setMoveFlag}
-        />
-      )}
     </div>
   );
 }
