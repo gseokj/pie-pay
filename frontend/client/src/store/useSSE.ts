@@ -14,7 +14,7 @@ export const useSSE = create<Store>((set) => {
   let connected: boolean = false;
 
   const connect = (token: string | null) => {
-    if (token || connected) return;
+    if (!token || connected) return;
 
     source = new EventSourcePolyfill(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/sse/subscribe`, {
       headers: {
