@@ -5,7 +5,7 @@ interface Highlight {
     mostAttendingMember: HighlightMember;
     memberAttendingCount: number;
     drinkCount: number;
-    monthInfos: MonthInfo;
+    monthInfos: MonthInfo[];
 }
 
 interface HighlightMember {

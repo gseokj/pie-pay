@@ -1,4 +1,3 @@
-import {Meet} from "@/model/meet/meets";
 import authAxios from "@/util/authAxios";
 import {QueryFunction} from "@tanstack/query-core";
 import {Debt, MyPayment} from "@/model/user/payments";
