@@ -1,4 +1,3 @@
-import type {Metadata} from "next";
 import {ReactNode} from "react";
 import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
 import {getMeetInfo, getMeetPayments} from "@/api/meet";
