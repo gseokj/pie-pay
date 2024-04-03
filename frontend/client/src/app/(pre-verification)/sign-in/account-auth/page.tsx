@@ -68,9 +68,7 @@ export default function Page() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.barContainer}>
-        <ProgressBar />
-      </div>
+      <div className={styles.barContainer}>{/* <ProgressBar /> */}</div>
       <div className={styles.contentContainer}>
         <div className={styles.title}>
           은행 계좌 연결과 <br />
