@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import com.pay.pie.domain.meet.dto.MeetDto;
 import com.pay.pie.domain.meet.dto.MeetStatusResponse;
 import com.pay.pie.domain.meet.dto.PayResponse;
@@ -173,7 +172,7 @@ public class MeetController {
 	public ResponseEntity<BaseResponse<MeetStatusResponse>> getPayStatus2(@PathVariable long meetId) {
 		Pay pay = payService.findRecentPayByMeetId(meetId);
 		MeetStatusResponse meet;
-		if (pay.getPayStatus() == Pay.PayStatus.ING) {
+		if (pay.getPayStatus() == Pay.PayStatus.OPEN) {
 			meet = new MeetStatusResponse(pay.getMeet());
 		} else {
 			meet = null;
