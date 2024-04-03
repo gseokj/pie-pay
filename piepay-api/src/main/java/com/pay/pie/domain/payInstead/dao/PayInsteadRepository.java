@@ -15,4 +15,6 @@ public interface PayInsteadRepository extends JpaRepository<PayInstead, Long> {
 	List<PayInstead> getAllByLenderIdOrderByCreatedAtDesc(Long memberId);
 
 	List<PayInstead> getAllByBorrowerIdOrderByCreatedAtDesc(Long memberId);
+
+	List<PayInstead> getAllByLenderIdOrBorrowerIdOrderByCreatedAtDesc(Long memberId1, Long memberId2);
 }

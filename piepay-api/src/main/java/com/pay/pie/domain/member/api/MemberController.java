@@ -2,6 +2,7 @@ package com.pay.pie.domain.member.api;
 
 import java.util.List;
 
+import com.pay.pie.domain.payInstead.dto.MyPayInsteadDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -84,11 +85,11 @@ public class MemberController {
 
 	@PreAuthorize("hasRole('ROLE_CERTIFIED')")
 	@GetMapping("/member/debts")
-	public ResponseEntity<BaseResponse<MyPayInsteadResponse>> myPayInstead(
+	public ResponseEntity<BaseResponse<List<MyPayInsteadDto>>> myPayInstead(
 		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
 		return BaseResponse.success(
 			SuccessCode.SELECT_SUCCESS,
-			payInsteadService.myPayInstead(securityUserDto.getMemberId())
+			payInsteadService.myPayInstead2(securityUserDto.getMemberId())
 		);
 	}
 }

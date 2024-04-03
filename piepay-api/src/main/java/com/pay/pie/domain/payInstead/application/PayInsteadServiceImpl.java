@@ -139,15 +139,22 @@ public class PayInsteadServiceImpl implements PayInsteadService {
 	}
 
 	public MyPayInsteadResponse myPayInstead(Long memberId) {
-		List<MyPayInsteadDto> MyLent = payInsteadRepository.getAllByLenderIdOrderByCreatedAtDesc(memberId)
+		List<MyPayInsteadDto> myLent = payInsteadRepository.getAllByLenderIdOrderByCreatedAtDesc(memberId)
 			.stream()
 			.map(MyPayInsteadDto::of)
 			.toList();
-		List<MyPayInsteadDto> MyBorrowed = payInsteadRepository.getAllByBorrowerIdOrderByCreatedAtDesc(memberId)
+		List<MyPayInsteadDto> myBorrowed = payInsteadRepository.getAllByBorrowerIdOrderByCreatedAtDesc(memberId)
 			.stream()
 			.map(MyPayInsteadDto::of)
 			.toList();
 
-		return MyPayInsteadResponse.of(MyLent, MyBorrowed);
+		return MyPayInsteadResponse.of(myLent, myBorrowed);
+	}
+
+	public List<MyPayInsteadDto> myPayInstead2(Long memberId) {
+		return payInsteadRepository.getAllByLenderIdOrBorrowerIdOrderByCreatedAtDesc(memberId, memberId)
+						.stream()
+						.map(MyPayInsteadDto::of)
+						.toList();
 	}
 }
