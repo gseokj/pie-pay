@@ -114,7 +114,7 @@ export default function Main() {
   };
 
   useEffect(() => {
-    if(!SSEnotification || !SSEnotification.message) return;
+    if(!SSEnotification || !SSEnotification.message || SSEnotification.referenceId!=2) return;
     const payId = SSEnotification.destinationId;
     const meetName = extractBracketedString(SSEnotification.message);
     setSSEPayment(prevState => [ ...prevState, {meetName:meetName,payId:payId,updatedAt:new Date().toISOString()} as CurrPayment ]);
