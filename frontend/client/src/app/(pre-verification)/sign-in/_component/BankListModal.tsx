@@ -14,12 +14,10 @@ export default function BankListModal({ onClose, onSelect }: Props) {
   const [closing, setClosing] = useState(false); // 닫힘 상태 관리
 
   const bankList = [
-    { bankName: '싸피은행' },
-    { bankName: '하나은행' },
-    { bankName: '국민은행' },
-    { bankName: '농협은행' },
-    { bankName: '신한은행' },
-    { bankName: '우리은행' },
+    { code: '001', bankName: '한국은행' },
+    { code: '002', bankName: '산업은행' },
+    { code: '003', bankName: '기업은행' },
+    { code: '004', bankName: '국민은행' },
   ];
 
   // 사용자가 일정 거리 이상 슬라이드 했는지 확인하고 모달을 닫음
