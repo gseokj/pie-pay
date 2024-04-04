@@ -1,0 +1,42 @@
+spring:
+  profiles:
+    active: pie
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        open-in-view: false # 영속성 컨텍스트를 요청 단위로만 열도록 설정
+        #show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+        security : DEBUG
+      hibernate:
+        SQL: DEBUG
+
+#logging:
+#  level:
+#    root: INFO
+#    org.springframework.messaging.simp: DEBUG
+
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
+
+#springdoc:
+#  api-docs:
+#    path: /api-docs
+#  swagger-ui:
+#    path: /swagger-ui.html
+#  default-consumes-media-type: application/json; charset=UTF-8
+#  default-produces-media-type: application/json; charset=UTF-8
+
