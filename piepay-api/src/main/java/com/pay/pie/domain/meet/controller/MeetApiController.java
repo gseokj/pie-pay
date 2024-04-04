@@ -1,0 +1,244 @@
+package com.pay.pie.domain.meet.controller;
+
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.pay.pie.domain.meet.dto.AddMeetRequest;
+import com.pay.pie.domain.meet.dto.HighlightResponse;
+import com.pay.pie.domain.meet.dto.MeetResponse;
+import com.pay.pie.domain.meet.dto.MeetStatusResponse;
+import com.pay.pie.domain.meet.dto.PayResponse;
+import com.pay.pie.domain.meet.dto.UpdateInvitationRequest;
+import com.pay.pie.domain.meet.dto.UpdateMeetImageRequest;
+import com.pay.pie.domain.meet.dto.UpdateMeetNameRequest;
+import com.pay.pie.domain.meet.entity.Meet;
+import com.pay.pie.domain.meet.repository.MeetRepository;
+import com.pay.pie.domain.meet.service.MeetService;
+import com.pay.pie.domain.memberMeet.dto.AddMemberMeetRequest;
+import com.pay.pie.domain.memberMeet.dto.AllMemberMeetResponse;
+import com.pay.pie.domain.memberMeet.entity.MemberMeet;
+import com.pay.pie.domain.memberMeet.repository.MemberMeetRepository;
+import com.pay.pie.domain.memberMeet.service.MemberMeetService;
+import com.pay.pie.domain.order.dao.OrderRepository;
+import com.pay.pie.domain.order.dto.response.OrderOfPayResponse;
+import com.pay.pie.domain.order.entity.Order;
+import com.pay.pie.domain.pay.application.PayServiceImpl;
+import com.pay.pie.domain.pay.dto.response.PayStatusIngResponse;
+import com.pay.pie.domain.pay.entity.Pay;
+import com.pay.pie.global.common.BaseResponse;
+import com.pay.pie.global.common.code.SuccessCode;
+import com.pay.pie.global.security.dto.SecurityUserDto;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@RequestMapping("/api")
+@RestController // HTTP Response Body에 객체 데이터를 JSON 형식으로 반환하는 컨트롤러
+public class MeetApiController {
+
+	private final MeetService meetService;
+	private final MemberMeetService memberMeetService;
+	private final MeetRepository meetRepository;
+	private final PayServiceImpl payService;
+	private final MemberMeetRepository memberMeetRepository;
+	private final OrderRepository orderRepository;
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	// HTTP 메서드가 POST일 때 전달받은 URL과 동일하면 매서드로 매핑
+	@PostMapping("/meet")
+	// 요청 본문 값 매핑
+	public ResponseEntity<BaseResponse<MeetResponse>> addMeet(@RequestBody AddMeetRequest request,
+		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
+		Meet savedMeet = meetService.save(request);
+
+		String invitation = savedMeet.getMeetInvitation();
+		Long memberId = securityUserDto.getMemberId();
+		AddMemberMeetRequest addMemberMeetRequest = new AddMemberMeetRequest();
+		addMemberMeetRequest.setMeetInvitation(invitation);
+		memberMeetService.save(addMemberMeetRequest, memberId);
+
+		// 요청한 자원이 성공적으로 생성되었으며 저장된 블로그 글 정보를 응답에 담아 전송
+		return BaseResponse.success(
+			SuccessCode.INSERT_SUCCESS,
+			new MeetResponse(savedMeet, memberMeetService.findAllByMeet(savedMeet).size()));
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@PatchMapping("/meet/{id}/invitation")
+	public ResponseEntity<BaseResponse<Meet>> updateInvitation(@PathVariable long id,
+		UpdateInvitationRequest request) {
+		Meet updatedMeet = meetService.updateMeetInvitation(id, request);
+
+		return BaseResponse.success(
+			SuccessCode.UPDATE_SUCCESS,
+			updatedMeet);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@PutMapping("/meet/{id}/image")
+	public ResponseEntity<BaseResponse<Meet>> updateMeetImage(@PathVariable long id,
+		@RequestBody UpdateMeetImageRequest request) {
+		Meet updatedMeet = meetService.updateMeetImage(id, request);
+
+		return BaseResponse.success(
+			SuccessCode.UPDATE_SUCCESS,
+			updatedMeet);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@PutMapping("/meet/{id}/name")
+	public ResponseEntity<BaseResponse<Meet>> updateMeetName(@PathVariable long id,
+		@RequestBody UpdateMeetNameRequest request) {
+		Meet updatedMeet = meetService.updateMeetName(id, request);
+
+		return BaseResponse.success(
+			SuccessCode.UPDATE_SUCCESS,
+			updatedMeet);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@GetMapping("/member/meets")
+	public ResponseEntity<BaseResponse<List<AllMemberMeetResponse>>> getAllMeet(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
+		Long memberId = securityUserDto.getMemberId();
+		List<AllMemberMeetResponse> meetResponses = memberMeetService.findMeetByMemberId(memberId)
+			.stream()
+			.map(memberMeet -> {
+				Meet meet = meetService.findById(memberMeet.getMeet().getId()).orElse(null);
+				if (meet != null) {
+					LocalDateTime latestUpdateOnMeet;
+					if ( payService.findRecentPayByMeetId(meet.getId()) != null) {
+						latestUpdateOnMeet = payService.findRecentPayByMeetId(meet.getId()).getUpdatedAt();
+					} else {
+						latestUpdateOnMeet = meet.getUpdatedAt();
+					}
+					return new AllMemberMeetResponse(memberMeet, memberMeetService.findAllByMeet(meet).size(),
+							latestUpdateOnMeet);
+				} else {
+					// Member가 없는 경우에 대한 처리
+					return null;
+				}
+			})
+			.filter(Objects::nonNull) // null이 아닌 것들만 필터링
+			.collect(Collectors.toList());
+
+		Collections.sort(meetResponses, Comparator
+				.comparing(AllMemberMeetResponse::isTopFixed, Comparator.reverseOrder())
+				.thenComparing(AllMemberMeetResponse::getUpdated_at, Comparator.reverseOrder())
+		);
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			meetResponses);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@GetMapping("/meet/{meetId}/payment")
+	public ResponseEntity<BaseResponse<List<PayResponse>>> getPayByMeetId(@PathVariable long meetId) {
+		List<PayResponse> payResponses = payService.findPayByMeetId(meetId)
+			.stream()
+			.map(pay -> {
+				Order order = orderRepository.findByPayId(pay.getId());
+				return new PayResponse(pay, new OrderOfPayResponse(order));
+			})
+			.sorted(Comparator.comparing(PayResponse::getUpdatedAt).reversed()) // updated_at을 기준으로 내림차순으로 정렬
+			.toList();
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			payResponses);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@GetMapping("/meet/{meetId}/paystatus")
+	public ResponseEntity<BaseResponse<MeetStatusResponse>> getPayStatus2(@PathVariable long meetId) {
+		Pay pay = payService.findRecentPayByMeetId(meetId);
+		MeetStatusResponse meet;
+		if (pay.getPayStatus() == Pay.PayStatus.ING) {
+			meet = new MeetStatusResponse(pay.getMeet());
+		} else {
+			meet = null;
+		}
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			meet);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@GetMapping("/meet/{meetId}")
+	public ResponseEntity<BaseResponse<MeetResponse>> getMeet(@PathVariable long meetId) {
+		Meet meet = meetService.getMeet(meetId);
+		int memberCount = memberMeetService.findAllByMeet(meet).size();
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			new MeetResponse(meet, memberCount));
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@GetMapping("/meet/{meetId}/payment/latest")
+	public ResponseEntity<BaseResponse<Pay>> getLatestPayment(@PathVariable long meetId) {
+		Meet meet = meetService.getMeet(meetId);
+		List<Pay> pays = payService.findPayByMeetId(meetId);
+		Pay latestPay = null;
+		for (Pay pay : pays) {
+			if (pay.getPayStatus() == Pay.PayStatus.COMPLETE) {
+				latestPay = pay;
+				break;
+			}
+		}
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			latestPay);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@GetMapping("/meet/paystatus")
+	public ResponseEntity<BaseResponse<List<Optional<PayStatusIngResponse>>>> getPayStatus(
+		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
+		List<MemberMeet> memberMeets = memberMeetRepository.findByMemberId(securityUserDto.getMemberId());
+		List<Optional<PayStatusIngResponse>> payResponses = memberMeets
+			.stream()
+			// .map(PayResponse::new)
+			.map(memberMeet -> {
+				Long meetId = memberMeet.getMeet().getId();
+				Pay pay = payService.findRecentPayByMeetId(meetId);
+				if (pay != null && pay.getPayStatus() == Pay.PayStatus.ING) {
+					return Optional.of(new PayStatusIngResponse(pay));
+				} else {
+					return Optional.<PayStatusIngResponse>empty();
+				}
+			})
+			// .sorted(Comparator.comparing(PayResponse::getUpdatedAt).reversed()) // updated_at을 기준으로 내림차순으로 정렬
+			.filter(Optional::isPresent)
+			.collect(Collectors.toList());
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			payResponses);
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_CERTIFIED')")
+	@GetMapping("/meet/{meetId}/highlight")
+	public ResponseEntity<BaseResponse<HighlightResponse>> getHighlight(@PathVariable long meetId,
+		@AuthenticationPrincipal SecurityUserDto securityUserDto) {
+		HighlightResponse highlightResponse = meetService.getHighlight(meetId);
+
+		return BaseResponse.success(
+			SuccessCode.SELECT_SUCCESS,
+			highlightResponse);
+	}
+}
