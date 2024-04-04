@@ -3,7 +3,7 @@ import theme from "@/styles/theme/theme";
 
 export const container = style({
   width: '100%',
-  height: '12%',
+  height: '15%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
