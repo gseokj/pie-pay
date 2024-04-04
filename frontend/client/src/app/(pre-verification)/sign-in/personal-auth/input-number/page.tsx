@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useState, useRef } from 'react';
 import ProgressBar from '@/app/(pre-verification)/sign-in/_component/ProgressBar';
@@ -35,11 +35,13 @@ export default function Page() {
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState('인증번호가 오지 않았어요');
-  const [messagePart1, setMessagePart1] = useState('인증번호가 일치하지 않습니다');
+  const [messagePart1, setMessagePart1] =
+    useState('인증번호가 일치하지 않습니다');
   const [messagePart2, setMessagePart2] = useState('인증번호가 오지 않았나요?');
   const [isNotVerify, setIsNotVerify] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
-  const [messagePart3, setMessagePart3] = useState('인증번호가 일치하지 않습니다');
+  const [messagePart3, setMessagePart3] =
+    useState('인증번호가 일치하지 않습니다');
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (
@@ -144,7 +146,10 @@ export default function Page() {
         (val) => val !== '',
       ).length;
       if (currentFilled < 6) {
-        setNumber((prev) => ({ ...prev, [`num${currentFilled}` as keyof NumberState]: lastChar }));
+        setNumber((prev) => ({
+          ...prev,
+          [`num${currentFilled}` as keyof NumberState]: lastChar,
+        }));
       }
     }
     setInputValue(newValue);
@@ -161,9 +166,7 @@ export default function Page() {
         onChange={handleInputChange}
         maxLength={6}
       />
-      <div className={styles.barContainer}>
-        <ProgressBar />
-      </div>
+      <div className={styles.barContainer}>{/* <ProgressBar /> */}</div>
       <div className={styles.contentContainer}>
         <div className={styles.title}>
           문자로 받은 <br />

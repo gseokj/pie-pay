@@ -142,7 +142,7 @@ export default function Page() {
         </div>
         <div className={styles.retryMent}>
           {isError && <ErrorMessage />}
-          다른 계좌로 인증하기
+          다른 계좌로 인증하기 
         </div>
       </div>
       <div className={styles.submitButton} onClick={handleSubmit}>
