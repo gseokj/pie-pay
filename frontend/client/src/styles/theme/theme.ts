@@ -34,7 +34,10 @@ const theme = {
 
 
     // 계좌 관련 (이름은 은행명으로 바꾸어도 됨)
-    brown: '#8E8070',
+    korea: '#3794d5',
+    kdb: '#4374d0',
+    ibk: '#4382bd',
+    kook: '#8f7b64',
     cyan: '#2ECFCB',
 
     // others
