@@ -16,6 +16,7 @@ export default function Page() {
   });
   const { accountInfo, setAccountInfo } = useStore();
   const [info, setInfo] = useState({
+    bankCode: '',
     bankName: '',
     accountNumber: '',
   });
@@ -36,10 +37,11 @@ export default function Page() {
     setShowModal(false);
   };
 
-  const setBank = (bankName: string) => {
+  const setBank = (bankName: string, bankCode: string) => {
     setInfo((prevInfo) => ({
       ...prevInfo,
       bankName: bankName,
+      bankCode: bankCode,
     }));
   };
 
@@ -51,7 +53,10 @@ export default function Page() {
       accountNumber: isAccountNumberValid,
     });
     if (isBankNameValid && isAccountNumberValid) {
-      setAccountInfo({ bankCode: '001', accountNo: info.accountNumber });
+      setAccountInfo({
+        bankCode: info.bankCode,
+        accountNo: info.accountNumber,
+      });
       sendRequest();
       router.push('/sign-in/account-auth/input-code');
     }

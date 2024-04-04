@@ -42,7 +42,6 @@ export default function SimplePasswordCheck() {
     setToken(token);
   }, []);
 
-
   const sendRequest = async () => {
     console.log('인증 진행');
     {
@@ -62,7 +61,6 @@ export default function SimplePasswordCheck() {
   const settingToken = async (accessToken: string) => {
     if (typeof accessToken === 'string') {
       document.cookie = `accessToken=${accessToken} ; path=/`;
-      setSession(accessToken);
       console.log('accessToken : ' + accessToken);
       // refreshRequest(accessToken);
       router.push('/');
