@@ -1,0 +1,5 @@
+{
+  "/(pre-verification)/auth/page": "app/(pre-verification)/auth/page.js",
+  "/(pre-verification)/login/page": "app/(pre-verification)/login/page.js",
+  "/(post_verification)/page": "app/(post_verification)/page.js"
+}
