@@ -24,8 +24,8 @@ export default function BankListModal({ onClose, onSelect }: Props) {
   const handleTouchMove = (e: React.TouchEvent) => {
     setTouchEnd(e.targetTouches[0].clientY);
   };
-  const handleSelect = (bankName: string) => {
-    onSelect(bankName);
+  const handleSelect = (bankName: string, bankCode: string) => {
+    onSelect(bankName, bankCode);
     setClosing(true); // 닫힘 애니메이션 시작
     onClose(); // onClose 함수를 호출하여 모달을 닫음
   };
@@ -58,7 +58,7 @@ export default function BankListModal({ onClose, onSelect }: Props) {
             <li
               key={index}
               className={styles.liStyle}
-              onClick={() => handleSelect(bank.bankName)}
+              onClick={() => handleSelect(bank.bankName, bank.code)}
             >
               {bank.bankName}
             </li>
