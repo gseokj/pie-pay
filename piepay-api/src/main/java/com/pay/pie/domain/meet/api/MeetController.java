@@ -231,7 +231,7 @@ public class MeetController {
 			.map(memberMeet -> {
 				Long meetId = memberMeet.getMeet().getId();
 				Pay pay = payService.findRecentPayByMeetId(meetId);
-				if (pay != null && pay.getPayStatus() == Pay.PayStatus.ING) {
+				if (pay != null && pay.getPayStatus() == Pay.PayStatus.OPEN) {
 					return Optional.of(new PayStatusIngResponse(pay));
 				} else {
 					return Optional.<PayStatusIngResponse>empty();
