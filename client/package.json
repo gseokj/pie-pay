@@ -17,12 +17,15 @@
     "next-auth": "^5.0.0-beta.15",
     "react": "^18",
     "react-dom": "^18",
-    "styled-reset": "^4.5.2"
+    "styled-reset": "^4.5.2",
+    "@vanilla-extract/css": "^1.14.0",
+    "@vanilla-extract/dynamic": "^2.1.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "@mswjs/http-middleware": "^0.9.2",
     "@mui/material": "^5.15.11",
+    "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query-devtools": "^5.24.7",
     "@types/axios": "^0.14.0",
     "@types/cors": "^2.8.17",
@@ -32,7 +35,7 @@
     "@types/react-dom": "^18.2.6",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
-    "@vanilla-extract/css": "^1.14.1",
+    "@vanilla-extract/next-plugin": "^2.3.2",
     "autoprefixer": "^10.0.1",
     "babel-eslint": "^10.1.0",
     "class-variance-authority": "^0.6.1",

@@ -235,6 +235,9 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+
+/src/main/generated/
+
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,react,java,intellij+all,visualstudiocode,gradle
 
 piepay-api/src/main/resources/application-pie.yml
