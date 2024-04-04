@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 
 type Props = {
   onClose(): void;
-  onSelect(bankName: string): void;
+  onSelect(bankName: string, bankCode: string): void;
 };
 
 export default function BankListModal({ onClose, onSelect }: Props) {
