@@ -15,7 +15,7 @@ export const useSSE = create<Store>((set) => {
 
   const connect = (token: string | null) => {
     if (!token || connected) return;
-
+    console.log(connected);
     source = new EventSourcePolyfill(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/sse/subscribe`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -34,8 +34,10 @@ export const useSSE = create<Store>((set) => {
 
     source.onerror = () => {
       console.error('Connection error, reconnecting in 2 seconds...');
+      connected = false;
+      console.log(connected);
       source!.close();
-      setTimeout(() => connect(token), 2000);
+      setTimeout(() => connect(token), 1500);
     };
   };
 
