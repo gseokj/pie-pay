@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pay.pie.domain.application.PayAgreeService;
 import com.pay.pie.domain.application.dto.AgreeDto;
 import com.pay.pie.domain.application.dto.InsteadDto;
+import com.pay.pie.domain.application.dto.PayEndReq;
 import com.pay.pie.domain.application.dto.request.AgreeReq;
 
 import lombok.RequiredArgsConstructor;
@@ -122,13 +123,14 @@ public class WebSocketController {
 
 	/**
 	 * 결제 완료 상태 전달
-	 * @param payId
+	 * @param payEndReq
 	 */
 	@MessageMapping("/pay-end")
-	public void respondToComplete(Long payId) {
-		AgreeDto endPay = payAgreeService.respondToComplete(payId);
+	public void respondToComplete(PayEndReq payEndReq) {
+		log.info("payId:{}", payEndReq.getPayId());
+		AgreeDto endPay = payAgreeService.respondToComplete(payEndReq.getPayId());
 
 		// Send message to relevant participants via WebSocket
-		messagingTemplate.convertAndSend("/api/sub/" + payId, endPay);
+		messagingTemplate.convertAndSend("/api/sub/" + payEndReq.getPayId(), endPay);
 	}
 }
