@@ -177,7 +177,7 @@ public class BankUtil {
 		body.put("institutionCode", "00100");
 		body.put("fintechAppNo", "001");
 		body.put("apiServiceCode", "inquireAccountInfo");
-		body.put("institutionTransactionUniqueNo", createRandomNumber(bankCode));
+		body.put("institutionTransactionUniqueNo", createBankRandomNumber(bankCode));
 		body.put("apiKey", API_KEY);
 		body.put("userKey", "d1830ff3-444e-4ecb-92a2-bd5a915d3600");
 
@@ -219,7 +219,7 @@ public class BankUtil {
 		body.put("institutionCode", "00100");
 		body.put("fintechAppNo", "001");
 		body.put("apiServiceCode", "inquireAccountBalance");
-		body.put("institutionTransactionUniqueNo", createRandomNumber(bankCode));
+		body.put("institutionTransactionUniqueNo", createBankRandomNumber(bankCode));
 		body.put("apiKey", API_KEY);
 		body.put("userKey", userKey);
 
@@ -255,7 +255,7 @@ public class BankUtil {
 		body.put("institutionCode", "00100");
 		body.put("fintechAppNo", "001");
 		body.put("apiServiceCode", "receivedTransferAccountNumber");
-		body.put("institutionTransactionUniqueNo", createRandomNumber(bankCode));
+		body.put("institutionTransactionUniqueNo", createBankRandomNumber(bankCode));
 		body.put("apiKey", API_KEY);
 		body.put("userKey", userKey);
 
@@ -297,7 +297,7 @@ public class BankUtil {
 		body.put("institutionCode", "00100");
 		body.put("fintechAppNo", "001");
 		body.put("apiServiceCode", "accountTransfer");
-		body.put("institutionTransactionUniqueNo", createRandomNumber(withdrawalBankCode));
+		body.put("institutionTransactionUniqueNo", createBankRandomNumber(withdrawalBankCode));
 		body.put("apiKey", API_KEY);
 		body.put("userKey", userKey);
 
@@ -384,9 +384,11 @@ public class BankUtil {
 	}
 
 
-
+	/*
+	기관거래코드: 거래개별 고유번호 채번
+	 */
 	// bankCode를 받는 오버로딩된 메서드
-	public String createRandomNumber(String bankCode) {
+	public String createBankRandomNumber(String bankCode) {
 		// bankCode가 없으면 예외를 던집니다.
 		if (bankCode == null || bankCode.isEmpty()) {
 			throw new IllegalArgumentException("Bank code is required.");
@@ -401,8 +403,9 @@ public class BankUtil {
 		}
 
 		// 20자리 uniqueNumber 생성
-		String uniqueNumber = currentTime + bankCode + generateRandomNumber();
+		String uniqueNumber = generateRandomNumber() + bankCode + currentTime;
 
+		log.info("institutionTransactionUniqueNo: {}", uniqueNumber);
 		return uniqueNumber;
 	}
 
@@ -415,7 +418,7 @@ public class BankUtil {
 		String randomBankCode = generateRandomBankCode();
 
 		// 20자리 uniqueNumber 생성
-		String uniqueNumber = currentTime + randomBankCode + generateRandomNumber();
+		String uniqueNumber = generateRandomNumber()+ randomBankCode + currentTime;
 
 		return uniqueNumber;
 	}
@@ -427,14 +430,14 @@ public class BankUtil {
 
 	private String generateRandomBankCode() {
 		// 랜덤 숫자 생성 (1부터 4까지)
-		int randomNumber = (int) (Math.random() * 4) + 1;
+		int randomNumber = (int) (Math.random() * 999);
 		return String.format("%03d", randomNumber);
 	}
 
 	private String generateRandomNumber() {
-		// 랜덤 숫자 생성 (0부터 9999까지)
-		int randomNumber = (int) (Math.random() * 10000);
-		return String.format("%04d", randomNumber);
+		// 랜덤 숫자 생성 (0부터 99까지)
+		int randomNumber = (int) (Math.random() * 99);
+		return String.format("%02d", randomNumber);
 	}
 
 
