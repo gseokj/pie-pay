@@ -5,6 +5,7 @@ import Image from 'next/image';
 import dropUp from '@/assets/icons/dropup.svg';
 import dropDown from '@/assets/icons/dropdown.svg';
 import { useState } from 'react';
+import {useRouter} from "next/navigation";
 
 function deleteCookie(name: string): void {
   document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
@@ -12,8 +13,11 @@ function deleteCookie(name: string): void {
 
 export default function MyInfoUpdateSetting() {
   const [drop, setDrop] = useState(true);
+  const router = useRouter();
+
   const onClickLogOut = () => {
     deleteCookie('accessToken');
+    router.replace('/kakaologin');
   }
 
   return (
