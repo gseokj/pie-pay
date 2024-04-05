@@ -1,5 +1,7 @@
 package com.pay.pie.global.util.bank;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -46,6 +48,7 @@ public class BankUtil {
 	private final String RECEIVE_TRANSFER_ACCOUNT_URL;
 	private final String TRANSFER_ACCOUNT_URL;
 	private final String OPEN_ACCOUNT_URL;
+	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddHHmmssSSS");
 
 	public BankUtil(
 		@Value(value = "${bank.api-key}") String apiKey,
@@ -174,7 +177,7 @@ public class BankUtil {
 		body.put("institutionCode", "00100");
 		body.put("fintechAppNo", "001");
 		body.put("apiServiceCode", "inquireAccountInfo");
-		body.put("institutionTransactionUniqueNo", createRandomNumber());
+		body.put("institutionTransactionUniqueNo", createRandomNumber(bankCode));
 		body.put("apiKey", API_KEY);
 		body.put("userKey", "d1830ff3-444e-4ecb-92a2-bd5a915d3600");
 
@@ -216,7 +219,7 @@ public class BankUtil {
 		body.put("institutionCode", "00100");
 		body.put("fintechAppNo", "001");
 		body.put("apiServiceCode", "inquireAccountBalance");
-		body.put("institutionTransactionUniqueNo", createRandomNumber());
+		body.put("institutionTransactionUniqueNo", createRandomNumber(bankCode));
 		body.put("apiKey", API_KEY);
 		body.put("userKey", userKey);
 
@@ -252,7 +255,7 @@ public class BankUtil {
 		body.put("institutionCode", "00100");
 		body.put("fintechAppNo", "001");
 		body.put("apiServiceCode", "receivedTransferAccountNumber");
-		body.put("institutionTransactionUniqueNo", createRandomNumber());
+		body.put("institutionTransactionUniqueNo", createRandomNumber(bankCode));
 		body.put("apiKey", API_KEY);
 		body.put("userKey", userKey);
 
@@ -294,7 +297,7 @@ public class BankUtil {
 		body.put("institutionCode", "00100");
 		body.put("fintechAppNo", "001");
 		body.put("apiServiceCode", "accountTransfer");
-		body.put("institutionTransactionUniqueNo", createRandomNumber());
+		body.put("institutionTransactionUniqueNo", createRandomNumber(withdrawalBankCode));
 		body.put("apiKey", API_KEY);
 		body.put("userKey", userKey);
 
@@ -380,15 +383,69 @@ public class BankUtil {
 		}
 	}
 
-	public String createRandomNumber() {
-		Random random = new Random();
-		StringBuilder sb = new StringBuilder();
 
-		for (int i = 0; i < 20; i++) {
-			int number = random.nextInt(9);
-			sb.append(number);
+
+	// bankCode를 받는 오버로딩된 메서드
+	public String createRandomNumber(String bankCode) {
+		// bankCode가 없으면 예외를 던집니다.
+		if (bankCode == null || bankCode.isEmpty()) {
+			throw new IllegalArgumentException("Bank code is required.");
 		}
-		return sb.toString();
+
+		// 현재 시간을 문자열로 변환
+		String currentTime = LocalDateTime.now().format(formatter);
+
+		// Bank code가 유효한지 확인합니다.
+		if (!isValidBankCode(bankCode)) {
+			throw new IllegalArgumentException("Invalid bank code.");
+		}
+
+		// 20자리 uniqueNumber 생성
+		String uniqueNumber = currentTime + bankCode + generateRandomNumber();
+
+		return uniqueNumber;
 	}
+
+	// bankCode가 없는 오버로딩된 메서드
+	public String createRandomNumber() {
+		// 현재 시간을 문자열로 변환
+		String currentTime = LocalDateTime.now().format(formatter);
+
+		// 랜덤한 3자리 숫자 생성
+		String randomBankCode = generateRandomBankCode();
+
+		// 20자리 uniqueNumber 생성
+		String uniqueNumber = currentTime + randomBankCode + generateRandomNumber();
+
+		return uniqueNumber;
+	}
+
+	private boolean isValidBankCode(String bankCode) {
+		// Bank code가 "001", "002", "003", "004" 중 하나인지 확인
+		return bankCode.equals("001") || bankCode.equals("002") || bankCode.equals("003") || bankCode.equals("004");
+	}
+
+	private String generateRandomBankCode() {
+		// 랜덤 숫자 생성 (1부터 4까지)
+		int randomNumber = (int) (Math.random() * 4) + 1;
+		return String.format("%03d", randomNumber);
+	}
+
+	private String generateRandomNumber() {
+		// 랜덤 숫자 생성 (0부터 9999까지)
+		int randomNumber = (int) (Math.random() * 10000);
+		return String.format("%04d", randomNumber);
+	}
+
+
+	// 	Random random = new Random();
+	// 	StringBuilder sb = new StringBuilder();
+	//
+	// 	for (int i = 0; i < 20; i++) {
+	// 		int number = random.nextInt(9);
+	// 		sb.append(number);
+	// 	}
+	// 	return sb.toString();
+	// }
 
 }
