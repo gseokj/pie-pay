@@ -130,7 +130,7 @@ public class PayAgreeService {
 			.orElseThrow(() -> new IllegalArgumentException("없는 PayId"));
 		return AgreeDto.builder()
 			.payId(payId)
-			.participantId(0L)
+			.participantId(null)
 			.payAgree(true)
 			.payStatus(pay.getPayStatus())
 			.build();
