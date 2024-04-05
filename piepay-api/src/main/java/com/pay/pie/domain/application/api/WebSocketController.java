@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pay.pie.domain.application.PayAgreeService;
 import com.pay.pie.domain.application.dto.AgreeDto;
 import com.pay.pie.domain.application.dto.InsteadDto;
-import com.pay.pie.domain.application.dto.PayEndReq;
+import com.pay.pie.domain.application.dto.request.PayEndReq;
 import com.pay.pie.domain.application.dto.request.AgreeReq;
 
 import lombok.RequiredArgsConstructor;

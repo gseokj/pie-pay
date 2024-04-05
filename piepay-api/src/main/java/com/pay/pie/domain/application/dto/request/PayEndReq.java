@@ -1,4 +1,4 @@
-package com.pay.pie.domain.application.dto;
+package com.pay.pie.domain.application.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
