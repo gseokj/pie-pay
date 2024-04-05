@@ -119,4 +119,16 @@ public class WebSocketController {
 		// Send message to relevant participants via WebSocket
 		messagingTemplate.convertAndSend("/api/sub/" + insteadAgreeReq.getPayId(), agreeDto);
 	}
+
+	/**
+	 * 결제 완료 상태 전달
+	 * @param payId
+	 */
+	@MessageMapping("/pay-end")
+	public void respondToComplete(Long payId) {
+		AgreeDto endPay = payAgreeService.respondToComplete(payId);
+
+		// Send message to relevant participants via WebSocket
+		messagingTemplate.convertAndSend("/api/sub/" + payId, endPay);
+	}
 }

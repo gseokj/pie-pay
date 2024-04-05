@@ -62,7 +62,6 @@ public class PayAgreeService {
 			.participantId(agreeReq.getParticipantId())
 			.payAgree(agreeReq.isPayAgree())
 			.payStatus(participant.getPay().getPayStatus())
-			// .agreeTime(LocalDateTime.now())
 			.build();
 
 	}
@@ -124,5 +123,16 @@ public class PayAgreeService {
 		log.info("동의자 수: {}", agreedParticipantsCount);
 		// 모든 참가자가 동의했는지 여부를 확인
 		return agreedParticipantsCount == totalParticipants;
+	}
+
+	public AgreeDto respondToComplete(Long payId) {
+		Pay pay = payRepository.findById(payId)
+			.orElseThrow(() -> new IllegalArgumentException("없는 PayId"));
+		return AgreeDto.builder()
+			.payId(payId)
+			.participantId(null)
+			.payAgree(true)
+			.payStatus(pay.getPayStatus())
+			.build();
 	}
 }
