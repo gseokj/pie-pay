@@ -4,9 +4,9 @@ import theme from "@/styles/theme/theme";
 
 export const memberContainer = style({
     position: 'sticky',
-    overflowY: 'auto',
     paddingBottom: '100px',
     backgroundColor: theme.layout,
+
 
 })
 export const container = style({
@@ -42,7 +42,7 @@ export const image = style({
 
 
 export const memberName = style({
-    fontSize: '10px',
+    fontSize: '0.8rem',
     fontWeight: 'bold'
 })
 

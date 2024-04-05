@@ -38,7 +38,7 @@ export const headerContainer = style({
 
 export const title = style({
     fontWeight: 'bold',
-    fontSize: '25px'
+    fontSize: '1.5rem'
 })
 
 export const image = style({
