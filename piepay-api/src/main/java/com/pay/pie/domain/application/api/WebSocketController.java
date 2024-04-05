@@ -103,11 +103,17 @@ public class WebSocketController {
 	@MessageMapping("/agree")
 	public void respondToAgreement(AgreeReq agreeReq) {
 		log.info("payId:{}", agreeReq.getPayId());
-		AgreeDto agreeDto = payAgreeService.respondToAgreement(agreeReq);
 
-		// Send message to relevant participants via WebSocket
-		messagingTemplate.convertAndSend("/api/sub/" + agreeReq.getPayId(), agreeDto);
-		log.info("동의 성공");
+		if (agreeReq.getParticipantId() == null) {
+			AgreeDto endPay = payAgreeService.respondToComplete(agreeReq);
+			// Send message to relevant participants via WebSocket
+			messagingTemplate.convertAndSend("/api/sub/" + agreeReq.getPayId(), endPay);
+		} else {
+			AgreeDto agreeDto = payAgreeService.respondToAgreement(agreeReq);
+			// Send message to relevant participants via WebSocket
+			messagingTemplate.convertAndSend("/api/sub/" + agreeReq.getPayId(), agreeDto);
+			log.info("동의 성공");
+		}
 	}
 
 	/**
@@ -122,16 +128,16 @@ public class WebSocketController {
 		messagingTemplate.convertAndSend("/api/sub/" + insteadAgreeReq.getPayId(), agreeDto);
 	}
 
-	/**
-	 * 결제 완료 상태 전달
-	 * @param payEndReq
-	 */
-	@MessageMapping("/pay-end")
-	public void respondToComplete(@RequestBody PayEndReq payEndReq) {
-		log.info("payId:{}", payEndReq.getPayId());
-		AgreeDto endPay = payAgreeService.respondToComplete(payEndReq.getPayId());
-
-		// Send message to relevant participants via WebSocket
-		messagingTemplate.convertAndSend("/api/sub/" + payEndReq.getPayId(), endPay);
-	}
+	// /**
+	//  * 결제 완료 상태 전달
+	//  * @param payEndReq
+	//  */
+	// @MessageMapping("/pay-end")
+	// public void respondToComplete(@RequestBody PayEndReq payEndReq) {
+	// 	log.info("payId:{}", payEndReq.getPayId());
+	// 	AgreeDto endPay = payAgreeService.respondToComplete(payEndReq.getPayId());
+	//
+	// 	// Send message to relevant participants via WebSocket
+	// 	messagingTemplate.convertAndSend("/api/sub/" + payEndReq.getPayId(), endPay);
+	// }
 }

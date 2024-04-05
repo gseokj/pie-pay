@@ -125,7 +125,8 @@ public class PayAgreeService {
 		return agreedParticipantsCount == totalParticipants;
 	}
 
-	public AgreeDto respondToComplete(Long payId) {
+	public AgreeDto respondToComplete(AgreeReq payEndReq) {
+		Long payId = payEndReq.getPayId();
 		Pay pay = payRepository.findById(payId)
 			.orElseThrow(() -> new IllegalArgumentException("없는 PayId"));
 		return AgreeDto.builder()
