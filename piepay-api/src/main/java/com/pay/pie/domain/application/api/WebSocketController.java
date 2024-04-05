@@ -13,11 +13,13 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.application.PayAgreeService;
 import com.pay.pie.domain.application.dto.AgreeDto;
 import com.pay.pie.domain.application.dto.InsteadDto;
+import com.pay.pie.domain.application.dto.request.PayEndReq;
 import com.pay.pie.domain.application.dto.request.AgreeReq;
 
 import lombok.RequiredArgsConstructor;
@@ -118,5 +120,18 @@ public class WebSocketController {
 
 		// Send message to relevant participants via WebSocket
 		messagingTemplate.convertAndSend("/api/sub/" + insteadAgreeReq.getPayId(), agreeDto);
+	}
+
+	/**
+	 * 결제 완료 상태 전달
+	 * @param payId
+	 */
+	@MessageMapping("/pay-end/{payId}")
+	public void respondToComplete(@DestinationVariable String payId) {
+		Long payEndId = Long.valueOf(payId);
+		AgreeDto endPay = payAgreeService.respondToComplete(payEndId);
+
+		// Send message to relevant participants via WebSocket
+		messagingTemplate.convertAndSend("/api/sub/" + payEndId, endPay);
 	}
 }
