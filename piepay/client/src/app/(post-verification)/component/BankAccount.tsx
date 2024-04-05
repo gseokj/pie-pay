@@ -29,7 +29,7 @@ export default function BankAccount() {
   const [bankColor, setBankColor] = useState(theme.korea);
   const [bankIcon, setBankIcon] = useState(logoKorea);
 
-  console.log(account);
+  // console.log(account);
 
   useEffect(() => {
     if (typeof account !== 'undefined') {
