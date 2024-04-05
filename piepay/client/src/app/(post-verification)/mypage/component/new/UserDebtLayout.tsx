@@ -19,6 +19,7 @@ export default function UserDebtLayout() {
     const { isUserDebtModalOn, changeUserDebtModalStatus } = useStore((state) => state);
 
     const [firstItem, setFirstItem] = useState<Debt>();
+    const [user, setUser] = useState<Me>();
 
     useEffect(() => {
         const token = getCookie('accessToken');
@@ -33,6 +34,9 @@ export default function UserDebtLayout() {
                     }
                 })
                 setFirstItem(borrowItem);
+            }
+            if (typeof userInfo !== "undefined") {
+                setUser(userInfo);
             }
         }
     }, [isUserDebtModalOn]);
@@ -53,8 +57,8 @@ export default function UserDebtLayout() {
                         >더보기
                         </button>
                     </div>
-                    {typeof firstItem !== 'undefined' &&
-                        <UserDebtCard props={{ debt: firstItem }}/>
+                    {typeof user !== 'undefined' && typeof firstItem !== 'undefined' &&
+                        <UserDebtCard props={{ debt: firstItem, user: user }}/>
                     }
                 </section>
                 <UserDebtModal props={{ debt: firstItem }} />
