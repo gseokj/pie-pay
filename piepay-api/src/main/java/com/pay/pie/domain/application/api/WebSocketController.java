@@ -132,6 +132,6 @@ public class WebSocketController {
 		AgreeDto endPay = payAgreeService.respondToComplete(payEndId);
 
 		// Send message to relevant participants via WebSocket
-		messagingTemplate.convertAndSend("/api/sub/" + payId, endPay);
+		messagingTemplate.convertAndSend("/api/sub/" + payEndId, endPay);
 	}
 }
