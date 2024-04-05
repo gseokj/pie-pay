@@ -13,6 +13,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pay.pie.domain.application.PayAgreeService;
@@ -126,7 +127,7 @@ public class WebSocketController {
 	 * @param payEndReq
 	 */
 	@MessageMapping("/pay-end")
-	public void respondToComplete(PayEndReq payEndReq) {
+	public void respondToComplete(@RequestBody PayEndReq payEndReq) {
 		log.info("payId:{}", payEndReq.getPayId());
 		AgreeDto endPay = payAgreeService.respondToComplete(payEndReq.getPayId());
 
