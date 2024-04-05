@@ -38,15 +38,6 @@ public class OrderApiController {
 	@Transactional
 	@GetMapping("/your-receipt/{payId}")
 	public ResponseEntity<BaseResponse<OrderResponse>> addReceipt(@PathVariable Long payId) {
-		// 발표용 코드
-		// long orderId;
-		// Order order = orderService.save(payId);
-		// if (payId % 2 == 0) {
-		// 	orderId = 8L;
-		// } else {
-		// 	orderId = 36L;
-		// }
-		/// 발표용 코드
 
 		Order existedOrder = orderService.findByPayId(payId);
 		if (existedOrder != null) {
@@ -72,9 +63,22 @@ public class OrderApiController {
 			int menuConsumed = random.nextInt(6) + 4;
 			long totalAmount = 0L; // 총액을 초기화합니다.
 
+			// 시연용 코드
+			menuConsumed = 5;
+			int [] menuList = {4, 7, 10, 14, 15};
+			int [] menuAmountList = {1, 1, 1, 2, 4};
+			// 시연용 코드
+
+
 			for (int i = 0; i < menuConsumed; i++) {
 				int menuId = random.nextInt(menus.size());
 				int menuAmount = random.nextInt(3) + 1;
+				// 시연용 코드
+				menuId = menuList[i];
+				menuAmount = menuAmountList[i];
+				// 시연용 코드
+
+
 				Menu menu = menus.get(menuId);
 				OrderMenu orderMenu = orderMenuService.findByMenuAndOrder(menu, order);
 
