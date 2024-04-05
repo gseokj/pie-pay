@@ -38,7 +38,15 @@ public class OrderApiController {
 	@Transactional
 	@GetMapping("/your-receipt/{payId}")
 	public ResponseEntity<BaseResponse<OrderResponse>> addReceipt(@PathVariable Long payId) {
-		Order existedOrder = orderService.findByPayId(payId);
+		// 발표용 코드
+		long fakePayId;
+		if (payId % 2 == 0) {
+			fakePayId = 18L;
+		} else {
+			fakePayId = 55L;
+		}
+		/// 발표용 코드
+		Order existedOrder = orderService.findByPayId(fakePayId);
 		if (existedOrder != null) {
 			Long orderId = existedOrder.getId();
 			List<NewOrderMenuResponse> orderMenus = orderMenuService.findByOrderId(orderId)
