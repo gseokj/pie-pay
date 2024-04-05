@@ -32,8 +32,13 @@ export const title = style({
 })
 
 export const paragraph = style({
-    color:theme.gray,fontSize: '0.8rem'
+    color:theme.gray,fontSize: '0.8rem',
+
 })
+globalStyle(`${box} > p`, {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+});
 
 globalStyle(`${title} > p`, {
     display:'flex',fontWeight:'bold', marginLeft:'0.5rem'
