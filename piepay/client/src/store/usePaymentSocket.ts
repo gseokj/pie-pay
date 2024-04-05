@@ -21,6 +21,7 @@ type SocketState = {
   payment: Payment | null;
   connect: (payId: number) => void;
   send: (payId:number, participantId:number, payAgree:boolean) => void;
+  storeSend: (payId:number) => void;
   instead: (payId:number, borrowerId:number, lenderId:number) => void;
   init : (payId:number) => void;
   initRes: InitType | null;
@@ -47,9 +48,9 @@ export const usePaymentSocket = create<SocketState>((set) => ({
     const clientdata = new Stomp.Client({
       brokerURL: `${process.env.NEXT_PUBLIC_SOCKET_URL}/pay`,
       connectHeaders: {},
-      // debug: function (str) {
-      //   console.log(str);
-      // },
+      debug: function (str) {
+        console.log(str);
+      },
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
@@ -59,13 +60,13 @@ export const usePaymentSocket = create<SocketState>((set) => ({
       set((state) => ({ ...state, initiating: true }));
       clientdata.subscribe(`/api/sub/${payId}`, (message: any) => {
         const res = JSON.parse(message.body);
-
-        // console.log(res);
+        console.log(res);
         set((state) => ({ ...state, res }));
       });
 
       clientdata.subscribe(`/api/sub/initialData/${payId}`, (message: any) => {
         const initRes = JSON.parse(message.body);
+        console.log(initRes);
         set((state) => ({ ...state, initRes }));
       });
     };
@@ -81,6 +82,7 @@ export const usePaymentSocket = create<SocketState>((set) => ({
   },
   send: (payId:number, participantId:number, payAgree:boolean) => {
     console.log(payId+" "+participantId+" " +payAgree)
+
     set((state) => {
       if (state.client) {
         state.client.publish({
@@ -89,6 +91,21 @@ export const usePaymentSocket = create<SocketState>((set) => ({
             payId:payId,
             participantId: participantId,
             payAgree: payAgree,
+          }),
+        });
+      }
+      return state;
+    });
+  },
+  storeSend: (payId:number) => {
+    console.log("StoreSend : "+payId);
+    console.log(typeof(payId.toString()));
+    set((state) => {
+      if (state.client) {
+        state.client.publish({
+          destination: `/api/pub/pay-end/${payId}`,
+          body: JSON.stringify({
+            payId:payId.toString()
           }),
         });
       }

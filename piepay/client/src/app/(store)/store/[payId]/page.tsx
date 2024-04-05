@@ -9,6 +9,8 @@ import CheckModal from '@/app/(store)/component/CheckModal';
 import { useCheckModal } from '@/store/useCheckModal';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { usePaymentSocket } from '@/store/usePaymentSocket';
+import { store } from '@mswjs/cookies';
 
 type Props=
 {
@@ -27,13 +29,35 @@ export default function Page({params}: Props) {
   const {isVisible,updateState}  = useCheckModal();
   const { data: receipt} = useQuery({queryKey: ['store',payId,token], queryFn: getStoreReceipt})
 
+
+  // 소켓 초기값
+  const { connect,client,disconnect,storeSend,res } = usePaymentSocket();
+  // 소켓 연결
+  useEffect(() => {
+    connect(Number(payId));
+    return () => {
+      if(client) disconnect(client);
+    };
+  }, []);
+
+
+  useEffect(() => {
+    if (!res) return;
+    console.log(res);
+    // updatePayment({ ...res, payAgree: res.payAgree ? 'agree' : 'deny' });
+  }, [res]);
+
   const handleReplace = ()=>{
+    console.log(payId+"로 보냄");
     postStoreReceipt(payId,token).then(response=>{
+      storeSend(Number(payId));
       router.replace('/');
     }).catch((error)=>{
       console.log(error);
     })
+
   }
+
   return (
     <>
       {receipt &&
