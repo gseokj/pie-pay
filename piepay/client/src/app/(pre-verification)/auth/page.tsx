@@ -3,6 +3,9 @@
 
 import {useRouter} from "next/navigation";
 import {useEffect} from "react";
+import Image from "next/image";
+import piepayLoadGif from "@/assets/gif/piepay.gif";
+import * as fontStyles from "@/styles/fonts.css";
 
 
 
@@ -19,7 +22,6 @@ export default function Success({
         if (typeof accessToken === 'string') {
             document.cookie = `accessToken=${accessToken}`;
             // refreshRequest(accessToken);
-            router.push('/sign-in/personal-auth');
         } else {
             router.back();
         }
@@ -27,11 +29,19 @@ export default function Success({
 
   useEffect(() => {
     setToken();
+    // router.push('/');
+    const timer = setTimeout(() => {
+      router.push('/sign-in/personal-auth');
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
     return (
-      <div>
-          로그인 완료!
-      </div>
+      <section style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+        <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+          <Image src={piepayLoadGif} alt="loading gif" height={200} width={200} unoptimized={true} priority={true}/>
+          <div className={fontStyles.bold} style={{fontSize: "1.4rem"}}>로그인 완료!</div>
+        </div>
+      </section>
     )
 }
