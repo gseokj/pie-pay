@@ -1,32 +1,39 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { getMyInfo } from '@/api/user';
 import { useEffect } from 'react';
+import * as fontStyles from "@/styles/fonts.css";
 
 export default function Success({
-  searchParams,
-}: {
+                                  searchParams,
+                                }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const router = useRouter();
-  const accessToken = searchParams.accessToken;
+    const router = useRouter();
+    const accessToken = searchParams.accessToken;
 
-  const setToken = async () => {
+    const setToken = async () => {
     if (typeof accessToken === 'string') {
-      document.cookie = `accessToken=${accessToken}`;
-      // refreshRequest(accessToken);
-      router.push('/');
+        document.cookie = `accessToken=${accessToken}`;
+
+        // refreshRequest(accessToken);
+
     } else {
-      router.back();
-    }
-  };
+        router.back();
+    }};
 
+    useEffect(() => {
+        setToken();
+        const timer = setTimeout(() => {
+            router.push('/');
+        }, 1000);
 
+        return () => clearTimeout(timer);
+    }, []);
 
-  useEffect(() => {
-    setToken();
-  }, []);
-
-  return <div>로그인 완료!</div>;
+    return (
+        <section>
+            <div className={fontStyles.bold}>로그인 완료!</div>
+        </section>
+    );
 }
