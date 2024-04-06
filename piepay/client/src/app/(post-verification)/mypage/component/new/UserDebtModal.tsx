@@ -16,27 +16,56 @@ import {postPayback} from "@/api/user/payment";
 import {Meet} from "@/model/meet";
 import {useQueryClient} from "@tanstack/react-query";
 import {blackLargeFont} from "@/styles/mypage/debt/layout.css";
+import {useEffect, useState} from "react";
+import {de} from "@faker-js/faker";
+import {Account} from "@/model/account";
 
-interface DebtProps {
-    props: {
-        debt: Debt;
-    }
-}
 
-export default function UserDebtModal({ props }: DebtProps) {
-    const { debt } = props;
-    const { isUserDebtModalOn, changeUserDebtModalStatus } = useStore((state) => state);
+export default function UserDebtModal() {
+    const { isUserDebtModalOn, changeUserDebtModalStatus, setPayInsteadId, payInsteadId } = useStore((state) => state);
     const queryClient = useQueryClient();
+    const [debt, setDebt] = useState<Debt>();
+
+    useEffect(() => {
+        const token = getCookie('accessToken');
+        if (payInsteadId !== null && token !== null) {
+            const userDebts: Debt[]|undefined = queryClient.getQueryData(['userDebts', token]);
+            if (typeof userDebts !== 'undefined') {
+                const targetDebt = userDebts.find((debt) => {
+                    if (debt.payInsteadId === payInsteadId) {
+                        return debt;
+                    }
+                });
+                setDebt(targetDebt);
+            }
+        }
+    }, [payInsteadId, isUserDebtModalOn]);
 
     const clearDebt = async () => {
         const token = getCookie('accessToken');
-        if (token !== null) {
+        if (token !== null && typeof debt !== 'undefined') {
             try {
                 await postPayback(debt.payInsteadId ,token);
-                console.log('!!!');
+                console.log(`payback ${debt.payInsteadId}!`);
                 queryClient.setQueryData(['userDebts', token], (oldData: Debt[]) => {
-                    const newData = oldData.filter(data => data.payInsteadId !== debt.payInsteadId);
+                    const newData = oldData.map(data => {
+                        if (data.payInsteadId === payInsteadId) {
+                            return { ...data, payback: true }
+                        }
+                        return data;
+                    });
                     return newData
+                });
+                queryClient.setQueryData(['account', token], (oldData: Account[]) => {
+                    const newData = oldData.map((data) => {
+                        if (data.mainAccount) {
+                            return {
+                                ...data,
+                                balance: (Number(data.balance) - debt.amount).toString()
+                            }
+                        }
+                    });
+                    return newData;
                 });
                 changeUserDebtModalStatus();
             } catch (error) {
@@ -62,11 +91,13 @@ export default function UserDebtModal({ props }: DebtProps) {
                         <h3
                             className={fontStyles.semibold}
                         >정산하기</h3>
-                        <p>
-                            <span className={`${debtStyles.blackFont} ${fontStyles.semibold}`}>{debt.lenderName}</span>님에게
-                            <span className={`${debtStyles.blackFont} ${fontStyles.semibold}`}> {dayjs(debt.createdAt).format("M월 D일")}</span>에 빌린<br/>
-                            <span className={`${debtStyles.blackLargeFont} ${fontStyles.semibold}`}>{debt.amount.toLocaleString('ko-kr')}원</span>을 정산할게요
-                        </p>
+                        {typeof debt !== 'undefined' &&
+                            <p>
+                                <span className={`${debtStyles.blackFont} ${fontStyles.semibold}`}>{debt.lenderName}</span>님에게
+                                <span className={`${debtStyles.blackFont} ${fontStyles.semibold}`}> {dayjs(debt.createdAt).format("M월 D일")}</span>에 빌린<br/>
+                                <span className={`${debtStyles.blackLargeFont} ${fontStyles.semibold}`}>{debt.amount.toLocaleString('ko-kr')}원</span>을 정산할게요
+                            </p>
+                        }
                     </div>
                     <div className={modalStyles.inviteModalButtons}>
                         <button

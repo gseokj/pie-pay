@@ -29,7 +29,7 @@ export default function UserDebtLayout() {
             if (typeof userDebts !== "undefined" && userDebts.length > 0) {
                 console.log(userDebts);
                 const borrowItem = userDebts.find((debt) => {
-                    if (debt.borrowerName === userInfo?.nickname && !debt.payback) {
+                    if (!debt.payback) {
                         return debt
                     }
                 })
@@ -61,7 +61,7 @@ export default function UserDebtLayout() {
                         <UserDebtCard props={{ debt: firstItem, user: user }}/>
                     }
                 </section>
-                <UserDebtModal props={{ debt: firstItem }} />
+                <UserDebtModal />
             </>
         );
     } else {
@@ -70,6 +70,11 @@ export default function UserDebtLayout() {
                 <section className={debtStyles.marginBottom}>
                     <div className={mainStyles.categoryContainer.default}>
                         <h3 className={fontStyles.bold}>미정산 내역</h3>
+                        <button
+                            className={fontStyles.bold}
+                            onClick={onClickPush}
+                        >더보기
+                        </button>
                     </div>
                     <p>미정산 내역이 없습니다.</p>
                 </section>
