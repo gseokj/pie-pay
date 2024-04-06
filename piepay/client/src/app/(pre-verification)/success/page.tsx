@@ -24,11 +24,12 @@ export default function Success({
 
     useEffect(() => {
         setToken();
-        const timer = setTimeout(() => {
-            router.push('/');
-        }, 1000);
-
-        return () => clearTimeout(timer);
+        router.push('/');
+        // const timer = setTimeout(() => {
+        //     router.push('/');
+        // }, 1000);
+        //
+        // return () => clearTimeout(timer);
     }, []);
 
     return (
