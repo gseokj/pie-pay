@@ -15,5 +15,4 @@ export const kakaoButton = style({
 export const kakaoTitle = style({
     fontSize: "1.2rem",
     marginLeft: "2%",
-    fontWeight: 600
 })
