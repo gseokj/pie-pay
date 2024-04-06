@@ -76,18 +76,18 @@ export default function UserDebtCard({ props }: DebtProps) {
     } else {
 
         return (
-          <section
+            <section
             className={cardStyles.cardLayout.default}
-          >
-              <div className={cardStyles.cardInnerLayout.paymentHorizontalInner}>
-                  <p>{paymentDate}</p>
-                  {debt.payback ?
-                    <h5 className={`${fontStyles.semibold} ${cardStyles.completed}`}>정산 완료</h5>
-                    :
-                    <h5 className={`${fontStyles.semibold} ${cardStyles.unpaid}`}>정산 미완료</h5>
-                  }
-              </div>
-              {user.nickname === debt.lenderName ?
+            >
+                <div className={cardStyles.cardInnerLayout.paymentHorizontalInner}>
+                    <p>{paymentDate}</p>
+                    {debt.payback ?
+                        <h5 className={`${fontStyles.semibold} ${cardStyles.completed}`}>정산 완료</h5>
+                        :
+                        <h5 className={`${fontStyles.semibold} ${cardStyles.unpaid}`}>정산 미완료</h5>
+                    }
+                </div>
+                {user.nickname === debt.lenderName ?
                 <div className={cardStyles.cardInnerLayout.iconHeader2}>
                     <div className={mainStyles.imageBox.imageBox28}>
                         <Image src={debt.borrowerProfile} alt="lender profile" fill={true} objectFit="cover"
@@ -99,20 +99,18 @@ export default function UserDebtCard({ props }: DebtProps) {
                 <div className={cardStyles.cardInnerLayout.iconHeader2}>
                     <div className={mainStyles.imageBox.imageBox28}>
                         <Image src={debt.lenderProfile} alt="lender profile" fill={true} objectFit="cover"
-                               sizes="(max-width: 28px)"/>
+                               sizes="(max-width: 28px)"
+                        />
                     </div>
                     <h3 className={fontStyles.semibold}>{debt.lenderName}님에게 돈을 갚았어요</h3>
                 </div>
-              }
-              <div className={cardStyles.cardInnerLayout.paymentSpaceBetweenInner}>
-                  <h3 className={fontStyles.bold}>
-                      {`${debt.amount.toLocaleString("ko-kr")} 원`}
-                  </h3>
-              </div>
-          </section>
+                }
+                <div className={cardStyles.cardInnerLayout.paymentSpaceBetweenInner}>
+                    <h3 className={fontStyles.bold}>
+                        {`${debt.amount.toLocaleString("ko-kr")} 원`}
+                    </h3>
+                </div>
+            </section>
         );
-
     }
-
-
 }

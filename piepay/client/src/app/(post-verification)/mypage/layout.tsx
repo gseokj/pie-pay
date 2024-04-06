@@ -9,11 +9,17 @@ type Props = {
 };
 
 export default async function MyPage({ children }: Props) {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        gcTime: 1000 * 60 * 60, //
+      },
+    },
+  });
   const token = cookies().get('accessToken')?.value;
 
-  await queryClient.prefetchQuery({ queryKey: ['userPayments', token], queryFn: getMyPayments });
-  await queryClient.prefetchQuery({ queryKey: ['userDebts', token], queryFn: getMyDebtList });
+  await queryClient.prefetchQuery({ queryKey: ['userPayments', token], queryFn: getMyPayments, staleTime: 1000 * 60 * 40});
+  await queryClient.prefetchQuery({ queryKey: ['userDebts', token], queryFn: getMyDebtList, staleTime: 1000 * 60 * 40});
   const dehydratedState = dehydrate(queryClient);
   return (
     <>
