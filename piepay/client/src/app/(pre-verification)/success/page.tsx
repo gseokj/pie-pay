@@ -32,8 +32,8 @@ export default function Success({
     }, []);
 
     return (
-        <section>
-            <div className={fontStyles.bold}>로그인 완료!</div>
+        <section style={{width: "100%", height: "100", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <div className={fontStyles.bold} style={{ fontSize: "1.4rem" }}>로그인 완료!</div>
         </section>
     );
 }
