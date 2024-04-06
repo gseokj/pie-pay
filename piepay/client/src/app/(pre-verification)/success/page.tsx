@@ -37,7 +37,6 @@ export default function Success({
     return (
         <section style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-            <img src="@/assets/gif/piepay.gif" alt="loading gif"/>
             <Image src={piepayLoadGif} alt="loading gif" height={200} width={200} unoptimized={true} />
             <div className={fontStyles.bold} style={{ fontSize: "1.4rem" }}>로그인 완료!</div>
           </div>
