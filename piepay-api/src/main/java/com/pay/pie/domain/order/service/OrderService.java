@@ -41,7 +41,7 @@ public class OrderService {
 		Random random = new Random();
 		int randomIndex = random.nextInt(storesSize);
 		// 시연용 코드
-		randomIndex = 1;
+		randomIndex = 0;
 		// 시연용 코드
 		addOrderRequest.setStore(stores.get(randomIndex));
 		addOrderRequest.setTotalAmount(0L);
