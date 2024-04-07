@@ -15,10 +15,11 @@ import { getCookie } from '@/util/getCookie';
 import { getReceipt } from '@/api/receipt';
 import { usePaymentResult } from '@/store/usePaymentResult';
 import { useReceipt } from '@/store/useReceipt';
+import { LoaderComponent } from '@/app/component/Loading';
 
 type Props = { params: { payId: string } }
 export default function Page({ params }: Props) {
-  const { setPaymentResult } = usePaymentResult();
+  const { setPaymentResult,isLoading } = usePaymentResult();
   const { setReceipt } = useReceipt();
   const router = useRouter();
   const { payId } = params;
@@ -42,6 +43,7 @@ export default function Page({ params }: Props) {
 
 
   return (<>
+    {!isLoading && <>
     <ReceiptModal payId={Number(payId)} />
     <Header type={three} />
     <p className={styles.pargraph.title}>결제가 완료됐어요</p>
@@ -50,6 +52,7 @@ export default function Page({ params }: Props) {
     <ParticipantResultList payId={Number(payId)} />
 
     <button onClick={() => router.replace('/')} className={styles.submitButton}>확인</button>
-
+    </>}
+    {isLoading && LoaderComponent}
   </>);
 }
