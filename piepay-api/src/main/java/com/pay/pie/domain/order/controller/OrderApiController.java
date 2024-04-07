@@ -65,19 +65,17 @@ public class OrderApiController {
 
 			// 시연용 코드
 			menuConsumed = 5;
-			int [] menuList = {4, 7, 10, 14, 15};
-			int [] menuAmountList = {1, 1, 1, 2, 4};
+			int[] menuList = {4, 7, 10, 14, 15};
+			int[] menuAmountList = {1, 1, 1, 2, 4};
 			// 시연용 코드
-
 
 			for (int i = 0; i < menuConsumed; i++) {
 				int menuId = random.nextInt(menus.size());
 				int menuAmount = random.nextInt(3) + 1;
 				// 시연용 코드
-//				menuId = menuList[i];
-//				menuAmount = menuAmountList[i];
+				menuId = menuList[i];
+				menuAmount = menuAmountList[i];
 				// 시연용 코드
-
 
 				Menu menu = menus.get(menuId);
 				OrderMenu orderMenu = orderMenuService.findByMenuAndOrder(menu, order);
