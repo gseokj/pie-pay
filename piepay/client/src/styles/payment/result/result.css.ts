@@ -32,7 +32,7 @@ export const receiptButton = style({
     padding: '8px',
     borderRadius: '15px',
     fontSize: '10px',
-    width: '20%',
+    width: '25%',
 })
 export const pargraph = styleVariants({
     title:[{marginBottom: "10px",
