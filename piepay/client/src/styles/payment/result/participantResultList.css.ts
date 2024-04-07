@@ -25,7 +25,7 @@ const bold = style({
 })
 export const pargraph = styleVariants({
 
-    balance:[{width:'30%',fontWeight: 'bold'}],
+    balance:[{width:'30%',fontWeight: 'bold',display:'flex',justifyContent:'end'}],
     paymentMember:[{fontSize: '14px',color: theme.gray, marginBottom: '10px'}]
 
 })
