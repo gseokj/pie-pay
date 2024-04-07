@@ -3,7 +3,7 @@
 import * as styles from "@/styles/main/cardLayout.css";
 import * as fontCss from "@/styles/fonts.css";
 import * as buttonStyles from "@/styles/main/mainButton.css";
-import {useState, useRef} from "react";
+import { useState, useRef, useEffect } from 'react';
 import {getCookie} from "@/util/getCookie";
 import {useRouter} from "next/navigation";
 import {postJoinMeet} from "@/api/meet/meet";
@@ -22,10 +22,18 @@ export default function MeetJoin({ isModal = false, clickJoin, clickExit }: Meet
     const [isWrong, setIsWrong] = useState<boolean[]>(Array(6).fill(false));
     const [isComplete, setIsComplete] = useState<boolean[]>(Array(6).fill(false));
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-
-    const placeholder: string = 'piepay';
+    const [placeholder, setPlaceholder] = useState('piepay');
     const router = useRouter();
     const queryClient = useQueryClient();
+
+    // 한 자리라도 입력이 되었다면 placeholder내용을 지워주는 로직
+    useEffect(() => {
+        if(code[0]!==''){
+            setPlaceholder('');
+        }else if(code[0]===''){
+            setPlaceholder('piepay');
+        }
+    }, [code[0]]);
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const value = e.target.value.charAt(0); // 첫 번째 글자만 취함
