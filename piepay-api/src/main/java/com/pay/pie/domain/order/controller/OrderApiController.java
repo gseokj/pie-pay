@@ -74,8 +74,8 @@ public class OrderApiController {
 				int menuId = random.nextInt(menus.size());
 				int menuAmount = random.nextInt(3) + 1;
 				// 시연용 코드
-				menuId = menuList[i];
-				menuAmount = menuAmountList[i];
+//				menuId = menuList[i];
+//				menuAmount = menuAmountList[i];
 				// 시연용 코드
 
 
