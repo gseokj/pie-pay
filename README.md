@@ -21,7 +21,7 @@
 - 모임 후 정산 요청을 보내기 귀찮은 사람들
 - 모임 후 정산해야 한다는 사실을 잘 잊는 사람들
 - 모임에서 어떤 활동을 했는지 추억을 남기고 싶은 사람들
-<img src="README.assets/페르소나.jpg" width="80%" height="20%"/>
+<img src="assets/페르소나.jpg" width="80%" height="20%"/>
 
 ## UCC🎞️
 
@@ -53,30 +53,37 @@
 <br/><br/>
 
 # :iphone: 화면 소개
-### 회원가입
+<details>
+<summary> 회원가입</summary>
+<img src="./assets/화면소개/회원가입.gif" width="200">
+</details>
 
-<img src="./README.assets/화면소개/회원가입.gif" width="200">
+<details>
+<summary>모임만들기</summary>
+<img src="./assets/화면소개/모임만들기.gif" width="200">
+</details>
 
-### 모임만들기
+<details>
+<summary>모임입장</summary>
+<img src="./assets/화면소개/모임입장.gif" width="200">
+</details>
 
-<img src="./README.assets/화면소개/모임만들기.gif" width="200">
+<details>
+<summary>결제</summary>
+<img src="./assets/화면소개/결제.gif" width="300">
+</details>
 
-### 모임입장
 
-<img src="./README.assets/화면소개/모임입장.gif" width="200">
+<details>
+<summary>모임상세</summary>
+<img src="./assets/화면소개/모임상세.gif" width="200">
+</details>
 
-### 결제
 
-<img src="./README.assets/화면소개/결제.gif" width="300">
-
-### 모임상세
-
-<img src="./README.assets/화면소개/모임상세.gif" width="200">
-
-### 정산
-
-<img src="./README.assets/화면소개/정산.gif" width="200">
-
+<details>
+<summary>정산</summary>
+<img src="./assets/화면소개/정산.gif" width="200">
+</details>
 [Top](#목차)
 <br/><br/>
 
@@ -219,63 +226,60 @@ export default Button;
 
 # :open_file_folder:서비스 아키텍처
 
-사진 & 설명 추가
+<img src="/assets/architecture.png" width="80%"/>
 
 # :chart_with_upwards_trend:시퀀스 다이어그램
 ### 회원가입 시퀀스
-![signup](README.assets/signup_sequence.png)
+![signup](assets/signup_sequence.png)
 
 
 ### 휴대폰 본인인증 시퀀스
-<img src="/README.assets/phone_certification_sequence.png" width="80%"/>
+<img src="/assets/phone_certification_sequence.png" width="80%"/>
 
 ### 계좌 본인인증 시퀀스
-<img src="/README.assets/account_certification_sequence.png" width="80%"/>
+<img src="/assets/account_certification_sequence.png" width="80%"/>
 
 ### 로그인 시퀀스
-<img src="/README.assets/login_sequence.png" width="80%"/>
+<img src="/assets/login_sequence.png" width="80%"/>
 
 ### 모임 생성 및 참여 시퀀스
-<img src="/README.assets/meet_sequence.png" width="80%"/>
+<img src="/assets/meet_sequence.png" width="80%"/>
 
 ### 결제 참여자 선택 시퀀스
-<img src="/README.assets/participant_sequence.png" width="80%"/>
+<img src="/assets/participant_sequence.png" width="80%"/>
 
 ### 결제 및 정산 시퀀스
-<img src="/README.assets/pay_sequence.png" width="80%"/>
+<img src="/assets/pay_sequence.png" width="80%"/>
 
 [Top](#목차)
 <br/><br/>
 
 # :scroll:프로젝트 산출물
 
-**↓ 사진 클릭 시 페이지로 이동**
-
-### 기능 정의서
-[<img src="README.assets/기능정의서(미완).PNG" width="80%"/>](https://www.notion.so/14f4366db68f41fca4fad994acb845a5?v=92284a01b0424bccb9cb7c541f36e75b)
-
 ### 요구사항 명세서
-[<img src="README.assets/요구사항명세서.PNG" width="80%"/>)](https://www.notion.so/c75d4b66f4304098822f0dfa1fcffc2e)
+[<img src="assets/요구사항명세서.PNG" width="80%"/>)](https://www.notion.so/c75d4b66f4304098822f0dfa1fcffc2e)
 
 ### 기능 명세서
-[<img src="README.assets/기능명세서.PNG" width="80%"/>](https://www.notion.so/dd29f25471bf4ee3878a19eb92e355aa)
+[<img src="assets/기능명세서.PNG" width="80%"/>](https://www.notion.so/dd29f25471bf4ee3878a19eb92e355aa)
 
 ### API 명세서
-[<img src="README.assets/API명세서.PNG" width="80%"/>](https://www.notion.so/API-e4dc78cf4bb24312b34de0a942938512)
+[<img src="assets/API명세서.PNG" width="80%"/>](https://www.notion.so/API-e4dc78cf4bb24312b34de0a942938512)
 
 ###  Figma
-<img src="README.assets/피그마.PNG" width="80%"/>
+<img src="assets/피그마.PNG" width="80%"/>
 
 ### ERD
-<img src="README.assets/erd.PNG" width="80%"/>
+<img src="assets/erd.PNG" width="80%"/>
 
 
 # :raising_hand:팀원
 <div align="center">
 
+
+
 |**류지수(팀장)**<br>|**고석주**<br>|**김준수**<br>|**이성목**<br>|**함승찬**<br>|**황재언**<br>|
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| [<img src="https://secure.gravatar.com/avatar/30796a5ca36f86621d9e7abe1ad15221?s=192&d=identicon" height=150 width=150> <br/> @onassis793](https://lab.ssafy.com/onassis793) | [<img src="https://secure.gravatar.com/avatar/8ab49b21f8cec24b47e248ce9c82a98d?s=192&d=identicon" height=150 width=150> <br/> @hgoa2000](https://lab.ssafy.com/hgoa2000) | [<img src="https://secure.gravatar.com/avatar/c5adcea95c51bc60dc7f36b183716250?s=192&d=identicon" height=150 width=150> <br/> @pittuarez](https://lab.ssafy.com/pittuarez) | [<img src="README.assets/leeseongmok_profile.jpeg" height=150 width=150> <br/> @CocoisCat](https://lab.ssafy.com/CocoisCat) | [<img src="https://secure.gravatar.com/avatar/8f209ad61e9e72afa3c4dc5a3e5634e9?s=192&d=identicon" height=150 width=150> <br/> @head0618](https://lab.ssafy.com/head0618) | [<img src="https://secure.gravatar.com/avatar/1b8d41d61dbe17bdf60b770edc8c8124?s=192&d=identicon" height=150 width=150> <br/> @hju753](https://lab.ssafy.com/hju753) |
+| [<img src="https://secure.gravatar.com/avatar/30796a5ca36f86621d9e7abe1ad15221?s=192&d=identicon" height=150 width=150> <br/> @onassis793](https://lab.ssafy.com/onassis793) | [<img src="assets/profile/goseokju.jpg" height=150 width=150> <br/> @hgoa2000](https://lab.ssafy.com/hgoa2000) | [<img src="https://secure.gravatar.com/avatar/c5adcea95c51bc60dc7f36b183716250?s=192&d=identicon" height=150 width=150> <br/> @pittuarez](https://lab.ssafy.com/pittuarez) | [<img src="assets/profile/leeseongmok_profile.jpeg" height=150 width=150> <br/> @CocoisCat](https://lab.ssafy.com/CocoisCat) | [<img src="https://secure.gravatar.com/avatar/8f209ad61e9e72afa3c4dc5a3e5634e9?s=192&d=identicon" height=150 width=150> <br/> @head0618](https://lab.ssafy.com/head0618) | [<img src="https://secure.gravatar.com/avatar/1b8d41d61dbe17bdf60b770edc8c8124?s=192&d=identicon" height=150 width=150> <br/> @hju753](https://lab.ssafy.com/hju753) |
 
 </div>
 
