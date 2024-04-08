@@ -1,6 +1,5 @@
-<div style="text-align:center;">
-  <img src="README.assets/piepaylogo.svg" width="80%"/>
-</div>
+
+
 
 # :page_facing_up:목차
 1. [서비스 소개](#서비스-소개)
@@ -16,7 +15,7 @@
 ## 서비스 설명
 ### 개요
 - 빠른 N분배 정산 가능한 Pay
-### 대상:family:
+### 대상
 - 정기적으로 모이는 모임이 있는 사람들
 - 모임 후 정산 요청을 보내기 귀찮은 사람들
 - 모임 후 정산해야 한다는 사실을 잘 잊는 사람들
@@ -27,7 +26,7 @@
 
 **↓ 클릭 후 UCC 페이지로 이동**
 
-[![Video Label](썸네일)](링크)
+
 
 <br/>
 [Top](#목차)
@@ -47,10 +46,15 @@
 
 ## 의의
 - 정산 과정 간소화
+
 - 개별 계산 or 개별 이체의 과정을 생략
+
 - 결제 내역을 통한 모임의 추억 저장
-[Top](#목차)
-<br/><br/>
+
+  
+
+  [Top](#목차)
+  <br/><br/>
 
 # :iphone: 화면 소개
 <details>
@@ -84,6 +88,8 @@
 <summary>정산</summary>
 <img src="./assets/화면소개/정산.gif" width="200">
 </details>
+
+
 [Top](#목차)
 <br/><br/>
 
