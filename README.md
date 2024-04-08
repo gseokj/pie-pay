@@ -26,6 +26,9 @@
 
 **↓ 클릭 후 UCC 페이지로 이동**
 
+https://github.com/SeokJuGo/pie-pay/assets/116260619/55a053b6-1c65-4ca4-85ab-9f955dbbdd8a
+
+
 
 
 <br/>
