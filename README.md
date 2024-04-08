@@ -63,7 +63,7 @@
 
 ### 모임입장
 
-<img src="./README.assets/화면소개/모임입장.gif" alt="모임입장" style="zoom:40%;" />
+![모임입장](./README.assets/화면소개/모임입장.gif){: width="400px"}
 
 ### 결제
 
