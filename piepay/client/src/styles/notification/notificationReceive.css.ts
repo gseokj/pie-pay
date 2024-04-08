@@ -1,5 +1,6 @@
 import {globalStyle, style, styleVariants} from "@vanilla-extract/css";
 import theme from "@/styles/theme/theme";
+import { box } from '@/styles/notification/notificationMessage.css';
 
 
 export const container = style({
@@ -41,4 +42,9 @@ export const paragraph = style({
 
 globalStyle(`${title} > p`, {
     display:'flex',fontWeight:'bold', marginLeft:'0.5rem'
+});
+
+globalStyle(`${content} > p`, {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
 });

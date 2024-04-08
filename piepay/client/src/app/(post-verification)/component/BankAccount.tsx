@@ -14,25 +14,31 @@ import * as fontCss from '@/styles/fonts.css';
 import { Account } from '@/model/account';
 import { getCookie } from '@/util/getCookie';
 import theme from "@/styles/theme/theme";
+import {useStore} from "@/store/useMeetModalStore";
 
 export default function BankAccount() {
   const token = getCookie('accessToken');
   const queryClient = useQueryClient();
-
-  const account: Account[] | undefined = queryClient.getQueryData([
-    'account',
-    token,
-  ]);
+  const { isUserDebtModalOn} = useStore((state) => state);
 
   const [visibility, setVisibility] = useState(true);
+
+  const [account, setAccount] = useState<Account>();
   const [bankName, setBankName] = useState('은행 명');
   const [bankColor, setBankColor] = useState(theme.korea);
   const [bankIcon, setBankIcon] = useState(logoKorea);
 
-  console.log(account);
+  // console.log(account);
 
   useEffect(() => {
+    const account: Account[] | undefined = queryClient.getQueryData([
+      'account',
+      token,
+    ]);
+
     if (typeof account !== 'undefined') {
+      setAccount(account[0]);
+
       switch (account[0].bankCode) {
         case '001':
           setBankName('한국은행');
@@ -59,7 +65,7 @@ export default function BankAccount() {
           break;
       }
     }
-  }, []);
+  }, [isUserDebtModalOn]);
   const visibilityCheck = () => {
     setVisibility(!visibility);
   };
@@ -83,11 +89,11 @@ export default function BankAccount() {
                 {bankName}
               </span>
               <span className={styles.bankAccountNumber}>
-                {account[0].accountNo}
+                {account.accountNo}
               </span>
               <span className={`${styles.bankAccountBalance} ${fontCss.bold}`}>
                 {visibility
-                  ? Number(account[0].balance).toLocaleString('ko-kr') + ' 원'
+                  ? Number(account.balance).toLocaleString('ko-kr') + ' 원'
                   : '금액 가려짐'}
               </span>
             </div>

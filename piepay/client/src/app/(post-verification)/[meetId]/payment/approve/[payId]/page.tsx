@@ -10,6 +10,7 @@ import { getCookie } from '@/util/getCookie';
 import { Me } from '@/model/member';
 import { useSSE } from '@/store/useSSE';
 import { useRouter } from 'next/navigation';
+import { usePaymentSocket } from '@/store/usePaymentSocket';
 
 type Props = { params: { payId: string } }
 
@@ -23,6 +24,8 @@ export default function Page({ params }: Props) {
   const { payId } = params;
   const queryClient = useQueryClient();
   const { payment, setPayment } = usePayment();
+
+  const { res,setInitiating } = usePaymentSocket();
   const router = useRouter();
 
   // 결제 알람 넘어가는 용도
@@ -39,14 +42,15 @@ export default function Page({ params }: Props) {
     p.participants.sort((member) => member.memberInfo.memberId == myInfo?.memberId ? -1 : 1);
     setPayment(p);
   }, [token, payment]);
+
   useEffect(() => {
-    console.log(SSEnotification);
-    if (!SSEnotification || !payment) return;
-    if (SSEnotification?.referenceId === 1 && SSEnotification?.destinationId === Number(payId)) {
-      router.replace(`${payId}/complete`);
-      console.log('결제발생');
+    if (!res) return;
+    if (res.payStatus === 'COMPLETE' || res.payStatus === 'CLOSE') {
+      setInitiating();
+      router.replace(`/5/payment/approve/${payId}/complete`);
     }
-  }, [SSEnotification]);
+
+  }, [res]);
   return (<>
     {payment?.payStatus === 'OPEN' && <Open payId={Number(payId)} />}
     {payment?.payStatus === 'ING' && <QRCode payId={Number(payId)} />}

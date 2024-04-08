@@ -38,18 +38,18 @@ globalStyle(`${detailHeader} > button`, {
 export const mainContainer = style({
   padding: '4% 6% 0 6%',
   '::-webkit-scrollbar': {
-    width: '3px',
+    width: '3px'
   },
   '::-webkit-scrollbar-thumb': {
-    backgroundColor: '#D3D3D3',
+    backgroundColor: '#D3D3D3'
   },
+  overflowY: 'auto',
   position: 'absolute',
   top: 0,
   right: 0,
   bottom: 0,
   left: 0,
   height: '100%',
-  overflowY: 'auto',
 });
 
 globalStyle(`${mainContainer} > *:first-child`, {
@@ -122,6 +122,13 @@ const profileImageContainer = style({
 });
 
 export const imageBox = styleVariants({
+  imageBox24: [
+    profileImageContainer,
+    {
+      width: '24px',
+      height: '24px',
+    },
+  ],
   imageBox28: [
     profileImageContainer,
     {

@@ -10,7 +10,7 @@ import io.jsonwebtoken.Claims;
 
 public class JwtClaimParser {
 	public static Collection<GrantedAuthority> getMemberAuthorities(Claims claims) {
-		Object stringAuthorities = claims.get("roles");
+		Object stringAuthorities = claims.get("roles") ;
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
 		if (stringAuthorities instanceof Collection<?>) {
 			for (Object grantedAuthority : (Collection<?>)stringAuthorities) {
