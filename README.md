@@ -52,9 +52,30 @@
 [Top](#목차)
 <br/><br/>
 
-# :iphone:화면 소개
-화면1
-화면2...
+# :iphone: 화면 소개
+### 회원가입
+
+<img src="./README.assets/화면소개/회원가입.gif" alt="회원가입" style="zoom:40%;" />
+
+### 모임만들기
+
+<img src="./README.assets/화면소개/모임만들기.gif" alt="모임만들기" style="zoom:40%;" />
+
+### 모임입장
+
+<img src="./README.assets/화면소개/모임입장.gif" alt="모임입장" style="zoom:40%;" />
+
+### 결제
+
+<img src="./README.assets/화면소개/결제.gif" alt="결제" style="zoom:40%;" />
+
+### 모임상세
+
+<img src="./README.assets/화면소개/모임상세.gif" alt="모임상세" style="zoom:40%;" />
+
+### 정산
+
+<img src="./README.assets/화면소개/정산.gif" alt="정산" style="zoom:40%;" />
 
 [Top](#목차)
 <br/><br/>
